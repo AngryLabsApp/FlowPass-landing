@@ -21,7 +21,7 @@
         class="font-jakarta font-extrabold text-4xl md:text-6xl leading-tight"
       >
         Gestiona tu academia de forma moderna
-        <span class="text-fp-green">y sin complicarte</span>
+        <span class="border border-brand-300 text-brand-700">y sin complicarte.</span>
       </h1>
 
       <!-- SEO Paragraph -->
@@ -43,11 +43,11 @@
     </div>
 
     <!-- IMAGE WITH SEO ALT -->
-    <div class="relative">
+    <div class="relative flex justify-center md:block">
       <img
         src="src/lib/assets/images/laptop.svg"
         alt="Dashboard de FlowPass mostrando gestión de alumnos y pagos"
-        class="relative"
+        class="relative w-full max-w-3xl scale-110 md:scale-125"
         loading="lazy"
       />
     </div>
