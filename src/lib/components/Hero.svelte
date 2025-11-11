@@ -1,24 +1,35 @@
 <script>
-  export let title = "Tu academia, más ordenada. Más simple.";
-  export let subtitle =
-    "FlowPass te ayuda a gestionar alumnos, pagos e ingresos desde un solo lugar.";
+  import { fade, fly } from "svelte/transition";
 </script>
 
 <section
-  class="w-full min-h-[75vh] flex flex-col justify-center items-center text-center px-6"
+  class="border min-h-[80vh] flex flex-col items-center justify-center text-center px-6
+         bg-gradient-to-b from-white to-green-50 select-none"
 >
-  <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">
-    {title}
+  <!-- Título -->
+  <h1
+    class="text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight"
+    transition:fly={{ y: 20, duration: 600 }}
+  >
+    Gestiona tu academia <span class="text-green-600">sin complicarte</span>.
   </h1>
 
-  <p class="text-lg md:text-xl text-gray-600 max-w-2xl mb-8">
-    {subtitle}
+  <!-- Subtítulo -->
+  <p
+    class="text-lg md:text-xl text-gray-600 max-w-2xl mb-10"
+    transition:fade={{ duration: 900 }}
+  >
+    FlowPass te ayuda a administrar alumnos, pagos, asistencias e ingresos desde
+    un solo lugar — rápido, moderno y sencillo.
   </p>
 
+  <!-- Botón -->
   <a
     href="#demo"
-    class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl text-lg shadow-lg transition"
+    class="bg-green-600 hover:bg-green-700 text-white px-10 py-4 rounded-2xl shadow-lg
+           text-lg font-medium transition-transform hover:scale-105"
+    transition:fade={{ duration: 1200 }}
   >
-    Agendar demo
+    Probar FlowPass
   </a>
 </section>
