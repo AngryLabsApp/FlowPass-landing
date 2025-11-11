@@ -1,12 +1,12 @@
 <script lang="ts">
-  import favicon from "$lib/assets/favicon.svg";
+  import flowPassIcon from "$lib/assets/icons/logo-icon.svg";
 
   let { children } = $props();
   import "../app.css";
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
+  <link rel="icon" href={flowPassIcon} />
 </svelte:head>
 
 {@render children()}
