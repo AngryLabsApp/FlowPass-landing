@@ -1,0 +1,48 @@
+# ================================
+# Archivos y carpetas innecesarias
+# ================================
+
+# Node & dependencies
+node_modules
+.pnpm-store
+.npm
+.cache
+
+# Build outputs locales
+/build
+/.svelte-kit
+/.vercel
+/.netlify
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+
+# Configuraciones del editor
+.vscode
+.idea
+
+# Control de versiones
+.git
+.gitignore
+.gitattributes
+
+# Archivos de logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Archivos del entorno local
+.env
+.env.*
+!.env.example
+
+# Archivos de pruebas y coverage
+coverage
+*.test.*
+*.spec.*
+
+# Otros archivos innecesarios
+README.md
+Dockerfile
+nginx.conf
