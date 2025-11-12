@@ -3,8 +3,9 @@
 </script>
 
 <section
+  id="terms"
   in:fade
-  class="max-w-4xl mx-auto px-6 py-16 text-neutral-700 leading-relaxed text-justify"
+  class="max-w-4xl mx-auto px-6 py-16 text-base sm:text-lg text-neutral-700 leading-relaxed text-justify"
 >
   <h1 class="text-4xl font-bold text-dark-200 mb-10 border-b border-light-200 pb-3">
     Términos y Condiciones de Uso

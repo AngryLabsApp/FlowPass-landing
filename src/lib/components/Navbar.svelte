@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
 
   let isOpen = false;
   let scrolled = false;
@@ -51,9 +52,9 @@
     >
       <li>
         <a
-          href="#inicio"
+          href="/#inicio"
           title="Inicio - Plataforma FlowPass"
-          aria-current="page"
+          aria-current={$page.url.pathname === "/" ? "page" : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Inicio</a
         >
@@ -61,8 +62,9 @@
 
       <li>
         <a
-          href="#features"
+          href="/#features"
           title="Explora las funciones principales de FlowPass"
+          aria-current={$page.url.pathname === "/" ? "page" : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Funciones</a
         >
@@ -70,8 +72,9 @@
 
       <li>
         <a
-          href="#faq"
+          href="/#faq"
           title="Preguntas frecuentes sobre FlowPass"
+          aria-current={$page.url.pathname === "/" ? "page" : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Preguntas frecuentes</a
         >
@@ -79,8 +82,9 @@
 
       <li>
         <a
-          href="/terminos"
+          href="/terminos#terms"
           title="Consulta nuestros términos y condiciones"
+          aria-current={$page.url.pathname.startsWith("/terminos") ? "page" : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Términos y condiciones</a
         >
@@ -88,8 +92,9 @@
 
       <li>
         <a
-          href="#contacto"
+          href="/#contacto"
           title="Contáctanos para más información"
+          aria-current={$page.url.pathname === "/" ? "page" : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Contacto</a
         >
@@ -138,11 +143,36 @@
       aria-label="Menú móvil FlowPass"
       class="md:hidden bg-white border-t border-light-200 px-6 py-4 space-y-3 animate-slideDown"
     >
-      <a href="#inicio" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Inicio</a>
-      <a href="#features" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Funciones</a>
-      <a href="#faq" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Preguntas frecuentes</a>
-      <a href="#terms" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Términos y condiciones</a>
-      <a href="#contacto" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Contacto</a>
+      <a
+        href="/#inicio"
+        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        on:click={() => (isOpen = false)}
+        >Inicio</a
+      >
+      <a
+        href="/#features"
+        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        on:click={() => (isOpen = false)}
+        >Funciones</a
+      >
+      <a
+        href="/#faq"
+        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        on:click={() => (isOpen = false)}
+        >Preguntas frecuentes</a
+      >
+      <a
+        href="/terminos#terms"
+        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        on:click={() => (isOpen = false)}
+        >Términos y condiciones</a
+      >
+      <a
+        href="/#contacto"
+        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        on:click={() => (isOpen = false)}
+        >Contacto</a
+      >
 
       <Button
         color="secondary"
