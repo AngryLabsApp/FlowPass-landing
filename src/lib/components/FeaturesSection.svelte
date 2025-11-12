@@ -2,31 +2,35 @@
   import { Splide, SplideSlide } from "@splidejs/svelte-splide";
   import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
   import { Card } from "flowbite-svelte";
+  import alumnosImg from "$lib/assets/images/features/alumnos.png";
+  import pagosImg from "$lib/assets/images/features/pagos-final.png";
+  import whatsappImg from "$lib/assets/images/features/whatsapp.png";
+  import asistenciaImg from "$lib/assets/images/features/asistencia.png";
 
   const features = [
     {
       title: "Gestión simple de alumnos",
       description:
         "Administra fácilmente tus alumnos, planes y asistencias sin depender de hojas de Excel. Accede a información clave de tus alumnos.",
-      img: "src/lib/assets/images/features/alumnos.png",
+      img: alumnosImg,
     },
     {
       title: "Pagos siempre al día",
       description:
         "Lleva un control diario y visualiza fácilmente el estado de tus cobros. Mantén todos tus pagos organizados.",
-      img: "src/lib/assets/images/features/pagos-final.png",
+      img: pagosImg,
     },
     {
       title: "Comunicación automática",
       description:
         "FlowPass envía recordatorios y mensajes por WhatsApp para mantener informados a tus alumnos.",
-      img: "src/lib/assets/images/features/whatsapp.png",
+      img: whatsappImg,
     },
     {
       title: "Gestión de ingresos",
       description:
         "Monitorea los ingresos y la asistencia de tus alumnos para entender mejor el desempeño y crecimiento de tu academia",
-      img: "src/lib/assets/images/features/asistencia.png",
+      img: asistenciaImg,
     },
   ];
 </script>

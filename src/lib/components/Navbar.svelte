@@ -2,6 +2,7 @@
   import { Button } from "flowbite-svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
+  import logoIcon from "$lib/assets/icons/logo-icon.svg";
 
   let isOpen = false;
   let scrolled = false;
@@ -35,7 +36,7 @@
       aria-label="Inicio de FlowPass"
     >
       <img
-        src="src/lib/assets/icons/logo-icon.svg"
+        src={logoIcon}
         alt="Logo de FlowPass, plataforma de gestión para academias"
         class="w-8 h-8 transition-transform duration-300 group-hover:scale-105"
       />
