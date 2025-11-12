@@ -20,6 +20,9 @@ importers:
       flowbite-svelte:
         specifier: ^1.27.0
         version: 1.27.0(rollup@4.53.2)(svelte@5.43.6)(tailwindcss@4.1.17)
+      svelte-heros-v2:
+        specifier: ^3.0.0
+        version: 3.0.0(svelte@5.43.6)
       svelte-meta-tags:
         specifier: ^4.5.0
         version: 4.5.0(svelte@5.43.6)
@@ -877,6 +880,11 @@ packages:
       svelte: ^4.0.0 || ^5.0.0-next.0
       typescript: '>=5.0.0'
 
+  svelte-heros-v2@3.0.0:
+    resolution: {integrity: sha512-m+jPRTQK9nMEhEisf0Kh3guYdTUoF9ZuZxCT/u1peRemac8UnfZwaiu2c4DAMblsNYD/plznAo/Uszhm00J5lg==}
+    peerDependencies:
+      svelte: ^5.0.0
+
   svelte-meta-tags@4.5.0:
     resolution: {integrity: sha512-E1/ULp4j8qwYFQeYBR0WypgOIsZkOnywAExFhufyl07eTvyCDQVW1HaNTSA0n2sX/Hw0jtti+TKuOml5dt2v9A==}
     peerDependencies:
@@ -1651,6 +1659,10 @@ snapshots:
       typescript: 5.9.3
     transitivePeerDependencies:
       - picomatch
+
+  svelte-heros-v2@3.0.0(svelte@5.43.6):
+    dependencies:
+      svelte: 5.43.6
 
   svelte-meta-tags@4.5.0(svelte@5.43.6):
     dependencies:

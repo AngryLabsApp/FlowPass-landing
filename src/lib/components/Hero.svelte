@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
+  import { CalendarDays } from "svelte-heros-v2";
 </script>
 
 <section
@@ -25,7 +26,9 @@
       </h1>
 
       <!-- SEO Paragraph -->
-      <p class="text-gray-600 text-lg leading-relaxed max-w-md text-md text-justify">
+      <p
+        class="text-gray-600 text-lg leading-relaxed max-w-md text-md text-justify"
+      >
         FlowPass es una plataforma digital diseñada para academias, gimnasios y
         centros deportivos. Administra alumnos, pagos, asistencias y reportes
         desde un solo lugar, reduce tareas manuales y mejora la experiencia de
@@ -34,11 +37,12 @@
 
       <!-- CTA -->
       <Button
-        color="green"
-        class="px-6 py-3 text-lg font-semibold rounded-xl"
+        color="secondary"
+        class="flex  justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl"
         aria-label="Agendar una demo de FlowPass"
       >
         Agendar demo
+        <CalendarDays class="w-6 h-6 text-light-50" />
       </Button>
     </div>
 
