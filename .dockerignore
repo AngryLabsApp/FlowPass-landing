@@ -45,4 +45,4 @@ coverage
 # Otros archivos innecesarios
 README.md
 Dockerfile
-nginx.conf
+# nginx.conf
