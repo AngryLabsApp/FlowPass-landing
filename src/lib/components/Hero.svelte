@@ -3,7 +3,7 @@
 </script>
 
 <section
-  class="w-full bg-white pt-24 pb-32"
+  class="w-full bg-light-300 pt-24 pb-32"
   aria-label="FlowPass: plataforma para gestión de academias"
 >
   <div
@@ -21,11 +21,11 @@
         class="font-jakarta font-extrabold text-4xl md:text-6xl leading-tight"
       >
         Gestiona tu academia de forma moderna
-        <span class="border border-brand-300 text-brand-700">y sin complicarte.</span>
+        <span class="text-brand-600">y sin complicarte.</span>
       </h1>
 
       <!-- SEO Paragraph -->
-      <p class="text-gray-600 text-lg leading-relaxed max-w-md">
+      <p class="text-gray-600 text-lg leading-relaxed max-w-md text-md text-justify">
         FlowPass es una plataforma digital diseñada para academias, gimnasios y
         centros deportivos. Administra alumnos, pagos, asistencias y reportes
         desde un solo lugar, reduce tareas manuales y mejora la experiencia de

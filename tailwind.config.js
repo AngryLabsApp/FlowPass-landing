@@ -11,35 +11,63 @@ const config = {
         inter: ["Inter", "sans-serif"],
         jakarta: ['"Plus Jakarta Sans"', "sans-serif"],
       },
-       colors: {
+      colors: {
         brand: {
-          default: "#00D48C", // Color principal FlowPass
-          50: "#E6FFF5",
-          100: "#CCFFE9",
-          200: "#99FFD4",
-          300: "#66FFBE",
-          400: "#33FFA9",
-          500: "#00D48C", // Main brand green
-          600: "#00B074",
-          700: "#009F6A", // Darker green for hover
-          800: "#007A52",
-          900: "#004C32",
+          DEFAULT: "#87FF65", // Color principal FlowPass
+          50: "#F2FFE9",
+          100: "#E4FFD3",
+          200: "#C2FFA3",
+          300: "#A0FF78",
+          400: "#8AFF5C",
+          500: "#87FF65",
+          600: "#6CCF50",
+          700: "#54A63D",
+          800: "#3C7C2B",
+          900: "#244D1A",
         },
         // flowbite-svelte
-        primary: {
-          50: "#FFF5F2",
-          100: "#FFF1EE",
-          200: "#FFE4DE",
-          300: "#FFD5CC",
-          400: "#FFBCAD",
-          500: "#FE795D",
-          600: "#EF562F",
-          700: "#EB4F27",
-          800: "#CC4522",
-          900: "#A5371B",
+        secondary: {
+          50: "#ffd9e0",
+          100: "#ffd9e0",
+          200: "#ffb3c0",
+          300: "#ff8ca0",
+          400: "#f95c7e",
+          500: "#ee4266", // principal
+          600: "#d3365a",
+          700: "#b32d4e",
+          800: "#912541", // color para botón sólido
+          900: "#661930",
+        },
+        // Whites
+        light: {
+          50: "#FFFFFF",
+          100: "#FAFAFA",
+          200: "#F5F5F5",
+          300: "#EFEFEF",
+        },
+
+        // Neutral greys
+        neutral: {
+          50: "#F8FAFC",
+          100: "#F1F5F9",
+          200: "#E2E8F0",
+          300: "#CBD5E1",
+          400: "#94A3B8",
+          500: "#64748B",
+          600: "#475569",
+          700: "#334155",
+          800: "#1E293B",
+          900: "#0F172A",
+        },
+
+        // Dark palette
+        dark: {
+          100: "#1A1A1A",
+          200: "#141414",
+          300: "#0D0D0D",
+          400: "#000000",
         },
       },
-     
     },
   },
 };
