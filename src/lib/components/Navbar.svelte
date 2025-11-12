@@ -17,7 +17,6 @@
 
 <!-- NAVIGATION BAR -->
 <nav
-  role="navigation"
   aria-label="Menú principal de FlowPass"
   class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out"
   class:bg-white={scrolled}
