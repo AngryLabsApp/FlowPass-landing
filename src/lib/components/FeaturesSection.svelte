@@ -40,23 +40,25 @@
   class="py-24 bg-light-100"
   aria-label="Funciones principales de FlowPass"
 >
-  <div class="max-w-6xl mx-auto px-6 text-center">
-    <h2
-      class="font-jakarta text-3xl md:text-4xl font-extrabold text-dark-200 mb-4"
-    >
-      Funciones principales
-    </h2>
-    <p class="text-neutral-600 text-lg max-w-2xl mx-auto mb-12">
-      FlowPass automatiza la gestión de tu academia: controla alumnos, pagos,
-      ingresos y comunicación sin complicaciones.
-    </p>
+  <div class="mx-auto">
+    <div class="px-6 text-center">
+      <h2
+        class="font-jakarta text-3xl md:text-4xl font-extrabold text-dark-200 mb-4"
+      >
+        Funciones principales
+      </h2>
+      <p class="text-neutral-600 text-lg max-w-2xl mx-auto mb-12">
+        FlowPass automatiza la gestión de tu academia: controla alumnos, pagos,
+        ingresos y comunicación sin complicaciones.
+      </p>
+    </div>
 
     <Splide
       extensions={{ AutoScroll }}
       options={{
         type: "loop",
         gap: "1.5rem",
-        perPage: 2,
+        perPage: 3,
         arrows: false,
         pagination: true,
         drag: false,
