@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
+  import { CalendarDays } from "svelte-heros-v2";
 
   let isOpen = false;
   let scrolled = false;
@@ -56,8 +57,7 @@
           href="/#inicio"
           title="Inicio - Plataforma FlowPass"
           aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
-          >Inicio</a
+          class="hover:text-brand transition duration-200 ease-in-out">Inicio</a
         >
       </li>
 
@@ -85,7 +85,9 @@
         <a
           href="/terminos#terms"
           title="Consulta nuestros términos y condiciones"
-          aria-current={$page.url.pathname.startsWith("/terminos") ? "page" : undefined}
+          aria-current={$page.url.pathname.startsWith("/terminos")
+            ? "page"
+            : undefined}
           class="hover:text-brand transition duration-200 ease-in-out"
           >Términos y condiciones</a
         >
@@ -102,13 +104,21 @@
       </li>
 
       <li>
-        <Button
-          color="secondary"
-          aria-label="Agendar una demostración de FlowPass"
-          class="rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300"
+        <a
+          href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir el calendario para agendar una demo de FlowPass"
         >
-          Agendar demo
-        </Button>
+          <Button
+            color="dark"
+            aria-label="Agendar una demostración de FlowPass"
+            class="fex justify-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300"
+          >
+            Agendar demo
+            <CalendarDays class="w-6 h-6 text-light-50" />
+          </Button>
+        </a>
       </li>
     </ul>
 
@@ -122,15 +132,35 @@
     >
       {#if isOpen}
         <!-- Close icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       {:else}
         <!-- Menu icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
-          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
       {/if}
     </button>
@@ -147,49 +177,60 @@
       <a
         href="/#inicio"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}
-        >Inicio</a
+        on:click={() => (isOpen = false)}>Inicio</a
       >
       <a
         href="/#features"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}
-        >Funciones</a
+        on:click={() => (isOpen = false)}>Funciones</a
       >
       <a
         href="/#faq"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}
-        >Preguntas frecuentes</a
+        on:click={() => (isOpen = false)}>Preguntas frecuentes</a
       >
       <a
         href="/terminos#terms"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}
-        >Términos y condiciones</a
+        on:click={() => (isOpen = false)}>Términos y condiciones</a
       >
       <a
         href="/#contacto"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}
-        >Contacto</a
+        on:click={() => (isOpen = false)}>Contacto</a
       >
 
-      <Button
-        color="secondary"
-        class="w-full rounded-xl mt-3 transition-transform duration-300 hover:scale-[1.02]"
-        aria-label="Agendar una demostración gratuita de FlowPass"
+      <a
+        href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Abrir el calendario para agendar una demo de FlowPass"
       >
-        Agendar demo
-      </Button>
+        <Button
+          color="dark"
+          class=" flex justify-center gap-2 w-full rounded-xl mt-3 transition-transform duration-300 hover:scale-[1.02]"
+          aria-label="Agendar una demostración gratuita de FlowPass"
+        >
+          Agendar demo
+          <CalendarDays class="w-4 h-4 text-light-50" />
+        </Button>
+      </a>
     </div>
   {/if}
 </nav>
 
 <style>
   @keyframes slideDown {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  .animate-slideDown { animation: slideDown 0.3s ease forwards; }
+  .animate-slideDown {
+    animation: slideDown 0.3s ease forwards;
+  }
 </style>

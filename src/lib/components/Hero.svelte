@@ -38,14 +38,20 @@
       </p>
 
       <!-- CTA -->
-      <Button
-        color="secondary"
-        class="flex  justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl"
-        aria-label="Agendar una demo de FlowPass"
+      <a
+        href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Abrir el calendario para agendar una demo de FlowPass"
       >
-        Agendar demo
-        <CalendarDays class="w-6 h-6 text-light-50" />
-      </Button>
+        <Button
+          color="secondary"
+          class="flex justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+        >
+          Agendar demo
+          <CalendarDays class="w-6 h-6 text-light-50" />
+        </Button>
+      </a>
     </div>
 
     <!-- IMAGE WITH SEO ALT -->
