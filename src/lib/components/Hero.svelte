@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
   import { CalendarDays } from "svelte-heros-v2";
+  import Laptop from "./../assets/images/laptop.svg";
 </script>
 
 <section
@@ -50,7 +51,7 @@
     <!-- IMAGE WITH SEO ALT -->
     <div class="relative flex justify-center md:block">
       <img
-        src="src/lib/assets/images/laptop.svg"
+        src={Laptop}
         alt="Dashboard de FlowPass mostrando gestión de alumnos y pagos"
         class="relative w-full max-w-3xl scale-110 md:scale-125"
         loading="lazy"
