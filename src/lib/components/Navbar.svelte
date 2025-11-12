@@ -79,7 +79,7 @@
 
       <li>
         <a
-          href="#terms"
+          href="/terminos"
           title="Consulta nuestros términos y condiciones"
           class="hover:text-brand transition duration-200 ease-in-out"
           >Términos y condiciones</a
