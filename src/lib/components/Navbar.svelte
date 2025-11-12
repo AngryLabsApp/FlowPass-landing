@@ -15,7 +15,10 @@
   });
 </script>
 
+<!-- NAVIGATION BAR -->
 <nav
+  role="navigation"
+  aria-label="Menú principal de FlowPass"
   class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out"
   class:bg-white={scrolled}
   class:shadow-md={scrolled}
@@ -24,11 +27,16 @@
   <div
     class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 transition-all duration-500"
   >
-    <!-- LOGO -->
-    <a href="/" class="flex items-center gap-2 group">
+    <!-- LOGO (marca con alt y enlace semántico) -->
+    <a
+      href="/"
+      class="flex items-center gap-2 group"
+      title="Ir al inicio de FlowPass"
+      aria-label="Inicio de FlowPass"
+    >
       <img
         src="src/lib/assets/icons/logo-icon.svg"
-        alt="FlowPass logo"
+        alt="Logo de FlowPass, plataforma de gestión para academias"
         class="w-8 h-8 transition-transform duration-300 group-hover:scale-105"
       />
       <span
@@ -38,118 +46,109 @@
       </span>
     </a>
 
-    <!-- DESKTOP MENU -->
-    <div
-      class="hidden md:flex items-center gap-8 text-neutral-700 font-medium transition-all duration-300"
+    <!-- MENÚ DESKTOP SEMÁNTICO -->
+    <ul
+      class="hidden md:flex items-center gap-8 text-neutral-700 font-medium transition-all duration-300 list-none"
     >
-      <a
-        href="#inicio"
-        class="hover:text-brand transition duration-200 ease-in-out">Inicio</a
-      >
-      <a
-        href="#how"
-        class="hover:text-brand transition duration-200 ease-in-out"
-        >Cómo funciona</a
-      >
-      <a
-        href="#features"
-        class="hover:text-brand transition duration-200 ease-in-out"
-        >Funciones</a
-      >
-      <a
-        href="#faq"
-        class="hover:text-brand transition duration-200 ease-in-out"
-        >Preguntas frecuentes</a
-      >
-      <a
-        href="#contacto"
-        class="hover:text-brand transition duration-200 ease-in-out">Contacto</a
-      >
+      <li>
+        <a
+          href="#inicio"
+          title="Inicio - Plataforma FlowPass"
+          aria-current="page"
+          class="hover:text-brand transition duration-200 ease-in-out"
+          >Inicio</a
+        >
+      </li>
 
-      <Button
-        color="secondary"
-        class="rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300"
-      >
-        Agendar demo
-      </Button>
-    </div>
+      <li>
+        <a
+          href="#features"
+          title="Explora las funciones principales de FlowPass"
+          class="hover:text-brand transition duration-200 ease-in-out"
+          >Funciones</a
+        >
+      </li>
 
-    <!-- MOBILE MENU BUTTON -->
+      <li>
+        <a
+          href="#faq"
+          title="Preguntas frecuentes sobre FlowPass"
+          class="hover:text-brand transition duration-200 ease-in-out"
+          >Preguntas frecuentes</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="#terms"
+          title="Consulta nuestros términos y condiciones"
+          class="hover:text-brand transition duration-200 ease-in-out"
+          >Términos y condiciones</a
+        >
+      </li>
+
+      <li>
+        <a
+          href="#contacto"
+          title="Contáctanos para más información"
+          class="hover:text-brand transition duration-200 ease-in-out"
+          >Contacto</a
+        >
+      </li>
+
+      <li>
+        <Button
+          color="secondary"
+          aria-label="Agendar una demostración de FlowPass"
+          class="rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300"
+        >
+          Agendar demo
+        </Button>
+      </li>
+    </ul>
+
+    <!-- BOTÓN MENÚ MÓVIL -->
     <button
       class="md:hidden text-dark-200 hover:text-brand transition"
       on:click={() => (isOpen = !isOpen)}
-      aria-label="Abrir menú"
+      aria-expanded={isOpen}
+      aria-controls="menu-movil"
+      aria-label="Abrir menú de navegación"
     >
       {#if isOpen}
         <!-- Close icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       {:else}
         <!-- Menu icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none"
+          viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       {/if}
     </button>
   </div>
 
-  <!-- MOBILE MENU -->
+  <!-- MENÚ MÓVIL (ARIA + ANIMACIÓN) -->
   {#if isOpen}
     <div
+      id="menu-movil"
+      role="menu"
+      aria-label="Menú móvil FlowPass"
       class="md:hidden bg-white border-t border-light-200 px-6 py-4 space-y-3 animate-slideDown"
     >
-      <a
-        href="#inicio"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        >Inicio</a
-      >
-      <a
-        href="#how"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        >Cómo funciona</a
-      >
-      <a
-        href="#features"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        >Funciones</a
-      >
-      <a
-        href="#faq"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        >Preguntas frecuentes</a
-      >
-      <a
-        href="#contacto"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        >Contacto</a
-      >
+      <a href="#inicio" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Inicio</a>
+      <a href="#features" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Funciones</a>
+      <a href="#faq" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Preguntas frecuentes</a>
+      <a href="#terms" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Términos y condiciones</a>
+      <a href="#contacto" class="block text-neutral-700 hover:text-brand transition-colors duration-200">Contacto</a>
 
       <Button
         color="secondary"
         class="w-full rounded-xl mt-3 transition-transform duration-300 hover:scale-[1.02]"
+        aria-label="Agendar una demostración gratuita de FlowPass"
       >
         Agendar demo
       </Button>
@@ -158,19 +157,9 @@
 </nav>
 
 <style>
-  /* Animación para menú móvil */
   @keyframes slideDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
-
-  .animate-slideDown {
-    animation: slideDown 0.3s ease forwards;
-  }
+  .animate-slideDown { animation: slideDown 0.3s ease forwards; }
 </style>
