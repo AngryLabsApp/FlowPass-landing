@@ -74,9 +74,15 @@
       <AccordionItem>
         {#snippet header()}🔐 ¿Mis datos están seguros?{/snippet}
         <p class="text-neutral-600">
-          Sí, completamente. Usamos servicios en la nube con protección y
-          seguridad para que toda tu información y la de tus alumnos esté
-          segura.
+          Sí, completamente. En FlowPass utilizamos <strong
+            >servicios en la nube con altos estándares de seguridad</strong
+          >
+          para proteger toda la información de tu academia y de tus alumnos.
+          <br /><br />
+          Además, <strong>firmamos un acuerdo de confidencialidad</strong> con
+          cada academia para garantizar que tus datos se mantengan privados.
+          Recuerda: <strong>la información siempre es tuya</strong>; FlowPass
+          solo te ayuda a gestionarla de forma segura y eficiente.
         </p>
       </AccordionItem>
 
@@ -85,9 +91,15 @@
         {#snippet header()}💚 ¿Cómo funciona FlowPass? ¿Se compra o se paga cada
           mes?{/snippet}
         <p class="text-neutral-600">
-          FlowPass funciona por <strong>suscripción mensual</strong>, como
-          Netflix o Spotify. Pagas una pequeña cuota al mes y tienes acceso
-          completo a la plataforma, soporte y todas las actualizaciones.
+          FlowPass funciona con un modelo de <strong>suscripción mensual</strong
+          >, al igual que Netflix o Spotify. Pagas una pequeña cuota al mes y
+          obtienes acceso completo a la plataforma, soporte personalizado y
+          todas las actualizaciones.
+          <br /><br />
+          Además, si en algún momento no deseas usar FlowPass,
+          <strong>puedes pausar tu cuenta cuando lo necesites</strong> y retomarla
+          más adelante. No hay contratos ni compromisos — tú decides cuándo usar
+          FlowPass.
         </p>
       </AccordionItem>
 
