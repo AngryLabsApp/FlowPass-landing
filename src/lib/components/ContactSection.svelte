@@ -4,7 +4,7 @@
   const whatsappNumber = "51977854515"; // sin + ni espacios
   const email = "contacto@flow-pass.com";
 
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.%20🚀`;
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
   const mailtoLink = `mailto:${email}?subject=Consulta%20sobre%20FlowPass`;
 </script>
 

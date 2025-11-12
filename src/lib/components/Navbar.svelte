@@ -4,9 +4,13 @@
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { CalendarDays } from "svelte-heros-v2";
+  import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
 
   let isOpen = false;
   let scrolled = false;
+
+  const whatsappNumber = "51977854515";
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 
   // Detectar scroll para animar el fondo
   onMount(() => {
@@ -103,7 +107,8 @@
         >
       </li>
 
-      <li>
+      <li class="flex items-center gap-3">
+        <!-- Botón de agenda -->
         <a
           href="https://calendar.app.google/DLechfeCGUXoAQvz6"
           target="_blank"
@@ -112,11 +117,30 @@
         >
           <Button
             color="dark"
-            aria-label="Agendar una demostración de FlowPass"
-            class="fex justify-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300"
+            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300"
           >
             Agendar demo
-            <CalendarDays class="w-6 h-6 text-light-50" />
+            <CalendarDays class="w-5 h-5 text-light-50" />
+          </Button>
+        </a>
+
+        <!-- Botón de WhatsApp -->
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Escríbenos por WhatsApp"
+        >
+          <Button
+            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
+          >
+            Escríbenos
+            <img
+              src={whatsappIcon}
+              alt="WhatsApp icon"
+              class="w-5 h-5 brightness-0 invert"
+              loading="lazy"
+            />
           </Button>
         </a>
       </li>
@@ -200,21 +224,43 @@
         on:click={() => (isOpen = false)}>Contacto</a
       >
 
-      <a
-        href="https://calendar.app.google/DLechfeCGUXoAQvz6"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Abrir el calendario para agendar una demo de FlowPass"
-      >
-        <Button
-          color="dark"
-          class=" flex justify-center gap-2 w-full rounded-xl mt-3 transition-transform duration-300 hover:scale-[1.02]"
-          aria-label="Agendar una demostración gratuita de FlowPass"
+      <div class="flex items-center gap-2">
+        <a
+          href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir el calendario para agendar una demo de FlowPass"
         >
-          Agendar demo
-          <CalendarDays class="w-4 h-4 text-light-50" />
-        </Button>
-      </a>
+          <Button
+            color="dark"
+            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300"
+          >
+            Agendar demo
+            <CalendarDays class="w-5 h-5 text-light-50" />
+          </Button>
+        </a>
+
+        <!-- Botón de WhatsApp -->
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Escríbenos por WhatsApp"
+        >
+          <Button
+            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
+          >
+            Escríbenos
+            <img
+              src={whatsappIcon}
+              alt="WhatsApp icon"
+              class="w-5 h-5 brightness-0 invert"
+              loading="lazy"
+            />
+          </Button>
+        </a>
+      </div>
+      <!-- Botón de agenda -->
     </div>
   {/if}
 </nav>
