@@ -4,6 +4,7 @@
   import FAQ from "$lib/components/FAQ.svelte";
   import ContactSection from "$lib/components/ContactSection.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import WhatsappBubble from "$components/WhatsappBubble.svelte";
 </script>
 
 <Hero />
@@ -11,3 +12,4 @@
 <FAQ />
 <ContactSection />
 <Footer />
+<WhatsappBubble />

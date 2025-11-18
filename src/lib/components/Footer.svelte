@@ -114,4 +114,5 @@
       “Digitaliza tu academia y deja que todo fluya con FlowPass.”
     </p>
   </div>
+
 </footer>

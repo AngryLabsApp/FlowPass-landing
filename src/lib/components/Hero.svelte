@@ -6,7 +6,7 @@
 
 <section
   id="inicio"
-  class="w-full bg-light-300 pt-24 pb-32"
+  class="w-full bg-light-300 pt-16 pb-32"
   aria-label="FlowPass: plataforma para gestión de academias"
 >
   <div
