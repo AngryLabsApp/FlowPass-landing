@@ -110,7 +110,7 @@
       <li class="flex items-center gap-3">
         <!-- Botón de agenda -->
         <a
-          href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Abrir el calendario para agendar una demo de FlowPass"
@@ -226,7 +226,7 @@
 
       <div class="flex items-center gap-2">
         <a
-          href="https://calendar.app.google/DLechfeCGUXoAQvz6"
+          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Abrir el calendario para agendar una demo de FlowPass"
