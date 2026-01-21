@@ -115,13 +115,13 @@
       </AccordionItem>
 
       <!-- Demo -->
-      <AccordionItem>
+      <!-- <AccordionItem>
         {#snippet header()}🧾 ¿Puedo probar FlowPass antes?{/snippet}
         <p class="text-neutral-600">
           ¡Claro que sí! 🙌 Puedes agendar una <strong>demo gratuita</strong> donde
           te mostramos cómo funciona y cómo podrías usarlo en tu academia.
         </p>
-      </AccordionItem>
+      </AccordionItem> -->
     </Accordion>
 
     <p class="text-center text-neutral-600 mt-10">
