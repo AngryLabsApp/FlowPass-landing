@@ -3,33 +3,29 @@
   import facebookIcon from "$lib/assets/icons/facebook-icon.svg";
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
+  import { siteConfig } from "$lib/config/site";
 
   const year = new Date().getFullYear();
 </script>
 
-<footer class="bg-black text-white mt-20">
+<footer class="bg-black text-white mt-20" aria-labelledby="footer-heading">
+  <h2 id="footer-heading" class="sr-only">Información de FlowPass</h2>
+  
   <div
     class="max-w-6xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left"
   >
-    <!-- Logo y descripción -->
     <div>
       <h3 class="text-2xl font-bold text-brand-400">FlowPass</h3>
       <p class="text-sm text-neutral-400 mt-2 max-w-xs">
-        La forma moderna de gestionar tu academia. Todo en un solo lugar:
-        alumnos, pagos y asistencias 💚
+        <strong>Software para academias y gimnasios</strong> que simplifica la gestión de alumnos, pagos y asistencias. Todo en un solo lugar 💚
       </p>
     </div>
 
-    <!-- Enlaces -->
-    <nav
-      class="flex flex-col sm:flex-row items-center gap-4 text-sm text-neutral-300"
-    >
-      <a href="#features" class="hover:text-brand-400 transition-colors"
+    <nav class="flex flex-col sm:flex-row items-center gap-4 text-sm text-neutral-300" aria-label="Enlaces del footer">
+      <a href="/#features" class="hover:text-brand-400 transition-colors"
         >Características</a
       >
-      <a href="#planes" class="hover:text-brand-400 transition-colors">Planes</a
-      >
-      <a href="#contacto" class="hover:text-brand-400 transition-colors"
+      <a href="/#contacto" class="hover:text-brand-400 transition-colors"
         >Contacto</a
       >
       <a href="/terminos" class="hover:text-brand-400 transition-colors"
@@ -37,82 +33,89 @@
       >
     </nav>
 
-    <!-- Redes sociales -->
     <div class="flex items-center gap-5 text-neutral-400">
-      <!-- TikTok -->
       <a
-        href="https://www.tiktok.com/@flowpass.app?_r=1&_t=ZS-91Ld3dK3yMx"
+        href={siteConfig.social.tiktok}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
-        aria-label="TikTok"
+        aria-label="FlowPass en TikTok (se abre en nueva ventana)"
       >
         <img
           src={tiktokIcon}
-          alt="FlowPass en TikTok"
+          alt=""
           class="w-6 h-6 brightness-0 invert"
           loading="lazy"
+          width="24"
+          height="24"
+          aria-hidden="true"
         />
+        <span class="sr-only">TikTok</span>
       </a>
 
-      <!-- Facebook -->
       <a
-        href="https://www.facebook.com/share/17fy2RKRvB/"
+        href={siteConfig.social.facebook}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
-        aria-label="Facebook"
+        aria-label="FlowPass en Facebook (se abre en nueva ventana)"
       >
         <img
           src={facebookIcon}
-          alt="FlowPass en Facebook"
+          alt=""
           class="w-6 h-6 brightness-0 invert"
           loading="lazy"
+          width="24"
+          height="24"
+          aria-hidden="true"
         />
+        <span class="sr-only">Facebook</span>
       </a>
 
-      <!-- Instagram -->
       <a
-        href="https://www.instagram.com/flowpass.app?igsh=a2NzOGljaTE4eDlj"
+        href={siteConfig.social.instagram}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
-        aria-label="Instagram"
+        aria-label="FlowPass en Instagram (se abre en nueva ventana)"
       >
         <img
           src={instagramIcon}
-          alt="FlowPass en Instagram"
+          alt=""
           class="w-6 h-6 brightness-0 invert"
           loading="lazy"
+          width="24"
+          height="24"
+          aria-hidden="true"
         />
+        <span class="sr-only">Instagram</span>
       </a>
 
-      <!-- WhatsApp -->
       <a
-        href="https://wa.me/51977854515"
+        href={siteConfig.social.whatsapp}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
-        aria-label="WhatsApp"
+        aria-label="Contactar a FlowPass por WhatsApp (se abre en nueva ventana)"
       >
         <img
           src={whatsappIcon}
-          alt="WhatsApp de FlowPass"
+          alt=""
           class="w-6 h-6 brightness-0 invert"
           loading="lazy"
+          width="24"
+          height="24"
+          aria-hidden="true"
         />
+        <span class="sr-only">WhatsApp</span>
       </a>
     </div>
   </div>
 
-  <!-- Línea inferior con slogan -->
-  <div
-    class="border-t border-neutral-800 py-6 text-center text-sm text-neutral-400 space-y-2"
-  >
-    <p>© {year} FlowPass — Todos los derechos reservados 💚</p>
+  <div class="border-t border-neutral-800 py-6 text-center text-sm text-neutral-400 space-y-2">
+    <p>© {year} FlowPass. Todos los derechos reservados. Empresa registrada en Lima, Perú.</p>
     <p class="italic text-neutral-500">
       “Digitaliza tu academia y deja que todo fluya con FlowPass.”
     </p>
   </div>
-
 </footer>

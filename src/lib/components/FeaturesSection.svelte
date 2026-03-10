@@ -38,21 +38,21 @@
 <section
   id="features"
   class="py-24 bg-light-100"
-  aria-label="Funciones principales de FlowPass"
->
+  aria-labelledby="features-heading">
   <div class="mx-auto">
     <div class="px-6 text-center">
       <h2
+        id="features-heading"
         class="font-jakarta text-3xl md:text-4xl font-extrabold text-dark-200 mb-4"
       >
-        Funciones principales
+        Funciones principales de FlowPass
       </h2>
       <p class="text-neutral-600 text-lg max-w-2xl mx-auto mb-12">
-        FlowPass automatiza la gestión de tu academia: controla alumnos, pagos,
-        ingresos y comunicación sin complicaciones.
+        Descubre cómo <strong>FlowPass</strong> puede transformar la gestión diaria de tu academia con estas funcionalidades clave.
       </p>
     </div>
 
+    <!-- En el Splide, mejorar atributos -->
     <Splide
       extensions={{ AutoScroll }}
       options={{
@@ -63,7 +63,7 @@
         pagination: true,
         drag: false,
         autoScroll: {
-          speed: 0.7, // Velocidad del autoscroll (ajusta si quieres más rápido o lento)
+          speed: 0.7,
           pauseOnHover: true,
           pauseOnFocus: false,
         },
@@ -71,29 +71,30 @@
           1024: { perPage: 1 },
         },
       }}
-      aria-label="Carrusel de funciones de FlowPass"
-      class="overflow-hidden"
+      aria-label="Carrusel interactivo con las principales funciones de FlowPass para academias"
+      role="region"
     >
-      {#each features as f}
+      {#each features as f, index}
         <SplideSlide>
-          <Card
-            class="group relative overflow-hidden rounded-3xl border border-light-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+          <article class="group relative overflow-hidden rounded-3xl border border-light-200 bg-white shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-500"
+            aria-labelledby={`feature-${index}-title`}
           >
-            <!-- Imagen superior -->
             <div class="w-full h-48 overflow-hidden rounded-t-3xl">
               <img
                 src={f.img}
-                alt={`Ilustración de ${f.title}`}
+                alt={`Captura de pantalla de ${f.title} en FlowPass, software para academias`}
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 loading="lazy"
+                width="400"
+                height="300"
               />
             </div>
 
-            <!-- Contenido -->
             <div class="p-6 text-left space-y-3">
               <div class="flex items-center gap-2">
                 <div
                   class="h-1.5 w-8 rounded-full bg-brand-500 group-hover:w-10 transition-all duration-300"
+                  aria-hidden="true"
                 ></div>
                 <p
                   class="text-xs font-semibold uppercase tracking-[0.25em] text-brand-600"
@@ -103,6 +104,7 @@
               </div>
 
               <h3
+                id={`feature-${index}-title`}
                 class="font-jakarta text-2xl font-bold text-dark-200 leading-snug group-hover:text-brand-600 transition-colors duration-300"
               >
                 {f.title}
@@ -112,12 +114,7 @@
                 {f.description}
               </p>
             </div>
-
-            <!-- Efecto decorativo sutil -->
-            <div
-              class="absolute inset-0 bg-gradient-to-t from-brand-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"
-            ></div>
-          </Card>
+          </article>
         </SplideSlide>
       {/each}
     </Splide>
