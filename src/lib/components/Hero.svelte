@@ -2,66 +2,79 @@
   import { Button } from "flowbite-svelte";
   import { CalendarDays } from "svelte-heros-v2";
   import Laptop from "./../assets/images/laptop.svg";
+  import { siteConfig } from "$lib/config/site";
 </script>
 
 <section
   id="inicio"
   class="w-full bg-light-300 pt-16 pb-32"
-  aria-label="FlowPass: plataforma para gestión de academias"
+  aria-labelledby="hero-heading"
 >
   <div
     class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
   >
-    <!-- TEXT CONTENT -->
     <div class="space-y-6">
-      <!-- SEO Subheading -->
-      <p class="text-sm text-gray-500 tracking-wide">
+      <!-- Breadcrumb oculto para SEO (solo lectores de pantalla) -->
+      <span class="sr-only">Estás en: Inicio - FlowPass</span>
+      
+      <!-- Subtítulo semántico -->
+      <p class="text-sm text-gray-500 tracking-wide" role="doc-subtitle">
         Software de gestión para academias y centros de entrenamiento
       </p>
 
-      <!-- MAIN H1 (solo uno en toda la landing) -->
-      <h1
-        class="font-jakarta font-extrabold text-4xl md:text-6xl leading-tight"
-      >
-        Gestiona tu academia de forma moderna
-        <span class="text-brand-600">y sin complicarte.</span>
+      <!-- H1 principal - ÚNICO en toda la página -->
+      <h1 id="hero-heading" class="font-jakarta font-extrabold text-4xl md:text-6xl leading-tight">
+        Software para academias
+        <span class="text-brand-600 block">
+          que automatiza alumnos, pagos y asistencias
+        </span>
       </h1>
 
-      <!-- SEO Paragraph -->
-      <p
-        class="text-gray-600 text-lg leading-relaxed max-w-md text-md text-justify"
-      >
-        FlowPass es una plataforma digital diseñada para academias, gimnasios y
-        centros deportivos. Administra alumnos, pagos, asistencias y reportes
-        desde un solo lugar, reduce tareas manuales y mejora la experiencia de
-        tus estudiantes.
+      <!-- Descripción con keyword principal -->
+      <p class="text-gray-600 text-lg leading-relaxed max-w-md">
+        <strong>FlowPass</strong> es la plataforma digital que tu academia necesita. 
+        Administra <strong>alumnos, pagos, asistencias y comunicación</strong> desde 
+        un solo lugar. Olvídate del Excel y enfócate en hacer crecer tu negocio.
       </p>
 
-      <!-- CTA -->
+      <!-- CTA con tracking opcional -->
       <a
         href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
         target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Abrir el calendario para agendar una demo de FlowPass"
+        rel="noopener noreferrer nofollow" 
+        aria-label="Agendar una demo gratuita de FlowPass (se abre en una nueva ventana)"
+        class="inline-block"
+        onclick={() => {
+          window.gtag?.('event', 'cta_click', {
+            event_category: 'engagement',
+            event_label: 'hero_demo_button',
+            value: 1
+          });
+        }}
       >
         <Button
           color="secondary"
           class="flex justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
         >
-          Agendar demo
-          <CalendarDays class="w-6 h-6 text-light-50" />
+          Agendar demo gratis
+          <CalendarDays class="w-6 h-6 text-light-50" aria-hidden="true" />
         </Button>
       </a>
     </div>
 
-    <!-- IMAGE WITH SEO ALT -->
-    <div class="relative flex justify-center md:block">
+    <!-- Imagen con descripción detallada -->
+    <figure class="relative flex justify-center md:block">
       <img
         src={Laptop}
-        alt="Dashboard de FlowPass mostrando gestión de alumnos y pagos"
+        alt="Dashboard de FlowPass mostrando la gestión de alumnos, pagos y asistencias en una interfaz moderna y fácil de usar"
         class="relative w-full max-w-3xl scale-110 md:scale-125"
-        loading="lazy"
+        loading="eager" 
+        width="1200"
+        height="800"
       />
-    </div>
+      <figcaption class="sr-only">
+        Vista previa del software FlowPass con panel de control mostrando alumnos activos, pagos recientes y estadísticas de asistencia.
+      </figcaption>
+    </figure>
   </div>
 </section>

@@ -5,12 +5,12 @@
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { CalendarDays } from "svelte-heros-v2";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
+  import { siteConfig } from "$lib/config/site";
 
   let isOpen = false;
   let scrolled = false;
 
-  const whatsappNumber = "51977854515";
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 
   // Detectar scroll para animar el fondo
   onMount(() => {
@@ -37,17 +37,18 @@
     <a
       href="/"
       class="flex items-center gap-2 group"
-      title="Ir al inicio de FlowPass"
-      aria-label="Inicio de FlowPass"
-    >
+      title="FlowPass - Software para academias, volver al inicio"
+      aria-label="FlowPass inicio">
       <img
         src={logoIcon}
-        alt="Logo de FlowPass, plataforma de gestión para academias"
+        alt="FlowPass: software de gestión para academias"
         class="w-8 h-8 transition-transform duration-300 group-hover:scale-105"
+        width="32"
+        height="32"
       />
       <span
         class="font-jakarta font-bold text-lg text-dark-200 group-hover:text-brand transition-colors"
-      >
+        aria-hidden="true">
         FlowPass
       </span>
     </a>
@@ -59,10 +60,10 @@
       <li>
         <a
           href="/#inicio"
-          title="Inicio - Plataforma FlowPass"
           aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out">Inicio</a
-        >
+          class="hover:text-brand transition duration-200 ease-in-out">
+          Inicio
+        </a>
       </li>
 
       <li>
@@ -129,7 +130,14 @@
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Escríbenos por WhatsApp"
+          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
+          onclick={() => {
+            window.gtag?.('event', 'whatsapp_click', {
+              event_category: 'contact',
+              event_label: 'navbar_button',
+              value: 1
+            });
+          }}
         >
           <Button
             class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
@@ -149,7 +157,7 @@
     <!-- BOTÓN MENÚ MÓVIL -->
     <button
       class="md:hidden text-dark-200 hover:text-brand transition"
-      on:click={() => (isOpen = !isOpen)}
+      onclick={() => (isOpen = !isOpen)}
       aria-expanded={isOpen}
       aria-controls="menu-movil"
       aria-label="Abrir menú de navegación"
@@ -201,27 +209,27 @@
       <a
         href="/#inicio"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Inicio</a
+        onclick={() => (isOpen = false)}>Inicio</a
       >
       <a
         href="/#features"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Funciones</a
+        onclick={() => (isOpen = false)}>Funciones</a
       >
       <a
         href="/#faq"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Preguntas frecuentes</a
+        onclick={() => (isOpen = false)}>Preguntas frecuentes</a
       >
       <a
         href="/terminos#terms"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Términos y condiciones</a
+        onclick={() => (isOpen = false)}>Términos y condiciones</a
       >
       <a
         href="/#contacto"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Contacto</a
+        onclick={() => (isOpen = false)}>Contacto</a
       >
 
       <div class="flex items-center gap-2">
@@ -245,7 +253,7 @@
           href={whatsappLink}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Escríbenos por WhatsApp"
+          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
         >
           <Button
             class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
