@@ -118,7 +118,7 @@
         },
         {
           "@type": "FAQPage", // Extrae el contenido de faqSchema sin el @context
-          "mainEntity": faqMainEntity.mainEntity
+          "mainEntity": faqMainEntity
         }
       ]
     })}

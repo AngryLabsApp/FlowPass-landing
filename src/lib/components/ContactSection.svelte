@@ -2,7 +2,7 @@
   import { ChatBubbleOvalLeftEllipsis, AtSymbol } from "svelte-heros-v2";
   import { siteConfig } from "$lib/config/site";
 
-  const whatsappLink = `https://wa.me/+${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
   const mailtoLink = `mailto:${siteConfig.email}?subject=Consulta%20sobre%20FlowPass%20para%20academias`;
 </script>
 

@@ -10,7 +10,7 @@
   let isOpen = false;
   let scrolled = false;
 
-  const whatsappLink = `https://wa.me/+${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 
   // Detectar scroll para animar el fondo
   onMount(() => {

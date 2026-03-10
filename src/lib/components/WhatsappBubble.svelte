@@ -7,7 +7,7 @@
   export let ariaLabel = "Contactar a FlowPass por WhatsApp para consultar sobre el software de gestión";
   export let className = "";
 
-  const whatsappLink = `https://wa.me/+${phone}?text=${encodeURIComponent(message)}`;
+  const whatsappLink = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 </script>
 
 <a
