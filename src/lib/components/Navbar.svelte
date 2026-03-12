@@ -131,6 +131,13 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
+          onclick={() => {
+            window.gtag?.('event', 'whatsapp_click', {
+              event_category: 'contact',
+              event_label: 'navbar_button',
+              value: 1
+            });
+          }}
         >
           <Button
             class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
@@ -150,7 +157,7 @@
     <!-- BOTÓN MENÚ MÓVIL -->
     <button
       class="md:hidden text-dark-200 hover:text-brand transition"
-      on:click={() => (isOpen = !isOpen)}
+      onclick={() => (isOpen = !isOpen)}
       aria-expanded={isOpen}
       aria-controls="menu-movil"
       aria-label="Abrir menú de navegación"
@@ -202,27 +209,27 @@
       <a
         href="/#inicio"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Inicio</a
+        onclick={() => (isOpen = false)}>Inicio</a
       >
       <a
         href="/#features"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Funciones</a
+        onclick={() => (isOpen = false)}>Funciones</a
       >
       <a
         href="/#faq"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Preguntas frecuentes</a
+        onclick={() => (isOpen = false)}>Preguntas frecuentes</a
       >
       <a
         href="/terminos#terms"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Términos y condiciones</a
+        onclick={() => (isOpen = false)}>Términos y condiciones</a
       >
       <a
         href="/#contacto"
         class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        on:click={() => (isOpen = false)}>Contacto</a
+        onclick={() => (isOpen = false)}>Contacto</a
       >
 
       <div class="flex items-center gap-2">

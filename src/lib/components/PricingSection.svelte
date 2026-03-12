@@ -5,6 +5,7 @@
     whatsappPackages,
     perks,
   } from "$lib/data/pricingData.js";
+  import { siteConfig } from "$lib/config/site";
 
   let selectedCountry = countries[0];
 
@@ -13,6 +14,11 @@
    */
   function selectCountry(country) {
     selectedCountry = country;
+    window.gtag?.('event', 'price_click', {
+      event_category: 'region',
+      event_label: 'country_selection',
+      value: 1
+    });
   }
 
   /**
@@ -23,8 +29,8 @@
     if (price === 0) return `${currency} —`;
     return `${currency} ${price.toLocaleString("es")}`;
   }
-  const whatsappNumber = "51977854515"; // sin + ni espacios
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+
+  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 </script>
 
 <section
@@ -126,6 +132,13 @@
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Contratar plan {plan.name}"
+            on:click={() => {
+              window.gtag?.('event', 'price_click', {
+                event_category: 'engagement',
+                event_label: `plan_${plan.name.toLowerCase()}_button`,
+                value: 1
+              });
+            }}
           >
             Empezar ahora
           </a>
@@ -151,6 +164,16 @@
             class="wa-card"
             class:highlighted={pkg.highlight}
             aria-label="Paquete WhatsApp {pkg.name}"
+            on:click={() => {
+              window.gtag?.('event', 'price_click', {
+                event_category: 'engagement',
+                event_label: `whatsapp_${pkg.name.toLowerCase().replace(/\s+/g, '_')}_button`,
+                package_name: pkg.name,
+                package_price: pkg.prices[selectedCountry.code],
+                country: selectedCountry.code,
+                value: pkg.prices[selectedCountry.code] || 0
+              });
+            }}
           >
             {#if pkg.highlight}
               <div class="badge badge-sm" aria-label="Paquete más popular">
