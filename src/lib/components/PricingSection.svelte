@@ -8,10 +8,17 @@
 
   let selectedCountry = countries[0];
 
+  /**
+   * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
+   */
   function selectCountry(country) {
     selectedCountry = country;
   }
 
+  /**
+   * @param {number} price
+   * @param {string} currency
+   */
   function formatPrice(price, currency) {
     if (price === 0) return `${currency} —`;
     return `${currency} ${price.toLocaleString("es")}`;
