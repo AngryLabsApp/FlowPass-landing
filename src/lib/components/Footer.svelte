@@ -40,6 +40,13 @@
         rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
         aria-label="FlowPass en TikTok (se abre en nueva ventana)"
+        onclick={() => {
+          window.gtag?.('event', 'social_click', {
+            event_category: 'social',
+            event_label: 'tiktok_footer',
+            value: 1
+          });
+        }}
       >
         <img
           src={tiktokIcon}
@@ -59,6 +66,13 @@
         rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
         aria-label="FlowPass en Facebook (se abre en nueva ventana)"
+        onclick={() => {
+          window.gtag?.('event', 'social_click', {
+            event_category: 'social',
+            event_label: 'facebook_footer',
+            value: 1
+          });
+        }}
       >
         <img
           src={facebookIcon}
@@ -78,6 +92,13 @@
         rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
         aria-label="FlowPass en Instagram (se abre en nueva ventana)"
+        onclick={() => {
+          window.gtag?.('event', 'social_click', {
+            event_category: 'social',
+            event_label: 'instagram_footer',
+            value: 1
+          });
+        }}
       >
         <img
           src={instagramIcon}
@@ -97,6 +118,13 @@
         rel="noopener noreferrer nofollow"
         class="hover:text-brand-400 transition-colors"
         aria-label="Contactar a FlowPass por WhatsApp (se abre en nueva ventana)"
+        onclick={() => {
+          window.gtag?.('event', 'social_click', {
+            event_category: 'social',
+            event_label: 'whatsapp_footer',
+            value: 1
+          });
+        }}
       >
         <img
           src={whatsappIcon}

@@ -36,6 +36,13 @@
         href={mailtoLink}
         class="flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-600 text-white font-semibold shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
         aria-label="Enviar un correo electrónico a FlowPass"
+        onclick={() => {
+          window.gtag?.('event', 'email_click', {
+            event_category: 'contact',
+            event_label: 'contact_section',
+            value: 1
+          });
+        }}
       >
         <AtSymbol aria-hidden="true" />
         <span>Envíanos un correo</span>

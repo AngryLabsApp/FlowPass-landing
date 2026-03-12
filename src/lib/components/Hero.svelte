@@ -44,6 +44,13 @@
         rel="noopener noreferrer nofollow" 
         aria-label="Agendar una demo gratuita de FlowPass (se abre en una nueva ventana)"
         class="inline-block"
+        onclick={() => {
+          window.gtag?.('event', 'cta_click', {
+            event_category: 'engagement',
+            event_label: 'hero_demo_button',
+            value: 1
+          });
+        }}
       >
         <Button
           color="secondary"
