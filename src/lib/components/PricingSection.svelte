@@ -1,5 +1,10 @@
 <script>
-  import { countries, plans, whatsappPackages, perks } from '$lib/data/pricingData.js';
+  import {
+    countries,
+    plans,
+    whatsappPackages,
+    perks,
+  } from "$lib/data/pricingData.js";
 
   let selectedCountry = countries[0];
 
@@ -9,12 +14,17 @@
 
   function formatPrice(price, currency) {
     if (price === 0) return `${currency} —`;
-    return `${currency} ${price.toLocaleString('es')}`;
+    return `${currency} ${price.toLocaleString("es")}`;
   }
+  const whatsappNumber = "51977854515"; // sin + ni espacios
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 </script>
 
-<section id="precios" class="pricing-section" aria-label="Planes y precios de FlowPass">
-
+<section
+  id="precios"
+  class="pricing-section"
+  aria-label="Planes y precios de FlowPass"
+>
   <!-- Header -->
   <div class="section-header">
     <p class="section-eyebrow">Planes</p>
@@ -66,15 +76,24 @@
           <div class="plan-header">
             <h3 class="plan-name">{plan.name}</h3>
             <p class="plan-tagline">{plan.tagline}</p>
-            <p class="plan-range">
-              <span class="range-icon" aria-hidden="true">👥</span>
-              {plan.range}
-            </p>
+            <div class="plan-students">
+              <p class="plan-range">
+                <span class="range-icon" aria-hidden="true">🟢</span>
+                {plan.activeStudents}
+              </p>
+              <p class="plan-range plan-range--registered">
+                <span class="range-icon" aria-hidden="true">📋</span>
+                {plan.registeredStudents}
+              </p>
+            </div>
           </div>
 
           <div class="plan-price" aria-label="Precio mensual">
             <span class="price-amount">
-              {formatPrice(plan.prices[selectedCountry.code], selectedCountry.currency)}
+              {formatPrice(
+                plan.prices[selectedCountry.code],
+                selectedCountry.currency,
+              )}
             </span>
             <span class="price-period">/mes</span>
           </div>
@@ -83,7 +102,7 @@
             {#each plan.features as feature}
               <li class="feature-item" class:excluded={!feature.included}>
                 <span class="feature-icon" aria-hidden="true">
-                  {feature.included ? '✓' : '✕'}
+                  {feature.included ? "✓" : "✕"}
                 </span>
                 <span>{feature.label}</span>
               </li>
@@ -91,7 +110,7 @@
           </ul>
 
           <a
-            href="https://wa.me/51999999999"
+            href={whatsappLink}
             class="cta-button"
             class:cta-primary={plan.highlight}
             class:cta-secondary={!plan.highlight}
@@ -111,7 +130,8 @@
     <div class="wa-header">
       <h3 class="wa-title">WhatsApp masivo — cobra sin perseguir a nadie.</h3>
       <p class="wa-subtitle">
-        Envía recordatorios de pago a todos tus alumnos a la vez. Suma un paquete a tu plan y listo.
+        Envía recordatorios de pago a todos tus alumnos a la vez. Suma un
+        paquete a tu plan y listo.
       </p>
     </div>
 
@@ -124,14 +144,19 @@
             aria-label="Paquete WhatsApp {pkg.name}"
           >
             {#if pkg.highlight}
-              <div class="badge badge-sm" aria-label="Paquete más popular">Popular</div>
+              <div class="badge badge-sm" aria-label="Paquete más popular">
+                Popular
+              </div>
             {/if}
             <p class="wa-name">{pkg.name}</p>
             <p class="wa-messages">
-              <strong>{pkg.messages.toLocaleString('es')}</strong> mensajes/mes
+              <strong>{pkg.messages.toLocaleString("es")}</strong> mensajes/mes
             </p>
             <p class="wa-price">
-              {formatPrice(pkg.prices[selectedCountry.code], selectedCountry.currency)}
+              {formatPrice(
+                pkg.prices[selectedCountry.code],
+                selectedCountry.currency,
+              )}
               <span class="price-period">/mes</span>
             </p>
           </article>
@@ -139,9 +164,10 @@
       {/key}
     </div>
 
-    <p class="wa-note">* Multi sede disponible como módulo adicional. Consulta condiciones.</p>
+    <p class="wa-note">
+      * Multi sede disponible como módulo adicional. Consulta condiciones.
+    </p>
   </div>
-
 </section>
 
 <style>
@@ -203,7 +229,10 @@
     font-weight: 600;
     color: #374151;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s,
+      box-shadow 0.2s;
   }
 
   .country-pill:hover {
@@ -265,7 +294,9 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    transition: box-shadow 0.25s, transform 0.25s;
+    transition:
+      box-shadow 0.25s,
+      transform 0.25s;
   }
 
   .plan-card:hover {
@@ -275,7 +306,9 @@
 
   .plan-card.highlighted {
     border-color: #2dda7f;
-    box-shadow: 0 0 0 3px rgba(45, 218, 127, 0.18), 0 8px 32px rgba(45, 218, 127, 0.12);
+    box-shadow:
+      0 0 0 3px rgba(45, 218, 127, 0.18),
+      0 8px 32px rgba(45, 218, 127, 0.12);
   }
 
   /* ─── Badge ──────────────────────────────────────────────── */
@@ -323,6 +356,13 @@
     line-height: 1.4;
   }
 
+  .plan-students {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin-top: 0.25rem;
+  }
+
   .plan-range {
     display: flex;
     align-items: center;
@@ -330,11 +370,17 @@
     font-size: 0.8125rem;
     font-weight: 600;
     color: #1ab060;
-    margin: 0.15rem 0 0;
+    margin: 0;
+  }
+
+  .plan-range--registered {
+    font-size: 0.72rem;
+    color: #6b7280;
+    font-weight: 500;
   }
 
   .range-icon {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
   }
 
   /* ─── Price ──────────────────────────────────────────────── */
@@ -359,8 +405,14 @@
   }
 
   @keyframes fadePrice {
-    from { opacity: 0; transform: translateY(4px); }
-    to   { opacity: 1; transform: translateY(0);   }
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* ─── Features ───────────────────────────────────────────── */
@@ -411,7 +463,10 @@
     font-size: 0.9rem;
     font-weight: 700;
     text-decoration: none;
-    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    transition:
+      background 0.2s,
+      box-shadow 0.2s,
+      transform 0.15s;
   }
 
   .cta-button:hover {
@@ -480,7 +535,9 @@
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition:
+      box-shadow 0.2s,
+      transform 0.2s;
   }
 
   .wa-card:hover {
