@@ -104,7 +104,9 @@
                 <span class="feature-icon" aria-hidden="true">
                   {feature.included ? "✓" : "✕"}
                 </span>
-                <span>{feature.label}</span>
+                <span>
+                  {feature.label}{#if feature.included && feature.extraCost}<span class="extra-cost"> (+{selectedCountry.currency}{feature.extraCost[selectedCountry.code]}/sede)</span>{/if}
+                </span>
               </li>
             {/each}
           </ul>
