@@ -17,7 +17,7 @@
     <div>
       <h3 class="text-2xl font-bold text-brand-400">FlowPass</h3>
       <p class="text-sm text-neutral-400 mt-2 max-w-xs">
-        <strong>Software para academias y gimnasios</strong> que simplifica la gestión de alumnos, pagos y asistencias. Todo en un solo lugar 💚
+        <strong>Software para academias</strong> que simplifica la gestión de alumnos, pagos y asistencias. Todo en un solo lugar 💚
       </p>
     </div>
 

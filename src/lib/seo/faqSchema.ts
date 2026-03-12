@@ -4,7 +4,7 @@ export const faqMainEntity = [
     "name": "¿Qué es FlowPass?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "FlowPass es un software de gestión diseñado específicamente para academias, gimnasios y centros deportivos. Permite administrar alumnos, controlar pagos, registrar asistencias y enviar recordatorios automáticos por WhatsApp, todo desde un solo lugar y sin complicaciones."
+      "text": "FlowPass es un software de gestión diseñado específicamente para academias y centros deportivos. Permite administrar alumnos, controlar pagos, registrar asistencias y enviar recordatorios automáticos por WhatsApp, todo desde un solo lugar y sin complicaciones."
     }
   },
   {
@@ -28,7 +28,7 @@ export const faqMainEntity = [
     "name": "¿Qué tipo de academias pueden usar FlowPass?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "FlowPass es ideal para todo tipo de academias y centros educativos no formales: gimnasios, estudios de yoga, academias de danza, karate, fútbol, natación, música, idiomas, y cualquier negocio que trabaje con alumnos y cobros mensuales."
+      "text": "FlowPass es ideal para todo tipo de academias y centros educativos no formales: escuelas, estudios de yoga, academias de danza, karate, fútbol, natación, música, idiomas, y cualquier negocio que trabaje con alumnos y cobros mensuales."
     }
   },
   {

@@ -55,7 +55,7 @@
         {#snippet header()}🧍‍♀️ ¿Qué tipo de academias pueden usar FlowPass?{/snippet}
         <p class="text-neutral-600">
           Funciona para <strong>todo tipo de academias</strong>: danza, karate,
-          fútbol, gimnasio, yoga, básquet, natación o cualquier otra que trabaje
+          fútbol, yoga, básquet, natación o cualquier otra que trabaje
           con alumnos y cobros mensuales.
         </p>
       </AccordionItem>

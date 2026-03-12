@@ -24,7 +24,7 @@
 
       <!-- H1 principal - ÚNICO en toda la página -->
       <h1 id="hero-heading" class="font-jakarta font-extrabold text-4xl md:text-6xl leading-tight">
-        Software para academias y gimnasios
+        Software para academias
         <span class="text-brand-600 block">
           que automatiza alumnos, pagos y asistencias
         </span>

@@ -13,16 +13,16 @@ export interface SEOPage {
 }
 
 export const defaultSEO: SEOPage = {
-  title: 'FlowPass | Software para academias y gimnasios',
+  title: 'FlowPass | Software para academias',
   description: 'FlowPass es el software que automatiza la gestión de academias: control de alumnos, pagos, asistencias y comunicación por WhatsApp. Simplifica tu administración.',
-  keywords: 'software academias, sistema academias, software gimnasios, gestion alumnos, pagos academias, app academias, gestión escolar',
+  keywords: 'software academias, sistema academias, software qr, gestion alumnos, pagos academias, app academias, gestión escolar',
   image: `${siteConfig.url}/og-image.png`,
   ogType: 'website'
 };
 
 // SEO específico para la página de inicio
 export const homeSEO: SEOPage = {
-  title: 'FlowPass | Software para academias y gimnasios',
+  title: 'FlowPass | Software para academias',
   description: 'Gestiona tu academia sin complicaciones: alumnos, pagos, asistencias y comunicación automática por WhatsApp. Todo en un solo lugar.',
   keywords: defaultSEO.keywords,
   image: defaultSEO.image,

@@ -41,7 +41,7 @@
       aria-label="FlowPass inicio">
       <img
         src={logoIcon}
-        alt="FlowPass: software de gestión para academias y gimnasios"
+        alt="FlowPass: software de gestión para academias"
         class="w-8 h-8 transition-transform duration-300 group-hover:scale-105"
         width="32"
         height="32"
