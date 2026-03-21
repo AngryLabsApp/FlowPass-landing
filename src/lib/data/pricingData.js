@@ -44,7 +44,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Multi sede", included: false },
     ],
-    prices: { PE: 119, MX: 600 },
+    prices: { PE: 140, MX: 600 },
   },
   {
     id: "lite",
@@ -61,7 +61,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Multi sede", included: false },
     ],
-    prices: { PE: 199, MX: 1000 },
+    prices: { PE: 200, MX: 1000 },
   },
   {
     id: "full",
@@ -78,7 +78,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: true },
       { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150 } },
     ],
-    prices: { PE: 299, MX: 1600 },
+    prices: { PE: 310, MX: 1600 },
   },
   {
     id: "ultra",
@@ -95,7 +95,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: true },
       { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150 } },
     ],
-    prices: { PE: 399, MX: 2300 },
+    prices: { PE: 440, MX: 2300 },
   },
 ];
 
