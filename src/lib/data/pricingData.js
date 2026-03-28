@@ -44,7 +44,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Multi sede", included: false },
     ],
-    prices: { PE: 140, MX: 600 },
+    prices: { PE: 150, MX: 600 },
   },
   {
     id: "lite",
