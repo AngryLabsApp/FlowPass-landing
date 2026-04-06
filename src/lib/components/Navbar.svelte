@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
-  import { CalendarDays } from "svelte-heros-v2";
+  import { CalendarDays, ArrowRightOnRectangle } from "svelte-heros-v2";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
 
@@ -151,6 +151,21 @@
             />
           </Button>
         </a>
+
+        <!-- Divisor visual -->
+        <span class="w-px h-5 bg-neutral-200" aria-hidden="true"></span>
+
+        <!-- Ingresar: link discreto al final -->
+        <a
+          href="https://app.flow-pass.com/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ingresar a la plataforma FlowPass"
+          class="flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-brand transition-colors duration-200 group"
+        >
+          Ingresar
+          <ArrowRightOnRectangle class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </a>
       </li>
     </ul>
 
@@ -232,7 +247,22 @@
         onclick={() => (isOpen = false)}>Contacto</a
       >
 
-      <div class="flex items-center gap-2">
+      <!-- Ingresar (móvil) - separador + link de acceso rápido -->
+      <div class="pt-1 border-t border-neutral-100">
+        <a
+          href="https://app.flow-pass.com/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ingresar a la plataforma FlowPass"
+          onclick={() => (isOpen = false)}
+          class="flex items-center justify-between w-full px-1 py-2 text-sm font-medium text-neutral-500 hover:text-brand transition-colors duration-200 group"
+        >
+          <span>¿Ya tienes cuenta? <span class="text-brand font-semibold">Ingresar</span></span>
+          <ArrowRightOnRectangle class="w-4 h-4 text-brand transition-transform duration-200 group-hover:translate-x-0.5" />
+        </a>
+      </div>
+
+      <div class="flex items-center gap-2 pt-1">
         <a
           href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"

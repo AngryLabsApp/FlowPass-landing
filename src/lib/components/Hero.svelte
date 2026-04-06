@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
-  import { CalendarDays } from "svelte-heros-v2";
+  import { CalendarDays, ArrowRightOnRectangle } from "svelte-heros-v2";
   import Laptop from "./../assets/images/laptop.svg";
   import { siteConfig } from "$lib/config/site";
 </script>
@@ -37,29 +37,42 @@
         un solo lugar. Olvídate del Excel y enfócate en hacer crecer tu negocio.
       </p>
 
-      <!-- CTA con tracking opcional -->
-      <a
-        href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-        target="_blank"
-        rel="noopener noreferrer nofollow" 
-        aria-label="Agendar una demo gratuita de FlowPass (se abre en una nueva ventana)"
-        class="inline-block"
-        onclick={() => {
-          window.gtag?.('event', 'cta_click', {
-            event_category: 'engagement',
-            event_label: 'hero_demo_button',
-            value: 1
-          });
-        }}
-      >
-        <Button
-          color="secondary"
-          class="flex justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+      <!-- CTAs -->
+      <div class="flex flex-col items-start gap-3">
+        <a
+          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          aria-label="Agendar una demo gratuita de FlowPass (se abre en una nueva ventana)"
+          onclick={() => {
+            window.gtag?.('event', 'cta_click', {
+              event_category: 'engagement',
+              event_label: 'hero_demo_button',
+              value: 1
+            });
+          }}
         >
-          Agendar demo gratis
-          <CalendarDays class="w-6 h-6 text-light-50" aria-hidden="true" />
-        </Button>
-      </a>
+          <Button
+            color="secondary"
+            class="flex justify-center gap-2 px-6 py-3 text-lg font-semibold rounded-xl hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+          >
+            Agendar demo gratis
+            <CalendarDays class="w-6 h-6 text-light-50" aria-hidden="true" />
+          </Button>
+        </a>
+
+        <a
+          href="https://app.flow-pass.com/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Ingresar a la plataforma FlowPass"
+          class="flex items-center gap-1.5 text-base text-neutral-400 hover:text-neutral-600 transition-colors duration-200 group"
+        >
+          ¿Ya tienes cuenta?
+          <span class="font-medium">Ingresar</span>
+          <ArrowRightOnRectangle class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+        </a>
+      </div>
     </div>
 
     <!-- Imagen con descripción detallada -->
