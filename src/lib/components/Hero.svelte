@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Button } from "flowbite-svelte";
   import { CalendarDays } from "svelte-heros-v2";
   import { onMount } from "svelte";
   import Laptop from "./../assets/images/laptop.png";
@@ -114,12 +113,12 @@
             });
           }}
         >
-          <Button
+          <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-brand text-dark-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(1,245,158,0.45)] transition-all duration-300"
           >
             Agendar demo
             <CalendarDays class="w-5 h-5" aria-hidden="true" />
-          </Button>
+          </button>
         </a>
 
         <a
@@ -136,12 +135,12 @@
             });
           }}
         >
-          <Button
+          <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-transparent text-white border border-white/20 hover:border-brand/40 hover:bg-white/[0.04] transition-all duration-300"
           >
             Escríbenos
             <img src={whatsappIcon} alt="" class="w-5 h-5 brightness-0 invert" loading="lazy" />
-          </Button>
+          </button>
         </a>
       </div>
 

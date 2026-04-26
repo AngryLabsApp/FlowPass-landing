@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Splide, SplideSlide } from "@splidejs/svelte-splide";
+  import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
 
   const reelUrls = [
     "https://www.instagram.com/p/DVl81gqkfOn/",
@@ -23,10 +24,15 @@
     gap: "1.25rem",
     pagination: true,
     arrows: true,
-    speed: 700,
+    drag: "free" as const,
     breakpoints: {
       1024: { perPage: 2 },
       640: { perPage: 1 },
+    },
+    autoScroll: {
+      speed: 0.8,
+      pauseOnHover: true,
+      pauseOnFocus: true,
     },
   };
 
@@ -113,7 +119,7 @@
 
     <div class="mt-12 reel-carousel">
       {#if mounted}
-        <Splide options={splideOptions} aria-label="Testimonios en video">
+        <Splide options={splideOptions} extensions={{ AutoScroll }} aria-label="Testimonios en video">
           {#each reelUrls as url (url)}
             <SplideSlide>
               <div
@@ -191,24 +197,40 @@
     transform: scale(1.2);
   }
   .reel-carousel :global(.splide__arrow) {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
-    height: 2.5rem;
-    width: 2.5rem;
-    opacity: 1;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    height: 2rem;
+    width: 2rem;
+    opacity: 0.5;
+    transition: opacity 0.2s, background 0.2s, border-color 0.2s;
   }
   .reel-carousel :global(.splide__arrow svg) {
-    fill: #fff;
-    height: 1rem;
-    width: 1rem;
+    fill: rgba(255, 255, 255, 0.7);
+    height: 0.8rem;
+    width: 0.8rem;
+  }
+  .reel-carousel :global(.splide__arrow--prev svg) {
+    transform: scaleX(-1);
   }
   .reel-carousel :global(.splide__arrow:hover:not(:disabled)) {
-    background: rgba(1, 245, 158, 0.15);
-    border-color: rgba(1, 245, 158, 0.4);
+    opacity: 1;
+    background: rgba(1, 245, 158, 0.1);
+    border-color: rgba(1, 245, 158, 0.3);
   }
   .reel-carousel :global(.splide__arrow:disabled) {
-    opacity: 0.3;
+    opacity: 0.15;
+  }
+
+  @media (max-width: 640px) {
+    .reel-carousel :global(.splide__arrow) {
+      height: 1.75rem;
+      width: 1.75rem;
+    }
+    .reel-carousel :global(.splide__arrow svg) {
+      height: 0.7rem;
+      width: 0.7rem;
+    }
   }
 
   /* Skeleton loader */
