@@ -204,7 +204,7 @@
 <style>
   /* ─── Layout ─────────────────────────────────────────────── */
   .pricing-section {
-    background: #09090f;
+    
     padding: 3rem 1.25rem;
     color: #fff;
   }

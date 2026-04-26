@@ -70,8 +70,8 @@
 
 <style>
   .site-footer {
-    background: #09090f;
-    border-top: 0.5px solid rgba(255,255,255,0.06);
+    background: #000;
+    border-top: 0.5px solid rgba(255,255,255,0.08);
     color: rgba(255,255,255,0.4);
   }
 

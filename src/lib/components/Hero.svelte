@@ -44,10 +44,6 @@
   <!-- Ambient glow (only here) -->
   <div class="hero-glow pointer-events-none absolute inset-0"></div>
 
-  <!-- Subtle grid -->
-  <div class="pointer-events-none absolute inset-0 opacity-[0.04]"
-    style="background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px); background-size: 48px 48px;">
-  </div>
 
   <div
     class="relative max-w-7xl mx-auto px-5 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 items-center"

@@ -113,7 +113,7 @@
 
 <style>
   .features-section {
-    background: #09090f;
+    
     padding: 3rem 1.25rem;
   }
   @media (min-width: 768px) {
