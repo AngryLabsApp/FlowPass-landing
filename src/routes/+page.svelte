@@ -1,6 +1,7 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
   import Hero from "$lib/components/Hero.svelte";
+  import Testimonials from "$lib/components/Testimonials.svelte";
   import FeaturesSection from "$lib/components/FeaturesSection.svelte";
   import PricingSection from "$lib/components/PricingSection.svelte";
   import FAQ from "$lib/components/FAQ.svelte";
@@ -129,9 +130,15 @@
 <!-- Añadimos el Navbar que faltaba en tu layout original -->
 <Navbar />
 <Hero />
+<hr class="section-divider" />
 <FeaturesSection />
+<hr class="section-divider" />
+<Testimonials />
+<hr class="section-divider" />
 <PricingSection />
+<hr class="section-divider" />
 <FAQ />
+<hr class="section-divider" />
 <ContactSection />
 <Footer />
 <WhatsappBubble />

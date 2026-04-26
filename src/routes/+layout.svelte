@@ -18,6 +18,6 @@
 <GoogleAnalytics />
 
 <!-- Renderiza el contenido de la página -->
-<main class="pt-20"> 
+<main class="min-h-screen text-white">
   {@render children()}
 </main>

@@ -1,18 +1,12 @@
 <script lang="ts">
-  import { Button } from "flowbite-svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
-  import { CalendarDays, ArrowRightOnRectangle } from "svelte-heros-v2";
-  import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
-  import { siteConfig } from "$lib/config/site";
+  import { ArrowRightOnRectangle } from "svelte-heros-v2";
 
   let isOpen = false;
   let scrolled = false;
 
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
-
-  // Detectar scroll para animar el fondo
   onMount(() => {
     const handleScroll = () => {
       scrolled = window.scrollY > 10;
@@ -22,18 +16,16 @@
   });
 </script>
 
-<!-- NAVIGATION BAR -->
+<!-- FLOATING GLASS NAVBAR -->
 <nav
   aria-label="Menú principal de FlowPass"
-  class="fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-in-out"
-  class:bg-white={scrolled}
-  class:shadow-md={scrolled}
-  class:backdrop-blur-md={!scrolled}
+  class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(95%,1200px)] transition-all duration-500 ease-in-out"
 >
   <div
-    class="max-w-7xl mx-auto flex justify-between items-center px-6 py-4 transition-all duration-500"
+    class="glass-nav flex justify-between items-center px-5 py-2 rounded-2xl"
+    class:glass-scrolled={scrolled}
   >
-    <!-- LOGO (marca con alt y enlace semántico) -->
+    <!-- LOGO -->
     <a
       href="/"
       class="flex items-center gap-2 group"
@@ -42,143 +34,85 @@
       <img
         src={logoIcon}
         alt="FlowPass: software de gestión para academias"
-        class="w-8 h-8 transition-transform duration-300 group-hover:scale-105"
+        class="w-32 h-10 transition-transform duration-300 group-hover:scale-105"
         width="32"
         height="32"
       />
-      <span
-        class="font-jakarta font-bold text-lg text-dark-200 group-hover:text-brand transition-colors"
-        aria-hidden="true">
-        FlowPass
-      </span>
     </a>
 
-    <!-- MENÚ DESKTOP SEMÁNTICO -->
+    <!-- DESKTOP MENU -->
     <ul
-      class="hidden md:flex items-center gap-8 text-neutral-700 font-medium transition-all duration-300 list-none"
+      class="hidden md:flex items-center gap-6 text-neutral-400 font-medium text-sm list-none"
     >
       <li>
         <a
-          href="/#inicio"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out">
-          Inicio
-        </a>
-      </li>
-
-      <li>
-        <a
           href="/#features"
-          title="Explora las funciones principales de FlowPass"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
+          class="hover:text-white transition duration-200 ease-in-out"
           >Funciones</a
         >
       </li>
 
       <li>
         <a
-          href="/#faq"
-          title="Preguntas frecuentes sobre FlowPass"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
-          >Preguntas frecuentes</a
+          href="/#precios"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >Precios</a
         >
       </li>
 
       <li>
         <a
-          href="/terminos#terms"
-          title="Consulta nuestros términos y condiciones"
-          aria-current={$page.url.pathname.startsWith("/terminos")
-            ? "page"
-            : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
-          >Términos y condiciones</a
+          href="/#faq"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >FAQ</a
         >
       </li>
 
       <li>
         <a
           href="/#contacto"
-          title="Contáctanos para más información"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
+          class="hover:text-white transition duration-200 ease-in-out"
           >Contacto</a
         >
       </li>
 
-      <li class="flex items-center gap-3">
-        <!-- Botón de agenda -->
+      <li class="flex items-center gap-3 ml-2">
+        <span class="w-px h-4 bg-white/15" aria-hidden="true"></span>
+
+        <!-- Demo ghost -->
         <a
           href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir el calendario para agendar una demo de FlowPass"
+          aria-label="Agendar una demo de FlowPass"
+          class="text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
         >
-          <Button
-            color="dark"
-            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300"
-          >
-            Agendar demo
-            <CalendarDays class="w-5 h-5 text-light-50" />
-          </Button>
+          Agendar demo
         </a>
 
-        <!-- Botón de WhatsApp -->
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
-          onclick={() => {
-            window.gtag?.('event', 'whatsapp_click', {
-              event_category: 'contact',
-              event_label: 'navbar_button',
-              value: 1
-            });
-          }}
-        >
-          <Button
-            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
-          >
-            Escríbenos
-            <img
-              src={whatsappIcon}
-              alt="WhatsApp icon"
-              class="w-5 h-5 brightness-0 invert"
-              loading="lazy"
-            />
-          </Button>
-        </a>
-
-        <!-- Divisor visual -->
-        <span class="w-px h-5 bg-neutral-200" aria-hidden="true"></span>
-
-        <!-- Ingresar: link discreto al final -->
+        <!-- Ingresar — CTA notorio -->
         <a
           href="https://app.flow-pass.com/login"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
-          class="flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-brand transition-colors duration-200 group"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand text-[#09090f] hover:shadow-[0_0_22px_rgba(1,245,158,0.45)] hover:-translate-y-[2px] transition-all duration-300"
         >
           Ingresar
-          <ArrowRightOnRectangle class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
       </li>
     </ul>
 
-    <!-- BOTÓN MENÚ MÓVIL -->
+    <!-- MOBILE TOGGLE -->
     <button
-      class="md:hidden text-dark-200 hover:text-brand transition"
+      class="md:hidden text-white hover:text-brand transition"
       onclick={() => (isOpen = !isOpen)}
       aria-expanded={isOpen}
       aria-controls="menu-movil"
       aria-label="Abrir menú de navegación"
     >
       {#if isOpen}
-        <!-- Close icon -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-6 h-6"
@@ -194,7 +128,6 @@
           />
         </svg>
       {:else}
-        <!-- Menu icon -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="w-6 h-6"
@@ -213,97 +146,84 @@
     </button>
   </div>
 
-  <!-- MENÚ MÓVIL (ARIA + ANIMACIÓN) -->
+  <!-- MOBILE MENU -->
   {#if isOpen}
     <div
       id="menu-movil"
       role="menu"
       aria-label="Menú móvil FlowPass"
-      class="md:hidden bg-white border-t border-light-200 px-6 py-4 space-y-3 animate-slideDown"
+      class="md:hidden glass-nav mt-2 px-6 py-5 space-y-4 rounded-2xl animate-slideDown"
     >
       <a
-        href="/#inicio"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Inicio</a
-      >
-      <a
         href="/#features"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Funciones</a
       >
       <a
-        href="/#faq"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Preguntas frecuentes</a
+        href="/#precios"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>Precios</a
       >
       <a
-        href="/terminos#terms"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Términos y condiciones</a
+        href="/#faq"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>FAQ</a
       >
       <a
         href="/#contacto"
-        class="block text-neutral-700 hover:text-brand transition-colors duration-200"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Contacto</a
       >
 
-      <!-- Ingresar (móvil) - separador + link de acceso rápido -->
-      <div class="pt-1 border-t border-neutral-100">
+      <div class="pt-2 border-t border-white/10 flex flex-col gap-2">
+        <a
+          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Agendar una demo de FlowPass"
+          onclick={() => (isOpen = false)}
+          class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-neutral-300 border border-white/15 hover:border-white/30 hover:text-white transition-all duration-200"
+        >
+          Agendar demo
+        </a>
+
         <a
           href="https://app.flow-pass.com/login"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
           onclick={() => (isOpen = false)}
-          class="flex items-center justify-between w-full px-1 py-2 text-sm font-medium text-neutral-500 hover:text-brand transition-colors duration-200 group"
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand text-[#09090f] transition-all duration-200"
         >
-          <span>¿Ya tienes cuenta? <span class="text-brand font-semibold">Ingresar</span></span>
-          <ArrowRightOnRectangle class="w-4 h-4 text-brand transition-transform duration-200 group-hover:translate-x-0.5" />
+          Ingresar a la plataforma
+          <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
       </div>
-
-      <div class="flex items-center gap-2 pt-1">
-        <a
-          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir el calendario para agendar una demo de FlowPass"
-        >
-          <Button
-            color="dark"
-            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300"
-          >
-            Agendar demo
-            <CalendarDays class="w-5 h-5 text-light-50" />
-          </Button>
-        </a>
-
-        <!-- Botón de WhatsApp -->
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
-        >
-          <Button
-            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
-          >
-            Escríbenos
-            <img
-              src={whatsappIcon}
-              alt="WhatsApp icon"
-              class="w-5 h-5 brightness-0 invert"
-              loading="lazy"
-            />
-          </Button>
-        </a>
-      </div>
-      <!-- Botón de agenda -->
     </div>
   {/if}
 </nav>
 
 <style>
+  .glass-nav {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-scrolled {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(28px) saturate(200%);
+    -webkit-backdrop-filter: blur(28px) saturate(200%);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
   @keyframes slideDown {
     0% {
       opacity: 0;
