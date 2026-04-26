@@ -40,8 +40,7 @@
     }
   }
 
-  onMount(() => {
-    mounted = true;
+  function loadInstagram() {
     const existing = document.querySelector<HTMLScriptElement>(
       'script[src="https://www.instagram.com/embed.js"]'
     );
@@ -49,11 +48,23 @@
       const s = document.createElement("script");
       s.src = "https://www.instagram.com/embed.js";
       s.async = true;
-      s.onload = processEmbeds;
+      s.onload = () => {
+        processEmbeds();
+        // reintento por si Splide aún no terminó de renderizar
+        setTimeout(processEmbeds, 800);
+        setTimeout(processEmbeds, 2000);
+      };
       document.body.appendChild(s);
     } else {
       processEmbeds();
+      setTimeout(processEmbeds, 800);
     }
+  }
+
+  onMount(() => {
+    mounted = true;
+    // espera un tick para que Splide renderice los slides antes de procesar embeds
+    setTimeout(loadInstagram, 100);
   });
 </script>
 
@@ -109,6 +120,7 @@
                 class="reel-frame mx-auto rounded-2xl overflow-hidden border border-white/10 bg-white/[0.03] backdrop-blur-md p-1.5"
               >
                 <div class="reel-clip">
+                  <div class="reel-skeleton" aria-hidden="true"></div>
                   <blockquote
                     class="instagram-media"
                     data-instgrm-permalink={url}
@@ -120,6 +132,15 @@
             </SplideSlide>
           {/each}
         </Splide>
+      {:else}
+        <!-- Skeleton mientras monta -->
+        <div class="skeleton-row">
+          {#each [0,1,2] as _}
+            <div class="skeleton-card">
+              <div class="skeleton-shimmer"></div>
+            </div>
+          {/each}
+        </div>
       {/if}
     </div>
   </div>
@@ -188,5 +209,46 @@
   }
   .reel-carousel :global(.splide__arrow:disabled) {
     opacity: 0.3;
+  }
+
+  /* Skeleton loader */
+  .skeleton-row {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+  }
+  .skeleton-card {
+    width: 340px;
+    aspect-ratio: 4 / 5;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .skeleton-shimmer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255,255,255,0.04) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* Skeleton dentro del reel mientras Instagram carga */
+  .reel-skeleton {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.03);
+    z-index: 0;
   }
 </style>

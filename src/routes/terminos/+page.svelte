@@ -207,7 +207,6 @@
 
 <style>
   .terms-page {
-    background: #09090f;
     color: #fff;
     padding: 6rem 1.25rem 3rem;
     min-height: 100vh;
