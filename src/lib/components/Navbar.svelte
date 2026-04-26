@@ -1,16 +1,11 @@
 <script lang="ts">
-  import { Button } from "flowbite-svelte";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
-  import { CalendarDays, ArrowRightOnRectangle } from "svelte-heros-v2";
-  import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
-  import { siteConfig } from "$lib/config/site";
+  import { ArrowRightOnRectangle } from "svelte-heros-v2";
 
   let isOpen = false;
   let scrolled = false;
-
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
 
   onMount(() => {
     const handleScroll = () => {
@@ -27,7 +22,7 @@
   class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(95%,1200px)] transition-all duration-500 ease-in-out"
 >
   <div
-    class="glass-nav flex justify-between items-center px-5 py-3 rounded-2xl"
+    class="glass-nav flex justify-between items-center px-5 py-2 rounded-2xl"
     class:glass-scrolled={scrolled}
   >
     <!-- LOGO -->
@@ -39,7 +34,7 @@
       <img
         src={logoIcon}
         alt="FlowPass: software de gestión para academias"
-        class="w-40 h-16 transition-transform duration-300 group-hover:scale-105"
+        class="w-32 h-10 transition-transform duration-300 group-hover:scale-105"
         width="32"
         height="32"
       />
@@ -47,113 +42,64 @@
 
     <!-- DESKTOP MENU -->
     <ul
-      class="hidden md:flex items-center gap-7 text-neutral-200 font-medium text-sm transition-all duration-300 list-none"
+      class="hidden md:flex items-center gap-6 text-neutral-400 font-medium text-sm list-none"
     >
       <li>
         <a
-          href="/#inicio"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out">
-          Inicio
-        </a>
-      </li>
-
-      <li>
-        <a
           href="/#features"
-          title="Explora las funciones principales de FlowPass"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
+          class="hover:text-white transition duration-200 ease-in-out"
           >Funciones</a
         >
       </li>
 
       <li>
         <a
-          href="/#faq"
-          title="Preguntas frecuentes sobre FlowPass"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
-          >Preguntas frecuentes</a
+          href="/#precios"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >Precios</a
         >
       </li>
 
       <li>
         <a
-          href="/terminos#terms"
-          title="Consulta nuestros términos y condiciones"
-          aria-current={$page.url.pathname.startsWith("/terminos")
-            ? "page"
-            : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
-          >Términos</a
+          href="/#faq"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >FAQ</a
         >
       </li>
 
       <li>
         <a
           href="/#contacto"
-          title="Contáctanos para más información"
-          aria-current={$page.url.pathname === "/" ? "page" : undefined}
-          class="hover:text-brand transition duration-200 ease-in-out"
+          class="hover:text-white transition duration-200 ease-in-out"
           >Contacto</a
         >
       </li>
 
-      <li class="flex items-center gap-3">
-        <!-- Demo button -->
+      <li class="flex items-center gap-3 ml-2">
+        <span class="w-px h-4 bg-white/15" aria-hidden="true"></span>
+
+        <!-- Demo ghost -->
         <a
           href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir el calendario para agendar una demo de FlowPass"
+          aria-label="Agendar una demo de FlowPass"
+          class="text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
         >
-          <Button
-            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-4 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 backdrop-blur-md transition-all duration-300 hover:-translate-y-[2px]"
-          >
-            Agendar demo
-            <CalendarDays class="w-4 h-4 text-white" />
-          </Button>
+          Agendar demo
         </a>
 
-        <!-- WhatsApp button -->
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
-          onclick={() => {
-            window.gtag?.('event', 'whatsapp_click', {
-              event_category: 'contact',
-              event_label: 'navbar_button',
-              value: 1
-            });
-          }}
-        >
-          <Button
-            class="flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-4 py-2 shadow-sm hover:shadow-[0_0_20px_rgba(37,211,102,0.5)] hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
-          >
-            Escríbenos
-            <img
-              src={whatsappIcon}
-              alt="WhatsApp icon"
-              class="w-4 h-4 brightness-0 invert"
-              loading="lazy"
-            />
-          </Button>
-        </a>
-
-        <span class="w-px h-5 bg-white/20" aria-hidden="true"></span>
-
+        <!-- Ingresar — CTA notorio -->
         <a
           href="https://app.flow-pass.com/login"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
-          class="flex items-center gap-1.5 text-sm font-medium text-neutral-300 hover:text-brand transition-colors duration-200 group"
+          class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand text-[#09090f] hover:shadow-[0_0_22px_rgba(1,245,158,0.45)] hover:-translate-y-[2px] transition-all duration-300"
         >
           Ingresar
-          <ArrowRightOnRectangle class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+          <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
       </li>
     </ul>
@@ -206,80 +152,51 @@
       id="menu-movil"
       role="menu"
       aria-label="Menú móvil FlowPass"
-      class="md:hidden glass-nav mt-2 px-6 py-4 space-y-3 rounded-2xl animate-slideDown"
+      class="md:hidden glass-nav mt-2 px-6 py-5 space-y-4 rounded-2xl animate-slideDown"
     >
       <a
-        href="/#inicio"
-        class="block text-neutral-200 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Inicio</a
-      >
-      <a
         href="/#features"
-        class="block text-neutral-200 hover:text-brand transition-colors duration-200"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Funciones</a
       >
       <a
-        href="/#faq"
-        class="block text-neutral-200 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Preguntas frecuentes</a
+        href="/#precios"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>Precios</a
       >
       <a
-        href="/terminos#terms"
-        class="block text-neutral-200 hover:text-brand transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Términos y condiciones</a
+        href="/#faq"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>FAQ</a
       >
       <a
         href="/#contacto"
-        class="block text-neutral-200 hover:text-brand transition-colors duration-200"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Contacto</a
       >
 
-      <div class="pt-1 border-t border-white/10">
+      <div class="pt-2 border-t border-white/10 flex flex-col gap-2">
+        <a
+          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Agendar una demo de FlowPass"
+          onclick={() => (isOpen = false)}
+          class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-neutral-300 border border-white/15 hover:border-white/30 hover:text-white transition-all duration-200"
+        >
+          Agendar demo
+        </a>
+
         <a
           href="https://app.flow-pass.com/login"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
           onclick={() => (isOpen = false)}
-          class="flex items-center justify-between w-full px-1 py-2 text-sm font-medium text-neutral-300 hover:text-brand transition-colors duration-200 group"
+          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand text-[#09090f] transition-all duration-200"
         >
-          <span>¿Ya tienes cuenta? <span class="text-brand font-semibold">Ingresar</span></span>
-          <ArrowRightOnRectangle class="w-4 h-4 text-brand transition-transform duration-200 group-hover:translate-x-0.5" />
-        </a>
-      </div>
-
-      <div class="flex items-center gap-2 pt-1">
-        <a
-          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir el calendario para agendar una demo de FlowPass"
-        >
-          <Button
-            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all duration-300"
-          >
-            Agendar demo
-            <CalendarDays class="w-5 h-5 text-white" />
-          </Button>
-        </a>
-
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Contactar a FlowPass por WhatsApp para consultar sobre el software"
-        >
-          <Button
-            class="w-full flex justify-center items-center gap-2 rounded-xl text-sm font-semibold px-5 py-2 shadow-sm hover:shadow-lg hover:-translate-y-[2px] transition-all duration-300 bg-[#25D366] text-white border border-[#1EBE5D]"
-          >
-            Escríbenos
-            <img
-              src={whatsappIcon}
-              alt="WhatsApp icon"
-              class="w-5 h-5 brightness-0 invert"
-              loading="lazy"
-            />
-          </Button>
+          Ingresar a la plataforma
+          <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
       </div>
     </div>

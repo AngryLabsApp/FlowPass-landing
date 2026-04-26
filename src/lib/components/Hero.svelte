@@ -2,9 +2,14 @@
   import { Button } from "flowbite-svelte";
   import { CalendarDays } from "svelte-heros-v2";
   import { onMount } from "svelte";
-  import Laptop from "./../assets/images/laptop.svg";
+  import Laptop from "./../assets/images/laptop.png";
+  import Phone from "./../assets/images/phone.png";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import gymLogo from "$lib/assets/images/clients/gym.png";
+  import karateLogo from "$lib/assets/images/clients/karate.png";
+  import musicaLogo from "$lib/assets/images/clients/musica.png";
+  import idiomasLogo from "$lib/assets/images/clients/idiomas.png";
 
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.`;
 
@@ -29,12 +34,6 @@
     { emoji: "👶", label: "Talleres para niños" },
   ];
 
-  const avatars = [
-    { initial: "M", color: "#01f59e" },
-    { initial: "L", color: "#531DD8" },
-    { initial: "J", color: "#3168F4" },
-    { initial: "S", color: "#01f59e" },
-  ];
 </script>
 
 <section
@@ -152,19 +151,22 @@
 
       <!-- Social proof -->
       <div class="flex items-center gap-3 pt-4">
-        <div class="flex -space-x-2">
-          {#each avatars as a}
-            <span
-              class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold text-dark-300 ring-2 ring-[#09090f]"
-              style="background-color: {a.color};"
-              aria-hidden="true"
-            >
-              {a.initial}
-            </span>
-          {/each}
+        <div class="flex -space-x-2" aria-label="Negocios que usan FlowPass">
+          <span class="client-circle ring-2 ring-[#09090f]">
+            <img src={gymLogo} alt="Gym" class="client-circle-logo" loading="lazy" />
+          </span>
+          <span class="client-circle ring-2 ring-[#09090f]">
+            <img src={karateLogo} alt="Karate" class="client-circle-logo" loading="lazy" />
+          </span>
+          <span class="client-circle ring-2 ring-[#09090f]">
+            <img src={musicaLogo} alt="Música" class="client-circle-logo" loading="lazy" />
+          </span>
+          <span class="client-circle ring-2 ring-[#09090f]">
+            <img src={idiomasLogo} alt="Idiomas" class="client-circle-logo" loading="lazy" />
+          </span>
         </div>
         <p class="text-sm text-white/70">
-          Confiado por negocios en Perú <span aria-label="Perú">🇵🇪</span> y México <span aria-label="México">🇲🇽</span>
+          Confiado por negocios en Latinoamérica
         </p>
       </div>
     </div>
@@ -172,14 +174,29 @@
     <!-- Image -->
     <figure class="relative flex justify-center md:block w-full">
       <div class="absolute inset-0 -z-10 bg-brand/20 blur-[100px] rounded-full"></div>
-      <img
-        src={Laptop}
-        alt="Dashboard de FlowPass mostrando gestión de membresías, pagos y asistencias"
-        class="relative w-full max-w-full md:max-w-3xl md:scale-110 lg:scale-125 drop-shadow-[0_25px_60px_rgba(1,245,158,0.18)]"
-        loading="eager"
-        width="1200"
-        height="800"
-      />
+
+      <div class="relative w-full max-w-full md:max-w-3xl md:scale-110 lg:scale-125">
+        <!-- Laptop -->
+        <img
+          src={Laptop}
+          alt="Dashboard de FlowPass mostrando gestión de membresías, pagos y asistencias"
+          class="w-full drop-shadow-[0_25px_60px_rgba(1,245,158,0.18)]"
+          loading="eager"
+          width="1200"
+          height="800"
+        />
+
+        <!-- Phone flotando bottom-right -->
+        <img
+          src={Phone}
+          alt="Vista móvil de FlowPass mostrando asistencias y calendario"
+          class="absolute bottom-[6%] right-[3%] w-[28%] rotate-[5deg] drop-shadow-[0_20px_50px_rgba(83,29,216,0.45)]"
+          loading="eager"
+          width="430"
+          height="932"
+        />
+      </div>
+
       <figcaption class="sr-only">
         Vista previa del software FlowPass con panel de control mostrando alumnos activos, pagos recientes y estadísticas de asistencia.
       </figcaption>
@@ -292,5 +309,39 @@
     border-color: rgba(1, 245, 158, 0.3);
     background: rgba(1, 245, 158, 0.05);
     color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* Client circles */
+  .client-circle {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    cursor: default;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+  }
+  .client-circle:hover {
+    transform: translateY(-3px) scale(1.12);
+    background: rgba(1, 245, 158, 0.08);
+    border-color: rgba(1, 245, 158, 0.35);
+    box-shadow: 0 0 16px rgba(1, 245, 158, 0.3);
+  }
+  .client-circle:hover .client-circle-logo {
+    filter: grayscale(0%) brightness(1);
+  }
+  .client-circle-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+    filter: grayscale(100%) brightness(0.75);
+    transition: filter 0.25s ease;
   }
 </style>

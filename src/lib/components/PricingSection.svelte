@@ -327,26 +327,62 @@
   /* ─── Plan card ──────────────────────────────────────────── */
   .plan-card {
     position: relative;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
+    background: linear-gradient(
+      145deg,
+      rgba(255,255,255,0.07) 0%,
+      rgba(255,255,255,0.02) 100%
+    );
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid rgba(255,255,255,0.18);
+    border-radius: 20px;
     padding: 1.75rem 1.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    transition: border-color 0.3s, transform 0.3s, background 0.3s;
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.08),
+      0 16px 48px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.12),
+      inset 0 -1px 0 rgba(0,0,0,0.08);
+    transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
   }
   .plan-card:hover {
     border-color: rgba(1,245,158,0.2);
-    background: rgba(255,255,255,0.05);
-    transform: translateY(-4px);
+    border-top-color: rgba(1,245,158,0.35);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.08),
+      0 24px 64px rgba(0,0,0,0.35),
+      0 0 40px -8px rgba(1,245,158,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.16),
+      inset 0 -1px 0 rgba(0,0,0,0.08);
+    transform: translateY(-6px);
   }
   .plan-card.highlighted {
-    border-color: rgba(1,245,158,0.4);
-    background: rgba(1,245,158,0.04);
+    background: linear-gradient(
+      145deg,
+      rgba(1,245,158,0.08) 0%,
+      rgba(1,245,158,0.02) 60%,
+      rgba(83,29,216,0.04) 100%
+    );
+    border-color: rgba(1,245,158,0.3);
+    border-top-color: rgba(1,245,158,0.55);
     box-shadow:
-      0 0 0 1px rgba(1,245,158,0.15),
-      0 0 60px -10px rgba(1,245,158,0.25);
+      0 4px 6px rgba(0,0,0,0.1),
+      0 20px 60px rgba(0,0,0,0.3),
+      0 0 80px -12px rgba(1,245,158,0.35),
+      inset 0 1px 0 rgba(1,245,158,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
+  .plan-card.highlighted:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.1),
+      0 28px 72px rgba(0,0,0,0.35),
+      0 0 100px -10px rgba(1,245,158,0.45),
+      inset 0 1px 0 rgba(1,245,158,0.25),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
   }
 
   /* ─── Badge ──────────────────────────────────────────────── */
