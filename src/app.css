@@ -8,3 +8,107 @@
 
 
 @import '@splidejs/svelte-splide/css/core';
+
+/* ---------- Epoch (display) ---------- */
+@font-face {
+  font-family: 'Epoch';
+  src: url('/fonts/Epoch.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+
+/* ---------- OktahNeue (body) ---------- */
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+@font-face {
+  font-family: 'OktahNeue';
+  src: url('/fonts/fonnts.com-oktah_neue_black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+0041-005A, U+0061-007A, U+00C0-00FF;
+}
+
+/* ---------- Global dark bg + ambient glow ---------- */
+html, body {
+  background-color: #09090f;
+  color: #f5f5f5;
+  font-family: 'OktahNeue', 'Inter', 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+
+body {
+  background-color: #09090f;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 {
+  font-family: 'Epoch', 'Syne', 'DM Sans', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Section divider helper */
+.section-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 0;
+  margin: 0;
+}

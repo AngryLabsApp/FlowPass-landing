@@ -14,7 +14,7 @@
   href={whatsappLink}
   target="_blank"
   rel="noopener noreferrer nofollow"
-  class={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-14 h-14 rounded-full bg-brand-400 text-white flex items-center justify-center shadow-[0_8px_30px_rgba(16,185,129,0.45)] hover:scale-105 transition-transform duration-300 z-[9999] ${className}`}
+  class={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_8px_30px_rgba(37,211,102,0.45)] hover:scale-105 transition-transform duration-300 z-[9999] ${className}`}
   aria-label={ariaLabel}
   onclick={() => {
     window.gtag?.('event', 'whatsapp_click', {
