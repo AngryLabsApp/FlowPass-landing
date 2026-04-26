@@ -1,7 +1,6 @@
 {
-  "name": "FlowPass - Software para academias",
-  "short_name": "FlowPass",
-  "description": "Gestiona alumnos, pagos y asistencias de tu academia",
+  "name": "MyWebSite",
+  "short_name": "MySite",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
@@ -16,10 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#10b981",
-  "background_color": "#10b981",
-  "display": "standalone",
-  "start_url": "/",
-  "scope": "/",
-  "categories": ["business", "education"]
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone"
 }
