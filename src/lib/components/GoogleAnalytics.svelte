@@ -29,7 +29,8 @@
       send_page_view: true,
       page_title: document.title,
       page_location: window.location.href,
-      page_referrer: document.referrer || undefined
+      page_referrer: document.referrer || undefined,
+      transport_type: 'beacon'
     });
 
     // 3. Cargar script
