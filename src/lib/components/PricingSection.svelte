@@ -274,26 +274,27 @@
   .country-pill {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 1rem;
-    min-height: 36px;
+    gap: 0.3rem;
+    padding: 0.35rem 0.7rem;
+    min-height: 32px;
     border-radius: 9999px;
     border: none;
     background: transparent;
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: rgba(255,255,255,0.6);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
   }
   .country-pill:hover { color: #fff; background: rgba(255,255,255,0.05); }
   .country-pill.active {
     background: #01f59e;
     color: #09090f;
-    box-shadow: 0 0 24px rgba(1,245,158,0.35);
+    box-shadow: 0 0 20px rgba(1,245,158,0.3);
   }
 
-  .flag { font-size: 1.05rem; line-height: 1; }
+  .flag { font-size: 0.9rem; line-height: 1; }
 
   /* ─── Perks bar ──────────────────────────────────────────── */
   .perks-bar {

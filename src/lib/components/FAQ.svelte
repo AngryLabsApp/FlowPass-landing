@@ -1,36 +1,36 @@
 <script lang="ts">
+  import { siteConfig } from "$lib/config/site";
+
+  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Tengo%20una%20duda%20sobre%20FlowPass.`;
+
   const faqs = [
     {
-      q: "🤔 ¿Qué es FlowPass?",
-      a: `FlowPass es una herramienta que te ayuda a <strong>llevar el control de tu negocio sin complicarte</strong>. Desde un solo lugar puedes ver tus alumnos, sus pagos y asistencias, todo de manera digital.`
+      q: "¿Qué es FlowPass?",
+      a: `FlowPass es el software de gestión para negocios que venden clases, planes o membresías. <strong>Cobros, asistencias y recordatorios por WhatsApp</strong> — todo desde un solo lugar, sin Excel, sin caos.`
     },
     {
-      q: "📱 ¿Tengo que instalar algo?",
-      a: `No. FlowPass funciona directo desde internet. Puedes usarlo desde tu celular, tablet o computadora, sin descargar nada.`
-    },
-    {
-      q: "💳 ¿Puedo registrar los pagos de mis alumnos?",
-      a: `Sí. Podrás ver quién pagó, cuándo vence su plan y cuánto dinero ingresó a tu negocio. Todo queda guardado automáticamente.`
-    },
-    {
-      q: "🧍 ¿Qué tipo de negocios pueden usar FlowPass?",
+      q: "¿Qué tipo de negocios pueden usar FlowPass?",
       a: `Funciona para <strong>cualquier negocio que vende clases, planes o membresías</strong>: academias deportivas, yoga, música, idiomas, salud mental, gimnasios y más.`
     },
     {
-      q: "💬 ¿Puedo mandar recordatorios por WhatsApp?",
+      q: "¿Puedo mandar recordatorios por WhatsApp?",
       a: `Sí. FlowPass puede <strong>enviar recordatorios automáticos</strong> a tus alumnos, por ejemplo cuando se acerca la fecha de pago o al darles la bienvenida.`
     },
     {
-      q: "🔐 ¿Mis datos están seguros?",
-      a: `Sí, completamente. Usamos <strong>servicios en la nube con altos estándares de seguridad</strong> para proteger toda la información de tu negocio y de tus alumnos.<br><br>Además, <strong>firmamos un acuerdo de confidencialidad</strong> con cada cliente. La información siempre es tuya.`
+      q: "¿Cómo empiezo?",
+      a: `Agendas una demo gratuita y conoces la plataforma con datos reales. Si te convence, activamos tu cuenta y en menos de 24 horas ya estás operando.`
     },
     {
-      q: "💚 ¿Cómo funciona FlowPass? ¿Se compra o se paga cada mes?",
-      a: `FlowPass funciona con un modelo de <strong>suscripción mensual</strong>, igual que Netflix o Spotify. Pagas una cuota al mes y obtienes acceso completo, soporte personalizado y todas las actualizaciones.<br><br>Si en algún momento no deseas usarlo, <strong>puedes pausar tu cuenta</strong> y retomarla más adelante. Sin contratos.`
+      q: "¿Tienen soporte técnico?",
+      a: `Sí, todos los planes incluyen <strong>soporte personalizado por WhatsApp</strong>. No hablas con un bot — te responde el equipo de FlowPass directamente.`
     },
     {
-      q: "💰 ¿Cuánto cuesta FlowPass?",
-      a: `El precio depende del <strong>número de alumnos</strong> que tenga tu negocio. Antes de activarlo, conversamos contigo para conocer tu caso y ofrecerte un precio justo.`
+      q: "¿Se compra o se paga mensual?",
+      a: `FlowPass funciona con <strong>suscripción mensual</strong>, igual que Netflix o Spotify. Pagas cada mes y obtienes acceso completo, soporte y todas las actualizaciones.<br><br>Puedes <strong>cancelar cuando quieras</strong>. Sin contratos, sin permanencia.`
+    },
+    {
+      q: "¿Cuánto cuesta?",
+      a: `El precio depende del <strong>número de alumnos</strong> de tu negocio. Puedes ver todos los planes y precios en la sección <a href="/#precios" style="color:#01f59e;text-decoration:underline;">Precios</a> de esta página.`
     },
   ];
 
@@ -85,7 +85,11 @@
     </ul>
 
     <p class="faq-footer font-oktah">
-      ¿Tienes otra duda? Escríbenos por WhatsApp y te respondemos.
+      ¿Tienes otra duda?
+      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="faq-footer-link">
+        Escríbenos por WhatsApp
+      </a>
+      y te respondemos.
     </p>
   </div>
 </section>
@@ -163,18 +167,36 @@
   }
 
   .faq-item {
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
+    background: linear-gradient(
+      145deg,
+      rgba(255,255,255,0.06) 0%,
+      rgba(255,255,255,0.02) 100%
+    );
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-top: 1px solid rgba(255,255,255,0.14);
+    border-radius: 16px;
     overflow: hidden;
-    transition: border-color 0.3s, background 0.3s;
+    box-shadow:
+      0 4px 24px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.08);
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
   }
   .faq-item:hover {
-    border-color: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.12);
+    border-top-color: rgba(255,255,255,0.22);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.1);
   }
   .faq-item.open {
-    border-color: rgba(1,245,158,0.25);
-    background: rgba(1,245,158,0.03);
+    border-color: rgba(1,245,158,0.2);
+    border-top-color: rgba(1,245,158,0.4);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.25),
+      0 0 40px -12px rgba(1,245,158,0.15),
+      inset 0 1px 0 rgba(1,245,158,0.12);
   }
 
   .faq-question {
@@ -234,4 +256,11 @@
     font-size: 0.9rem;
     margin: 2.5rem 0 0;
   }
+  .faq-footer-link {
+    color: #01f59e;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s;
+  }
+  .faq-footer-link:hover { opacity: 0.8; }
 </style>

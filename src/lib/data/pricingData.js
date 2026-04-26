@@ -14,6 +14,13 @@ export const countries = [
     currency: "$",
     currencyCode: "MXN",
   },
+  {
+    code: "US",
+    label: "Otros países",
+    flag: "🌎",
+    currency: "USD",
+    currencyCode: "USD",
+  },
 ];
 
 /**
@@ -44,7 +51,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Multi sede", included: false },
     ],
-    prices: { PE: 150, MX: 600 },
+    prices: { PE: 150, MX: 600, US: 50 },
   },
   {
     id: "lite",
@@ -61,7 +68,7 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Multi sede", included: false },
     ],
-    prices: { PE: 200, MX: 1000 },
+    prices: { PE: 200, MX: 1000, US: 70 },
   },
   {
     id: "full",
@@ -76,9 +83,9 @@ export const plans = [
       { label: "1 Admin + 4 Colaboradores", included: true },
       { label: "Acceso QR", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150 } },
+      { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150, US: 10 } },
     ],
-    prices: { PE: 310, MX: 1600 },
+    prices: { PE: 310, MX: 1600, US: 90 },
   },
   {
     id: "ultra",
@@ -93,9 +100,9 @@ export const plans = [
       { label: "1 Admin + 6 Colaboradores", included: true },
       { label: "Acceso QR", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150 } },
+      { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150, US: 10 } },
     ],
-    prices: { PE: 440, MX: 2300 },
+    prices: { PE: 440, MX: 2300, US: 130 },
   },
 ];
 
@@ -112,26 +119,26 @@ export const whatsappPackages = [
     name: "Básico",
     messages: 30,
     highlight: false,
-    prices: { PE: 10, MX: 50 },
+    prices: { PE: 10, MX: 50, US: 5 },
   },
   {
     name: "Medio",
     messages: 80,
     highlight: false,
-    prices: { PE: 20, MX: 100 },
+    prices: { PE: 20, MX: 100, US: 10 },
   },
-  { name: "Pro", messages: 160, highlight: true, prices: { PE: 40, MX: 200 } },
+  { name: "Pro", messages: 160, highlight: true, prices: { PE: 40, MX: 200, US: 15 } },
   {
     name: "Avanzado",
     messages: 250,
     highlight: false,
-    prices: { PE: 60, MX: 300 },
+    prices: { PE: 60, MX: 300, US: 20 },
   },
   {
     name: "Intensivo",
     messages: 500,
     highlight: false,
-    prices: { PE: 100, MX: 500 },
+    prices: { PE: 100, MX: 500, US: 25 },
   },
 ];
 
