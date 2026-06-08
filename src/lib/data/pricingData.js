@@ -40,7 +40,7 @@ export const plans = [
     id: "pocket",
     name: "Flow Pocket",
     tagline: "Para academias que están comenzando",
-    activeStudents: "0 – 30 alumnos activos",
+    activeStudents: "0 – 50 alumnos activos",
     registeredStudents: "Hasta 150 alumnos registrados",
     highlight: false,
     features: [
@@ -57,7 +57,7 @@ export const plans = [
     id: "lite",
     name: "Flow Lite",
     tagline: "Para academias que ya están creciendo.",
-    activeStudents: "30 – 80 alumnos activos",
+    activeStudents: "50 – 100 alumnos activos",
     registeredStudents: "Hasta 400 alumnos registrados",
     highlight: false,
     features: [
@@ -74,7 +74,7 @@ export const plans = [
     id: "full",
     name: "Flow Full",
     tagline: "Todo lo que necesitas para escalar sin límites.",
-    activeStudents: "80 – 160 alumnos activos",
+    activeStudents: "100 – 150 alumnos activos",
     registeredStudents: "Hasta 800 alumnos registrados",
     highlight: true,
     features: [
@@ -85,13 +85,13 @@ export const plans = [
       { label: "Membresías simultáneas por alumno", included: true },
       { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150, US: 10 } },
     ],
-    prices: { PE: 310, MX: 1600, US: 90 },
+    prices: { PE: 320, MX: 1600, US: 90 },
   },
   {
     id: "ultra",
     name: "Flow Ultra",
     tagline: "Máxima potencia para grandes academias",
-    activeStudents: "160 – 250 alumnos activos",
+    activeStudents: "150 – 200 alumnos activos",
     registeredStudents: "Hasta 1250 alumnos registrados",
     highlight: false,
     features: [
@@ -100,9 +100,9 @@ export const plans = [
       { label: "1 Admin + 6 Colaboradores", included: true },
       { label: "Acceso QR", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Multi sede", included: true, extraCost: { PE: 30, MX: 150, US: 10 } },
+      { label: "Multi sede", included: true, extraCost: { PE: 0, MX: 0, US: 0 } },
     ],
-    prices: { PE: 440, MX: 2300, US: 130 },
+    prices: { PE: 450, MX: 2300, US: 130 },
   },
 ];
 
@@ -117,29 +117,32 @@ export const plans = [
 export const whatsappPackages = [
   {
     name: "Básico",
-    messages: 30,
+    messages: 50,
     highlight: false,
-    prices: { PE: 10, MX: 50, US: 5 },
+    prices: { PE: 20, MX: 100, US: 5 },
   },
   {
     name: "Medio",
-    messages: 80,
+    messages: 100,
     highlight: false,
-    prices: { PE: 20, MX: 100, US: 10 },
+    prices: { PE: 40, MX: 100, US: 10 },
   },
-  { name: "Pro", messages: 160, highlight: true, prices: { PE: 40, MX: 200, US: 15 } },
+  { name: "Pro", 
+    messages: 200, 
+    highlight: true, 
+    prices: { PE: 60, MX: 200, US: 15 } },
   {
     name: "Avanzado",
-    messages: 250,
+    messages: 300,
     highlight: false,
-    prices: { PE: 60, MX: 300, US: 20 },
+    prices: { PE: 80, MX: 300, US: 20 },
   },
-  {
-    name: "Intensivo",
-    messages: 500,
-    highlight: false,
-    prices: { PE: 100, MX: 500, US: 25 },
-  },
+  // {
+  //   name: "Intensivo",
+  //   messages: 500,
+  //   highlight: false,
+  //   prices: { PE: 100, MX: 500, US: 25 },
+  // },
 ];
 
 /** @type {string[]} */
