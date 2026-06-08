@@ -106,7 +106,7 @@
             aria-pressed={!withWhatsapp}
             on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
           >
-            Manual
+            Sin Recordatorio automático
           </button>
           <button
             class="addon-tab"
@@ -114,7 +114,7 @@
             aria-pressed={withWhatsapp}
             on:click={() => { if (!withWhatsapp) toggleWhatsapp(); }}
           >
-            Recordatorio automático
+            Con Recordatorio automático
           </button>
         </div>
       </div>
@@ -693,6 +693,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    min-height: 7.5rem;
   }
   .plan-name {
     font-family: 'Epoch', 'Syne', sans-serif;
@@ -706,12 +707,15 @@
     color: rgba(255,255,255,0.5);
     margin: 0;
     line-height: 1.45;
+    min-height: 2.4rem;
   }
   .plan-students {
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    margin-top: 0.25rem;
+    margin-top: auto;
+    padding-top: 0.25rem;
+    min-height: 2.6rem;
   }
   .plan-range {
     display: flex;
@@ -736,6 +740,7 @@
     gap: 0.35rem;
     border-top: 0.5px solid rgba(255,255,255,0.06);
     padding-top: 1rem;
+    min-height: 3.5rem;
   }
   .price-amount {
     font-size: 1.875rem;
@@ -785,6 +790,9 @@
     border: 0.5px solid transparent;
     transition: background 0.25s, border-color 0.25s, color 0.25s;
     animation: fadePrice 0.3s ease;
+    min-height: 2.4rem;
+    width: 100%;
+    justify-content: flex-start;
   }
   .whatsapp-chip--on {
     background: rgba(37,211,102,0.12);
@@ -850,6 +858,7 @@
     font-weight: 700;
     text-decoration: none;
     transition: background 0.2s, box-shadow 0.2s, transform 0.15s, color 0.2s;
+    margin-top: auto;
   }
   .cta-button:hover { transform: translateY(-1px); }
 
