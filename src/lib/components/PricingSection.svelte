@@ -12,6 +12,7 @@
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
   import { Sprout, Rocket, Trophy, Zap, Building2 } from "@lucide/svelte";
+  import { onMount } from "svelte";
 
   const planIcons = new Map([
     ["pocket", Sprout],
@@ -24,9 +25,32 @@
   $: selfServePlans = plans.filter((p) => !p.quoteBased);
   $: enterprisePlan = plans.find((p) => p.quoteBased);
 
-  let selectedCountry = countries[0];
+  let selectedCountry = countries.find((c) => c.code === "US") ?? countries[0];
   let selectedCycle = billingCycles[1]; // trimestral
   let withWhatsapp = true;
+
+  /**
+   * Detect user country from browser timezone + locale.
+   * Returns "PE", "MX", or "US" (fallback).
+   */
+  function detectCountryCode() {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
+      if (tz.includes("Lima")) return "PE";
+      const mxZones = ["Mexico", "Cancun", "Monterrey", "Tijuana", "Merida", "Chihuahua", "Mazatlan", "Hermosillo", "Matamoros", "Ojinaga", "Bahia_Banderas"];
+      if (mxZones.some((z) => tz.includes(z))) return "MX";
+      const lang = (navigator.language || "").toLowerCase();
+      if (lang.endsWith("-pe")) return "PE";
+      if (lang.endsWith("-mx")) return "MX";
+    } catch (_) { /* ignore */ }
+    return "US";
+  }
+
+  onMount(() => {
+    const code = detectCountryCode();
+    const match = countries.find((c) => c.code === code);
+    if (match) selectedCountry = match;
+  });
 
 
   /** @type {Record<string, string>} */
@@ -86,22 +110,49 @@
       Elige el plan que mejor se adapte a tu tamaño. Sin sorpresas, sin contratos.
     </p>
 
+    <!-- Country selector (dropdown) -->
+    <div class="country-select-wrap country-select-wrap--top">
+      <label class="country-select-label" for="country-select">País</label>
+      <div class="country-select-control">
+        <span class="country-select-flag" aria-hidden="true">{selectedCountry.flag}</span>
+        <select
+          id="country-select"
+          class="country-select"
+          value={selectedCountry.code}
+          on:change={(e) => {
+            const next = countries.find((c) => c.code === e.currentTarget.value);
+            if (next) selectCountry(next);
+          }}
+          aria-label="Seleccionar país"
+        >
+          {#each countries as country}
+            <option value={country.code}>{country.label}</option>
+          {/each}
+        </select>
+        <span class="country-select-caret" aria-hidden="true">▾</span>
+      </div>
+    </div>
+
     <!-- Cycle + WhatsApp toggle (same row) -->
     <div class="controls-row">
-      <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
-        {#each billingCycles as cycle}
-          <button
-            class="cycle-pill"
-            class:active={selectedCycle.id === cycle.id}
-            aria-pressed={selectedCycle.id === cycle.id}
-            on:click={() => selectCycle(cycle)}
-          >
-            <span>{cycle.label}</span>
-            {#if cycle.discount > 0}
-              <span class="cycle-save">Ahorra ~{Math.round(cycle.discount * 100)}%</span>
-            {/if}
-          </button>
-        {/each}
+      <div class="cycle-wrap">
+        <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
+          {#each billingCycles as cycle}
+            <button
+              class="cycle-pill"
+              class:active={selectedCycle.id === cycle.id}
+              aria-pressed={selectedCycle.id === cycle.id}
+              on:click={() => selectCycle(cycle)}
+            >
+              <span>{cycle.label}</span>
+            </button>
+          {/each}
+        </div>
+        {#if selectedCycle.discount > 0}
+          <span class="cycle-save-below" aria-live="polite">
+            Ahorra ~{Math.round(selectedCycle.discount * 100)}%
+          </span>
+        {/if}
       </div>
 
       <div class="addon-group">
@@ -109,7 +160,7 @@
           <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
           </svg>
-          WhatsApp
+          WhatsApp: 
         </span>
         <div class="addon-tabs" role="group" aria-label="Modo de WhatsApp">
           <button
@@ -129,29 +180,6 @@
             FlowPass avisa por mí
           </button>
         </div>
-      </div>
-    </div>
-
-    <!-- Country selector (dropdown) -->
-    <div class="country-select-wrap">
-      <label class="country-select-label" for="country-select">País</label>
-      <div class="country-select-control">
-        <span class="country-select-flag" aria-hidden="true">{selectedCountry.flag}</span>
-        <select
-          id="country-select"
-          class="country-select"
-          value={selectedCountry.code}
-          on:change={(e) => {
-            const next = countries.find((c) => c.code === e.currentTarget.value);
-            if (next) selectCountry(next);
-          }}
-          aria-label="Seleccionar país"
-        >
-          {#each countries as country}
-            <option value={country.code}>{country.label}</option>
-          {/each}
-        </select>
-        <span class="country-select-caret" aria-hidden="true">▾</span>
       </div>
     </div>
   </div>
@@ -480,18 +508,23 @@
     background: #fff;
     color: #09090f;
   }
-  .cycle-save {
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 0.1rem 0.4rem;
-    border-radius: 999px;
-    background: #01f59e;
-    color: #09090f;
-    letter-spacing: 0.02em;
+  .cycle-wrap {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.45rem;
   }
-  .cycle-pill:not(.active) .cycle-save {
+  .cycle-save-below {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
     background: rgba(1,245,158,0.15);
     color: #01f59e;
+    letter-spacing: 0.02em;
+    animation: fadePrice 0.3s ease;
   }
 
   /* ─── Country select (dropdown) ──────────────────────────── */
@@ -500,6 +533,10 @@
     align-items: center;
     gap: 0.6rem;
     margin-top: 0.9rem;
+  }
+  .country-select-wrap--top {
+    margin-top: 0;
+    margin-bottom: 1.25rem;
   }
   .country-select-label {
     font-size: 0.75rem;
@@ -584,8 +621,8 @@
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    gap: 0.6rem;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
   /* ─── Add-on tabs (segmented) ────────────────────────────── */
@@ -1115,12 +1152,77 @@
 
   /* ─── Responsive ─────────────────────────────────────────── */
   @media (max-width: 640px) {
-    .plans-grid { grid-template-columns: 1fr; }
+    .plans-grid {
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding: 1.25rem;
+      gap: 0.85rem;
+      padding: 1.5rem 1.25rem 1rem;
+      margin: 0 -1.25rem 1rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .plans-grid::-webkit-scrollbar { display: none; }
+    .plans-grid > .plan-card {
+      flex: 0 0 85%;
+      scroll-snap-align: center;
+      min-width: 0;
+    }
+    .plan-card:hover { transform: none; }
     .wa-grid { grid-template-columns: repeat(2, 1fr); }
     .perks-bar { gap: 0.5rem 1rem; }
     .badge-stack { flex-direction: column; gap: 0.25rem; }
-    .controls-row { flex-direction: column; gap: 0.5rem; }
-    .addon-group { flex-direction: column; gap: 0.4rem; }
+    .controls-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+    .cycle-wrap {
+      display: flex;
+      width: 100%;
+    }
+    .cycle-selector {
+      display: flex;
+      width: 100%;
+      gap: 0.2rem;
+    }
+    .cycle-pill {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      padding: 0.5rem 0.5rem;
+      font-size: 0.75rem;
+    }
+    .addon-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      width: 100%;
+    }
+    .addon-group-label { justify-content: center; }
+    .addon-tabs {
+      display: flex;
+      width: 100%;
+      gap: 0.2rem;
+    }
+    .addon-tab {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      text-align: center;
+      padding: 0.5rem 0.4rem;
+      font-size: 0.7rem;
+      white-space: normal;
+      line-height: 1.2;
+    }
+    .country-select-wrap {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
     .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
   }
 </style>
