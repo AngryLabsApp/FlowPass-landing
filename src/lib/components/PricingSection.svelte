@@ -11,6 +11,14 @@
     formatPrice,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
+  import { Sprout, Rocket, Trophy, Building2 } from "@lucide/svelte";
+
+  const planIcons = new Map([
+    ["start", Sprout],
+    ["pro", Rocket],
+    ["max", Trophy],
+    ["enterprise", Building2],
+  ]);
 
   let selectedCountry = countries[0];
   let selectedCycle = billingCycles[1]; // trimestral
@@ -106,7 +114,7 @@
             aria-pressed={!withWhatsapp}
             on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
           >
-            Sin Recordatorio automático
+            Yo aviso a mis alumnos
           </button>
           <button
             class="addon-tab"
@@ -114,7 +122,7 @@
             aria-pressed={withWhatsapp}
             on:click={() => { if (!withWhatsapp) toggleWhatsapp(); }}
           >
-            Con Recordatorio automático
+            FlowPass avisa por mí
           </button>
         </div>
       </div>
@@ -175,6 +183,11 @@
           </div>
 
           <div class="plan-header">
+            {#if planIcons.get(plan.id)}
+              <span class="plan-icon" aria-hidden="true">
+                <svelte:component this={planIcons.get(plan.id)} size={28} strokeWidth={1.75} />
+              </span>
+            {/if}
             <h3 class="plan-name">{plan.name}</h3>
             <p class="plan-tagline">{plan.tagline}</p>
             <div class="plan-students">
@@ -694,6 +707,25 @@
     flex-direction: column;
     gap: 0.35rem;
     min-height: 7.5rem;
+  }
+  .plan-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(1,245,158,0.1);
+    color: #01f59e;
+    margin-bottom: 0.25rem;
+  }
+  .plan-card.highlighted .plan-icon {
+    background: rgba(1,245,158,0.18);
+    color: #01f59e;
+  }
+  .plan-card.enterprise .plan-icon {
+    background: rgba(83,29,216,0.2);
+    color: #cbb6ff;
   }
   .plan-name {
     font-family: 'Epoch', 'Syne', sans-serif;
