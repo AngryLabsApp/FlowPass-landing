@@ -1310,5 +1310,50 @@
       margin: 0 auto 1.25rem;
     }
     .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
+    .price-tax {
+      font-size: 0.55rem;
+      padding: 0.12rem 0.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── Mobile typography ─────────────────────────────────── */
+    .section-title { font-size: clamp(1.75rem, 7vw, 2.25rem); }
+    .section-subtitle { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+    .section-eyebrow { font-size: 0.7rem; }
+
+    .addon-group-label { font-size: 0.72rem; }
+    .cycle-save-above { font-size: 0.65rem; padding: 0.25rem 0.6rem 0.25rem 0.5rem; }
+
+    .plan-card { padding: 1.5rem 1.25rem 1.25rem; gap: 1rem; }
+    .plan-name { font-size: 1.15rem; }
+    .plan-tagline { font-size: 0.78rem; }
+    .plan-range { font-size: 0.78rem; }
+    .plan-range--registered { font-size: 0.68rem; }
+
+    .price-amount { font-size: 1.625rem; }
+    .price-period { font-size: 0.8rem; }
+    .price-quote { font-size: 1.2rem; }
+
+    .whatsapp-chip { font-size: 0.72rem; padding: 0.4rem 0.6rem; min-height: 2.2rem; }
+
+    .feature-item { font-size: 0.82rem; line-height: 1.45; }
+    .extra-cost { font-size: 0.7rem; }
+
+    .cta-button { font-size: 0.85rem; padding: 0.8rem 1rem; }
+
+    .badge { font-size: 0.62rem; padding: 0.25rem 0.7rem; }
+
+    .perk-item { font-size: 0.75rem; }
+
+    .wa-title { font-size: 1.25rem; }
+    .wa-subtitle { font-size: 0.85rem; }
+    .wa-name { font-size: 0.875rem; }
+    .wa-messages { font-size: 0.75rem; }
+    .wa-price { font-size: 1rem; }
+    .wa-card { padding: 1rem 0.85rem; }
+    .wa-note { font-size: 0.72rem; }
+
+    .country-select-wrap--floating .country-select { font-size: 0.75rem; min-width: 0; }
+    .country-select-wrap--floating .country-select-flag { font-size: 0.85rem; }
   }
 </style>
