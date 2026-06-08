@@ -38,5 +38,8 @@
     "svelte-meta-tags": "^4.5.0",
     "tailwind-merge": "^3.4.0",
     "uuid": "^13.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
