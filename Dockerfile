@@ -8,7 +8,7 @@ ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 RUN corepack enable pnpm && pnpm config set store-dir /pnpm/store
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 COPY .npmrc ./
 RUN pnpm install --frozen-lockfile
 COPY . .
