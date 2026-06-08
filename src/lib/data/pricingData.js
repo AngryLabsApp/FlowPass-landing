@@ -59,7 +59,7 @@ export const PRICES_INCLUDE_TAX = true;
  * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais] — WhatsApp manual
  * @property {Record<string, Record<string, number>>} [pricesWhatsapp]   // con recordatorios automáticos
  * @property {{includedReminders: number}} [whatsappAuto]                // recordatorios incluidos en `pricesWhatsapp`
- * @property {Array<{label: string, included: boolean}>} features
+ * @property {Array<{label: string, included: boolean, extraCost?: Record<string, number>}>} features
  */
 
 /** @type {Plan[]} */
@@ -89,8 +89,8 @@ export const plans = [
       { label: "Acceso QR", included: true },
       { label: "Conexión oficial a WhatsApp (mensajes manuales)", included: true },
       { label: "1 Admin + 1 Colaborador", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
-      { label: "Flowy (IA)", included: false },
       { label: "Multi sede", included: false },
     ],
   },
@@ -117,9 +117,9 @@ export const plans = [
     features: [
       { label: "Todo lo de Flow Start", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Flowy (IA)", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "1 Admin + 3 Colaboradores", included: true },
-      { label: "Multi sede", included: false },
+      { label: "Multi sede", included: true, extraCost: { PE: 50, MX: 250, US: 15 } },
     ],
   },
   {
@@ -145,7 +145,7 @@ export const plans = [
     features: [
       { label: "Todo lo de Flow Pro", included: true },
       { label: "Multi sede incluida", included: true },
-      { label: "Flowy (IA)", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "1 Admin + 6 Colaboradores", included: true },
     ],
   },
@@ -165,7 +165,7 @@ export const plans = [
       { label: "Onboarding y migración asistida", included: true },
       { label: "Soporte prioritario dedicado", included: true },
       { label: "Reportes consolidados de organización", included: true },
-      { label: "Flowy entrenado con tu negocio", included: true },
+      { label: "Flowy entrenado con tu negocio (beta)", included: true },
     ],
   },
 ];

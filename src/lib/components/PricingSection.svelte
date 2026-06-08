@@ -5,7 +5,6 @@
     billingCycles,
     whatsappPackages,
     perks,
-    FLOWY_BETA_BADGE,
     taxRates,
     PRICES_INCLUDE_TAX,
     getPlanPrice,
@@ -17,8 +16,6 @@
   let selectedCycle = billingCycles[1]; // trimestral
   let withWhatsapp = true;
 
-  $: selfServePlans = plans.filter((p) => !p.quoteBased);
-  $: enterprisePlan = plans.find((p) => p.quoteBased);
 
   /** @type {Record<string, string>} */
   const taxLabels = { PE: "IGV", MX: "IVA", US: "" };
@@ -95,17 +92,32 @@
         {/each}
       </div>
 
-      <button
-        class="addon-toggle"
-        class:active={withWhatsapp}
-        aria-pressed={withWhatsapp}
-        on:click={toggleWhatsapp}
-      >
-        <span class="addon-switch" aria-hidden="true">
-          <span class="addon-knob"></span>
+      <div class="addon-group">
+        <span class="addon-group-label" aria-hidden="true">
+          <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
+          </svg>
+          WhatsApp
         </span>
-        <span class="addon-label">Recordatorios automáticos vía WhatsApp</span>
-      </button>
+        <div class="addon-tabs" role="group" aria-label="Modo de WhatsApp">
+          <button
+            class="addon-tab"
+            class:active={!withWhatsapp}
+            aria-pressed={!withWhatsapp}
+            on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
+          >
+            Manual
+          </button>
+          <button
+            class="addon-tab"
+            class:active={withWhatsapp}
+            aria-pressed={withWhatsapp}
+            on:click={() => { if (!withWhatsapp) toggleWhatsapp(); }}
+          >
+            Recordatorio automático
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Country selector (dropdown) -->
@@ -145,21 +157,20 @@
   <!-- Plans grid -->
   <div class="plans-grid" aria-live="polite" aria-atomic="true">
     {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
-      {#each selfServePlans as plan}
+      {#each plans as plan}
         {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
         <article
           class="plan-card"
           class:highlighted={plan.highlight}
+          class:enterprise={plan.quoteBased}
           aria-label="Plan {plan.name}"
         >
           <div class="badge-stack">
             {#if plan.highlight}
               <div class="badge badge-popular" aria-label="Plan más popular">Más popular</div>
             {/if}
-            {#if plan.flowyBeta}
-              <div class="badge badge-flowy" aria-label="Incluye Flowy en beta">
-                {FLOWY_BETA_BADGE.label} <span class="badge-tag">{FLOWY_BETA_BADGE.tag}</span>
-              </div>
+            {#if plan.quoteBased}
+              <div class="badge badge-enterprise" aria-label="Plan a medida">Para cadenas</div>
             {/if}
           </div>
 
@@ -180,20 +191,26 @@
             </div>
           </div>
 
-          <div class="plan-price" aria-label="Precio mensual">
-            <span class="price-amount">{formatPrice(price ?? 0, selectedCountry.code)}</span>
-            <span class="price-period">/mes</span>
-            {#if taxInline}
-              <span class="price-tax">{taxInline}</span>
+          {#if plan.quoteBased}
+            <div class="plan-price plan-price--quote" aria-label="Precio bajo evaluación">
+              <span class="price-quote">Bajo evaluación</span>
+            </div>
+          {:else}
+            <div class="plan-price" aria-label="Precio mensual">
+              <span class="price-amount">{formatPrice(price ?? 0, selectedCountry.code)}</span>
+              <span class="price-period">/mes</span>
+              {#if taxInline}
+                <span class="price-tax">{taxInline}</span>
+              {/if}
+            </div>
+            {#if withWhatsapp && plan.whatsappAuto}
+              <p class="price-breakdown">
+                Incluye <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes
+              </p>
             {/if}
-          </div>
-          {#if withWhatsapp && plan.whatsappAuto}
-            <p class="price-breakdown">
-              Incluye <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes
-            </p>
-          {/if}
-          {#if plan.freeTrial}
-            <p class="free-trial">Empieza gratis · sin tarjeta de crédito</p>
+            {#if plan.freeTrial}
+              <p class="free-trial">Empieza gratis · sin tarjeta de crédito</p>
+            {/if}
           {/if}
 
           <ul class="features-list" aria-label="Características incluidas">
@@ -202,30 +219,32 @@
                 <span class="feature-icon" aria-hidden="true">
                   {feature.included ? "✓" : "✕"}
                 </span>
-                <span>{feature.label}</span>
+                <span>
+                  {feature.label}{#if feature.included && feature.extraCost}<span class="extra-cost"> (+{formatPrice(feature.extraCost[selectedCountry.code], selectedCountry.code)}/sede)</span>{/if}
+                </span>
               </li>
             {/each}
           </ul>
 
           <a
-            href={whatsappLink}
+            href={plan.quoteBased ? enterpriseLink : whatsappLink}
             class="cta-button"
-            class:cta-primary={plan.highlight}
-            class:cta-secondary={!plan.highlight}
+            class:cta-primary={plan.highlight || plan.quoteBased}
+            class:cta-secondary={!plan.highlight && !plan.quoteBased}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Contratar plan {plan.name}"
+            aria-label={plan.quoteBased ? "Hablar con el equipo de Flow Enterprise" : `Contratar plan ${plan.name}`}
             on:click={() => {
               window.gtag?.('event', 'price_click', {
                 event_category: 'engagement',
                 event_label: `plan_${plan.id}_button`,
-                cycle: selectedCycle.id,
-                with_whatsapp: withWhatsapp,
+                cycle: plan.quoteBased ? null : selectedCycle.id,
+                with_whatsapp: plan.quoteBased ? null : withWhatsapp,
                 value: 1
               });
             }}
           >
-            Empezar ahora
+            {plan.quoteBased ? "Hablemos" : "Empezar ahora"}
           </a>
         </article>
       {/each}
@@ -274,47 +293,6 @@
     </p>
   </div>
 
-  <!-- Enterprise band -->
-  {#if enterprisePlan}
-    <aside class="enterprise-band" aria-label="Plan Enterprise">
-      <div class="enterprise-content">
-        <div class="enterprise-meta">
-          <span class="enterprise-eyebrow">Para cadenas y marcas</span>
-          <h3 class="enterprise-title">{enterprisePlan.name}</h3>
-          <p class="enterprise-tagline">{enterprisePlan.tagline}</p>
-        </div>
-
-        <ul class="enterprise-features">
-          {#each enterprisePlan.features as feature}
-            <li>
-              <span class="feature-icon" aria-hidden="true">✓</span>
-              <span>{feature.label}</span>
-            </li>
-          {/each}
-        </ul>
-
-        <div class="enterprise-cta">
-          <span class="enterprise-price">Bajo evaluación</span>
-          <a
-            href={enterpriseLink}
-            class="cta-button cta-primary"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Hablar con el equipo de Flow Enterprise"
-            on:click={() => {
-              window.gtag?.('event', 'price_click', {
-                event_category: 'engagement',
-                event_label: 'plan_enterprise_button',
-                value: 1
-              });
-            }}
-          >
-            Hablemos
-          </a>
-        </div>
-      </div>
-    </aside>
-  {/if}
 </section>
 
 <style>
@@ -514,66 +492,65 @@
     gap: 0.6rem;
   }
 
-  /* ─── Add-on toggle (inline) ─────────────────────────────── */
-  .addon-toggle {
+  /* ─── Add-on tabs (segmented) ────────────────────────────── */
+  .addon-group {
     display: inline-flex;
     align-items: center;
-    gap: 0.55rem;
-    padding: 0.45rem 0.9rem;
-    min-height: 40px;
-    border-radius: 9999px;
-    border: 0.5px solid rgba(255,255,255,0.1);
+    gap: 0.5rem;
+  }
+  .addon-group-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.01em;
+  }
+  .wa-icon {
+    width: 16px;
+    height: 16px;
+    color: #25D366;
+    flex-shrink: 0;
+  }
+  .addon-tabs {
+    display: inline-flex;
+    gap: 0.25rem;
     background: rgba(255,255,255,0.04);
-    color: rgba(255,255,255,0.7);
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s, color 0.2s;
-    font: inherit;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 9999px;
+    padding: 0.3rem;
     backdrop-filter: blur(8px);
   }
-  .addon-toggle:hover {
-    border-color: rgba(1,245,158,0.3);
-    background: rgba(255,255,255,0.06);
-    color: #fff;
-  }
-  .addon-toggle.active {
-    border-color: rgba(1,245,158,0.5);
-    background: rgba(1,245,158,0.08);
-    color: #fff;
-  }
-  .addon-switch {
-    width: 32px;
-    height: 18px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.15);
-    position: relative;
-    flex-shrink: 0;
-    transition: background 0.2s;
-  }
-  .addon-toggle.active .addon-switch { background: #01f59e; }
-  .addon-knob {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #fff;
-    transition: transform 0.2s;
-  }
-  .addon-toggle.active .addon-knob { transform: translateX(14px); }
-  .addon-label {
-    font-size: 0.78rem;
+  .addon-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.95rem;
+    min-height: 32px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 0.75rem;
     font-weight: 600;
-    line-height: 1.2;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
     white-space: nowrap;
+  }
+  .addon-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .addon-tab.active {
+    background: #01f59e;
+    color: #09090f;
+    box-shadow: 0 0 20px rgba(1,245,158,0.3);
   }
 
   /* ─── Plans grid ─────────────────────────────────────────── */
   .plans-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.25rem;
-    max-width: 1100px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    max-width: 1280px;
     margin: 0 auto 4rem;
     align-items: stretch;
   }
@@ -638,6 +615,31 @@
       inset 0 1px 0 rgba(1,245,158,0.25),
       inset 0 -1px 0 rgba(0,0,0,0.1);
   }
+  .plan-card.enterprise {
+    background: linear-gradient(
+      145deg,
+      rgba(83,29,216,0.18) 0%,
+      rgba(83,29,216,0.05) 60%,
+      rgba(49,104,244,0.04) 100%
+    );
+    border-color: rgba(83,29,216,0.35);
+    border-top-color: rgba(203,182,255,0.45);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.1),
+      0 20px 60px rgba(0,0,0,0.3),
+      0 0 80px -16px rgba(83,29,216,0.4),
+      inset 0 1px 0 rgba(203,182,255,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
+  .plan-card.enterprise:hover {
+    border-color: rgba(83,29,216,0.55);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.1),
+      0 28px 72px rgba(0,0,0,0.35),
+      0 0 100px -10px rgba(83,29,216,0.5),
+      inset 0 1px 0 rgba(203,182,255,0.25),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+  }
 
   /* ─── Badges ─────────────────────────────────────────────── */
   .badge-stack {
@@ -663,24 +665,10 @@
     color: #09090f;
     box-shadow: 0 4px 16px rgba(1,245,158,0.35);
   }
-  .badge-flowy {
-    background: rgba(83,29,216,0.18);
-    border: 0.5px solid rgba(83,29,216,0.45);
-    color: #cbb6ff;
-    text-transform: none;
-    letter-spacing: normal;
-    font-size: 0.68rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-  }
-  .badge-tag {
-    font-size: 0.55rem;
-    text-transform: uppercase;
-    padding: 0.05rem 0.35rem;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.12);
-    letter-spacing: 0.08em;
+  .badge-enterprise {
+    background: linear-gradient(135deg, #531DD8 0%, #3168F4 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(83,29,216,0.45);
   }
   .badge-sm {
     font-size: 0.6rem;
@@ -754,6 +742,17 @@
     color: rgba(255,255,255,0.4);
     font-weight: 500;
   }
+  .plan-price--quote {
+    align-items: center;
+  }
+  .price-quote {
+    font-family: 'Epoch', 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #cbb6ff;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
   .price-tax {
     margin-left: auto;
     font-size: 0.65rem;
@@ -810,6 +809,7 @@
   }
   .feature-item:not(.excluded) .feature-icon { color: #01f59e; }
   .feature-item.excluded .feature-icon { color: rgba(255,255,255,0.2); }
+  .extra-cost { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
 
   /* ─── CTA button ─────────────────────────────────────────── */
   .cta-button {
@@ -923,92 +923,6 @@
     margin-top: 0.75rem;
   }
 
-  /* ─── Enterprise band ────────────────────────────────────── */
-  .enterprise-band {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1.75rem;
-    border-radius: 24px;
-    background: linear-gradient(
-      135deg,
-      rgba(83,29,216,0.18) 0%,
-      rgba(1,245,158,0.06) 50%,
-      rgba(255,255,255,0.04) 100%
-    );
-    border: 0.5px solid rgba(255,255,255,0.1);
-    border-top: 1px solid rgba(255,255,255,0.18);
-    box-shadow:
-      0 16px 48px rgba(0,0,0,0.28),
-      inset 0 1px 0 rgba(255,255,255,0.1);
-  }
-  .enterprise-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    align-items: center;
-  }
-  @media (min-width: 900px) {
-    .enterprise-content {
-      grid-template-columns: 1.2fr 1.4fr auto;
-      gap: 2rem;
-    }
-  }
-  .enterprise-meta { display: flex; flex-direction: column; gap: 0.5rem; }
-  .enterprise-eyebrow {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #cbb6ff;
-  }
-  .enterprise-title {
-    font-family: 'Epoch', 'Syne', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #fff;
-    margin: 0;
-  }
-  .enterprise-tagline {
-    font-size: 0.9rem;
-    color: rgba(255,255,255,0.6);
-    margin: 0;
-    line-height: 1.5;
-  }
-  .enterprise-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.45rem 1rem;
-  }
-  .enterprise-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    color: rgba(255,255,255,0.75);
-    line-height: 1.45;
-  }
-  .enterprise-features .feature-icon { color: #01f59e; }
-  .enterprise-cta {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.65rem;
-    min-width: 180px;
-  }
-  .enterprise-price {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    padding: 0.4rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.06);
-    border: 0.5px solid rgba(255,255,255,0.12);
-  }
-
   /* ─── Responsive ─────────────────────────────────────────── */
   @media (max-width: 640px) {
     .plans-grid { grid-template-columns: 1fr; }
@@ -1016,6 +930,6 @@
     .perks-bar { gap: 0.5rem 1rem; }
     .badge-stack { flex-direction: column; gap: 0.25rem; }
     .controls-row { flex-direction: column; gap: 0.5rem; }
-    .addon-label { white-space: normal; text-align: center; }
+    .addon-group { flex-direction: column; gap: 0.4rem; }
   }
 </style>
