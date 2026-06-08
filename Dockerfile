@@ -1,5 +1,5 @@
 # Etapa 1: compilamos la app de SvelteKit
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 WORKDIR /app
 
 ENV PNPM_HOME="/pnpm"
