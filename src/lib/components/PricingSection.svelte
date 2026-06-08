@@ -203,13 +203,20 @@
                 <span class="price-tax">{taxInline}</span>
               {/if}
             </div>
-            {#if withWhatsapp && plan.whatsappAuto}
-              <p class="price-breakdown">
-                Incluye <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes
-              </p>
-            {/if}
-            {#if plan.freeTrial}
-              <p class="free-trial">Empieza gratis · sin tarjeta de crédito</p>
+            {#if plan.whatsappAuto}
+              {#if withWhatsapp}
+                <div class="whatsapp-chip whatsapp-chip--on" aria-label="Incluye recordatorios automáticos">
+                  <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
+                  </svg>
+                  <span>Hasta <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes</span>
+                </div>
+              {:else}
+                <div class="whatsapp-chip whatsapp-chip--off" aria-label="Solo mensajes manuales">
+                  <span class="chip-dot" aria-hidden="true"></span>
+                  <span>Sin recordatorios automáticos</span>
+                </div>
+              {/if}
             {/if}
           {/if}
 
@@ -765,17 +772,38 @@
     color: rgba(255,255,255,0.55);
     border: 0.5px solid rgba(255,255,255,0.08);
   }
-  .price-breakdown {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.45);
-    margin: -0.5rem 0 0;
-    line-height: 1.5;
-  }
-  .free-trial {
-    margin: -0.25rem 0 0;
-    font-size: 0.72rem;
-    color: #01f59e;
+  .whatsapp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-top: -0.4rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.78rem;
     font-weight: 600;
+    line-height: 1.2;
+    border: 0.5px solid transparent;
+    transition: background 0.25s, border-color 0.25s, color 0.25s;
+    animation: fadePrice 0.3s ease;
+  }
+  .whatsapp-chip--on {
+    background: rgba(37,211,102,0.12);
+    border-color: rgba(37,211,102,0.45);
+    color: #25D366;
+  }
+  .whatsapp-chip--on .wa-icon { color: #25D366; }
+  .whatsapp-chip--on strong { color: #fff; font-weight: 800; }
+  .whatsapp-chip--off {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.45);
+  }
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    flex-shrink: 0;
   }
   @keyframes fadePrice {
     from { opacity: 0; transform: translateY(4px); }

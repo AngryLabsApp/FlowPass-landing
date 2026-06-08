@@ -83,11 +83,11 @@ export const plans = [
       trimestral: { PE: 180, MX: 900, US: 55 },
       anual: { PE: 160, MX: 800, US: 50 },
     },
-    whatsappAuto: { includedReminders: 50 },
+    whatsappAuto: { includedReminders: 100 },
     features: [
       { label: "Gestión de alumnos, pagos y asistencia", included: true },
       { label: "Acceso QR", included: true },
-      { label: "Conexión oficial a WhatsApp (mensajes manuales)", included: true },
+      { label: "WhatsApp manual · 100 mensajes/mes", included: true },
       { label: "1 Admin + 1 Colaborador", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
@@ -113,12 +113,13 @@ export const plans = [
       trimestral: { PE: 270, MX: 1350, US: 80 },
       anual: { PE: 240, MX: 1200, US: 75 },
     },
-    whatsappAuto: { includedReminders: 150 },
+    whatsappAuto: { includedReminders: 200 },
     features: [
       { label: "Todo lo de Flow Start", included: true },
+      { label: "WhatsApp manual · 200 mensajes/mes", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
-      { label: "1 Admin + 3 Colaboradores", included: true },
+      { label: "2 Admin + 3 Colaboradores", included: true },
       { label: "Multi sede", included: true, extraCost: { PE: 50, MX: 250, US: 15 } },
     ],
   },
@@ -144,9 +145,10 @@ export const plans = [
     whatsappAuto: { includedReminders: 300 },
     features: [
       { label: "Todo lo de Flow Pro", included: true },
+      { label: "WhatsApp manual · 300 mensajes/mes", included: true },
       { label: "Multi sede incluida", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
-      { label: "1 Admin + 6 Colaboradores", included: true },
+      { label: "3 Admin + 6 Colaboradores", included: true },
     ],
   },
   {
@@ -160,6 +162,7 @@ export const plans = [
     quoteBased: true, // la card muestra "Bajo evaluación" y CTA "Hablemos"
     features: [
       { label: "Todo lo de Flow Max", included: true },
+      { label: "WhatsApp manual ilimitado", included: true },
       { label: "Sedes ilimitadas", included: true },
       { label: "Desarrollo y personalización a medida", included: true },
       { label: "Onboarding y migración asistida", included: true },
