@@ -2,12 +2,30 @@
   import {
     countries,
     plans,
+    billingCycles,
     whatsappPackages,
     perks,
+    FLOWY_BETA_BADGE,
+    taxRates,
+    PRICES_INCLUDE_TAX,
+    getPlanPrice,
+    formatPrice,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
 
   let selectedCountry = countries[0];
+  let selectedCycle = billingCycles[1]; // trimestral
+  let withWhatsapp = true;
+
+  $: selfServePlans = plans.filter((p) => !p.quoteBased);
+  $: enterprisePlan = plans.find((p) => p.quoteBased);
+
+  /** @type {Record<string, string>} */
+  const taxLabels = { PE: "IGV", MX: "IVA", US: "" };
+  $: taxRate = taxRates[selectedCountry.code] ?? 0;
+  $: taxLabel = taxLabels[selectedCountry.code] ?? "";
+  $: taxInline =
+    PRICES_INCLUDE_TAX && taxRate > 0 && taxLabel ? `${taxLabel} incluido` : "";
 
   /**
    * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
@@ -22,15 +40,28 @@
   }
 
   /**
-   * @param {number} price
-   * @param {string} currency
+   * @param {{ id: string; label: string; discount: number; note: string; }} cycle
    */
-  function formatPrice(price, currency) {
-    if (price === 0) return `${currency} —`;
-    return `${currency} ${price.toLocaleString("es")}`;
+  function selectCycle(cycle) {
+    selectedCycle = cycle;
+    window.gtag?.('event', 'price_click', {
+      event_category: 'engagement',
+      event_label: `cycle_${cycle.id}`,
+      value: 1
+    });
+  }
+
+  function toggleWhatsapp() {
+    withWhatsapp = !withWhatsapp;
+    window.gtag?.('event', 'price_click', {
+      event_category: 'engagement',
+      event_label: `whatsapp_auto_${withWhatsapp ? 'on' : 'off'}`,
+      value: 1
+    });
   }
 
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+  const enterpriseLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Estoy%20interesado%20en%20Flow%20Enterprise%20para%20mi%20cadena.`;
 </script>
 
 <section
@@ -46,19 +77,58 @@
       Elige el plan que mejor se adapte a tu tamaño. Sin sorpresas, sin contratos.
     </p>
 
-    <!-- Country selector -->
-    <div class="country-selector" role="group" aria-label="Seleccionar país">
-      {#each countries as country}
-        <button
-          class="country-pill"
-          class:active={selectedCountry.code === country.code}
-          aria-pressed={selectedCountry.code === country.code}
-          on:click={() => selectCountry(country)}
+    <!-- Cycle + WhatsApp toggle (same row) -->
+    <div class="controls-row">
+      <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
+        {#each billingCycles as cycle}
+          <button
+            class="cycle-pill"
+            class:active={selectedCycle.id === cycle.id}
+            aria-pressed={selectedCycle.id === cycle.id}
+            on:click={() => selectCycle(cycle)}
+          >
+            <span>{cycle.label}</span>
+            {#if cycle.discount > 0}
+              <span class="cycle-save">Ahorra ~{Math.round(cycle.discount * 100)}%</span>
+            {/if}
+          </button>
+        {/each}
+      </div>
+
+      <button
+        class="addon-toggle"
+        class:active={withWhatsapp}
+        aria-pressed={withWhatsapp}
+        on:click={toggleWhatsapp}
+      >
+        <span class="addon-switch" aria-hidden="true">
+          <span class="addon-knob"></span>
+        </span>
+        <span class="addon-label">Recordatorios automáticos vía WhatsApp</span>
+      </button>
+    </div>
+
+    <!-- Country selector (dropdown) -->
+    <div class="country-select-wrap">
+      <label class="country-select-label" for="country-select">País</label>
+      <div class="country-select-control">
+        <span class="country-select-flag" aria-hidden="true">{selectedCountry.flag}</span>
+        <select
+          id="country-select"
+          class="country-select"
+          value={selectedCountry.code}
+          on:change={(e) => {
+            const next = countries.find((c) => c.code === e.currentTarget.value);
+            if (next) selectCountry(next);
+          }}
+          aria-label="Seleccionar país"
         >
-          <span class="flag" aria-hidden="true">{country.flag}</span>
-          <span>{country.label}</span>
-        </button>
-      {/each}
+          {#each countries as country}
+            <option value={country.code}>{country.label}</option>
+          {/each}
+        </select>
+        <span class="country-select-caret" aria-hidden="true">▾</span>
+      </div>
     </div>
   </div>
 
@@ -74,16 +144,24 @@
 
   <!-- Plans grid -->
   <div class="plans-grid" aria-live="polite" aria-atomic="true">
-    {#key selectedCountry.code}
-      {#each plans as plan}
+    {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
+      {#each selfServePlans as plan}
+        {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
         <article
           class="plan-card"
           class:highlighted={plan.highlight}
           aria-label="Plan {plan.name}"
         >
-          {#if plan.highlight}
-            <div class="badge" aria-label="Plan más popular">Más popular</div>
-          {/if}
+          <div class="badge-stack">
+            {#if plan.highlight}
+              <div class="badge badge-popular" aria-label="Plan más popular">Más popular</div>
+            {/if}
+            {#if plan.flowyBeta}
+              <div class="badge badge-flowy" aria-label="Incluye Flowy en beta">
+                {FLOWY_BETA_BADGE.label} <span class="badge-tag">{FLOWY_BETA_BADGE.tag}</span>
+              </div>
+            {/if}
+          </div>
 
           <div class="plan-header">
             <h3 class="plan-name">{plan.name}</h3>
@@ -93,22 +171,30 @@
                 <span class="range-icon" aria-hidden="true">🟢</span>
                 {plan.activeStudents}
               </p>
-              <p class="plan-range plan-range--registered">
-                <span class="range-icon" aria-hidden="true">📋</span>
-                {plan.registeredStudents}
-              </p>
+              {#if plan.registeredStudents}
+                <p class="plan-range plan-range--registered">
+                  <span class="range-icon" aria-hidden="true">📋</span>
+                  {plan.registeredStudents}
+                </p>
+              {/if}
             </div>
           </div>
 
           <div class="plan-price" aria-label="Precio mensual">
-            <span class="price-amount">
-              {formatPrice(
-                plan.prices[selectedCountry.code],
-                selectedCountry.currency,
-              )}
-            </span>
+            <span class="price-amount">{formatPrice(price ?? 0, selectedCountry.code)}</span>
             <span class="price-period">/mes</span>
+            {#if taxInline}
+              <span class="price-tax">{taxInline}</span>
+            {/if}
           </div>
+          {#if withWhatsapp && plan.whatsappAuto}
+            <p class="price-breakdown">
+              Incluye <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes
+            </p>
+          {/if}
+          {#if plan.freeTrial}
+            <p class="free-trial">Empieza gratis · sin tarjeta de crédito</p>
+          {/if}
 
           <ul class="features-list" aria-label="Características incluidas">
             {#each plan.features as feature}
@@ -116,9 +202,7 @@
                 <span class="feature-icon" aria-hidden="true">
                   {feature.included ? "✓" : "✕"}
                 </span>
-                <span>
-                  {feature.label}{#if feature.included && feature.extraCost}<span class="extra-cost"> (+{selectedCountry.currency}{feature.extraCost[selectedCountry.code]}/sede)</span>{/if}
-                </span>
+                <span>{feature.label}</span>
               </li>
             {/each}
           </ul>
@@ -134,7 +218,9 @@
             on:click={() => {
               window.gtag?.('event', 'price_click', {
                 event_category: 'engagement',
-                event_label: `plan_${plan.name.toLowerCase()}_button`,
+                event_label: `plan_${plan.id}_button`,
+                cycle: selectedCycle.id,
+                with_whatsapp: withWhatsapp,
                 value: 1
               });
             }}
@@ -149,10 +235,10 @@
   <!-- WhatsApp packages -->
   <div class="wa-section">
     <div class="wa-header">
-      <h3 class="wa-title">WhatsApp masivo — cobra sin perseguir a nadie.</h3>
+      <h3 class="wa-title">¿Necesitas más recordatorios? Suma un pack.</h3>
       <p class="wa-subtitle">
-        Envía recordatorios de pago a todos tus alumnos a la vez. Suma un
-        paquete a tu plan y listo.
+        Si superas los recordatorios automáticos incluidos en tu plan, agrega
+        un paquete adicional al mes.
       </p>
     </div>
 
@@ -163,16 +249,6 @@
             class="wa-card"
             class:highlighted={pkg.highlight}
             aria-label="Paquete WhatsApp {pkg.name}"
-            on:click={() => {
-              window.gtag?.('event', 'price_click', {
-                event_category: 'engagement',
-                event_label: `whatsapp_${pkg.name.toLowerCase().replace(/\s+/g, '_')}_button`,
-                package_name: pkg.name,
-                package_price: pkg.prices[selectedCountry.code],
-                country: selectedCountry.code,
-                value: pkg.prices[selectedCountry.code] || 0
-              });
-            }}
           >
             {#if pkg.highlight}
               <div class="badge badge-sm" aria-label="Paquete más popular">
@@ -181,13 +257,10 @@
             {/if}
             <p class="wa-name">{pkg.name}</p>
             <p class="wa-messages">
-              <strong>{pkg.messages.toLocaleString("es")}</strong> mensajes/mes
+              <strong>{pkg.reminders.toLocaleString("es")}</strong> recordatorios/mes
             </p>
             <p class="wa-price">
-              {formatPrice(
-                pkg.prices[selectedCountry.code],
-                selectedCountry.currency,
-              )}
+              {formatPrice(pkg.prices[selectedCountry.code], selectedCountry.code)}
               <span class="price-period">/mes</span>
             </p>
           </article>
@@ -196,15 +269,57 @@
     </div>
 
     <p class="wa-note">
-      * Multi sede disponible como módulo adicional. Consulta condiciones.
+      * El costo de la API oficial de WhatsApp es variable, por eso los packs
+      tienen precio fijo independiente del ciclo de facturación.
     </p>
   </div>
+
+  <!-- Enterprise band -->
+  {#if enterprisePlan}
+    <aside class="enterprise-band" aria-label="Plan Enterprise">
+      <div class="enterprise-content">
+        <div class="enterprise-meta">
+          <span class="enterprise-eyebrow">Para cadenas y marcas</span>
+          <h3 class="enterprise-title">{enterprisePlan.name}</h3>
+          <p class="enterprise-tagline">{enterprisePlan.tagline}</p>
+        </div>
+
+        <ul class="enterprise-features">
+          {#each enterprisePlan.features as feature}
+            <li>
+              <span class="feature-icon" aria-hidden="true">✓</span>
+              <span>{feature.label}</span>
+            </li>
+          {/each}
+        </ul>
+
+        <div class="enterprise-cta">
+          <span class="enterprise-price">Bajo evaluación</span>
+          <a
+            href={enterpriseLink}
+            class="cta-button cta-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Hablar con el equipo de Flow Enterprise"
+            on:click={() => {
+              window.gtag?.('event', 'price_click', {
+                event_category: 'engagement',
+                event_label: 'plan_enterprise_button',
+                value: 1
+              });
+            }}
+          >
+            Hablemos
+          </a>
+        </div>
+      </div>
+    </aside>
+  {/if}
 </section>
 
 <style>
   /* ─── Layout ─────────────────────────────────────────────── */
   .pricing-section {
-    
     padding: 3rem 1.25rem;
     color: #fff;
   }
@@ -260,8 +375,8 @@
     margin: 0 0 2rem;
   }
 
-  /* ─── Country selector ───────────────────────────────────── */
-  .country-selector {
+  /* ─── Cycle selector ─────────────────────────────────────── */
+  .cycle-selector {
     display: inline-flex;
     gap: 0.25rem;
     background: rgba(255,255,255,0.04);
@@ -270,12 +385,11 @@
     padding: 0.3rem;
     backdrop-filter: blur(8px);
   }
-
-  .country-pill {
+  .cycle-pill {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    padding: 0.35rem 0.7rem;
+    gap: 0.4rem;
+    padding: 0.4rem 0.85rem;
     min-height: 32px;
     border-radius: 9999px;
     border: none;
@@ -287,14 +401,90 @@
     transition: background 0.2s, color 0.2s;
     white-space: nowrap;
   }
-  .country-pill:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .country-pill.active {
+  .cycle-pill:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .cycle-pill.active {
+    background: #fff;
+    color: #09090f;
+  }
+  .cycle-save {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
     background: #01f59e;
     color: #09090f;
-    box-shadow: 0 0 20px rgba(1,245,158,0.3);
+    letter-spacing: 0.02em;
+  }
+  .cycle-pill:not(.active) .cycle-save {
+    background: rgba(1,245,158,0.15);
+    color: #01f59e;
   }
 
-  .flag { font-size: 0.9rem; line-height: 1; }
+  /* ─── Country select (dropdown) ──────────────────────────── */
+  .country-select-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.9rem;
+  }
+  .country-select-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.02em;
+  }
+  .country-select-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .country-select-control:hover {
+    border-color: rgba(1,245,158,0.35);
+    background: rgba(255,255,255,0.07);
+  }
+  .country-select-control:focus-within {
+    border-color: #01f59e;
+    box-shadow: 0 0 0 3px rgba(1,245,158,0.15);
+  }
+  .country-select-flag {
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .country-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding-right: 1.25rem;
+    cursor: pointer;
+    min-width: 150px;
+  }
+  .country-select option {
+    background: #09090f;
+    color: #fff;
+  }
+  .country-select-caret {
+    position: absolute;
+    right: 0.7rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.5);
+  }
 
   /* ─── Perks bar ──────────────────────────────────────────── */
   .perks-bar {
@@ -303,7 +493,7 @@
     justify-content: center;
     gap: 0.75rem 1.5rem;
     max-width: 860px;
-    margin: 0 auto 2.5rem;
+    margin: 0 auto 1.5rem;
   }
   .perk-item {
     display: flex;
@@ -314,6 +504,69 @@
     font-weight: 500;
   }
   .perk-icon { color: #01f59e; font-weight: 700; }
+
+  /* ─── Controls row (cycle + toggle) ──────────────────────── */
+  .controls-row {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  /* ─── Add-on toggle (inline) ─────────────────────────────── */
+  .addon-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.9rem;
+    min-height: 40px;
+    border-radius: 9999px;
+    border: 0.5px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+    font: inherit;
+    backdrop-filter: blur(8px);
+  }
+  .addon-toggle:hover {
+    border-color: rgba(1,245,158,0.3);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+  }
+  .addon-toggle.active {
+    border-color: rgba(1,245,158,0.5);
+    background: rgba(1,245,158,0.08);
+    color: #fff;
+  }
+  .addon-switch {
+    width: 32px;
+    height: 18px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.15);
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .addon-toggle.active .addon-switch { background: #01f59e; }
+  .addon-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+  }
+  .addon-toggle.active .addon-knob { transform: translateX(14px); }
+  .addon-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
 
   /* ─── Plans grid ─────────────────────────────────────────── */
   .plans-grid {
@@ -386,14 +639,17 @@
       inset 0 -1px 0 rgba(0,0,0,0.1);
   }
 
-  /* ─── Badge ──────────────────────────────────────────────── */
-  .badge {
+  /* ─── Badges ─────────────────────────────────────────────── */
+  .badge-stack {
     position: absolute;
     top: -0.85rem;
     left: 50%;
     transform: translateX(-50%);
-    background: #01f59e;
-    color: #09090f;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+  }
+  .badge {
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -401,12 +657,40 @@
     padding: 0.3rem 0.85rem;
     border-radius: 9999px;
     white-space: nowrap;
+  }
+  .badge-popular {
+    background: #01f59e;
+    color: #09090f;
     box-shadow: 0 4px 16px rgba(1,245,158,0.35);
+  }
+  .badge-flowy {
+    background: rgba(83,29,216,0.18);
+    border: 0.5px solid rgba(83,29,216,0.45);
+    color: #cbb6ff;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: 0.68rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .badge-tag {
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    padding: 0.05rem 0.35rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    letter-spacing: 0.08em;
   }
   .badge-sm {
     font-size: 0.6rem;
     padding: 0.2rem 0.6rem;
+    position: absolute;
     top: -0.7rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #01f59e;
+    color: #09090f;
   }
 
   /* ─── Plan header ────────────────────────────────────────── */
@@ -455,7 +739,6 @@
     display: flex;
     align-items: baseline;
     gap: 0.35rem;
-    padding-top: 0.25rem;
     border-top: 0.5px solid rgba(255,255,255,0.06);
     padding-top: 1rem;
   }
@@ -470,6 +753,30 @@
     font-size: 0.875rem;
     color: rgba(255,255,255,0.4);
     font-weight: 500;
+  }
+  .price-tax {
+    margin-left: auto;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.55);
+    border: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .price-breakdown {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.45);
+    margin: -0.5rem 0 0;
+    line-height: 1.5;
+  }
+  .free-trial {
+    margin: -0.25rem 0 0;
+    font-size: 0.72rem;
+    color: #01f59e;
+    font-weight: 600;
   }
   @keyframes fadePrice {
     from { opacity: 0; transform: translateY(4px); }
@@ -503,7 +810,6 @@
   }
   .feature-item:not(.excluded) .feature-icon { color: #01f59e; }
   .feature-item.excluded .feature-icon { color: rgba(255,255,255,0.2); }
-  .extra-cost { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
 
   /* ─── CTA button ─────────────────────────────────────────── */
   .cta-button {
@@ -542,7 +848,7 @@
   /* ─── WhatsApp section ───────────────────────────────────── */
   .wa-section {
     max-width: 1100px;
-    margin: 0 auto;
+    margin: 0 auto 4rem;
   }
   .wa-header { text-align: center; margin-bottom: 1.75rem; }
   .wa-title {
@@ -581,7 +887,6 @@
     flex-direction: column;
     gap: 0.35rem;
     transition: border-color 0.3s, transform 0.3s, background 0.3s;
-    cursor: pointer;
   }
   .wa-card:hover {
     border-color: rgba(1,245,158,0.2);
@@ -618,10 +923,99 @@
     margin-top: 0.75rem;
   }
 
+  /* ─── Enterprise band ────────────────────────────────────── */
+  .enterprise-band {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.75rem;
+    border-radius: 24px;
+    background: linear-gradient(
+      135deg,
+      rgba(83,29,216,0.18) 0%,
+      rgba(1,245,158,0.06) 50%,
+      rgba(255,255,255,0.04) 100%
+    );
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.18);
+    box-shadow:
+      0 16px 48px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .enterprise-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .enterprise-content {
+      grid-template-columns: 1.2fr 1.4fr auto;
+      gap: 2rem;
+    }
+  }
+  .enterprise-meta { display: flex; flex-direction: column; gap: 0.5rem; }
+  .enterprise-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #cbb6ff;
+  }
+  .enterprise-title {
+    font-family: 'Epoch', 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+  }
+  .enterprise-tagline {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6);
+    margin: 0;
+    line-height: 1.5;
+  }
+  .enterprise-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.45rem 1rem;
+  }
+  .enterprise-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.45;
+  }
+  .enterprise-features .feature-icon { color: #01f59e; }
+  .enterprise-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+    min-width: 180px;
+  }
+  .enterprise-price {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    padding: 0.4rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.12);
+  }
+
   /* ─── Responsive ─────────────────────────────────────────── */
   @media (max-width: 640px) {
     .plans-grid { grid-template-columns: 1fr; }
     .wa-grid { grid-template-columns: repeat(2, 1fr); }
     .perks-bar { gap: 0.5rem 1rem; }
+    .badge-stack { flex-direction: column; gap: 0.25rem; }
+    .controls-row { flex-direction: column; gap: 0.5rem; }
+    .addon-label { white-space: normal; text-align: center; }
   }
 </style>
