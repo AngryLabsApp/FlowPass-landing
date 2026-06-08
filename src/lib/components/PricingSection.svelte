@@ -11,14 +11,18 @@
     formatPrice,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
-  import { Sprout, Rocket, Trophy, Building2 } from "@lucide/svelte";
+  import { Sprout, Rocket, Trophy, Zap, Building2 } from "@lucide/svelte";
 
   const planIcons = new Map([
-    ["start", Sprout],
-    ["pro", Rocket],
-    ["max", Trophy],
+    ["pocket", Sprout],
+    ["lite", Rocket],
+    ["full", Trophy],
+    ["ultra", Zap],
     ["enterprise", Building2],
   ]);
+
+  $: selfServePlans = plans.filter((p) => !p.quoteBased);
+  $: enterprisePlan = plans.find((p) => p.quoteBased);
 
   let selectedCountry = countries[0];
   let selectedCycle = billingCycles[1]; // trimestral
@@ -165,7 +169,7 @@
   <!-- Plans grid -->
   <div class="plans-grid" aria-live="polite" aria-atomic="true">
     {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
-      {#each plans as plan}
+      {#each selfServePlans as plan}
         {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
         <article
           class="plan-card"
@@ -183,12 +187,14 @@
           </div>
 
           <div class="plan-header">
-            {#if planIcons.get(plan.id)}
-              <span class="plan-icon" aria-hidden="true">
-                <svelte:component this={planIcons.get(plan.id)} size={28} strokeWidth={1.75} />
-              </span>
-            {/if}
-            <h3 class="plan-name">{plan.name}</h3>
+            <div class="plan-name-row">
+              {#if planIcons.get(plan.id)}
+                <span class="plan-icon" aria-hidden="true">
+                  <svelte:component this={planIcons.get(plan.id)} size={18} strokeWidth={2} />
+                </span>
+              {/if}
+              <h3 class="plan-name">{plan.name}</h3>
+            </div>
             <p class="plan-tagline">{plan.tagline}</p>
             <div class="plan-students">
               <p class="plan-range">
@@ -270,6 +276,76 @@
       {/each}
     {/key}
   </div>
+
+  <!-- Enterprise wide card -->
+  {#if enterprisePlan}
+    <div class="enterprise-row">
+      <article
+        class="plan-card enterprise enterprise-wide"
+        aria-label="Plan {enterprisePlan.name}"
+      >
+        <div class="badge-stack">
+          <div class="badge badge-enterprise" aria-label="Plan a medida">Para cadenas</div>
+        </div>
+
+        <div class="enterprise-wide-grid">
+          <div class="enterprise-wide-left">
+            <div class="plan-header">
+              <div class="plan-name-row">
+                {#if planIcons.get(enterprisePlan.id)}
+                  <span class="plan-icon" aria-hidden="true">
+                    <svelte:component this={planIcons.get(enterprisePlan.id)} size={18} strokeWidth={2} />
+                  </span>
+                {/if}
+                <h3 class="plan-name">{enterprisePlan.name}</h3>
+              </div>
+              <p class="plan-tagline">{enterprisePlan.tagline}</p>
+              <div class="plan-students">
+                <p class="plan-range">
+                  <span class="range-icon" aria-hidden="true">🟢</span>
+                  {enterprisePlan.activeStudents}
+                </p>
+              </div>
+            </div>
+
+            <div class="plan-price plan-price--quote" aria-label="Precio bajo evaluación">
+              <span class="price-quote">Bajo evaluación</span>
+            </div>
+
+            <a
+              href={enterpriseLink}
+              class="cta-button cta-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Hablar con el equipo de Flow Enterprise"
+              on:click={() => {
+                window.gtag?.('event', 'price_click', {
+                  event_category: 'engagement',
+                  event_label: `plan_${enterprisePlan.id}_button`,
+                  cycle: null,
+                  with_whatsapp: null,
+                  value: 1
+                });
+              }}
+            >
+              Hablemos
+            </a>
+          </div>
+
+          <ul class="features-list enterprise-wide-features" aria-label="Características incluidas">
+            {#each enterprisePlan.features as feature}
+              <li class="feature-item" class:excluded={!feature.included}>
+                <span class="feature-icon" aria-hidden="true">
+                  {feature.included ? "✓" : "✕"}
+                </span>
+                <span>{feature.label}</span>
+              </li>
+            {/each}
+          </ul>
+        </div>
+      </article>
+    </div>
+  {/if}
 
   <!-- WhatsApp packages -->
   <div class="wa-section">
@@ -568,11 +644,55 @@
   /* ─── Plans grid ─────────────────────────────────────────── */
   .plans-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     max-width: 1280px;
-    margin: 0 auto 4rem;
+    margin: 0 auto 1.5rem;
     align-items: stretch;
+  }
+  @media (max-width: 1024px) {
+    .plans-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ─── Enterprise wide card ───────────────────────────────── */
+  .enterprise-row {
+    max-width: 1280px;
+    margin: 0 auto 4rem;
+  }
+  .plan-card.enterprise-wide {
+    padding: 2rem 2.25rem;
+  }
+  .enterprise-wide-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    gap: 2.5rem;
+    align-items: stretch;
+  }
+  .enterprise-wide-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .enterprise-wide-left .plan-header { min-height: auto; }
+  .enterprise-wide-left .plan-price { min-height: auto; padding-top: 0.75rem; }
+  .enterprise-wide-left .cta-button { margin-top: auto; }
+  .enterprise-wide-features {
+    border-left: 0.5px solid rgba(255,255,255,0.08);
+    padding-left: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 1.25rem;
+  }
+  @media (max-width: 768px) {
+    .plan-card.enterprise-wide { padding: 1.75rem 1.5rem; }
+    .enterprise-wide-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    .enterprise-wide-features {
+      border-left: none;
+      padding-left: 0;
+      border-top: 0.5px solid rgba(255,255,255,0.08);
+      padding-top: 1.25rem;
+      grid-template-columns: 1fr;
+    }
   }
 
   /* ─── Plan card ──────────────────────────────────────────── */
@@ -708,20 +828,21 @@
     gap: 0.35rem;
     min-height: 7.5rem;
   }
+  .plan-name-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
   .plan-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
     background: rgba(1,245,158,0.1);
     color: #01f59e;
-    margin-bottom: 0.25rem;
-  }
-  .plan-card.highlighted .plan-icon {
-    background: rgba(1,245,158,0.18);
-    color: #01f59e;
+    flex-shrink: 0;
   }
   .plan-card.enterprise .plan-icon {
     background: rgba(83,29,216,0.2);
@@ -1000,5 +1121,6 @@
     .badge-stack { flex-direction: column; gap: 0.25rem; }
     .controls-row { flex-direction: column; gap: 0.5rem; }
     .addon-group { flex-direction: column; gap: 0.4rem; }
+    .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
   }
 </style>
