@@ -83,7 +83,7 @@ export const plans = [
       trimestral: { PE: 165, MX: 820, US: 55 },
       anual:      { PE: 150, MX: 740, US: 50 },
     },
-    whatsappAuto: { includedReminders: 100 },
+    whatsappAuto: { includedReminders: 30 },
     features: [
       { label: "Gestión de alumnos, pagos y asistencia", included: true },
       { label: "Acceso QR", included: true },
@@ -113,7 +113,7 @@ export const plans = [
       trimestral: { PE: 235, MX: 1180, US: 75 },
       anual:      { PE: 210, MX: 1060, US: 65 },
     },
-    whatsappAuto: { includedReminders: 200 },
+    whatsappAuto: { includedReminders: 80 },
     features: [
       { label: "Todo lo de Flow Pocket", included: true },
       { label: "2 usuarios (Admin + apoyo)", included: true },
@@ -141,7 +141,7 @@ export const plans = [
       trimestral: { PE: 325, MX: 1630, US: 100 },
       anual:      { PE: 290, MX: 1460, US: 90 },
     },
-    whatsappAuto: { includedReminders: 300 },
+    whatsappAuto: { includedReminders: 200 },
     features: [
       { label: "Todo lo de Flow Lite", included: true },
       { label: "4 usuarios (Admin + apoyo)", included: true },
@@ -168,7 +168,7 @@ export const plans = [
       trimestral: { PE: 450, MX: 2260, US: 135 },
       anual:      { PE: 405, MX: 2020, US: 120 },
     },
-    whatsappAuto: { includedReminders: 500 },
+    whatsappAuto: { includedReminders: 350 },
     features: [
       { label: "Todo lo de Flow Full", included: true },
       { label: "6 usuarios (Admin + apoyo)", included: true },
@@ -212,7 +212,6 @@ export const whatsappPackages = [
 
 /** @type {string[]} */
 export const perks = [
-  "Empieza gratis, sin tarjeta de crédito",
   "Sin contratos forzosos",
   "Soporte personalizado",
   "Conexión oficial a WhatsApp",

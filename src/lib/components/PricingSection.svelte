@@ -11,7 +11,7 @@
     formatPrice,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
-  import { Sprout, Rocket, Trophy, Zap, Building2 } from "@lucide/svelte";
+  import { Sprout, Rocket, Trophy, Zap, Building2, Flame } from "@lucide/svelte";
   import { onMount } from "svelte";
 
   const planIcons = new Map([
@@ -93,6 +93,19 @@
     });
   }
 
+  /** @param {KeyboardEvent} e */
+  function handleAddonKeydown(e) {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
+      e.preventDefault();
+      toggleWhatsapp();
+      const target = /** @type {HTMLElement} */ (e.currentTarget);
+      const radios = target.querySelectorAll('[role="radio"]');
+      /** @type {HTMLElement | null} */
+      const next = /** @type {HTMLElement} */ (radios[withWhatsapp ? 1 : 0]);
+      next?.focus();
+    }
+  }
+
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
   const enterpriseLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Estoy%20interesado%20en%20Flow%20Enterprise%20para%20mi%20cadena.`;
 </script>
@@ -104,15 +117,8 @@
 >
   <!-- Header -->
   <div class="section-header">
-    <span class="section-eyebrow">Planes</span>
-    <h2 class="section-title">El plan ideal para tu negocio</h2>
-    <p class="section-subtitle">
-      Elige el plan que mejor se adapte a tu tamaño. Sin sorpresas, sin contratos.
-    </p>
-
-    <!-- Country selector (dropdown) -->
-    <div class="country-select-wrap country-select-wrap--top">
-      <label class="country-select-label" for="country-select">País</label>
+    <!-- Country selector (compact, top-right on desktop) -->
+    <div class="country-select-wrap country-select-wrap--floating">
       <div class="country-select-control">
         <span class="country-select-flag" aria-hidden="true">{selectedCountry.flag}</span>
         <select
@@ -133,9 +139,21 @@
       </div>
     </div>
 
-    <!-- Cycle + WhatsApp toggle (same row) -->
-    <div class="controls-row">
+    <span class="section-eyebrow">Planes</span>
+    <h2 class="section-title">El plan ideal para tu negocio</h2>
+    <p class="section-subtitle">
+      Elige el plan que mejor se adapte a tu tamaño. Sin sorpresas, sin contratos.
+    </p>
+
+    <!-- Controls: Cycle (hero) + WhatsApp toggle -->
+    <div class="controls-stack">
       <div class="cycle-wrap">
+        {#if selectedCycle.discount > 0}
+          <span class="cycle-save-above" aria-live="polite">
+            <Flame size={14} strokeWidth={2.5} aria-hidden="true" />
+            <span>Ahorra ~{Math.round(selectedCycle.discount * 100)}%</span>
+          </span>
+        {/if}
         <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
           {#each billingCycles as cycle}
             <button
@@ -148,36 +166,43 @@
             </button>
           {/each}
         </div>
-        {#if selectedCycle.discount > 0}
-          <span class="cycle-save-below" aria-live="polite">
-            Ahorra ~{Math.round(selectedCycle.discount * 100)}%
-          </span>
-        {/if}
       </div>
 
       <div class="addon-group">
-        <span class="addon-group-label" aria-hidden="true">
-          <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <span class="addon-group-label" id="addon-group-label">
+          <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
           </svg>
-          WhatsApp: 
+          ¿Quién avisa a tus alumnos?
         </span>
-        <div class="addon-tabs" role="group" aria-label="Modo de WhatsApp">
+        <div
+          class="addon-tabs"
+          role="radiogroup"
+          aria-labelledby="addon-group-label"
+          on:keydown={handleAddonKeydown}
+        >
           <button
+            type="button"
             class="addon-tab"
             class:active={!withWhatsapp}
-            aria-pressed={!withWhatsapp}
+            role="radio"
+            aria-checked={!withWhatsapp}
+            tabindex={!withWhatsapp ? 0 : -1}
             on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
           >
-            Yo aviso a mis alumnos
+            Yo lo hago
           </button>
           <button
+            type="button"
             class="addon-tab"
             class:active={withWhatsapp}
-            aria-pressed={withWhatsapp}
+            role="radio"
+            aria-checked={withWhatsapp}
+            tabindex={withWhatsapp ? 0 : -1}
             on:click={() => { if (!withWhatsapp) toggleWhatsapp(); }}
           >
-            FlowPass avisa por mí
+            FlowPass lo hace
+            <span class="addon-tab-badge" aria-label="Recomendado">Recomendado</span>
           </button>
         </div>
       </div>
@@ -431,6 +456,7 @@
 
   /* ─── Header ─────────────────────────────────────────────── */
   .section-header {
+    position: relative;
     max-width: 720px;
     margin: 0 auto 2.5rem;
     text-align: center;
@@ -477,26 +503,26 @@
     margin: 0 0 2rem;
   }
 
-  /* ─── Cycle selector ─────────────────────────────────────── */
+  /* ─── Cycle selector (HERO) ──────────────────────────────── */
   .cycle-selector {
     display: inline-flex;
     gap: 0.25rem;
     background: rgba(255,255,255,0.04);
     border: 0.5px solid rgba(255,255,255,0.08);
     border-radius: 9999px;
-    padding: 0.3rem;
+    padding: 0.35rem;
     backdrop-filter: blur(8px);
   }
   .cycle-pill {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.4rem 0.85rem;
-    min-height: 32px;
+    padding: 0.55rem 1.25rem;
+    min-height: 40px;
     border-radius: 9999px;
     border: none;
     background: transparent;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: rgba(255,255,255,0.6);
     cursor: pointer;
@@ -514,17 +540,25 @@
     align-items: center;
     gap: 0.45rem;
   }
-  .cycle-save-below {
+  .cycle-save-above {
     display: inline-flex;
     align-items: center;
-    font-size: 0.7rem;
+    gap: 0.35rem;
+    font-size: 0.72rem;
     font-weight: 800;
-    padding: 0.2rem 0.55rem;
+    padding: 0.3rem 0.7rem 0.3rem 0.55rem;
     border-radius: 999px;
-    background: rgba(1,245,158,0.15);
+    background: linear-gradient(135deg, rgba(1,245,158,0.22) 0%, rgba(1,245,158,0.12) 100%);
     color: #01f59e;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 0.5px solid rgba(1,245,158,0.35);
+    box-shadow: 0 4px 16px rgba(1,245,158,0.22);
     animation: fadePrice 0.3s ease;
+  }
+  .cycle-save-above :global(svg) {
+    color: #01f59e;
+    flex-shrink: 0;
   }
 
   /* ─── Country select (dropdown) ──────────────────────────── */
@@ -534,9 +568,24 @@
     gap: 0.6rem;
     margin-top: 0.9rem;
   }
-  .country-select-wrap--top {
-    margin-top: 0;
-    margin-bottom: 1.25rem;
+  .country-select-wrap--floating {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    z-index: 2;
+  }
+  .country-select-wrap--floating .country-select-control {
+    padding: 0.3rem 0.7rem;
+    gap: 0.35rem;
+  }
+  .country-select-wrap--floating .country-select {
+    font-size: 0.78rem;
+    min-width: 0;
+    padding-right: 1rem;
+  }
+  .country-select-wrap--floating .country-select-flag {
+    font-size: 0.9rem;
   }
   .country-select-label {
     font-size: 0.75rem;
@@ -616,20 +665,22 @@
   }
   .perk-icon { color: #01f59e; font-weight: 700; }
 
-  /* ─── Controls row (cycle + toggle) ──────────────────────── */
-  .controls-row {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 0.75rem;
+  /* ─── Controls stack (cycle hero + WhatsApp below) ───────── */
+  .controls-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
   }
 
   /* ─── Add-on tabs (segmented) ────────────────────────────── */
   .addon-group {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .addon-group-label {
     display: inline-flex;
@@ -656,10 +707,12 @@
     backdrop-filter: blur(8px);
   }
   .addon-tab {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 0.4rem 0.95rem;
-    min-height: 32px;
+    gap: 0.4rem;
+    padding: 0.45rem 0.95rem;
+    min-height: 36px;
     border-radius: 9999px;
     border: none;
     background: transparent;
@@ -668,14 +721,35 @@
     font-weight: 600;
     color: rgba(255,255,255,0.6);
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     white-space: nowrap;
   }
   .addon-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
+  .addon-tab:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.7);
+    outline-offset: 2px;
+  }
   .addon-tab.active {
+    background: #fff;
+    color: #09090f;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .addon-tab-badge {
+    position: absolute;
+    top: -0.6rem;
+    right: -0.35rem;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
     background: #01f59e;
     color: #09090f;
-    box-shadow: 0 0 20px rgba(1,245,158,0.3);
+    line-height: 1.2;
+    box-shadow: 0 4px 12px rgba(1,245,158,0.4);
+    pointer-events: none;
+    white-space: nowrap;
   }
 
   /* ─── Plans grid ─────────────────────────────────────────── */
@@ -1174,15 +1248,15 @@
     .wa-grid { grid-template-columns: repeat(2, 1fr); }
     .perks-bar { gap: 0.5rem 1rem; }
     .badge-stack { flex-direction: column; gap: 0.25rem; }
-    .controls-row {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      width: 100%;
+    .controls-stack {
+      gap: 1.25rem;
     }
     .cycle-wrap {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       width: 100%;
+      gap: 0.45rem;
     }
     .cycle-selector {
       display: flex;
@@ -1192,14 +1266,15 @@
     .cycle-pill {
       flex: 1 1 0;
       min-width: 0;
+      min-height: 42px;
       justify-content: center;
-      padding: 0.5rem 0.5rem;
-      font-size: 0.75rem;
+      padding: 0.55rem 0.5rem;
+      font-size: 0.8rem;
     }
     .addon-group {
       display: flex;
       flex-direction: column;
-      gap: 0.45rem;
+      gap: 0.5rem;
       width: 100%;
     }
     .addon-group-label { justify-content: center; }
@@ -1211,17 +1286,28 @@
     .addon-tab {
       flex: 1 1 0;
       min-width: 0;
+      min-height: 44px;
       justify-content: center;
       text-align: center;
-      padding: 0.5rem 0.4rem;
-      font-size: 0.7rem;
+      padding: 0.45rem 0.5rem;
+      font-size: 0.72rem;
       white-space: normal;
       line-height: 1.2;
+      flex-wrap: wrap;
+      gap: 0.25rem;
     }
-    .country-select-wrap {
-      display: flex;
+    .addon-tab-badge {
+      top: -0.55rem;
+      right: -0.15rem;
+      font-size: 0.52rem;
+      padding: 0.12rem 0.4rem;
+    }
+    .country-select-wrap--floating {
+      position: static;
+      display: inline-flex;
       justify-content: center;
-      width: 100%;
+      width: auto;
+      margin: 0 auto 1.25rem;
     }
     .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
   }
