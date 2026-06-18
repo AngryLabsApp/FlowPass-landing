@@ -1,6 +1,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 
+export const prerender = true;
+
 export const GET: RequestHandler = async () => {
   const body = `
 User-agent: *

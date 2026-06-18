@@ -2,6 +2,8 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 
+export const prerender = true;
+
 export const GET: RequestHandler = async () => {
   const base = siteConfig.url;
   const currentDate = new Date().toISOString().split('T')[0];
