@@ -4,7 +4,6 @@
     plans,
     billingCycles,
     whatsappPackages,
-    perks,
     taxRates,
     PRICES_INCLUDE_TAX,
     getPlanPrice,
@@ -209,16 +208,6 @@
     </div>
   </div>
 
-  <!-- Perks -->
-  <div class="perks-bar" aria-label="Beneficios incluidos en todos los planes">
-    {#each perks as perk}
-      <div class="perk-item">
-        <span class="perk-icon" aria-hidden="true">✓</span>
-        <span>{perk}</span>
-      </div>
-    {/each}
-  </div>
-
   <!-- Plans grid -->
   <div class="plans-grid" aria-live="polite" aria-atomic="true">
     {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
@@ -275,20 +264,49 @@
                 <span class="price-tax">{taxInline}</span>
               {/if}
             </div>
-            {#if plan.whatsappAuto}
-              {#if withWhatsapp}
-                <div class="whatsapp-chip whatsapp-chip--on" aria-label="Incluye recordatorios automáticos">
+            {#if plan.whatsappAuto || plan.whatsappManual}
+              <div class="whatsapp-card" aria-label="WhatsApp incluido">
+                <div class="whatsapp-card__header">
                   <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                     <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
                   </svg>
-                  <span>Hasta <strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos/mes</span>
+                  <span class="whatsapp-card__title">WhatsApp incluido</span>
+                  <span class="whatsapp-card__badge" title="Integración directa con la API oficial de WhatsApp Business: máxima estabilidad y entregabilidad.">
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="badge-check"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.7-9.3a1 1 0 0 0-1.4-1.4L9 10.6 7.7 9.3a1 1 0 0 0-1.4 1.4l2 2a1 1 0 0 0 1.4 0l4-4z" clip-rule="evenodd"/></svg>
+                    API Oficial
+                  </span>
                 </div>
-              {:else}
-                <div class="whatsapp-chip whatsapp-chip--off" aria-label="Solo mensajes manuales">
-                  <span class="chip-dot" aria-hidden="true"></span>
-                  <span>Sin recordatorios automáticos</span>
-                </div>
-              {/if}
+                <ul class="whatsapp-card__list">
+                  {#if plan.whatsappAuto}
+                    {#if withWhatsapp}
+                      <li class="whatsapp-card__row">
+                        <span class="row-icon row-icon--on" aria-hidden="true">✓</span>
+                        <span><strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos</span>
+                      </li>
+                    {:else}
+                      <li class="whatsapp-card__row whatsapp-card__row--off">
+                        <span class="row-icon row-icon--off" aria-hidden="true">⊘</span>
+                        <span>Sin recordatorios automáticos</span>
+                      </li>
+                    {/if}
+                  {/if}
+                  {#if plan.whatsappManual}
+                    <li class="whatsapp-card__row">
+                      <span class="row-icon row-icon--on" aria-hidden="true">✓</span>
+                      <span><strong>{plan.whatsappManual.included1ClickSends}</strong> envíos 1-click <span class="row-hint">(link de registro, credencial/QR)</span></span>
+                    </li>
+                  {/if}
+                </ul>
+                {#if withWhatsapp && plan.whatsappAuto && plan.whatsappManual}
+                  <div class="whatsapp-card__total">
+                    = <strong>{plan.whatsappAuto.includedReminders + plan.whatsappManual.included1ClickSends}</strong> mensajes/mes
+                  </div>
+                {:else if !withWhatsapp && plan.whatsappManual}
+                  <div class="whatsapp-card__total">
+                    = <strong>{plan.whatsappManual.included1ClickSends}</strong> mensajes/mes
+                  </div>
+                {/if}
+              </div>
             {/if}
           {/if}
 
@@ -1070,6 +1088,100 @@
     border-color: rgba(255,255,255,0.08);
     color: rgba(255,255,255,0.45);
   }
+  .whatsapp-card {
+    margin-top: 0.4rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(37,211,102,0.08), rgba(37,211,102,0.04));
+    border: 0.5px solid rgba(37,211,102,0.35);
+    width: 100%;
+    animation: fadePrice 0.3s ease;
+  }
+  .whatsapp-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .whatsapp-card__header .wa-icon { color: #25D366; width: 14px; height: 14px; }
+  .whatsapp-card__title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.01em;
+  }
+  .whatsapp-card__badge {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.12rem 0.4rem;
+    border-radius: 999px;
+    background: rgba(37,211,102,0.18);
+    border: 0.5px solid rgba(37,211,102,0.45);
+    color: #25D366;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: help;
+  }
+  .whatsapp-card__badge .badge-check {
+    width: 10px;
+    height: 10px;
+  }
+  .whatsapp-card__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .whatsapp-card__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4rem;
+    font-size: 0.7rem;
+    line-height: 1.25;
+    color: rgba(255,255,255,0.88);
+  }
+  .whatsapp-card__row strong { color: #fff; font-weight: 800; }
+  .whatsapp-card__row .row-hint {
+    color: rgba(255,255,255,0.55);
+    font-weight: 500;
+    font-size: 0.65rem;
+  }
+  .whatsapp-card__row--off { color: rgba(255,255,255,0.45); }
+  .row-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    font-size: 0.6rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .row-icon--on {
+    background: rgba(37,211,102,0.2);
+    color: #25D366;
+  }
+  .row-icon--off {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.35);
+  }
+  .whatsapp-card__total {
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
+    border-top: 0.5px dashed rgba(37,211,102,0.3);
+    font-size: 0.72rem;
+    color: #fff;
+    text-align: right;
+  }
+  .whatsapp-card__total strong { color: #25D366; font-weight: 800; }
   .chip-dot {
     width: 8px;
     height: 8px;

@@ -77,6 +77,7 @@ export const PRICES_INCLUDE_TAX = true;
  * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais] — WhatsApp manual
  * @property {Record<string, Record<string, number>>} [pricesWhatsapp]   // con recordatorios automáticos
  * @property {{includedReminders: number}} [whatsappAuto]                // recordatorios incluidos en `pricesWhatsapp`
+ * @property {{included1ClickSends: number}} [whatsappManual]            // envíos 1-click incluidos (links registro, credencial/QR)
  * @property {Array<{label: string, included: boolean, extraCost?: Record<string, number>}>} features
  */
 
@@ -101,7 +102,8 @@ export const plans = [
       trimestral: { PE: 165, MX: 820, US: 55 },
       anual: { PE: 150, MX: 740, US: 50 },
     },
-    whatsappAuto: { includedReminders: 30 },
+    whatsappAuto: { includedReminders: 50 },
+    whatsappManual: { included1ClickSends: 50 },
     features: [
       { label: "1 acceso Admin + 2 accesos para tu equipo", included: true },
       { label: "Gestión de alumnos, pagos y asistencia", included: true },
@@ -112,14 +114,10 @@ export const plans = [
         included: true,
       },
       {
-        label: "Soporte estándar · respuesta en hasta 48h hábiles",
+        label: "Soporte Esencial · respuesta en hasta 72h hábiles",
         included: true,
       },
-      {
-        label:
-          "Capacitación para todo tu equipo (entrenadores, profesores y administrativos)",
-        included: true,
-      },
+      { label: "Capacitación para todo tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Varias sedes en un solo panel", included: false },
     ],
@@ -143,7 +141,8 @@ export const plans = [
       trimestral: { PE: 235, MX: 1180, US: 75 },
       anual: { PE: 210, MX: 1060, US: 65 },
     },
-    whatsappAuto: { includedReminders: 80 },
+    whatsappAuto: { includedReminders: 100 },
+    whatsappManual: { included1ClickSends: 100 },
     features: [
       { label: "Todo lo de Flow Pocket", included: true },
       {
@@ -155,6 +154,10 @@ export const plans = [
         label: "Multi-sede opcional (add-on con costo por sede adicional)",
         included: true,
         extraCost: { PE: 20, MX: 100, US: 5 },
+      },
+      {
+        label: "Soporte Plus · respuesta en hasta 48h hábiles",
+        included: true,
       },
     ],
   },
@@ -178,6 +181,7 @@ export const plans = [
       anual: { PE: 290, MX: 1460, US: 90 },
     },
     whatsappAuto: { includedReminders: 200 },
+    whatsappManual: { included1ClickSends: 200 },
     features: [
       { label: "Todo lo de Flow Lite", included: true },
       {
@@ -189,7 +193,7 @@ export const plans = [
         included: true,
       },
       {
-        label: "Soporte prioritario · respuesta en hasta 24h hábiles",
+        label: "Soporte Pro · respuesta en hasta 24h hábiles",
         included: true,
       },
       {
@@ -219,6 +223,7 @@ export const plans = [
       anual: { PE: 405, MX: 2020, US: 120 },
     },
     whatsappAuto: { includedReminders: 350 },
+    whatsappManual: { included1ClickSends: 350 },
     features: [
       { label: "Todo lo de Flow Full", included: true },
       {
@@ -248,7 +253,7 @@ export const plans = [
       { label: "Reportes consolidados de organización", included: true },
       {
         label:
-          "Soporte VIP dedicado · respuesta en hasta 4h hábiles + Customer Success dedicado",
+          "Soporte Premium dedicado · respuesta en hasta 4h hábiles + Customer Success dedicado",
         included: true,
       },
       { label: "Onboarding y migración asistida", included: true },
