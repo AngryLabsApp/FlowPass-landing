@@ -1,17 +1,30 @@
 {
-  "name": "FlowPass | Software para academias",
+  "name": "FlowPass",
   "short_name": "FlowPass",
-  "description": "Gestiona tu academia sin complicaciones: alumnos, pagos, asistencias y comunicación automática por WhatsApp.",
-  "start_url": "/launch?utm_source=pwa",
+  "description": "Gestiona tu negocio de clases, membresías y pagos con WhatsApp integrado.",
+  "id": "/",
+  "start_url": "/",
   "scope": "/",
-  "id": "/launch",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#09090f",
-  "background_color": "#09090f",
   "lang": "es",
+  "dir": "ltr",
+  "theme_color": "#07F49D",
+  "background_color": "#07F49D",
   "categories": ["business", "productivity"],
   "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/web-app-manifest-192x192.png",
       "sizes": "192x192",
@@ -23,12 +36,6 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
-    },
-    {
-      "src": "/favicon-96x96.png",
-      "sizes": "96x96",
-      "type": "image/png",
-      "purpose": "any"
     }
   ]
 }
