@@ -18,9 +18,27 @@
 
 /** @type {Array<{code: string, label: string, flag: string, currency: string, currencyCode: string}>} */
 export const countries = [
-  { code: "PE", label: "Perú", flag: "🇵🇪", currency: "S/", currencyCode: "PEN" },
-  { code: "MX", label: "México", flag: "🇲🇽", currency: "$", currencyCode: "MXN" },
-  { code: "US", label: "Otros países", flag: "🌎", currency: "$", currencyCode: "USD" },
+  {
+    code: "PE",
+    label: "Perú",
+    flag: "🇵🇪",
+    currency: "S/",
+    currencyCode: "PEN",
+  },
+  {
+    code: "MX",
+    label: "México",
+    flag: "🇲🇽",
+    currency: "$",
+    currencyCode: "MXN",
+  },
+  {
+    code: "US",
+    label: "Otros países",
+    flag: "🌎",
+    currency: "$",
+    currencyCode: "USD",
+  },
 ];
 
 /**
@@ -72,26 +90,38 @@ export const plans = [
     registeredStudents: "Hasta 150 alumnos registrados",
     highlight: false,
     freeTrial: true,
-    flowyBeta: false,
+    flowyBeta: true,
     prices: {
-      mensual:    { PE: 160, MX: 800, US: 50 },
+      mensual: { PE: 160, MX: 800, US: 50 },
       trimestral: { PE: 145, MX: 720, US: 45 },
-      anual:      { PE: 130, MX: 640, US: 40 },
+      anual: { PE: 130, MX: 640, US: 40 },
     },
     pricesWhatsapp: {
-      mensual:    { PE: 180, MX: 900, US: 60 },
+      mensual: { PE: 180, MX: 900, US: 60 },
       trimestral: { PE: 165, MX: 820, US: 55 },
-      anual:      { PE: 150, MX: 740, US: 50 },
+      anual: { PE: 150, MX: 740, US: 50 },
     },
     whatsappAuto: { includedReminders: 30 },
     features: [
+      { label: "1 acceso Admin + 2 accesos para tu equipo", included: true },
       { label: "Gestión de alumnos, pagos y asistencia", included: true },
       { label: "Acceso QR", included: true },
       { label: "WhatsApp manual", included: true },
-      { label: "1 usuario Admin", included: true },
-      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: false },
+      {
+        label: "Flowy · asistente de IA que conoce tu negocio (beta)",
+        included: true,
+      },
+      {
+        label: "Soporte estándar · respuesta en hasta 48h hábiles",
+        included: true,
+      },
+      {
+        label:
+          "Capacitación para todo tu equipo (entrenadores, profesores y administrativos)",
+        included: true,
+      },
       { label: "Membresías simultáneas por alumno", included: false },
-      { label: "Multi sede", included: false },
+      { label: "Varias sedes en un solo panel", included: false },
     ],
   },
   {
@@ -104,22 +134,28 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual:    { PE: 240, MX: 1200, US: 70 },
+      mensual: { PE: 240, MX: 1200, US: 70 },
       trimestral: { PE: 215, MX: 1080, US: 65 },
-      anual:      { PE: 190, MX: 960,  US: 55 },
+      anual: { PE: 190, MX: 960, US: 55 },
     },
     pricesWhatsapp: {
-      mensual:    { PE: 260, MX: 1300, US: 80 },
+      mensual: { PE: 260, MX: 1300, US: 80 },
       trimestral: { PE: 235, MX: 1180, US: 75 },
-      anual:      { PE: 210, MX: 1060, US: 65 },
+      anual: { PE: 210, MX: 1060, US: 65 },
     },
     whatsappAuto: { includedReminders: 80 },
     features: [
       { label: "Todo lo de Flow Pocket", included: true },
-      { label: "2 usuarios (Admin + apoyo)", included: true },
+      {
+        label: "Hasta 4 accesos Admin + 8 accesos para tu equipo",
+        included: true,
+      },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
-      { label: "Multi sede", included: false },
+      {
+        label: "Multi-sede opcional (add-on con costo por sede adicional)",
+        included: true,
+        extraCost: { PE: 20, MX: 100, US: 5 },
+      },
     ],
   },
   {
@@ -132,48 +168,68 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual:    { PE: 340, MX: 1700, US: 100 },
+      mensual: { PE: 340, MX: 1700, US: 100 },
       trimestral: { PE: 305, MX: 1530, US: 90 },
-      anual:      { PE: 270, MX: 1360, US: 80 },
+      anual: { PE: 270, MX: 1360, US: 80 },
     },
     pricesWhatsapp: {
-      mensual:    { PE: 360, MX: 1800, US: 110 },
+      mensual: { PE: 360, MX: 1800, US: 110 },
       trimestral: { PE: 325, MX: 1630, US: 100 },
-      anual:      { PE: 290, MX: 1460, US: 90 },
+      anual: { PE: 290, MX: 1460, US: 90 },
     },
     whatsappAuto: { includedReminders: 200 },
     features: [
       { label: "Todo lo de Flow Lite", included: true },
-      { label: "4 usuarios (Admin + apoyo)", included: true },
-      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
-      { label: "Multi sede", included: true, extraCost: { PE: 50, MX: 250, US: 15 } },
+      {
+        label: "Accesos sin restricción para ti y tu equipo (hasta 16 en total)",
+        included: true,
+      },
+      {
+        label: "Varias sedes en un solo panel — incluidas sin costo extra",
+        included: true,
+      },
+      {
+        label: "Soporte prioritario · respuesta en hasta 24h hábiles",
+        included: true,
+      },
+      {
+        label:
+          "Visitas y seguimiento de implementación (virtual o presencial)",
+        included: true,
+      },
     ],
   },
   {
     id: "ultra",
     name: "Flow Ultra",
-    tagline: "Máxima potencia, multi-sede y todo incluido.",
+    tagline: "Máxima potencia, varias sedes en un solo panel y todo incluido.",
     activeStudents: "200 – 350 alumnos activos",
     registeredStudents: "Hasta 1250 alumnos registrados",
     highlight: false,
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual:    { PE: 480, MX: 2400, US: 140 },
+      mensual: { PE: 480, MX: 2400, US: 140 },
       trimestral: { PE: 430, MX: 2160, US: 125 },
-      anual:      { PE: 385, MX: 1920, US: 110 },
+      anual: { PE: 385, MX: 1920, US: 110 },
     },
     pricesWhatsapp: {
-      mensual:    { PE: 500, MX: 2500, US: 150 },
+      mensual: { PE: 500, MX: 2500, US: 150 },
       trimestral: { PE: 450, MX: 2260, US: 135 },
-      anual:      { PE: 405, MX: 2020, US: 120 },
+      anual: { PE: 405, MX: 2020, US: 120 },
     },
     whatsappAuto: { includedReminders: 350 },
     features: [
       { label: "Todo lo de Flow Full", included: true },
-      { label: "6 usuarios (Admin + apoyo)", included: true },
-      { label: "Multi sede incluida", included: true },
-      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
+      {
+        label: "Accesos ilimitados para ti y tu equipo",
+        included: true,
+      },
+      {
+        label:
+          "Soporte VIP · respuesta en hasta 8h hábiles + seguimiento 1 a 1 con tu Customer Success",
+        included: true,
+      },
     ],
   },
   {
@@ -187,13 +243,17 @@ export const plans = [
     quoteBased: true, // la card muestra "Bajo evaluación" y CTA "Hablemos"
     features: [
       { label: "Todo lo de Flow Ultra", included: true },
-      { label: "WhatsApp manual ilimitado", included: true },
       { label: "Sedes ilimitadas", included: true },
-      { label: "Desarrollo y personalización a medida", included: true },
-      { label: "Onboarding y migración asistida", included: true },
-      { label: "Soporte prioritario dedicado", included: true },
+      { label: "WhatsApp manual ilimitado", included: true },
       { label: "Reportes consolidados de organización", included: true },
+      {
+        label:
+          "Soporte VIP dedicado · respuesta en hasta 4h hábiles + Customer Success dedicado",
+        included: true,
+      },
+      { label: "Onboarding y migración asistida", included: true },
       { label: "Flowy entrenado con tu negocio (beta)", included: true },
+      { label: "Desarrollo y personalización a medida", included: true },
     ],
   },
 ];
@@ -204,10 +264,30 @@ export const plans = [
  * @type {Array<{name: string, reminders: number, highlight: boolean, prices: Record<string, number>}>}
  */
 export const whatsappPackages = [
-  { name: "Básico", reminders: 50, highlight: false, prices: { PE: 20, MX: 100, US: 5 } },
-  { name: "Medio", reminders: 100, highlight: false, prices: { PE: 40, MX: 180, US: 10 } },
-  { name: "Pro", reminders: 200, highlight: true, prices: { PE: 60, MX: 300, US: 15 } },
-  { name: "Avanzado", reminders: 300, highlight: false, prices: { PE: 80, MX: 400, US: 20 } },
+  {
+    name: "Básico",
+    reminders: 50,
+    highlight: false,
+    prices: { PE: 20, MX: 100, US: 5 },
+  },
+  {
+    name: "Medio",
+    reminders: 100,
+    highlight: false,
+    prices: { PE: 40, MX: 180, US: 10 },
+  },
+  {
+    name: "Pro",
+    reminders: 200,
+    highlight: true,
+    prices: { PE: 60, MX: 300, US: 15 },
+  },
+  {
+    name: "Avanzado",
+    reminders: 300,
+    highlight: false,
+    prices: { PE: 80, MX: 400, US: 20 },
+  },
 ];
 
 /** @type {string[]} */
@@ -232,9 +312,15 @@ export const FLOWY_BETA_BADGE = { label: "Flowy", tag: "beta" };
  * @param {boolean} [withWhatsapp]
  * @returns {number|null} precio/mes, o null si el plan es "bajo evaluación".
  */
-export function getPlanPrice(plan, cycleId = "trimestral", country = "PE", withWhatsapp = false) {
+export function getPlanPrice(
+  plan,
+  cycleId = "trimestral",
+  country = "PE",
+  withWhatsapp = false,
+) {
   if (plan.quoteBased) return null;
-  const grid = withWhatsapp && plan.pricesWhatsapp ? plan.pricesWhatsapp : plan.prices;
+  const grid =
+    withWhatsapp && plan.pricesWhatsapp ? plan.pricesWhatsapp : plan.prices;
   return grid?.[cycleId]?.[country] ?? null;
 }
 
@@ -246,7 +332,10 @@ export function getPlanPrice(plan, cycleId = "trimestral", country = "PE", withW
  */
 export function formatPrice(amount, country = "PE") {
   const c = countries.find((x) => x.code === country) ?? countries[0];
-  const n = country === "MX" ? Math.round(amount).toLocaleString("en-US") : Math.round(amount);
+  const n =
+    country === "MX"
+      ? Math.round(amount).toLocaleString("en-US")
+      : Math.round(amount);
   const suffix = country === "US" ? " USD" : "";
   return `${c.currency}${n}${suffix}`;
 }
