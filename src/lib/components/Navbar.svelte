@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
+  import InstallAppButton from "$lib/components/InstallAppButton.svelte";
 
   let isOpen = false;
   let scrolled = false;
@@ -78,6 +79,9 @@
 
       <li class="flex items-center gap-3 ml-2">
         <span class="w-px h-4 bg-white/15" aria-hidden="true"></span>
+
+        <!-- Install PWA -->
+        <InstallAppButton variant="desktop" />
 
         <!-- Demo ghost -->
         <a
@@ -176,6 +180,8 @@
       >
 
       <div class="pt-2 border-t border-white/10 flex flex-col gap-2">
+        <InstallAppButton variant="mobile" onInstall={() => (isOpen = false)} />
+
         <a
           href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
           target="_blank"
