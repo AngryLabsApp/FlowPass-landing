@@ -5,6 +5,7 @@
   import Phone from "./../assets/images/phone.png";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import { trackContact, trackSchedule } from "$lib/tracking/track";
   import gymLogo from "$lib/assets/images/clients/gym.png";
   import karateLogo from "$lib/assets/images/clients/karate.png";
   import musicaLogo from "$lib/assets/images/clients/musica.png";
@@ -105,13 +106,7 @@
           rel="noopener noreferrer nofollow"
           aria-label="Agendar una demo gratuita de FlowPass"
           class="cta-link"
-          onclick={() => {
-            window.gtag?.('event', 'cta_click', {
-              event_category: 'engagement',
-              event_label: 'hero_demo_button',
-              value: 1
-            });
-          }}
+          onclick={() => trackSchedule('hero')}
         >
           <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-brand text-dark-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(1,245,158,0.45)] transition-all duration-300"
@@ -127,13 +122,7 @@
           rel="noopener noreferrer"
           aria-label="Escribir a FlowPass por WhatsApp"
           class="cta-link"
-          onclick={() => {
-            window.gtag?.('event', 'whatsapp_click', {
-              event_category: 'contact',
-              event_label: 'hero_button',
-              value: 1
-            });
-          }}
+          onclick={() => trackContact('hero')}
         >
           <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-transparent text-white border border-white/20 hover:border-brand/40 hover:bg-white/[0.04] transition-all duration-300"

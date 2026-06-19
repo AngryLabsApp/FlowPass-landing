@@ -4,6 +4,7 @@
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
+  import { trackLogin, trackSchedule } from "$lib/tracking/track";
 
   let isOpen = false;
   let scrolled = false;
@@ -89,6 +90,7 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Agendar una demo de FlowPass"
+          onclick={() => trackSchedule('navbar_desktop')}
           class="text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
         >
           Agendar demo
@@ -100,6 +102,7 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
+          onclick={() => trackLogin('navbar_desktop')}
           class="flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-brand text-[#09090f] hover:shadow-[0_0_22px_rgba(1,245,158,0.45)] hover:-translate-y-[2px] transition-all duration-300"
         >
           Ingresar
@@ -187,7 +190,10 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Agendar una demo de FlowPass"
-          onclick={() => (isOpen = false)}
+          onclick={() => {
+            trackSchedule('navbar_mobile');
+            isOpen = false;
+          }}
           class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-neutral-300 border border-white/15 hover:border-white/30 hover:text-white transition-all duration-200"
         >
           Agendar demo
@@ -198,7 +204,10 @@
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
-          onclick={() => (isOpen = false)}
+          onclick={() => {
+            trackLogin('navbar_mobile');
+            isOpen = false;
+          }}
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-brand text-[#09090f] transition-all duration-200"
         >
           Ingresar a la plataforma

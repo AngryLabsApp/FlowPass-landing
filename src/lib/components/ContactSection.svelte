@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ChatBubbleOvalLeftEllipsis, AtSymbol, CalendarDays } from "svelte-heros-v2";
   import { siteConfig } from "$lib/config/site";
+  import { trackContact, trackEmailClick, trackSchedule } from "$lib/tracking/track";
 
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.`;
   const mailtoLink = `mailto:${siteConfig.email}?subject=Consulta%20sobre%20FlowPass`;
@@ -30,6 +31,7 @@
         rel="noopener noreferrer nofollow"
         class="contact-card primary"
         aria-label="Agendar demo gratuita"
+        onclick={() => trackSchedule('contact_section')}
       >
         <span class="card-icon"><CalendarDays class="w-6 h-6" /></span>
         <span class="card-title">Agendar demo</span>
@@ -42,13 +44,7 @@
         rel="noopener noreferrer nofollow"
         class="contact-card"
         aria-label="WhatsApp FlowPass"
-        onclick={() => {
-          window.gtag?.('event', 'whatsapp_click', {
-            event_category: 'contact',
-            event_label: 'contact_section',
-            value: 1
-          });
-        }}
+        onclick={() => trackContact('contact_section')}
       >
         <span class="card-icon"><ChatBubbleOvalLeftEllipsis class="w-6 h-6" /></span>
         <span class="card-title">WhatsApp</span>
@@ -59,13 +55,7 @@
         href={mailtoLink}
         class="contact-card"
         aria-label="Enviar correo a FlowPass"
-        onclick={() => {
-          window.gtag?.('event', 'email_click', {
-            event_category: 'contact',
-            event_label: 'contact_section',
-            value: 1
-          });
-        }}
+        onclick={() => trackEmailClick('contact_section')}
       >
         <span class="card-icon"><AtSymbol class="w-6 h-6" /></span>
         <span class="card-title">Correo</span>
