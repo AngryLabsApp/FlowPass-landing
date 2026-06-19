@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { ArrowDownTray } from 'svelte-heros-v2';
   import { pwaInstall } from './usePwaInstall.svelte';
+  import { trackPwaInstallClick, trackPwaInstalled } from '$lib/tracking/track';
 
   interface Props {
     variant?: 'desktop' | 'mobile';
@@ -16,8 +17,13 @@
   });
 
   async function handleInstall() {
+    // Intención del usuario — dispara aunque después cancele en el modal nativo.
+    trackPwaInstallClick(`navbar_${variant}`);
     const outcome = await pwaInstall.promptInstall();
-    if (outcome === 'accepted') onInstall?.();
+    if (outcome === 'accepted') {
+      trackPwaInstalled(`navbar_${variant}`);
+      onInstall?.();
+    }
   }
 
   let show = $derived(
@@ -63,6 +69,7 @@
       href="/launch"
       aria-label="Cómo instalar FlowPass en iOS"
       title="En iOS: toca Compartir y luego ‘Añadir a pantalla de inicio’"
+      onclick={() => trackPwaInstallClick(`navbar_${variant}_ios`)}
       class="{baseClasses} {sizing}"
     >
       {@render content()}

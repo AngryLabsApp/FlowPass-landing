@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import { ArrowDownTray, XMark } from 'svelte-heros-v2';
   import { pwaInstall } from './usePwaInstall.svelte';
+  import { trackPwaInstallClick, trackPwaInstalled } from '$lib/tracking/track';
 
   const STORAGE_KEY = 'fp-install-toast-dismissed';
   const DELAY_MS = 3_000;
@@ -38,8 +39,13 @@
   }
 
   async function install() {
+    trackPwaInstallClick('toast');
     const outcome = await pwaInstall.promptInstall();
-    if (outcome === 'dismissed') dismiss();
+    if (outcome === 'accepted') {
+      trackPwaInstalled('toast');
+    } else if (outcome === 'dismissed') {
+      dismiss();
+    }
   }
 
   let show = $derived(
@@ -105,6 +111,7 @@
             {:else if pwaInstall.isIOS}
               <a
                 href="/launch"
+                onclick={() => trackPwaInstallClick('toast_ios')}
                 class="px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-brand text-[#09090f]
                        hover:shadow-[0_0_18px_rgba(1,245,158,0.4)] transition-all duration-200"
               >

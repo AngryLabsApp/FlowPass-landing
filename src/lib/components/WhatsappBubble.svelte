@@ -1,6 +1,7 @@
 <script lang="ts">
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import { trackContact } from "$lib/tracking/track";
 
   export let phone = siteConfig.phone;
   export let message = "Hola FlowPass, quiero saber más sobre la plataforma para mi academia";
@@ -16,13 +17,7 @@
   rel="noopener noreferrer nofollow"
   class={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 w-14 h-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-[0_8px_30px_rgba(37,211,102,0.45)] hover:scale-105 transition-transform duration-300 z-[9999] ${className}`}
   aria-label={ariaLabel}
-  onclick={() => {
-    window.gtag?.('event', 'whatsapp_click', {
-      event_category: 'contact',
-      event_label: 'floating_bubble',
-      value: 1
-    });
-  }}
+  onclick={() => trackContact('floating_bubble')}
 >
   <img 
     src={whatsappIcon} 

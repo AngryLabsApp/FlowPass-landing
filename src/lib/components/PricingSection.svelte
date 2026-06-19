@@ -10,6 +10,8 @@
     formatPrice,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
+  import { trackContact } from "$lib/tracking/track";
+  import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { Sprout, Rocket, Trophy, Zap, Building2, Flame } from "@lucide/svelte";
   import { onMount } from "svelte";
 
@@ -330,18 +332,21 @@
             class:cta-secondary={!plan.highlight && !plan.quoteBased}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={plan.quoteBased ? "Hablar con el equipo de Flow Enterprise" : `Contratar plan ${plan.name}`}
-            on:click={() => {
-              window.gtag?.('event', 'price_click', {
-                event_category: 'engagement',
-                event_label: `plan_${plan.id}_button`,
-                cycle: plan.quoteBased ? null : selectedCycle.id,
-                with_whatsapp: plan.quoteBased ? null : withWhatsapp,
-                value: 1
-              });
-            }}
+            aria-label={plan.quoteBased ? "Hablar con el equipo de Flow Enterprise" : `Escribir por WhatsApp para contratar ${plan.name}`}
+            on:click={() => trackContact(`pricing_plan_${plan.id}`)}
           >
-            {plan.quoteBased ? "Hablemos" : "Empezar ahora"}
+            <span class="cta-button-inner">
+              Escríbenos
+              <img
+                src={whatsappIcon}
+                alt=""
+                aria-hidden="true"
+                class="cta-button-icon"
+                loading="lazy"
+                width="18"
+                height="18"
+              />
+            </span>
           </a>
         </article>
       {/each}
@@ -389,17 +394,20 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Hablar con el equipo de Flow Enterprise"
-              on:click={() => {
-                window.gtag?.('event', 'price_click', {
-                  event_category: 'engagement',
-                  event_label: `plan_${enterprisePlan.id}_button`,
-                  cycle: null,
-                  with_whatsapp: null,
-                  value: 1
-                });
-              }}
+              on:click={() => trackContact(`pricing_plan_${enterprisePlan.id}`)}
             >
-              Hablemos
+              <span class="cta-button-inner">
+                Escríbenos
+                <img
+                  src={whatsappIcon}
+                  alt=""
+                  aria-hidden="true"
+                  class="cta-button-icon"
+                  loading="lazy"
+                  width="18"
+                  height="18"
+                />
+              </span>
             </a>
           </div>
 
@@ -1257,6 +1265,24 @@
     border-color: rgba(1,245,158,0.3);
     color: #01f59e;
   }
+
+  /* Wrapper que alinea texto + logo WhatsApp dentro del CTA */
+  .cta-button-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .cta-button-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+  /* Tinta el SVG segun la variante:
+     - primary: bg verde → icono negro (matchea el texto oscuro)
+     - secondary: bg oscuro → icono blanco */
+  .cta-primary .cta-button-icon { filter: brightness(0); }
+  .cta-secondary .cta-button-icon { filter: brightness(0) invert(1); }
 
   /* ─── WhatsApp section ───────────────────────────────────── */
   .wa-section {
