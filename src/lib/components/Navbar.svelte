@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
-  import InstallAppButton from "$lib/components/InstallAppButton.svelte";
+  import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
 
   let isOpen = false;
   let scrolled = false;
@@ -43,7 +43,7 @@
 
     <!-- DESKTOP MENU -->
     <ul
-      class="hidden md:flex items-center gap-6 text-neutral-400 font-medium text-sm list-none"
+      class="hidden lg:flex items-center gap-6 text-neutral-400 font-medium text-sm list-none"
     >
       <li>
         <a
@@ -110,7 +110,7 @@
 
     <!-- MOBILE TOGGLE -->
     <button
-      class="md:hidden text-white hover:text-brand transition"
+      class="lg:hidden text-white hover:text-brand transition"
       onclick={() => (isOpen = !isOpen)}
       aria-expanded={isOpen}
       aria-controls="menu-movil"
@@ -156,7 +156,7 @@
       id="menu-movil"
       role="menu"
       aria-label="Menú móvil FlowPass"
-      class="md:hidden glass-nav mt-2 px-6 py-5 space-y-4 rounded-2xl animate-slideDown"
+      class="lg:hidden glass-nav mt-2 px-6 py-5 space-y-4 rounded-2xl animate-slideDown"
     >
       <a
         href="/#features"
