@@ -60,7 +60,15 @@ function fire(
 
 // ─── Eventos de negocio ──────────────────────────────────────────
 
-/** Click en cualquier botón "Agendar demo". */
+/**
+ * Click en cualquier botón "Agendar demo" del sitio.
+ *
+ * Funnel paso 1 — INTENT. Mide cuántos quieren agendar.
+ * Los botones disparan esto y luego navegan a `/agenda` (el form).
+ * La conversión real la dispara `trackLead` cuando el form se envía.
+ *
+ * Si ves Schedule >> Lead en reportes, hay drop-off en el form.
+ */
 export function trackSchedule(source: string) {
   fire('Schedule', null, 'schedule_demo_click', { source });
 }
@@ -90,7 +98,16 @@ export function trackPwaInstalled(source: string) {
   fire('Lead', 'PwaInstall', 'pwa_install_success', { source });
 }
 
-/** Formulario de captación enviado con éxito (lead calificado). */
+/**
+ * Form de captación enviado con éxito (lead calificado).
+ *
+ * Funnel paso 2 — CONVERSION. Solo dispara si el POST al webhook
+ * de n8n responde 2xx. Pasa params del lead (pais, tipo_academia,
+ * alumnos, fuente) para que Meta Ads y GA4 puedan segmentar.
+ *
+ * Pareja conceptual de `trackSchedule` (intent). Ratio Lead/Schedule
+ * = tasa de conversión del form.
+ */
 export function trackLead(source: string, params: Record<string, unknown> = {}) {
   fire('Lead', null, 'generate_lead', { source, ...params });
 }
