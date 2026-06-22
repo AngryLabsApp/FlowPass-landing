@@ -384,6 +384,7 @@
     </div>
   {:else}
     <form onsubmit={handleSubmit} novalidate>
+      <div class="sections">
       <section class="section">
         <h3 class="section-title">Datos personales</h3>
         <div class="grid">
@@ -657,6 +658,7 @@
           </fieldset>
         </div>
       </section>
+      </div>
 
       {#if status === "error" && errorMsg}
         <div class="alert" role="alert">{errorMsg}</div>
@@ -704,6 +706,12 @@
     font-family: "Oktah Neue", system-ui, sans-serif;
   }
 
+  .sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
   .section {
     margin-bottom: 18px;
   }
@@ -714,20 +722,20 @@
 
   .section-title {
     font-family: 'Epoch', system-ui, sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: #531dd8;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin: 0 0 10px;
-    padding-bottom: 8px;
+    padding-bottom: 6px;
     border-bottom: 1px solid rgba(83, 29, 216, 0.12);
   }
 
   .grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px 10px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .field {
@@ -743,10 +751,11 @@
 
   label,
   legend {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: #14142b;
     letter-spacing: 0.005em;
+    line-height: 1.3;
   }
 
   legend {
@@ -757,7 +766,7 @@
   .opt {
     color: #8a8aa0;
     font-weight: 400;
-    font-size: 0.68rem;
+    font-size: 0.64rem;
     margin-left: 2px;
   }
 
@@ -791,7 +800,8 @@
   }
 
   input::placeholder {
-    color: #7d7d93;
+    color: #9a9aae;
+    font-size: 0.86rem;
   }
 
   /* Select sin valor (placeholder) gris como inputs */
@@ -841,8 +851,8 @@
   }
 
   .radio-group--cols2 {
-    grid-template-columns: 1fr 1fr;
-    gap: 4px 6px;
+    grid-template-columns: 1fr;
+    gap: 4px;
   }
 
   .radio {
@@ -1054,8 +1064,23 @@
       border-radius: 14px;
     }
 
+    label,
+    legend {
+      font-size: 0.78rem;
+    }
+
+    .section-title {
+      font-size: 0.78rem;
+    }
+
     .grid {
+      grid-template-columns: 1fr 1fr;
       gap: 9px 12px;
+    }
+
+    .radio-group--cols2 {
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 6px;
     }
 
     .radio {
@@ -1067,6 +1092,7 @@
       font-size: 0.72rem;
     }
   }
+
 
   @media (prefers-reduced-motion: reduce) {
     input,
