@@ -53,6 +53,7 @@ Helpers semánticos exportados:
 | `trackLogin(source)` | `LoginClick` (custom) | `login_click` | Click "Ingresar" |
 | `trackPwaInstallClick(source)` | `PwaInstallClick` (custom) | `pwa_install_click` | Click "Crear acceso directo" |
 | `trackPwaInstalled(source)` | `Lead` + `PwaInstall` | `pwa_install_success` | Usuario aceptó prompt PWA |
+| `trackLead(source, params)` | `Lead` | `generate_lead` | Form `/agenda` enviado con éxito |
 
 Función interna `fire()`:
 - En `dev` solo loguea a consola (`console.debug('[track]', …)`) → no contamina métricas.
@@ -83,8 +84,15 @@ Se importa y monta `<MetaPixel />` junto a `<GoogleAnalytics />` para que ambos 
 - `src/lib/components/Navbar.svelte` — botón demo + botón "Ingresar".
 - `src/lib/pwa/InstallAppButton.svelte` — click en instalar PWA.
 - `src/lib/pwa/InstallPromptToast.svelte` — click + outcome `accepted`.
+- `src/lib/components/LeadForm.svelte` — submit exitoso del form `/agenda` → `trackLead('agenda_form', { pais, tipo_academia, alumnos, fuente })`.
 
 Antes estos componentes llamaban `gtag(...)` inline. Ahora llaman al helper y reportan a Meta + GA al mismo tiempo.
+
+### Evento `Lead` (form `/agenda`)
+- Se dispara **solo** cuando el POST al webhook de n8n responde 2xx.
+- Params enviados a Meta y GA: `pais`, `tipo_academia`, `alumnos`, `fuente`.
+- `source: 'agenda_form'` distingue este Lead de `trackPwaInstalled` (que también es Lead estándar pero con `source: 'pwa'`).
+- Útil para optimizar campañas en Meta Ads (evento de conversión "Lead" + segmentación por país/tipo) y para reportes de conversión en GA4 (`generate_lead` es evento estándar de GA4).
 
 ---
 

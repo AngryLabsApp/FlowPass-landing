@@ -89,3 +89,8 @@ export function trackPwaInstallClick(source: string) {
 export function trackPwaInstalled(source: string) {
   fire('Lead', 'PwaInstall', 'pwa_install_success', { source });
 }
+
+/** Formulario de captación enviado con éxito (lead calificado). */
+export function trackLead(source: string, params: Record<string, unknown> = {}) {
+  fire('Lead', null, 'generate_lead', { source, ...params });
+}

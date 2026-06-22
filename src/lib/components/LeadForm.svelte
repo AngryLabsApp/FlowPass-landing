@@ -6,6 +6,7 @@
     parsePhoneNumberFromString,
     type CountryCode,
   } from "libphonenumber-js";
+  import { trackLead } from "$lib/tracking/track";
 
   type Props = {
     calLink?: string;
@@ -346,12 +347,12 @@
         );
       }
 
-      if (
-        typeof window !== "undefined" &&
-        typeof (window as any).fbq === "function"
-      ) {
-        (window as any).fbq("track", "Lead");
-      }
+      trackLead("agenda_form", {
+        pais: payload.pais,
+        tipo_academia: payload.tipo_academia,
+        alumnos: payload.alumnos,
+        fuente: payload.fuente,
+      });
 
       status = "success";
 
