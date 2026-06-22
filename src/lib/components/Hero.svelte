@@ -101,9 +101,7 @@
       <!-- CTAs -->
       <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-3">
         <a
-          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
+          href="/agenda"
           aria-label="Agendar una demo gratuita de FlowPass"
           class="cta-link"
           onclick={() => trackSchedule('hero')}

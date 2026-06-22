@@ -5,7 +5,7 @@
 
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.`;
   const mailtoLink = `mailto:${siteConfig.email}?subject=Consulta%20sobre%20FlowPass`;
-  const calendarLink = "https://calendar.app.google/niQmo8L4nZ7d4Kt8A";
+  const calendarLink = "/agenda";
 </script>
 
 <section
@@ -27,8 +27,6 @@
     <div class="contact-grid">
       <a
         href={calendarLink}
-        target="_blank"
-        rel="noopener noreferrer nofollow"
         class="contact-card primary"
         aria-label="Agendar demo gratuita"
         onclick={() => trackSchedule('contact_section')}

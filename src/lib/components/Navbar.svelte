@@ -86,9 +86,7 @@
 
         <!-- Demo ghost -->
         <a
-          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/agenda"
           aria-label="Agendar una demo de FlowPass"
           onclick={() => trackSchedule('navbar_desktop')}
           class="text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
@@ -186,9 +184,7 @@
         <InstallAppButton variant="mobile" onInstall={() => (isOpen = false)} />
 
         <a
-          href="https://calendar.app.google/niQmo8L4nZ7d4Kt8A"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/agenda"
           aria-label="Agendar una demo de FlowPass"
           onclick={() => {
             trackSchedule('navbar_mobile');
