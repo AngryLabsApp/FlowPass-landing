@@ -47,7 +47,7 @@ Helpers semánticos exportados:
 
 | Función | Evento Meta | Evento GA4 | Cuándo |
 |---|---|---|---|
-| `trackSchedule(source)` | `Schedule` | `schedule_demo_click` | Click "Agendar demo" |
+| `trackSchedule(source)` | `Schedule` | `schedule_demo_click` | Click "Agendar demo" (Hero, Navbar, ContactSection) → navega a `/agenda` |
 | `trackContact(source)` | `Contact` | `whatsapp_click` | Click WhatsApp / "Escríbenos" |
 | `trackEmailClick(source)` | `Contact` | `email_click` | Click correo (mailto) |
 | `trackLogin(source)` | `LoginClick` (custom) | `login_click` | Click "Ingresar" |
@@ -87,6 +87,17 @@ Se importa y monta `<MetaPixel />` junto a `<GoogleAnalytics />` para que ambos 
 - `src/lib/components/LeadForm.svelte` — submit exitoso del form `/agenda` → `trackLead('agenda_form', { pais, tipo_academia, alumnos, fuente })`.
 
 Antes estos componentes llamaban `gtag(...)` inline. Ahora llaman al helper y reportan a Meta + GA al mismo tiempo.
+
+### Embudo "Agendar demo" → `/agenda` → `Lead`
+
+Todos los CTAs "Agendar demo" del sitio (Hero, Navbar desktop/mobile, ContactSection) ahora **navegan a la ruta `/agenda`** en vez de abrir el calendario de Google. El calendario externo quedó retirado.
+
+Flujo de eventos:
+
+1. **Click "Agendar demo"** desde landing → `trackSchedule('hero' | 'navbar_desktop' | 'navbar_mobile' | 'contact_section')` → dispara Meta `Schedule` + GA `schedule_demo_click`. Luego navega a `/agenda`.
+2. **Submit exitoso del form `/agenda`** → `trackLead('agenda_form', { pais, tipo_academia, alumnos, fuente })` → dispara Meta `Lead` + GA `generate_lead`.
+
+Schedule = intención. Lead = conversión. Permite medir el funnel (clicks → formulario completado) por fuente.
 
 ### Evento `Lead` (form `/agenda`)
 - Se dispara **solo** cuando el POST al webhook de n8n responde 2xx.
