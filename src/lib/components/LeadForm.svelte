@@ -63,6 +63,26 @@
     "Alumno",
   ];
 
+  const paises = ["Perú", "México", "Colombia", "Chile", "Otro"];
+
+  const tamanos = [
+    "Aún no está abierto",
+    "Menos de 30",
+    "Entre 30 y 80",
+    "Entre 80 y 200",
+    "Entre 200 y 350",
+    "+350",
+  ];
+
+  const softwareOpts = ["Sí", "No"];
+
+  const fuentes = [
+    "Vi un anuncio",
+    "Me lo recomendó alguien",
+    "Busqué en Google",
+    "Otro",
+  ];
+
   let nombre = $state("");
   let apellido = $state("");
   let countryCode = $state("PE");
@@ -72,6 +92,10 @@
   let tipoAcademia = $state("");
   let situacion = $state("");
   let rol = $state("");
+  let pais = $state("");
+  let alumnos = $state("");
+  let usaSoftware = $state("");
+  let fuente = $state("");
 
   let status = $state<"idle" | "loading" | "success" | "error">("idle");
   let errorMsg = $state("");
@@ -102,6 +126,10 @@
   const tiposAcademiaValues = tiposAcademia as readonly string[];
   const situacionesValues = situaciones as readonly string[];
   const rolesValues = roles as readonly string[];
+  const paisesValues = paises as readonly string[];
+  const tamanosValues = tamanos as readonly string[];
+  const softwareValues = softwareOpts as readonly string[];
+  const fuentesValues = fuentes as readonly string[];
 
   // Solo letras (incluye acentos, ñ), espacios, apóstrofes y guiones.
   const NAME_REGEX = /^[A-Za-zÀ-ÖØ-öø-ÿÑñ' -]+$/;
@@ -135,6 +163,18 @@
     rol: z
       .string()
       .refine((v) => rolesValues.includes(v), "Selecciona una opción."),
+    pais: z
+      .string()
+      .refine((v) => paisesValues.includes(v), "Selecciona una opción."),
+    alumnos: z
+      .string()
+      .refine((v) => tamanosValues.includes(v), "Selecciona una opción."),
+    usaSoftware: z
+      .string()
+      .refine((v) => softwareValues.includes(v), "Selecciona una opción."),
+    fuente: z
+      .string()
+      .refine((v) => fuentesValues.includes(v), "Selecciona una opción."),
   });
 
   function validatePhone(raw: string, country: CountryCode): string | null {
@@ -162,6 +202,14 @@
         return situacion;
       case "rol":
         return rol;
+      case "pais":
+        return pais;
+      case "alumnos":
+        return alumnos;
+      case "usaSoftware":
+        return usaSoftware;
+      case "fuente":
+        return fuente;
       default:
         return "";
     }
@@ -230,6 +278,10 @@
       tipoAcademia,
       situacion,
       rol,
+      pais,
+      alumnos,
+      usaSoftware,
+      fuente,
     });
 
     if (!parsedFields.success) {
@@ -262,11 +314,15 @@
       apellido: data.apellido,
       email: data.email ?? "",
       telefono: phone.format("E.164"),
-      pais: country.name,
+      pais_telefono: country.name,
+      pais: data.pais,
       negocio: data.negocio,
       tipo_academia: data.tipoAcademia,
       situacion: data.situacion,
       rol: data.rol,
+      alumnos: data.alumnos,
+      usa_software: data.usaSoftware === "Sí",
+      fuente: data.fuente,
       origen: "n8n_form",
     };
 
@@ -328,207 +384,279 @@
     </div>
   {:else}
     <form onsubmit={handleSubmit} novalidate>
-      <div class="grid">
-        <div class="field">
-          <label for="nombre"
-            >Nombre <span class="req" aria-hidden="true">*</span></label
-          >
-          <input
-            id="nombre"
-            type="text"
-            autocomplete="given-name"
-            placeholder="Ej. María"
-            bind:value={nombre}
-            oninput={() => liveValidate("nombre")}
-            onblur={() => markTouched("nombre")}
-            aria-invalid={!!fieldErrors.nombre}
-            aria-describedby={fieldErrors.nombre ? "err-nombre" : undefined}
-            required
-          />
-          {#if fieldErrors.nombre}
-            <span id="err-nombre" class="err">{fieldErrors.nombre}</span>
-          {/if}
-        </div>
-
-        <div class="field">
-          <label for="apellido"
-            >Apellido <span class="req" aria-hidden="true">*</span></label
-          >
-          <input
-            id="apellido"
-            type="text"
-            autocomplete="family-name"
-            placeholder="Ej. Gómez"
-            bind:value={apellido}
-            oninput={() => liveValidate("apellido")}
-            onblur={() => markTouched("apellido")}
-            aria-invalid={!!fieldErrors.apellido}
-            aria-describedby={fieldErrors.apellido ? "err-apellido" : undefined}
-            required
-          />
-          {#if fieldErrors.apellido}
-            <span id="err-apellido" class="err">{fieldErrors.apellido}</span>
-          {/if}
-        </div>
-
-        <div class="field">
-          <label for="telefono"
-            >WhatsApp <span class="req" aria-hidden="true">*</span></label
-          >
-          <div class="phone">
-            <select
-              id="country"
-              aria-label="Código de país"
-              bind:value={countryCode}
-              onchange={() => liveValidate("telefono")}
-            >
-              {#each countries as c}
-                <option value={c.code}>{flag(c.code)} {c.dial}</option>
-              {/each}
-            </select>
+      <section class="section">
+        <h3 class="section-title">Datos personales</h3>
+        <div class="grid">
+          <div class="field">
+            <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
             <input
-              id="telefono"
-              type="tel"
-              inputmode="tel"
-              autocomplete="tel"
-              placeholder="999 888 777"
-              bind:value={telefono}
-              oninput={() => liveValidate("telefono")}
-              onblur={() => markTouched("telefono")}
-              aria-invalid={!!fieldErrors.telefono}
-              aria-describedby={fieldErrors.telefono
-                ? "err-telefono"
-                : undefined}
+              id="nombre"
+              type="text"
+              autocomplete="given-name"
+              placeholder="Ej. María"
+              bind:value={nombre}
+              oninput={() => liveValidate("nombre")}
+              onblur={() => markTouched("nombre")}
+              aria-invalid={!!fieldErrors.nombre}
+              aria-describedby={fieldErrors.nombre ? "err-nombre" : undefined}
               required
             />
+            {#if fieldErrors.nombre}
+              <span id="err-nombre" class="err">{fieldErrors.nombre}</span>
+            {/if}
           </div>
-          {#if fieldErrors.telefono}
-            <span id="err-telefono" class="err">{fieldErrors.telefono}</span>
-          {/if}
-        </div>
 
-        <div class="field">
-          <label for="email">Mail <span class="opt">(opcional)</span></label>
-          <input
-            id="email"
-            type="email"
-            autocomplete="email"
-            placeholder="tu@correo.com"
-            bind:value={email}
-            oninput={() => liveValidate("email")}
-            onblur={() => markTouched("email")}
-            aria-invalid={!!fieldErrors.email}
-            aria-describedby={fieldErrors.email ? "err-email" : undefined}
-          />
-          {#if fieldErrors.email}
-            <span id="err-email" class="err">{fieldErrors.email}</span>
-          {/if}
-        </div>
+          <div class="field">
+            <label for="apellido">Apellido <span class="req" aria-hidden="true">*</span></label>
+            <input
+              id="apellido"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Ej. Gómez"
+              bind:value={apellido}
+              oninput={() => liveValidate("apellido")}
+              onblur={() => markTouched("apellido")}
+              aria-invalid={!!fieldErrors.apellido}
+              aria-describedby={fieldErrors.apellido ? "err-apellido" : undefined}
+              required
+            />
+            {#if fieldErrors.apellido}
+              <span id="err-apellido" class="err">{fieldErrors.apellido}</span>
+            {/if}
+          </div>
 
-        <div class="field">
-          <label for="negocio">
-            Nombre de tu (academia/centro/club/escuela) 
-            <span
-              class="req"
-              aria-hidden="true">*</span
+          <div class="field">
+            <label for="telefono">WhatsApp de contacto <span class="req" aria-hidden="true">*</span></label>
+            <div class="phone">
+              <select
+                id="country"
+                aria-label="Código de país"
+                bind:value={countryCode}
+                onchange={() => liveValidate("telefono")}
+              >
+                {#each countries as c}
+                  <option value={c.code}>{flag(c.code)} {c.dial}</option>
+                {/each}
+              </select>
+              <input
+                id="telefono"
+                type="tel"
+                inputmode="tel"
+                autocomplete="tel"
+                placeholder="999 888 777"
+                bind:value={telefono}
+                oninput={() => liveValidate("telefono")}
+                onblur={() => markTouched("telefono")}
+                aria-invalid={!!fieldErrors.telefono}
+                aria-describedby={fieldErrors.telefono ? "err-telefono" : undefined}
+                required
+              />
+            </div>
+            {#if fieldErrors.telefono}
+              <span id="err-telefono" class="err">{fieldErrors.telefono}</span>
+            {/if}
+          </div>
+
+          <div class="field">
+            <label for="email">Mail <span class="opt">(opcional)</span></label>
+            <input
+              id="email"
+              type="email"
+              autocomplete="email"
+              placeholder="tu@correo.com"
+              bind:value={email}
+              oninput={() => liveValidate("email")}
+              onblur={() => markTouched("email")}
+              aria-invalid={!!fieldErrors.email}
+              aria-describedby={fieldErrors.email ? "err-email" : undefined}
+            />
+            {#if fieldErrors.email}
+              <span id="err-email" class="err">{fieldErrors.email}</span>
+            {/if}
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h3 class="section-title">Sobre tu academia</h3>
+        <div class="grid">
+          <div class="field">
+            <label for="pais">¿En qué país estás? <span class="req" aria-hidden="true">*</span></label>
+            <select
+              id="pais"
+              bind:value={pais}
+              onchange={() => markTouched("pais")}
+              onblur={() => markTouched("pais")}
+              aria-invalid={!!fieldErrors.pais}
+              aria-describedby={fieldErrors.pais ? "err-pais" : undefined}
+              required
             >
-          </label>
-          <input
-            id="negocio"
-            type="text"
-            autocomplete="organization"
-            placeholder="Ej. Estudio Flow"
-            bind:value={negocio}
-            oninput={() => liveValidate("negocio")}
-            onblur={() => markTouched("negocio")}
-            aria-invalid={!!fieldErrors.negocio}
-            aria-describedby={fieldErrors.negocio ? "err-negocio" : undefined}
-            required
-          />
-          {#if fieldErrors.negocio}
-            <span id="err-negocio" class="err">{fieldErrors.negocio}</span>
-          {/if}
-        </div>
-
-        <div class="field">
-          <label for="tipo"
-            >Tipo de academia <span class="req" aria-hidden="true">*</span
-            ></label
-          >
-          <select
-            id="tipo"
-            bind:value={tipoAcademia}
-            onchange={() => markTouched("tipoAcademia")}
-            onblur={() => markTouched("tipoAcademia")}
-            aria-invalid={!!fieldErrors.tipoAcademia}
-            aria-describedby={fieldErrors.tipoAcademia ? "err-tipo" : undefined}
-            required
-          >
-            <option value="" disabled>Selecciona</option>
-            {#each tiposAcademia as t}
-              <option value={t}>{t}</option>
-            {/each}
-          </select>
-          {#if fieldErrors.tipoAcademia}
-            <span id="err-tipo" class="err">{fieldErrors.tipoAcademia}</span>
-          {/if}
-        </div>
-
-        <fieldset class="field radios">
-          <legend
-            >¿Ya tienes tu academia? <span class="req" aria-hidden="true"
-              >*</span
-            ></legend
-          >
-          <div class="radio-group">
-            {#each situaciones as opt, i}
-              <label class="radio">
-                <input
-                  type="radio"
-                  name="situacion"
-                  value={opt}
-                  bind:group={situacion}
-                  onchange={() => markTouched("situacion")}
-                  required={i === 0}
-                />
-                <span class="dot" aria-hidden="true"></span>
-                <span>{opt}</span>
-              </label>
-            {/each}
+              <option value="" disabled>Selecciona</option>
+              {#each paises as p}
+                <option value={p}>{p}</option>
+              {/each}
+            </select>
+            {#if fieldErrors.pais}
+              <span id="err-pais" class="err">{fieldErrors.pais}</span>
+            {/if}
           </div>
-          {#if fieldErrors.situacion}
-            <span class="err">{fieldErrors.situacion}</span>
-          {/if}
-        </fieldset>
 
-        <fieldset class="field radios">
-          <legend
-            >¿Qué función cumples en la academia? <span
-              class="req"
-              aria-hidden="true">*</span
-            ></legend
-          >
-          <div class="radio-group">
-            {#each roles as opt, i}
-              <label class="radio">
-                <input
-                  type="radio"
-                  name="rol"
-                  value={opt}
-                  bind:group={rol}
-                  onchange={() => markTouched("rol")}
-                  required={i === 0}
-                />
-                <span class="dot" aria-hidden="true"></span>
-                <span>{opt}</span>
-              </label>
-            {/each}
+          <div class="field">
+            <label for="negocio">Nombre de tu centro <span class="req" aria-hidden="true">*</span></label>
+            <input
+              id="negocio"
+              type="text"
+              autocomplete="organization"
+              placeholder="Ej. Estudio Flow"
+              bind:value={negocio}
+              oninput={() => liveValidate("negocio")}
+              onblur={() => markTouched("negocio")}
+              aria-invalid={!!fieldErrors.negocio}
+              aria-describedby={fieldErrors.negocio ? "err-negocio" : undefined}
+              required
+            />
+            {#if fieldErrors.negocio}
+              <span id="err-negocio" class="err">{fieldErrors.negocio}</span>
+            {/if}
           </div>
-          {#if fieldErrors.rol}
-            <span class="err">{fieldErrors.rol}</span>
-          {/if}
-        </fieldset>
-      </div>
+
+          <fieldset class="field radios">
+            <legend>¿Ya tienes tu academia? <span class="req" aria-hidden="true">*</span></legend>
+            <div class="radio-group">
+              {#each situaciones as opt, i}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="situacion"
+                    value={opt}
+                    bind:group={situacion}
+                    onchange={() => markTouched("situacion")}
+                    required={i === 0}
+                  />
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>{opt}</span>
+                </label>
+              {/each}
+            </div>
+            {#if fieldErrors.situacion}
+              <span class="err">{fieldErrors.situacion}</span>
+            {/if}
+          </fieldset>
+
+          <fieldset class="field radios">
+            <legend>¿Qué función cumples en la academia? <span class="req" aria-hidden="true">*</span></legend>
+            <div class="radio-group">
+              {#each roles as opt, i}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="rol"
+                    value={opt}
+                    bind:group={rol}
+                    onchange={() => markTouched("rol")}
+                    required={i === 0}
+                  />
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>{opt}</span>
+                </label>
+              {/each}
+            </div>
+            {#if fieldErrors.rol}
+              <span class="err">{fieldErrors.rol}</span>
+            {/if}
+          </fieldset>
+
+          <div class="field">
+            <label for="tipo">Tipo de academia <span class="req" aria-hidden="true">*</span></label>
+            <select
+              id="tipo"
+              bind:value={tipoAcademia}
+              onchange={() => markTouched("tipoAcademia")}
+              onblur={() => markTouched("tipoAcademia")}
+              aria-invalid={!!fieldErrors.tipoAcademia}
+              aria-describedby={fieldErrors.tipoAcademia ? "err-tipo" : undefined}
+              required
+            >
+              <option value="" disabled>Selecciona</option>
+              {#each tiposAcademia as t}
+                <option value={t}>{t}</option>
+              {/each}
+            </select>
+            {#if fieldErrors.tipoAcademia}
+              <span id="err-tipo" class="err">{fieldErrors.tipoAcademia}</span>
+            {/if}
+          </div>
+
+          <fieldset class="field radios">
+            <legend>¿Cuántos alumnos tiene el centro? <span class="req" aria-hidden="true">*</span></legend>
+            <div class="radio-group radio-group--cols2">
+              {#each tamanos as opt, i}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="alumnos"
+                    value={opt}
+                    bind:group={alumnos}
+                    onchange={() => markTouched("alumnos")}
+                    required={i === 0}
+                  />
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>{opt}</span>
+                </label>
+              {/each}
+            </div>
+            {#if fieldErrors.alumnos}
+              <span class="err">{fieldErrors.alumnos}</span>
+            {/if}
+          </fieldset>
+
+          <fieldset class="field radios">
+            <legend>¿Usas algún software de gestión? <span class="req" aria-hidden="true">*</span></legend>
+            <div class="radio-group radio-group--inline">
+              {#each softwareOpts as opt, i}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="usaSoftware"
+                    value={opt}
+                    bind:group={usaSoftware}
+                    onchange={() => markTouched("usaSoftware")}
+                    required={i === 0}
+                  />
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>{opt}</span>
+                </label>
+              {/each}
+            </div>
+            {#if fieldErrors.usaSoftware}
+              <span class="err">{fieldErrors.usaSoftware}</span>
+            {/if}
+          </fieldset>
+
+          <fieldset class="field radios">
+            <legend>¿Cómo nos conociste? <span class="req" aria-hidden="true">*</span></legend>
+            <div class="radio-group">
+              {#each fuentes as opt, i}
+                <label class="radio">
+                  <input
+                    type="radio"
+                    name="fuente"
+                    value={opt}
+                    bind:group={fuente}
+                    onchange={() => markTouched("fuente")}
+                    required={i === 0}
+                  />
+                  <span class="dot" aria-hidden="true"></span>
+                  <span>{opt}</span>
+                </label>
+              {/each}
+            </div>
+            {#if fieldErrors.fuente}
+              <span class="err">{fieldErrors.fuente}</span>
+            {/if}
+          </fieldset>
+        </div>
+      </section>
 
       {#if status === "error" && errorMsg}
         <div class="alert" role="alert">{errorMsg}</div>
@@ -574,6 +702,26 @@
     padding: 16px;
     color: #111122;
     font-family: "Oktah Neue", system-ui, sans-serif;
+  }
+
+  .section {
+    margin-bottom: 18px;
+  }
+
+  .section:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .section-title {
+    font-family: 'Epoch', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #531dd8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(83, 29, 216, 0.12);
   }
 
   .grid {
@@ -685,6 +833,16 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .radio-group--inline {
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .radio-group--cols2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 6px;
   }
 
   .radio {
