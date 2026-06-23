@@ -215,12 +215,12 @@ export const plans = [
     prices: {
       mensual: { PE: 480, MX: 2400, US: 140 },
       trimestral: { PE: 430, MX: 2160, US: 125 },
-      anual: { PE: 385, MX: 1920, US: 110 },
+      anual: { PE: 370, MX: 1920, US: 110 },
     },
     pricesWhatsapp: {
       mensual: { PE: 500, MX: 2500, US: 150 },
       trimestral: { PE: 450, MX: 2260, US: 135 },
-      anual: { PE: 405, MX: 2020, US: 120 },
+      anual: { PE: 390, MX: 2020, US: 120 },
     },
     whatsappAuto: { includedReminders: 350 },
     whatsappManual: { included1ClickSends: 350 },
