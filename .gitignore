@@ -21,3 +21,13 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Agent & Skills
+.agents/
+skills-lock.json
+
+# Exclude extra documentation and tools not meant for version control in this branch
+n8n-workflows/
+supabase/migrations/
+docs/META_PIXEL.md
+
