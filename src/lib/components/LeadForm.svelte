@@ -98,13 +98,16 @@
   let alumnos = $state("");
   let usaSoftware = $state("");
   let fuente = $state("");
+  let website = $state(""); // honeypot — debe quedar vacío
 
   let status = $state<"idle" | "loading" | "success" | "error">("idle");
   let errorMsg = $state("");
   let fieldErrors = $state<Record<string, string>>({});
+  let formLoadedAt = 0;
 
   // Autodetect país por IP (ipapi.co — gratis, sin key). Cae a 'PE' si falla.
   onMount(async () => {
+    formLoadedAt = Date.now();
     if (telefono) return; // si el user ya empezó a escribir, no lo cambies
     try {
       const ctrl = new AbortController();
@@ -270,10 +273,22 @@
     e.preventDefault();
     if (status === "loading") return;
 
+    // Honeypot: bot rellenó campo invisible → fingir éxito y descartar.
+    if (website.trim() !== "") {
+      status = "success";
+      return;
+    }
+
+    // Time-to-fill: humanos tardan >3s. Submit más rápido = bot.
+    if (formLoadedAt && Date.now() - formLoadedAt < 3000) {
+      status = "success";
+      return;
+    }
+
     const lastSubmit = localStorage.getItem("last_lead_submit");
     if (lastSubmit) {
       const timeSince = Date.now() - parseInt(lastSubmit, 10);
-      if (timeSince < 5 * 60 * 1000) {
+      if (timeSince < 60 * 1000) {
         status = "success";
         return;
       }
@@ -411,6 +426,17 @@
     </div>
   {:else}
     <form onsubmit={handleSubmit} novalidate>
+      <div class="honeypot" aria-hidden="true">
+        <label for="website">No completar este campo</label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+          bind:value={website}
+        />
+      </div>
       <div class="sections">
       <section class="section">
         <h3 class="section-title">Datos personales</h3>
@@ -717,6 +743,16 @@
 </div>
 
 <style>
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .lead-card {
     width: 100%;
     max-width: 460px;
