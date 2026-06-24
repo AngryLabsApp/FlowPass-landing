@@ -1,6 +1,7 @@
 <script lang="ts">
   import { PUBLIC_N8N_LEADS_WEBHOOK } from "$env/static/public";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
   import { z } from "zod";
   import {
     parsePhoneNumberFromString,
@@ -269,6 +270,15 @@
     e.preventDefault();
     if (status === "loading") return;
 
+    const lastSubmit = localStorage.getItem("last_lead_submit");
+    if (lastSubmit) {
+      const timeSince = Date.now() - parseInt(lastSubmit, 10);
+      if (timeSince < 5 * 60 * 1000) {
+        status = "success";
+        return;
+      }
+    }
+
     const errs: Record<string, string> = {};
 
     const parsedFields = baseSchema.safeParse({
@@ -325,6 +335,12 @@
       usa_software: data.usaSoftware === "Sí",
       fuente: data.fuente,
       origen: "n8n_form",
+      created_at: new Date().toISOString(),
+      utm_source: $page.url.searchParams.get("utm_source") || "",
+      utm_medium: $page.url.searchParams.get("utm_medium") || "",
+      utm_campaign: $page.url.searchParams.get("utm_campaign") || "",
+      utm_content: $page.url.searchParams.get("utm_content") || "",
+      referrer: typeof document !== "undefined" ? document.referrer : "",
     };
 
     status = "loading";
@@ -354,6 +370,7 @@
         fuente: payload.fuente,
       });
 
+      localStorage.setItem("last_lead_submit", Date.now().toString());
       status = "success";
 
       if (calLink) {
@@ -373,14 +390,23 @@
 
 <div class="lead-card">
   {#if status === "success"}
-    <div class="success" role="status" aria-live="polite">
-      <h2>¡Gracias, {nombre}!</h2>
-      <p>
-        Recibimos tu información. Un asesor de FlowPass te contactará muy
-        pronto.
+    <div class="success-container" role="status" aria-live="polite">
+      <div class="success-icon-wrap">
+        <svg class="success-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle class="success-circle" cx="26" cy="26" r="24" stroke="#01f59e" stroke-width="3" fill="none" />
+          <path class="success-check" d="M15 27l7 7 15-15" stroke="#01f59e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        </svg>
+        <div class="success-pulse"></div>
+      </div>
+
+      <h2 class="success-title">¡Todo listo, {nombre}!</h2>
+      <div class="success-divider"></div>
+      <p class="success-body">
+        Nuestro equipo te contactará por WhatsApp.
       </p>
+
       {#if calLink}
-        <p class="muted">Te llevamos a agendar tu demo…</p>
+        <p class="success-redirect">Te llevamos a agendar tu demo…</p>
       {/if}
     </div>
   {:else}
@@ -1042,20 +1068,112 @@
     cursor: not-allowed;
   }
 
-  .success {
+  /* ── Success State ─────────────────────────── */
+
+  .success-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    padding: 12px 4px;
+    padding: 40px 20px 36px;
+    min-height: 420px;
+    justify-content: center;
+    animation: fadeInUp 0.5s ease both;
   }
 
-  .success p {
+  .success-icon-wrap {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 24px;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .success-circle {
+    stroke-dasharray: 151;
+    stroke-dashoffset: 151;
+    animation: drawCircle 0.6s 0.1s ease forwards;
+  }
+
+  .success-check {
+    stroke-dasharray: 40;
+    stroke-dashoffset: 40;
+    animation: drawCheck 0.4s 0.6s ease forwards;
+  }
+
+  .success-pulse {
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(1, 245, 158, 0.3);
+    animation: pulseRing 1.8s 0.9s ease-out infinite;
+    z-index: 0;
+  }
+
+  .success-title {
+    font-family: "Epoch", "Oktah Neue", system-ui, sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #1d1d2e;
+    margin: 0 0 10px;
+    animation: fadeInUp 0.5s 0.3s ease both;
+  }
+
+  .success-body {
     color: #5a5a70;
-    margin: 6px 0;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    max-width: 380px;
+    margin: 0 0 20px;
+    animation: fadeInUp 0.5s 0.45s ease both;
   }
 
-  .success .muted {
+  .success-divider {
+    width: 48px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #531dd8, #01f59e);
+    margin: 0 auto 20px;
+    animation: fadeInUp 0.5s 0.55s ease both;
+  }
+
+  .success-redirect {
+    margin-top: 18px;
     color: #9a9aae;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    animation: fadeInUp 0.4s 1s ease both;
+  }
+
+  @keyframes drawCircle {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes drawCheck {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes pulseRing {
+    0% { transform: scale(1); opacity: 0.6; }
+    70% { transform: scale(1.35); opacity: 0; }
+    100% { transform: scale(1.35); opacity: 0; }
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @media (min-width: 640px) {
