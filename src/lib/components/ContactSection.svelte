@@ -20,7 +20,7 @@
         Hablemos de tu <span class="grad">negocio</span>
       </h2>
       <p class="contact-subtitle font-oktah">
-        ¿Quieres una <strong>demo personalizada</strong>? Escríbenos y te mostramos cómo FlowPass puede ayudarte.
+        ¿Quieres una <strong>asesoría personalizada</strong>? Escríbenos y te ayudamos a ordenar y automatizar tu academia.
       </p>
     </div>
 
@@ -28,12 +28,12 @@
       <a
         href={calendarLink}
         class="contact-card primary"
-        aria-label="Agendar demo gratuita"
+        aria-label="Agendar asesoría gratuita"
         onclick={() => trackSchedule('contact_section')}
       >
         <span class="card-icon"><CalendarDays class="w-6 h-6" /></span>
-        <span class="card-title">Agendar demo</span>
-        <span class="card-desc">15 min, gratis, sin compromiso.</span>
+        <span class="card-title">Agendar asesoría</span>
+        <span class="card-desc">Sesión 1:1 de 30 min, gratis y sin compromiso.</span>
       </a>
 
       <a

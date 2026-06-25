@@ -102,14 +102,14 @@
       <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-3">
         <a
           href="/agenda"
-          aria-label="Agendar una demo gratuita de FlowPass"
+          aria-label="Agendar una asesoría gratuita con FlowPass"
           class="cta-link"
           onclick={() => trackSchedule('hero')}
         >
           <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-brand text-dark-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(1,245,158,0.45)] transition-all duration-300"
           >
-            Agendar demo
+            Agendar asesoría
             <CalendarDays class="w-5 h-5" aria-hidden="true" />
           </button>
         </a>

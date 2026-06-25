@@ -52,7 +52,7 @@ export const faqMainEntity = [
     "name": "¿Cómo funciona el modelo de pago de FlowPass?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "FlowPass opera con suscripción mensual, sin contratos de permanencia. Pagas una cuota mensual basada en la cantidad de alumnos activos. Puedes cancelar o pausar cuando quieras, y retomar después sin problemas. Además, ofrecemos una demo gratuita para que conozcas la plataforma antes de decidirte."
+      "text": "FlowPass opera con suscripción mensual, sin contratos de permanencia. Pagas una cuota mensual basada en la cantidad de alumnos activos. Puedes cancelar o pausar cuando quieras, y retomar después sin problemas. Además, ofrecemos una asesoría gratuita 1:1 para que conozcas la plataforma antes de decidirte."
     }
   },
   {
@@ -60,7 +60,7 @@ export const faqMainEntity = [
     "name": "¿Puedo probar FlowPass antes de suscribirme?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "¡Claro que sí! Puedes agendar una demo personalizada donde te mostramos todas las funcionalidades y resolvemos tus dudas. También ofrecemos un período de prueba gratuito para que explores la plataforma con tus propios datos."
+      "text": "¡Claro que sí! Puedes agendar una asesoría personalizada 1:1 donde revisamos tu caso, te mostramos las funcionalidades y resolvemos tus dudas. También ofrecemos un período de prueba gratuito para que explores la plataforma con tus propios datos."
     }
   },
   {

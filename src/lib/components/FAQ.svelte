@@ -18,7 +18,7 @@
     },
     {
       q: "¿Cómo empiezo?",
-      a: `Agendas una demo gratuita y conoces la plataforma con datos reales. Si te convence, activamos tu cuenta y en menos de 24 horas ya estás operando.`
+      a: `Agendas una asesoría gratuita 1:1 donde revisamos cómo manejas hoy tu academia y te mostramos cómo ordenarla con FlowPass. Si te hace sentido, activamos tu cuenta y en menos de 24 horas ya estás operando.`
     },
     {
       q: "¿Tienen soporte técnico?",

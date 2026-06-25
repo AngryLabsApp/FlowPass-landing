@@ -84,14 +84,14 @@
         <!-- Install PWA -->
         <InstallAppButton variant="desktop" />
 
-        <!-- Demo ghost -->
+        <!-- Asesoría ghost -->
         <a
           href="/agenda"
-          aria-label="Agendar una demo de FlowPass"
+          aria-label="Agendar una asesoría gratuita con FlowPass"
           onclick={() => trackSchedule('navbar_desktop')}
           class="text-sm font-medium text-neutral-400 hover:text-white transition-colors duration-200"
         >
-          Agendar demo
+          Agendar asesoría
         </a>
 
         <!-- Ingresar — CTA notorio -->
@@ -185,14 +185,14 @@
 
         <a
           href="/agenda"
-          aria-label="Agendar una demo de FlowPass"
+          aria-label="Agendar una asesoría gratuita con FlowPass"
           onclick={() => {
             trackSchedule('navbar_mobile');
             isOpen = false;
           }}
           class="block text-center px-4 py-2.5 rounded-xl text-sm font-medium text-neutral-300 border border-white/15 hover:border-white/30 hover:text-white transition-all duration-200"
         >
-          Agendar demo
+          Agendar asesoría
         </a>
 
         <a

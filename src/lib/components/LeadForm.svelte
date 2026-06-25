@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PUBLIC_N8N_LEADS_WEBHOOK } from "$env/static/public";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import { page } from "$app/stores";
   import { z } from "zod";
   import {
@@ -85,6 +85,16 @@
     "Otro",
   ];
 
+  // Defaults usados cuando un campo opcional queda vacío al enviar,
+  // para mantener compatibilidad con CHECK constraints del CRM.
+  const DEFAULTS = {
+    pais: "Otro",
+    negocio: "—",
+    rol: "Dueño/Propietario/Gerente",
+    usaSoftware: "No",
+    fuente: "Otro",
+  } as const;
+
   let nombre = $state("");
   let apellido = $state("");
   let countryCode = $state("PE");
@@ -100,6 +110,9 @@
   let fuente = $state("");
   let website = $state(""); // honeypot — debe quedar vacío
 
+  let currentStep = $state(1);
+  const totalSteps = 2;
+
   let status = $state<"idle" | "loading" | "success" | "error">("idle");
   let errorMsg = $state("");
   let fieldErrors = $state<Record<string, string>>({});
@@ -108,6 +121,12 @@
   // Autodetect país por IP (ipapi.co — gratis, sin key). Cae a 'PE' si falla.
   onMount(async () => {
     formLoadedAt = Date.now();
+    // Autofocus en primer campo del wizard (nombre)
+    await tick();
+    const first = document.getElementById("nombre");
+    if (first && typeof (first as HTMLElement).focus === "function") {
+      (first as HTMLElement).focus();
+    }
     if (telefono) return; // si el user ya empezó a escribir, no lo cambies
     try {
       const ctrl = new AbortController();
@@ -158,28 +177,52 @@
         (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
         "Ingresa un correo válido.",
       ),
-    negocio: z.string().trim().min(2, "Ingresa el nombre de tu academia."),
+    // OPCIONAL: si llega vacío, se rellena con default antes de enviar.
+    negocio: z.string().trim().optional(),
+    // REQUERIDO
     tipoAcademia: z
       .string()
       .refine((v) => tiposAcademiaValues.includes(v), "Selecciona una opción."),
+    // REQUERIDO
     situacion: z
       .string()
       .refine((v) => situacionesValues.includes(v), "Selecciona una opción."),
+    // OPCIONAL — si llega, debe ser válido
     rol: z
       .string()
-      .refine((v) => rolesValues.includes(v), "Selecciona una opción."),
+      .optional()
+      .refine(
+        (v) => !v || rolesValues.includes(v),
+        "Selecciona una opción válida.",
+      ),
+    // OPCIONAL — si llega, debe ser válido
     pais: z
       .string()
-      .refine((v) => paisesValues.includes(v), "Selecciona una opción."),
+      .optional()
+      .refine(
+        (v) => !v || paisesValues.includes(v),
+        "Selecciona una opción válida.",
+      ),
+    // REQUERIDO
     alumnos: z
       .string()
       .refine((v) => tamanosValues.includes(v), "Selecciona una opción."),
+    // OPCIONAL
     usaSoftware: z
       .string()
-      .refine((v) => softwareValues.includes(v), "Selecciona una opción."),
+      .optional()
+      .refine(
+        (v) => !v || softwareValues.includes(v),
+        "Selecciona una opción válida.",
+      ),
+    // OPCIONAL
     fuente: z
       .string()
-      .refine((v) => fuentesValues.includes(v), "Selecciona una opción."),
+      .optional()
+      .refine(
+        (v) => !v || fuentesValues.includes(v),
+        "Selecciona una opción válida.",
+      ),
   });
 
   function validatePhone(raw: string, country: CountryCode): string | null {
@@ -269,6 +312,43 @@
     validateField(field, touched[field] ? "full" : "live");
   }
 
+  // Validación de paso 1: nombre, apellido, telefono (obligatorios) + email (si llega)
+  function validateStep1(): boolean {
+    ["nombre", "apellido", "email", "telefono"].forEach((f) =>
+      validateField(f, "full"),
+    );
+    const blockers = ["nombre", "apellido", "telefono", "email"];
+    return blockers.every((f) => !fieldErrors[f]);
+  }
+
+  async function goNext() {
+    if (!validateStep1()) {
+      // foco en el primer error
+      const order = ["nombre", "apellido", "telefono", "email"];
+      const first = order.find((f) => fieldErrors[f]);
+      if (first) {
+        const id = first === "telefono" ? "telefono" : first;
+        const el = document.getElementById(id);
+        if (el) (el as HTMLElement).focus();
+      }
+      return;
+    }
+    currentStep = 2;
+    await tick();
+    const sit = document.querySelector<HTMLElement>('input[name="situacion"]');
+    if (sit) sit.focus();
+    // scroll al top del card al cambiar de paso
+    const card = document.querySelector<HTMLElement>(".lead-card");
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  async function goBack() {
+    currentStep = 1;
+    await tick();
+    const card = document.querySelector<HTMLElement>(".lead-card");
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   async function handleSubmit(e: Event) {
     e.preventDefault();
     if (status === "loading") return;
@@ -323,6 +403,17 @@
     fieldErrors = errs;
 
     if (Object.keys(errs).length > 0) {
+      // Si el error está en paso 1, devolver al usuario al paso 1
+      const step1Keys = ["nombre", "apellido", "email", "telefono"];
+      if (step1Keys.some((k) => errs[k])) {
+        currentStep = 1;
+        await tick();
+        const first = step1Keys.find((k) => errs[k]);
+        if (first) {
+          const el = document.getElementById(first);
+          if (el) (el as HTMLElement).focus();
+        }
+      }
       errorMsg = "Revisa los campos marcados.";
       status = "error";
       return;
@@ -335,20 +426,27 @@
     )!;
     const data = parsedFields.data!;
 
+    // Defaults para campos opcionales vacíos (compat con CRM).
+    const negocioFinal = (data.negocio ?? "").trim() || DEFAULTS.negocio;
+    const paisFinal = data.pais || DEFAULTS.pais;
+    const rolFinal = data.rol || DEFAULTS.rol;
+    const usaSoftwareFinal = data.usaSoftware || DEFAULTS.usaSoftware;
+    const fuenteFinal = data.fuente || DEFAULTS.fuente;
+
     const payload = {
       nombre: data.nombre,
       apellido: data.apellido,
       email: data.email ?? "",
       telefono: phone.format("E.164"),
       pais_telefono: country.name,
-      pais: data.pais,
-      negocio: data.negocio,
+      pais: paisFinal,
+      negocio: negocioFinal,
       tipo_academia: data.tipoAcademia,
       situacion: data.situacion,
-      rol: data.rol,
+      rol: rolFinal,
       alumnos: data.alumnos,
-      usa_software: data.usaSoftware === "Sí",
-      fuente: data.fuente,
+      usa_software: usaSoftwareFinal === "Sí",
+      fuente: fuenteFinal,
       origen: "n8n_form",
       created_at: new Date().toISOString(),
       utm_source: $page.url.searchParams.get("utm_source") || "",
@@ -415,17 +513,33 @@
         <div class="success-pulse"></div>
       </div>
 
-      <h2 class="success-title">¡Todo listo, {nombre}!</h2>
+      <h2 class="success-title">¡Listo, {nombre}!</h2>
       <div class="success-divider"></div>
       <p class="success-body">
-        Nuestro equipo te contactará por WhatsApp.
+        Recibimos tus datos. En breve te escribimos por WhatsApp para coordinar tu asesoría 1:1 de 30 min con FlowPass.
       </p>
 
       {#if calLink}
-        <p class="success-redirect">Te llevamos a agendar tu demo…</p>
+        <p class="success-redirect">Te llevamos a elegir el horario…</p>
       {/if}
     </div>
   {:else}
+    <!-- Progress indicator -->
+    <div class="stepper" aria-label="Progreso del formulario">
+      <div class="step-bar">
+        <div
+          class="step-bar-fill"
+          style:width="{(currentStep / totalSteps) * 100}%"
+        ></div>
+      </div>
+      <div class="step-meta">
+        <span class="step-num">Paso {currentStep} de {totalSteps}</span>
+        <span class="step-name">
+          {currentStep === 1 ? "Datos de contacto" : "Sobre tu academia"}
+        </span>
+      </div>
+    </div>
+
     <form onsubmit={handleSubmit} novalidate>
       <div class="honeypot" aria-hidden="true">
         <label for="website">No completar este campo</label>
@@ -438,307 +552,332 @@
           bind:value={website}
         />
       </div>
-      <div class="sections">
-      <section class="section">
-        <h3 class="section-title">Datos personales</h3>
-        <div class="grid">
-          <div class="field">
-            <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
-            <input
-              id="nombre"
-              type="text"
-              autocomplete="given-name"
-              placeholder="Ej. María"
-              bind:value={nombre}
-              oninput={() => liveValidate("nombre")}
-              onblur={() => markTouched("nombre")}
-              aria-invalid={!!fieldErrors.nombre}
-              aria-describedby={fieldErrors.nombre ? "err-nombre" : undefined}
-              required
-            />
-            {#if fieldErrors.nombre}
-              <span id="err-nombre" class="err">{fieldErrors.nombre}</span>
-            {/if}
-          </div>
 
-          <div class="field">
-            <label for="apellido">Apellido <span class="req" aria-hidden="true">*</span></label>
-            <input
-              id="apellido"
-              type="text"
-              autocomplete="family-name"
-              placeholder="Ej. Gómez"
-              bind:value={apellido}
-              oninput={() => liveValidate("apellido")}
-              onblur={() => markTouched("apellido")}
-              aria-invalid={!!fieldErrors.apellido}
-              aria-describedby={fieldErrors.apellido ? "err-apellido" : undefined}
-              required
-            />
-            {#if fieldErrors.apellido}
-              <span id="err-apellido" class="err">{fieldErrors.apellido}</span>
-            {/if}
-          </div>
-
-          <div class="field">
-            <label for="telefono">WhatsApp de contacto <span class="req" aria-hidden="true">*</span></label>
-            <div class="phone">
-              <select
-                id="country"
-                aria-label="Código de país"
-                bind:value={countryCode}
-                onchange={() => liveValidate("telefono")}
-              >
-                {#each countries as c}
-                  <option value={c.code}>{flag(c.code)} {c.dial}</option>
-                {/each}
-              </select>
+      <!-- ───────────── PASO 1 ───────────── -->
+      {#if currentStep === 1}
+        <section class="section" aria-labelledby="step1-title">
+          <h3 id="step1-title" class="section-title">Datos de contacto</h3>
+          <div class="grid">
+            <div class="field">
+              <label for="nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
               <input
-                id="telefono"
-                type="tel"
-                inputmode="tel"
-                autocomplete="tel"
-                placeholder="999 888 777"
-                bind:value={telefono}
-                oninput={() => liveValidate("telefono")}
-                onblur={() => markTouched("telefono")}
-                aria-invalid={!!fieldErrors.telefono}
-                aria-describedby={fieldErrors.telefono ? "err-telefono" : undefined}
+                id="nombre"
+                type="text"
+                autocomplete="given-name"
+                placeholder="Ej. María"
+                bind:value={nombre}
+                oninput={() => liveValidate("nombre")}
+                onblur={() => markTouched("nombre")}
+                aria-invalid={!!fieldErrors.nombre}
+                aria-describedby={fieldErrors.nombre ? "err-nombre" : undefined}
+                aria-required="true"
                 required
               />
+              {#if fieldErrors.nombre}
+                <span id="err-nombre" class="err">{fieldErrors.nombre}</span>
+              {/if}
             </div>
-            {#if fieldErrors.telefono}
-              <span id="err-telefono" class="err">{fieldErrors.telefono}</span>
-            {/if}
-          </div>
 
-          <div class="field">
-            <label for="email">Mail <span class="opt">(opcional)</span></label>
-            <input
-              id="email"
-              type="email"
-              autocomplete="email"
-              placeholder="tu@correo.com"
-              bind:value={email}
-              oninput={() => liveValidate("email")}
-              onblur={() => markTouched("email")}
-              aria-invalid={!!fieldErrors.email}
-              aria-describedby={fieldErrors.email ? "err-email" : undefined}
-            />
-            {#if fieldErrors.email}
-              <span id="err-email" class="err">{fieldErrors.email}</span>
-            {/if}
+            <div class="field">
+              <label for="apellido">Apellido <span class="req" aria-hidden="true">*</span></label>
+              <input
+                id="apellido"
+                type="text"
+                autocomplete="family-name"
+                placeholder="Ej. Gómez"
+                bind:value={apellido}
+                oninput={() => liveValidate("apellido")}
+                onblur={() => markTouched("apellido")}
+                aria-invalid={!!fieldErrors.apellido}
+                aria-describedby={fieldErrors.apellido ? "err-apellido" : undefined}
+                aria-required="true"
+                required
+              />
+              {#if fieldErrors.apellido}
+                <span id="err-apellido" class="err">{fieldErrors.apellido}</span>
+              {/if}
+            </div>
+
+            <div class="field field--full">
+              <label for="telefono">WhatsApp de contacto <span class="req" aria-hidden="true">*</span></label>
+              <div class="phone">
+                <select
+                  id="country"
+                  aria-label="Código de país"
+                  bind:value={countryCode}
+                  onchange={() => liveValidate("telefono")}
+                >
+                  {#each countries as c}
+                    <option value={c.code}>{flag(c.code)} {c.dial}</option>
+                  {/each}
+                </select>
+                <input
+                  id="telefono"
+                  type="tel"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  placeholder="999 888 777"
+                  bind:value={telefono}
+                  oninput={() => liveValidate("telefono")}
+                  onblur={() => markTouched("telefono")}
+                  aria-invalid={!!fieldErrors.telefono}
+                  aria-describedby={fieldErrors.telefono ? "err-telefono" : undefined}
+                  aria-required="true"
+                  required
+                />
+              </div>
+              {#if fieldErrors.telefono}
+                <span id="err-telefono" class="err">{fieldErrors.telefono}</span>
+              {/if}
+            </div>
+
+            <div class="field field--full">
+              <label for="email">Mail <span class="opt">(opcional)</span></label>
+              <input
+                id="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="tu@correo.com"
+                bind:value={email}
+                oninput={() => liveValidate("email")}
+                onblur={() => markTouched("email")}
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "err-email" : undefined}
+              />
+              {#if fieldErrors.email}
+                <span id="err-email" class="err">{fieldErrors.email}</span>
+              {/if}
+            </div>
           </div>
+        </section>
+
+        <div class="nav-row">
+          <button
+            type="button"
+            class="cta"
+            onclick={goNext}
+          >
+            Siguiente
+            <span class="cta-arrow" aria-hidden="true">→</span>
+          </button>
         </div>
-      </section>
 
-      <section class="section">
-        <h3 class="section-title">Sobre tu academia</h3>
-        <div class="grid">
-          <div class="field">
-            <label for="pais">¿En qué país estás? <span class="req" aria-hidden="true">*</span></label>
-            <select
-              id="pais"
-              bind:value={pais}
-              onchange={() => markTouched("pais")}
-              onblur={() => markTouched("pais")}
-              aria-invalid={!!fieldErrors.pais}
-              aria-describedby={fieldErrors.pais ? "err-pais" : undefined}
-              required
-            >
-              <option value="" disabled>Selecciona</option>
-              {#each paises as p}
-                <option value={p}>{p}</option>
-              {/each}
-            </select>
-            {#if fieldErrors.pais}
-              <span id="err-pais" class="err">{fieldErrors.pais}</span>
-            {/if}
-          </div>
-
-          <div class="field">
-            <label for="negocio">Nombre de tu centro <span class="req" aria-hidden="true">*</span></label>
-            <input
-              id="negocio"
-              type="text"
-              autocomplete="organization"
-              placeholder="Ej. Estudio Flow"
-              bind:value={negocio}
-              oninput={() => liveValidate("negocio")}
-              onblur={() => markTouched("negocio")}
-              aria-invalid={!!fieldErrors.negocio}
-              aria-describedby={fieldErrors.negocio ? "err-negocio" : undefined}
-              required
-            />
-            {#if fieldErrors.negocio}
-              <span id="err-negocio" class="err">{fieldErrors.negocio}</span>
-            {/if}
-          </div>
-
-          <fieldset class="field radios">
-            <legend>¿Ya tienes tu academia? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="radio-group">
-              {#each situaciones as opt, i}
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name="situacion"
-                    value={opt}
-                    bind:group={situacion}
-                    onchange={() => markTouched("situacion")}
-                    required={i === 0}
-                  />
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>{opt}</span>
-                </label>
-              {/each}
-            </div>
-            {#if fieldErrors.situacion}
-              <span class="err">{fieldErrors.situacion}</span>
-            {/if}
-          </fieldset>
-
-          <fieldset class="field radios">
-            <legend>¿Qué función cumples en la academia? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="radio-group">
-              {#each roles as opt, i}
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name="rol"
-                    value={opt}
-                    bind:group={rol}
-                    onchange={() => markTouched("rol")}
-                    required={i === 0}
-                  />
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>{opt}</span>
-                </label>
-              {/each}
-            </div>
-            {#if fieldErrors.rol}
-              <span class="err">{fieldErrors.rol}</span>
-            {/if}
-          </fieldset>
-
-          <div class="field">
-            <label for="tipo">Tipo de academia <span class="req" aria-hidden="true">*</span></label>
-            <select
-              id="tipo"
-              bind:value={tipoAcademia}
-              onchange={() => markTouched("tipoAcademia")}
-              onblur={() => markTouched("tipoAcademia")}
-              aria-invalid={!!fieldErrors.tipoAcademia}
-              aria-describedby={fieldErrors.tipoAcademia ? "err-tipo" : undefined}
-              required
-            >
-              <option value="" disabled>Selecciona</option>
-              {#each tiposAcademia as t}
-                <option value={t}>{t}</option>
-              {/each}
-            </select>
-            {#if fieldErrors.tipoAcademia}
-              <span id="err-tipo" class="err">{fieldErrors.tipoAcademia}</span>
-            {/if}
-          </div>
-
-          <fieldset class="field radios">
-            <legend>¿Cuántos alumnos tiene el centro? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="radio-group radio-group--cols2">
-              {#each tamanos as opt, i}
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name="alumnos"
-                    value={opt}
-                    bind:group={alumnos}
-                    onchange={() => markTouched("alumnos")}
-                    required={i === 0}
-                  />
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>{opt}</span>
-                </label>
-              {/each}
-            </div>
-            {#if fieldErrors.alumnos}
-              <span class="err">{fieldErrors.alumnos}</span>
-            {/if}
-          </fieldset>
-
-          <fieldset class="field radios">
-            <legend>¿Usas algún software de gestión? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="radio-group radio-group--inline">
-              {#each softwareOpts as opt, i}
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name="usaSoftware"
-                    value={opt}
-                    bind:group={usaSoftware}
-                    onchange={() => markTouched("usaSoftware")}
-                    required={i === 0}
-                  />
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>{opt}</span>
-                </label>
-              {/each}
-            </div>
-            {#if fieldErrors.usaSoftware}
-              <span class="err">{fieldErrors.usaSoftware}</span>
-            {/if}
-          </fieldset>
-
-          <fieldset class="field radios">
-            <legend>¿Cómo nos conociste? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="radio-group">
-              {#each fuentes as opt, i}
-                <label class="radio">
-                  <input
-                    type="radio"
-                    name="fuente"
-                    value={opt}
-                    bind:group={fuente}
-                    onchange={() => markTouched("fuente")}
-                    required={i === 0}
-                  />
-                  <span class="dot" aria-hidden="true"></span>
-                  <span>{opt}</span>
-                </label>
-              {/each}
-            </div>
-            {#if fieldErrors.fuente}
-              <span class="err">{fieldErrors.fuente}</span>
-            {/if}
-          </fieldset>
-        </div>
-      </section>
-      </div>
-
-      {#if status === "error" && errorMsg}
-        <div class="alert" role="alert">{errorMsg}</div>
+        <p class="micro-trust">Gratuita · Sin compromiso · Te respondemos por WhatsApp</p>
       {/if}
 
-      <p class="legal">
-        Al continuar, acepto los
-        <a href="/terminos" target="_blank" rel="noopener"
-          >Términos y condiciones</a
-        >.
-      </p>
+      <!-- ───────────── PASO 2 ───────────── -->
+      {#if currentStep === 2}
+        <section class="section" aria-labelledby="step2-title">
+          <h3 id="step2-title" class="section-title">Sobre tu academia</h3>
+          <div class="grid">
+            <div class="field">
+              <label for="pais">¿En qué país estás? <span class="opt">(opcional)</span></label>
+              <select
+                id="pais"
+                bind:value={pais}
+                onchange={() => markTouched("pais")}
+                onblur={() => markTouched("pais")}
+                aria-invalid={!!fieldErrors.pais}
+                aria-describedby={fieldErrors.pais ? "err-pais" : undefined}
+              >
+                <option value="" disabled>Selecciona</option>
+                {#each paises as p}
+                  <option value={p}>{p}</option>
+                {/each}
+              </select>
+              {#if fieldErrors.pais}
+                <span id="err-pais" class="err">{fieldErrors.pais}</span>
+              {/if}
+            </div>
 
-      <button type="submit" class="cta" disabled={status === "loading"}>
-        {#if status === "loading"}
-          Enviando…
-        {:else}
-          Agenda una demo
-          <span class="cta-arrow" aria-hidden="true">→</span>
+            <div class="field">
+              <label for="negocio">Nombre de tu centro <span class="opt">(opcional)</span></label>
+              <input
+                id="negocio"
+                type="text"
+                autocomplete="organization"
+                placeholder="Ej. Estudio Flow"
+                bind:value={negocio}
+                oninput={() => liveValidate("negocio")}
+                onblur={() => markTouched("negocio")}
+                aria-invalid={!!fieldErrors.negocio}
+                aria-describedby={fieldErrors.negocio ? "err-negocio" : undefined}
+              />
+              {#if fieldErrors.negocio}
+                <span id="err-negocio" class="err">{fieldErrors.negocio}</span>
+              {/if}
+            </div>
+
+            <fieldset class="field field--full radios">
+              <legend>¿Ya tienes tu academia? <span class="req" aria-hidden="true">*</span></legend>
+              <div class="radio-group">
+                {#each situaciones as opt, i}
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="situacion"
+                      value={opt}
+                      bind:group={situacion}
+                      onchange={() => markTouched("situacion")}
+                      required={i === 0}
+                    />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>{opt}</span>
+                  </label>
+                {/each}
+              </div>
+              {#if fieldErrors.situacion}
+                <span class="err">{fieldErrors.situacion}</span>
+              {/if}
+            </fieldset>
+
+            <fieldset class="field field--full radios">
+              <legend>¿Qué función cumples en la academia? <span class="opt">(opcional)</span></legend>
+              <div class="radio-group">
+                {#each roles as opt, i}
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="rol"
+                      value={opt}
+                      bind:group={rol}
+                      onchange={() => markTouched("rol")}
+                    />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>{opt}</span>
+                  </label>
+                {/each}
+              </div>
+              {#if fieldErrors.rol}
+                <span class="err">{fieldErrors.rol}</span>
+              {/if}
+            </fieldset>
+
+            <div class="field">
+              <label for="tipo">Tipo de academia <span class="req" aria-hidden="true">*</span></label>
+              <select
+                id="tipo"
+                bind:value={tipoAcademia}
+                onchange={() => markTouched("tipoAcademia")}
+                onblur={() => markTouched("tipoAcademia")}
+                aria-invalid={!!fieldErrors.tipoAcademia}
+                aria-describedby={fieldErrors.tipoAcademia ? "err-tipo" : undefined}
+                aria-required="true"
+                required
+              >
+                <option value="" disabled>Selecciona</option>
+                {#each tiposAcademia as t}
+                  <option value={t}>{t}</option>
+                {/each}
+              </select>
+              {#if fieldErrors.tipoAcademia}
+                <span id="err-tipo" class="err">{fieldErrors.tipoAcademia}</span>
+              {/if}
+            </div>
+
+            <fieldset class="field field--full radios">
+              <legend>¿Cuántos alumnos tiene el centro? <span class="req" aria-hidden="true">*</span></legend>
+              <div class="radio-group radio-group--cols2">
+                {#each tamanos as opt, i}
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="alumnos"
+                      value={opt}
+                      bind:group={alumnos}
+                      onchange={() => markTouched("alumnos")}
+                      required={i === 0}
+                    />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>{opt}</span>
+                  </label>
+                {/each}
+              </div>
+              {#if fieldErrors.alumnos}
+                <span class="err">{fieldErrors.alumnos}</span>
+              {/if}
+            </fieldset>
+
+            <fieldset class="field radios">
+              <legend>¿Usas algún software de gestión? <span class="opt">(opcional)</span></legend>
+              <div class="radio-group radio-group--inline">
+                {#each softwareOpts as opt}
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="usaSoftware"
+                      value={opt}
+                      bind:group={usaSoftware}
+                      onchange={() => markTouched("usaSoftware")}
+                    />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>{opt}</span>
+                  </label>
+                {/each}
+              </div>
+              {#if fieldErrors.usaSoftware}
+                <span class="err">{fieldErrors.usaSoftware}</span>
+              {/if}
+            </fieldset>
+
+            <fieldset class="field radios">
+              <legend>¿Cómo nos conociste? <span class="opt">(opcional)</span></legend>
+              <div class="radio-group">
+                {#each fuentes as opt}
+                  <label class="radio">
+                    <input
+                      type="radio"
+                      name="fuente"
+                      value={opt}
+                      bind:group={fuente}
+                      onchange={() => markTouched("fuente")}
+                    />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>{opt}</span>
+                  </label>
+                {/each}
+              </div>
+              {#if fieldErrors.fuente}
+                <span class="err">{fieldErrors.fuente}</span>
+              {/if}
+            </fieldset>
+          </div>
+        </section>
+
+        {#if status === "error" && errorMsg}
+          <div class="alert" role="alert">{errorMsg}</div>
         {/if}
-      </button>
 
-      <ul class="trust" aria-hidden="true">
-        <li>Gratuito</li>
-        <li>Sin compromiso</li>
-        <li>15 min</li>
-      </ul>
+        <p class="legal">
+          Al continuar, acepto los
+          <a href="/terminos" target="_blank" rel="noopener"
+            >Términos y condiciones</a
+          >.
+        </p>
+
+        <div class="nav-row nav-row--split">
+          <button
+            type="button"
+            class="cta cta--ghost"
+            onclick={goBack}
+            disabled={status === "loading"}
+          >
+            <span class="cta-arrow cta-arrow--back" aria-hidden="true">←</span>
+            Atrás
+          </button>
+          <button type="submit" class="cta" disabled={status === "loading"}>
+            {#if status === "loading"}
+              Enviando…
+            {:else}
+              Agenda tu asesoría
+              <span class="cta-arrow" aria-hidden="true">→</span>
+            {/if}
+          </button>
+        </div>
+
+        <p class="micro-trust">Gratuita · Sin compromiso · Te respondemos por WhatsApp</p>
+      {/if}
     </form>
   {/if}
 </div>
@@ -770,18 +909,45 @@
     font-family: "Oktah Neue", system-ui, sans-serif;
   }
 
-  .sections {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0;
+  /* ── Stepper ───────────────────────────── */
+  .stepper {
+    margin-bottom: 14px;
+  }
+  .step-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(83, 29, 216, 0.1);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .step-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #531dd8 0%, #01f59e 100%);
+    border-radius: 999px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .step-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 8px;
+    gap: 8px;
+  }
+  .step-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #531dd8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .step-name {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #14142b;
   }
 
   .section {
-    margin-bottom: 18px;
-  }
-
-  .section:last-of-type {
-    margin-bottom: 0;
+    margin-bottom: 14px;
   }
 
   .section-title {
@@ -809,7 +975,7 @@
     min-width: 0;
   }
 
-  .field.full {
+  .field--full {
     grid-column: 1 / -1;
   }
 
@@ -839,14 +1005,14 @@
   input[type="tel"],
   select {
     width: 100%;
-    height: 36px;
-    padding: 0 10px;
+    height: 40px;
+    padding: 0 12px;
     font-size: 16px;
     font-family: inherit;
     color: #111122;
     background: #f6f6f9;
     border: 1px solid rgba(17, 17, 38, 0.08);
-    border-radius: 7px;
+    border-radius: 8px;
     outline: none;
     transition:
       border-color 0.15s ease,
@@ -877,7 +1043,7 @@
   select:focus {
     border-color: #531dd8;
     background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(83, 29, 216, 0.14);
+    box-shadow: 0 0 0 3px rgba(83, 29, 216, 0.18);
   }
 
   input[aria-invalid="true"],
@@ -922,12 +1088,12 @@
   .radio {
     display: flex;
     align-items: center;
-    gap: 7px;
-    min-height: 30px;
-    padding: 4px 9px;
+    gap: 8px;
+    min-height: 38px;
+    padding: 6px 10px;
     background: #f6f6f9;
     border: 1px solid rgba(17, 17, 38, 0.08);
-    border-radius: 7px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     color: #2a2a3c;
@@ -947,7 +1113,7 @@
   }
 
   .radio:has(input:focus-visible) {
-    box-shadow: 0 0 0 3px rgba(83, 29, 216, 0.14);
+    box-shadow: 0 0 0 3px rgba(83, 29, 216, 0.18);
   }
 
   /* Radio nativo oculto; el dot visible lo dibuja .dot */
@@ -981,8 +1147,8 @@
   }
 
   .radio:has(input:checked) .dot {
-    border-color: #3b148f;
-    background: #3b148f;
+    border-color: #01f59e;
+    background: #01f59e;
     box-shadow: inset 0 0 0 3px #ffffff;
   }
 
@@ -997,8 +1163,8 @@
   }
 
   .radio span {
-    font-size: 0.74rem;
-    line-height: 1.2;
+    font-size: 0.78rem;
+    line-height: 1.25;
   }
 
   .req {
@@ -1009,23 +1175,24 @@
 
   .err {
     color: #c0263a;
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     line-height: 1.3;
+    margin-top: 2px;
   }
 
   .alert {
     margin-top: 8px;
-    padding: 6px 9px;
+    padding: 8px 10px;
     background: #fff0f2;
     border: 1px solid #f3b5bd;
-    border-radius: 7px;
+    border-radius: 8px;
     color: #9a1f31;
-    font-size: 0.74rem;
+    font-size: 0.78rem;
   }
 
   .legal {
-    margin: 8px 0 6px;
-    font-size: 0.66rem;
+    margin: 10px 0 8px;
+    font-size: 0.68rem;
     color: #5a5a70;
     line-height: 1.4;
   }
@@ -1035,21 +1202,32 @@
     text-decoration: underline;
   }
 
+  /* ── Botones de navegación / CTA ──────── */
+  .nav-row {
+    display: flex;
+    justify-content: stretch;
+    margin-top: 14px;
+  }
+  .nav-row--split {
+    gap: 8px;
+  }
+
   .cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 100%;
-    height: 42px;
+    flex: 1;
+    min-height: 44px;
+    padding: 0 18px;
     background: #01f59e;
     color: #0a0a1a;
     font-family: "Epoch", "Oktah Neue", system-ui, sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.94rem;
     font-weight: 700;
     letter-spacing: 0.01em;
     border: none;
-    border-radius: 9px;
+    border-radius: 10px;
     cursor: pointer;
     transition:
       transform 0.15s ease,
@@ -1057,36 +1235,34 @@
       background 0.15s ease;
   }
 
+  .cta--ghost {
+    background: transparent;
+    color: #531dd8;
+    border: 1px solid rgba(83, 29, 216, 0.25);
+    flex: 0 0 auto;
+    min-width: 100px;
+  }
+
+  .cta--ghost:hover:not(:disabled) {
+    background: rgba(83, 29, 216, 0.06);
+    border-color: rgba(83, 29, 216, 0.45);
+    transform: none;
+    box-shadow: none;
+  }
+
   .cta-arrow {
     display: inline-block;
     transition: transform 0.18s ease;
   }
+  .cta-arrow--back {
+    margin-right: 2px;
+  }
 
-  .cta:hover:not(:disabled) .cta-arrow {
+  .cta:hover:not(:disabled) .cta-arrow:not(.cta-arrow--back) {
     transform: translateX(3px);
   }
-
-  .trust {
-    list-style: none;
-    margin: 10px 0 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    color: #2a2a40;
-    font-size: 0.74rem;
-    font-weight: 600;
-  }
-
-  .trust li {
-    position: relative;
-  }
-
-  .trust li + li::before {
-    content: "·";
-    position: absolute;
-    left: -10px;
-    color: #b8b8c8;
+  .cta--ghost:hover:not(:disabled) .cta-arrow--back {
+    transform: translateX(-3px);
   }
 
   .cta:hover:not(:disabled) {
@@ -1100,9 +1276,23 @@
     outline-offset: 2px;
   }
 
+  .cta--ghost:focus-visible {
+    outline: 3px solid #531dd8;
+    outline-offset: 2px;
+  }
+
   .cta:disabled {
     opacity: 0.7;
     cursor: not-allowed;
+  }
+
+  .micro-trust {
+    margin: 10px 0 0;
+    text-align: center;
+    color: #5a5a70;
+    font-size: 0.72rem;
+    font-weight: 500;
+    line-height: 1.4;
   }
 
   /* ── Success State ─────────────────────────── */
@@ -1164,7 +1354,7 @@
 
   .success-body {
     color: #5a5a70;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     line-height: 1.6;
     max-width: 380px;
     margin: 0 0 20px;
@@ -1183,7 +1373,7 @@
   .success-redirect {
     margin-top: 18px;
     color: #9a9aae;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-style: italic;
     animation: fadeInUp 0.4s 1s ease both;
   }
@@ -1215,7 +1405,7 @@
 
   @media (min-width: 640px) {
     .lead-card {
-      max-width: 720px;
+      max-width: 540px;
       padding: 22px 24px;
       border-radius: 14px;
     }
@@ -1229,9 +1419,13 @@
       font-size: 0.78rem;
     }
 
+    .step-name {
+      font-size: 0.78rem;
+    }
+
     .grid {
       grid-template-columns: 1fr 1fr;
-      gap: 9px 12px;
+      gap: 10px 12px;
     }
 
     .radio-group--cols2 {
@@ -1240,12 +1434,12 @@
     }
 
     .radio {
-      min-height: 32px;
-      padding: 5px 9px;
+      min-height: 40px;
+      padding: 6px 10px;
     }
 
     .radio span {
-      font-size: 0.72rem;
+      font-size: 0.78rem;
     }
   }
 
@@ -1254,7 +1448,8 @@
     input,
     select,
     .radio,
-    .cta {
+    .cta,
+    .step-bar-fill {
       transition: none;
     }
   }

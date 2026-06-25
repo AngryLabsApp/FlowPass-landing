@@ -6,10 +6,10 @@
 </script>
 
 <svelte:head>
-  <title>Agenda tu demo | FlowPass</title>
+  <title>Agenda tu asesoría | FlowPass</title>
   <meta
     name="description"
-    content="Cuéntanos de tu academia y te mostramos cómo FlowPass automatiza tu gestión. Demo personalizada en menos de 24 horas."
+    content="Cuéntanos de tu academia y te ayudamos a ordenar y automatizar tu gestión en una sesión 1:1. Gratuita y sin compromiso."
   />
   <meta name="robots" content="noindex,follow" />
   <link rel="canonical" href={`${siteConfig.url}/agenda`} />
@@ -20,8 +20,12 @@
 <main class="agenda-page">
   <div class="agenda-wrap">
     <header class="agenda-head">
-      <h1>Agenda tu <span class="grad">demo gratuita</span></h1>
-      <p>Cuéntanos de tu academia y un asesor te contactará para coordinar.</p>
+      <h1>Agenda tu <span class="grad">asesoría gratuita</span></h1>
+      <p>Déjanos tus datos y te contactamos por WhatsApp para coordinar una sesión 1:1 de 30 min, donde te ayudamos a ordenar y automatizar la gestión de tu academia.</p>
+      <p class="agenda-trust">
+        <span aria-hidden="true">✦</span>
+        Academias en Perú y México ya ordenan su gestión con FlowPass
+      </p>
     </header>
 
     <LeadForm />
@@ -65,10 +69,29 @@
 
   .agenda-head p {
     font-family: 'Oktah Neue', system-ui, sans-serif;
-    color: #b8b8d0;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin: 0;
+    color: #d8d8e8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 10px;
+  }
+
+  .agenda-trust {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px !important;
+    margin-bottom: 14px !important;
+    padding: 5px 12px;
+    background: rgba(1, 245, 158, 0.08);
+    border: 1px solid rgba(1, 245, 158, 0.22);
+    border-radius: 999px;
+    color: #d8f7ec !important;
+    font-size: 0.72rem !important;
+    font-weight: 500;
+  }
+
+  .agenda-trust span {
+    color: #01f59e;
   }
 
   @media (min-width: 640px) {
@@ -77,11 +100,15 @@
     }
 
     .agenda-head h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
     }
 
     .agenda-head p {
-      font-size: 0.92rem;
+      font-size: 0.98rem;
+    }
+
+    .agenda-trust {
+      font-size: 0.78rem !important;
     }
   }
 </style>
