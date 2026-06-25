@@ -355,6 +355,7 @@
       utm_medium: $page.url.searchParams.get("utm_medium") || "",
       utm_campaign: $page.url.searchParams.get("utm_campaign") || "",
       utm_content: $page.url.searchParams.get("utm_content") || "",
+      promo_code: ($page.url.searchParams.get("promo") || $page.url.searchParams.get("promo_code") || "").toUpperCase().trim(),
       referrer: typeof document !== "undefined" ? document.referrer : "",
     };
 
