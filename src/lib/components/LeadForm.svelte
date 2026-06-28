@@ -65,7 +65,7 @@
     "Alumno",
   ];
 
-  const paises = ["Perú", "México", "Colombia", "Chile", "Otro"];
+  const paises = ["Perú", "México", "Chile", "Colombia", "Argentina", "Ecuador", "Bolivia"];
 
   const tamanos = [
     "Aún no está abierto",
@@ -672,7 +672,7 @@
           <h3 id="step2-title" class="section-title">Sobre tu academia</h3>
           <div class="grid">
             <div class="field">
-              <label for="pais">¿En qué país estás? <span class="opt">(opcional)</span></label>
+              <label for="pais">¿En qué país está tu academia? <span class="opt">(opcional)</span></label>
               <select
                 id="pais"
                 bind:value={pais}
@@ -692,7 +692,7 @@
             </div>
 
             <div class="field">
-              <label for="negocio">Nombre de tu centro <span class="opt">(opcional)</span></label>
+              <label for="negocio">Nombre de tu academia <span class="opt">(opcional)</span></label>
               <input
                 id="negocio"
                 type="text"
@@ -973,6 +973,12 @@
     flex-direction: column;
     gap: 3px;
     min-width: 0;
+  }
+
+  .grid > .field > input,
+  .grid > .field > select,
+  .grid > .field > textarea {
+    margin-top: auto;
   }
 
   .field--full {
