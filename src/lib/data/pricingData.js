@@ -146,7 +146,7 @@ export const plans = [
     features: [
       { label: "Todo lo de Flow Pocket", included: true },
       {
-        label: "Hasta 4 accesos Admin + 8 accesos para tu equipo",
+        label: "Hasta 4 accesos Admin + 6 accesos para tu equipo",
         included: true,
       },
       { label: "Membresías simultáneas por alumno", included: true },
@@ -185,7 +185,7 @@ export const plans = [
     features: [
       { label: "Todo lo de Flow Lite", included: true },
       {
-        label: "Accesos sin restricción para ti y tu equipo (hasta 16 en total)",
+        label: "Accesos sin restricción para ti y tu equipo (hasta 15 en total)",
         included: true,
       },
       {
