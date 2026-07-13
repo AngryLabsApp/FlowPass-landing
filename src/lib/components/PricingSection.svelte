@@ -102,7 +102,7 @@
       const target = /** @type {HTMLElement} */ (e.currentTarget);
       const radios = target.querySelectorAll('[role="radio"]');
       /** @type {HTMLElement | null} */
-      const next = /** @type {HTMLElement} */ (radios[withWhatsapp ? 1 : 0]);
+      const next = /** @type {HTMLElement} */ (radios[withWhatsapp ? 0 : 1]);
       next?.focus();
     }
   }
@@ -118,36 +118,38 @@
 >
   <!-- Header -->
   <div class="section-header">
-    <!-- Country selector (compact, top-right on desktop) -->
-    <div class="country-select-wrap country-select-wrap--floating">
-      <div class="country-select-control">
-        <span class="country-select-flag" aria-hidden="true">{selectedCountry.flag}</span>
-        <select
-          id="country-select"
-          class="country-select"
-          value={selectedCountry.code}
-          on:change={(e) => {
-            const next = countries.find((c) => c.code === e.currentTarget.value);
-            if (next) selectCountry(next);
-          }}
-          aria-label="Seleccionar país"
-        >
-          {#each countries as country}
-            <option value={country.code}>{country.label}</option>
-          {/each}
-        </select>
-        <span class="country-select-caret" aria-hidden="true">▾</span>
-      </div>
-    </div>
-
     <span class="section-eyebrow">Planes</span>
     <h2 class="section-title">El plan ideal para tu negocio</h2>
     <p class="section-subtitle">
       Elige el plan que mejor se adapte a tu tamaño. Sin sorpresas, sin contratos.
     </p>
 
-    <!-- Controls: Cycle (hero) + WhatsApp toggle -->
+    <!-- Controls: Country + Cycle + WhatsApp toggle -->
     <div class="controls-stack">
+      <div class="country-wrap">
+        <span class="country-wrap-label" id="country-group-label">Ver precios en</span>
+        <div
+          class="country-pills"
+          role="radiogroup"
+          aria-labelledby="country-group-label"
+        >
+          {#each countries as country}
+            <button
+              type="button"
+              class="country-pill"
+              class:active={selectedCountry.code === country.code}
+              role="radio"
+              aria-checked={selectedCountry.code === country.code}
+              tabindex={selectedCountry.code === country.code ? 0 : -1}
+              on:click={() => selectCountry(country)}
+            >
+              <span class="country-pill-flag" aria-hidden="true">{country.flag}</span>
+              <span class="country-pill-label">{country.label}</span>
+            </button>
+          {/each}
+        </div>
+      </div>
+
       <div class="cycle-wrap">
         <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
           {#each billingCycles as cycle}
@@ -182,17 +184,6 @@
           <button
             type="button"
             class="addon-tab"
-            class:active={!withWhatsapp}
-            role="radio"
-            aria-checked={!withWhatsapp}
-            tabindex={!withWhatsapp ? 0 : -1}
-            on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
-          >
-            Yo lo hago
-          </button>
-          <button
-            type="button"
-            class="addon-tab"
             class:active={withWhatsapp}
             role="radio"
             aria-checked={withWhatsapp}
@@ -201,6 +192,17 @@
           >
             FlowPass lo hace
             <span class="addon-tab-badge" aria-label="Recomendado">Recomendado</span>
+          </button>
+          <button
+            type="button"
+            class="addon-tab"
+            class:active={!withWhatsapp}
+            role="radio"
+            aria-checked={!withWhatsapp}
+            tabindex={!withWhatsapp ? 0 : -1}
+            on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
+          >
+            Yo lo hago
           </button>
         </div>
       </div>
@@ -579,89 +581,68 @@
     align-items: center;
     gap: 0.45rem;
   }
-  /* ─── Country select (dropdown) ──────────────────────────── */
-  .country-select-wrap {
+  /* ─── Country pills ──────────────────────────────────────── */
+  .country-wrap {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.6rem;
-    margin-top: 0.9rem;
+    gap: 0.5rem;
+    max-width: 100%;
   }
-  .country-select-wrap--floating {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    z-index: 2;
-  }
-  .country-select-wrap--floating .country-select-control {
-    padding: 0.3rem 0.7rem;
-    gap: 0.35rem;
-  }
-  .country-select-wrap--floating .country-select {
+  .country-wrap-label {
     font-size: 0.78rem;
-    min-width: 0;
-    padding-right: 1rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.01em;
   }
-  .country-select-wrap--floating .country-select-flag {
-    font-size: 0.9rem;
+  .country-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.35rem;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    border-radius: 9999px;
+    backdrop-filter: blur(8px);
+    max-width: 100%;
   }
-  .country-select-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.02em;
-  }
-  .country-select-control {
-    position: relative;
+  .country-pill {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    padding: 0.4rem 0.85rem;
-    border-radius: 12px;
+    padding: 0.5rem 0.9rem;
+    min-height: 40px;
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    white-space: nowrap;
+  }
+  .country-pill:hover {
+    color: #fff;
     background: rgba(255,255,255,0.05);
-    border: 0.5px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(8px);
-    transition: border-color 0.2s, background 0.2s;
   }
-  .country-select-control:hover {
-    border-color: rgba(1,245,158,0.35);
-    background: rgba(255,255,255,0.07);
+  .country-pill:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.7);
+    outline-offset: 2px;
   }
-  .country-select-control:focus-within {
-    border-color: #01f59e;
-    box-shadow: 0 0 0 3px rgba(1,245,158,0.15);
+  .country-pill.active {
+    background: #fff;
+    color: #09090f;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   }
-  .country-select-flag {
-    font-size: 1rem;
+  .country-pill-flag {
+    font-size: 1.05rem;
     line-height: 1;
   }
-  .country-select {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #fff;
-    font: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding-right: 1.25rem;
-    cursor: pointer;
-    min-width: 150px;
-  }
-  .country-select option {
-    background: #09090f;
-    color: #fff;
-  }
-  .country-select-caret {
-    position: absolute;
-    right: 0.7rem;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.5);
+  .country-pill-label {
+    line-height: 1;
   }
 
   /* ─── Perks bar ──────────────────────────────────────────── */
@@ -1396,12 +1377,13 @@
     .cycle-pill {
       flex: 1 1 0;
       min-width: 0;
-      min-height: 44px;
+      min-height: 52px;
       justify-content: center;
-      padding: 0.4rem 0.4rem;
+      padding: 0.45rem 0.4rem;
+      gap: 0.2rem;
     }
     .cycle-pill-label { font-size: 0.78rem; }
-    .cycle-pill-tag { font-size: 0.55rem; }
+    .cycle-pill-tag { font-size: 0.58rem; letter-spacing: 0; }
     .addon-group {
       display: flex;
       flex-direction: column;
@@ -1433,13 +1415,29 @@
       font-size: 0.52rem;
       padding: 0.12rem 0.4rem;
     }
-    .country-select-wrap--floating {
-      position: static;
-      display: inline-flex;
-      justify-content: center;
-      width: auto;
-      margin: 0 auto 1.25rem;
+    .country-wrap { width: 100%; gap: 0.4rem; }
+    .country-wrap-label { font-size: 0.72rem; }
+    .country-pills {
+      display: flex;
+      width: 100%;
+      gap: 0.2rem;
+      padding: 0.25rem;
+      border-radius: 14px;
     }
+    .country-pill {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 40px;
+      justify-content: center;
+      padding: 0.4rem 0.4rem;
+      font-size: 0.7rem;
+      gap: 0.3rem;
+      white-space: normal;
+      text-align: center;
+      line-height: 1.15;
+    }
+    .country-pill.active { box-shadow: none; }
+    .country-pill-flag { font-size: 0.9rem; }
     .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
     .price-tax {
       font-size: 0.55rem;
@@ -1482,7 +1480,5 @@
     .wa-card { padding: 1rem 0.85rem; }
     .wa-note { font-size: 0.72rem; }
 
-    .country-select-wrap--floating .country-select { font-size: 0.75rem; min-width: 0; }
-    .country-select-wrap--floating .country-select-flag { font-size: 0.85rem; }
   }
 </style>

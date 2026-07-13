@@ -106,9 +106,10 @@ export const plans = [
     whatsappManual: { included1ClickSends: 50 },
     features: [
       { label: "1 acceso Admin + 2 accesos para tu equipo", included: true },
-      { label: "Gestión de alumnos, pagos y asistencia", included: true },
+      { label: "Alumnos, asistencia y planes activos", included: true },
+      { label: "Ventas, ingresos, gastos e inventario", included: true },
+      { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Acceso QR", included: true },
-      { label: "WhatsApp manual", included: true },
       {
         label: "Flowy · asistente de IA que conoce tu negocio (beta)",
         included: true,
@@ -117,7 +118,6 @@ export const plans = [
         label: "Soporte Esencial · respuesta en hasta 72h hábiles",
         included: true,
       },
-      { label: "Capacitación para todo tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Varias sedes en un solo panel", included: false },
     ],
@@ -151,9 +151,8 @@ export const plans = [
       },
       { label: "Membresías simultáneas por alumno", included: true },
       {
-        label: "Multi-sede opcional (add-on con costo por sede adicional)",
-        included: true,
-        extraCost: { PE: 20, MX: 100, US: 5 },
+        label: "Varias sedes en un solo panel — incluidas sin costo extra",
+        included: true
       },
       {
         label: "Soporte Plus · respuesta en hasta 48h hábiles",
@@ -249,7 +248,6 @@ export const plans = [
     features: [
       { label: "Todo lo de Flow Ultra", included: true },
       { label: "Sedes ilimitadas", included: true },
-      { label: "WhatsApp manual ilimitado", included: true },
       { label: "Reportes consolidados de organización", included: true },
       {
         label:
@@ -330,18 +328,21 @@ export function getPlanPrice(
 }
 
 /**
- * Formatea un precio con el símbolo del país (separador de miles solo para MXN).
+ * Formatea un precio con el símbolo del país + sufijo de moneda cuando el
+ * símbolo es ambiguo ($ = MX/CO/US). PE usa "S/" único, no lleva sufijo.
  * @param {number} amount
  * @param {string} [country]
- * @returns {string} ej. "S/280" · "$1,500" · "$80 USD"
+ * @returns {string} ej. "S/280" · "$1,500 MXN" · "$120,000 COP" · "$80 USD"
  */
 export function formatPrice(amount, country = "PE") {
   const c = countries.find((x) => x.code === country) ?? countries[0];
-  const n =
-    country === "MX"
-      ? Math.round(amount).toLocaleString("en-US")
-      : Math.round(amount);
-  const suffix = country === "US" ? " USD" : "";
+  const useThousands = country === "MX" || country === "CO";
+  const n = useThousands
+    ? Math.round(amount).toLocaleString("en-US")
+    : Math.round(amount);
+  /** @type {Record<string, string>} */
+  const suffixByCountry = { MX: " MXN", CO: " COP", US: " USD" };
+  const suffix = suffixByCountry[country] ?? "";
   return `${c.currency}${n}${suffix}`;
 }
 
