@@ -62,6 +62,7 @@
 
       <!-- H1 -->
       <h1 id="hero-heading" class="hero-title font-epoch font-bold tracking-tight">
+      <p>Fluye y Entra</p>
         <span class="block text-white">Cobra, gestiona y</span>
         <span class="block bg-gradient-to-r from-[#01f59e] via-[#3168F4] to-[#531DD8] bg-clip-text text-transparent">
           automatiza tu negocio
