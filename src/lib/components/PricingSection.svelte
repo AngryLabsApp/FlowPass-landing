@@ -8,6 +8,7 @@
     PRICES_INCLUDE_TAX,
     getPlanPrice,
     formatPrice,
+    formatPriceParts,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
   import { trackContact } from "$lib/tracking/track";
@@ -59,7 +60,7 @@
   $: taxRate = taxRates[selectedCountry.code] ?? 0;
   $: taxLabel = taxLabels[selectedCountry.code] ?? "";
   $: taxInline =
-    PRICES_INCLUDE_TAX && taxRate > 0 && taxLabel ? `${taxLabel} incluido` : "";
+    PRICES_INCLUDE_TAX && taxRate > 0 && taxLabel ? `· ${taxLabel} incluido` : "";
 
   /**
    * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
@@ -258,8 +259,12 @@
               <span class="price-quote">Bajo evaluación</span>
             </div>
           {:else}
+            {@const parts = formatPriceParts(price ?? 0, selectedCountry.code)}
             <div class="plan-price" aria-label="Precio mensual">
-              <span class="price-amount">{formatPrice(price ?? 0, selectedCountry.code)}</span>
+              <span class="price-amount">{parts.symbol}{parts.number}</span>
+              {#if parts.code}
+                <span class="price-code">{parts.code}</span>
+              {/if}
               <span class="price-period">/mes</span>
               {#if taxInline}
                 <span class="price-tax">{taxInline}</span>
@@ -1017,6 +1022,18 @@
     color: rgba(255,255,255,0.4);
     font-weight: 500;
   }
+  .price-code {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+    padding: 0.15rem 0.4rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    align-self: center;
+    line-height: 1;
+  }
   .plan-price--quote {
     align-items: center;
   }
@@ -1029,16 +1046,10 @@
     letter-spacing: -0.01em;
   }
   .price-tax {
-    margin-left: auto;
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.55);
-    border: 0.5px solid rgba(255,255,255,0.08);
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    white-space: nowrap;
   }
   .whatsapp-chip {
     display: inline-flex;
@@ -1439,11 +1450,7 @@
     .country-pill.active { box-shadow: none; }
     .country-pill-flag { font-size: 0.9rem; }
     .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
-    .price-tax {
-      font-size: 0.55rem;
-      padding: 0.12rem 0.35rem;
-      letter-spacing: 0.03em;
-    }
+    .price-tax { font-size: 0.65rem; }
 
     /* ─── Mobile typography ─────────────────────────────────── */
     .section-title { font-size: clamp(1.75rem, 7vw, 2.25rem); }

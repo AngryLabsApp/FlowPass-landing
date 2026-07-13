@@ -328,22 +328,36 @@ export function getPlanPrice(
 }
 
 /**
- * Formatea un precio con el símbolo del país + sufijo de moneda cuando el
- * símbolo es ambiguo ($ = MX/CO/US). PE usa "S/" único, no lleva sufijo.
+ * Formatea un precio como string único (símbolo + monto + sufijo de moneda
+ * cuando "$" es ambiguo). PE usa "S/" único, no lleva sufijo. Útil para
+ * lugares donde el precio va en una sola línea (packs, extra-costs, etc).
+ * Para el precio grande del hero de cada plan usa `formatPriceParts`.
  * @param {number} amount
  * @param {string} [country]
  * @returns {string} ej. "S/280" · "$1,500 MXN" · "$120,000 COP" · "$80 USD"
  */
 export function formatPrice(amount, country = "PE") {
+  const p = formatPriceParts(amount, country);
+  return p.code ? `${p.symbol}${p.number} ${p.code}` : `${p.symbol}${p.number}`;
+}
+
+/**
+ * Igual que `formatPrice` pero devuelve las partes por separado. Sirve para
+ * renderizar el código de moneda más chico junto al monto grande (evita que
+ * "$1,800 MXN" rompa en dos líneas dentro de un span gigante).
+ * @param {number} amount
+ * @param {string} [country]
+ * @returns {{symbol: string, number: string, code: string}}
+ */
+export function formatPriceParts(amount, country = "PE") {
   const c = countries.find((x) => x.code === country) ?? countries[0];
   const useThousands = country === "MX" || country === "CO";
-  const n = useThousands
+  const number = useThousands
     ? Math.round(amount).toLocaleString("en-US")
-    : Math.round(amount);
+    : String(Math.round(amount));
   /** @type {Record<string, string>} */
-  const suffixByCountry = { MX: " MXN", CO: " COP", US: " USD" };
-  const suffix = suffixByCountry[country] ?? "";
-  return `${c.currency}${n}${suffix}`;
+  const codeByCountry = { MX: "MXN", CO: "COP", US: "USD" };
+  return { symbol: c.currency, number, code: codeByCountry[country] ?? "" };
 }
 
 /**
