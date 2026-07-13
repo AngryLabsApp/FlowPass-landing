@@ -12,7 +12,7 @@
   import { siteConfig } from "$lib/config/site";
   import { trackContact } from "$lib/tracking/track";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
-  import { Sprout, Rocket, Trophy, Zap, Building2, Flame } from "@lucide/svelte";
+  import { Sprout, Rocket, Trophy, Zap, Building2 } from "@lucide/svelte";
   import { onMount } from "svelte";
 
   const planIcons = new Map([
@@ -27,7 +27,7 @@
   $: enterprisePlan = plans.find((p) => p.quoteBased);
 
   let selectedCountry = countries.find((c) => c.code === "US") ?? countries[0];
-  let selectedCycle = billingCycles[1]; // trimestral
+  let selectedCycle = billingCycles[0]; // mensual
   let withWhatsapp = true;
 
   /**
@@ -149,12 +149,6 @@
     <!-- Controls: Cycle (hero) + WhatsApp toggle -->
     <div class="controls-stack">
       <div class="cycle-wrap">
-        {#if selectedCycle.discount > 0}
-          <span class="cycle-save-above" aria-live="polite">
-            <Flame size={14} strokeWidth={2.5} aria-hidden="true" />
-            <span>Ahorra ~{Math.round(selectedCycle.discount * 100)}%</span>
-          </span>
-        {/if}
         <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
           {#each billingCycles as cycle}
             <button
@@ -163,7 +157,10 @@
               aria-pressed={selectedCycle.id === cycle.id}
               on:click={() => selectCycle(cycle)}
             >
-              <span>{cycle.label}</span>
+              <span class="cycle-pill-label">{cycle.label}</span>
+              {#if cycle.discount > 0}
+                <span class="cycle-pill-tag">paga {Math.round(cycle.discount * 100)}% menos</span>
+              {/if}
             </button>
           {/each}
         </div>
@@ -540,16 +537,17 @@
     backdrop-filter: blur(8px);
   }
   .cycle-pill {
-    display: flex;
+    display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
-    padding: 0.55rem 1.25rem;
+    justify-content: center;
+    gap: 0.1rem;
+    padding: 0.5rem 1.1rem;
     min-height: 40px;
     border-radius: 9999px;
     border: none;
     background: transparent;
-    font-size: 0.85rem;
-    font-weight: 600;
+    line-height: 1.15;
     color: rgba(255,255,255,0.6);
     cursor: pointer;
     transition: background 0.2s, color 0.2s;
@@ -560,33 +558,27 @@
     background: #fff;
     color: #09090f;
   }
+  .cycle-pill-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .cycle-pill-tag {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #01f59e;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .cycle-pill.active .cycle-pill-tag {
+    color: #00a86b;
+  }
   .cycle-wrap {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 0.45rem;
   }
-  .cycle-save-above {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.72rem;
-    font-weight: 800;
-    padding: 0.3rem 0.7rem 0.3rem 0.55rem;
-    border-radius: 999px;
-    background: linear-gradient(135deg, rgba(1,245,158,0.22) 0%, rgba(1,245,158,0.12) 100%);
-    color: #01f59e;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border: 0.5px solid rgba(1,245,158,0.35);
-    box-shadow: 0 4px 16px rgba(1,245,158,0.22);
-    animation: fadePrice 0.3s ease;
-  }
-  .cycle-save-above :global(svg) {
-    color: #01f59e;
-    flex-shrink: 0;
-  }
-
   /* ─── Country select (dropdown) ──────────────────────────── */
   .country-select-wrap {
     display: inline-flex;
@@ -1404,11 +1396,12 @@
     .cycle-pill {
       flex: 1 1 0;
       min-width: 0;
-      min-height: 42px;
+      min-height: 44px;
       justify-content: center;
-      padding: 0.55rem 0.5rem;
-      font-size: 0.8rem;
+      padding: 0.4rem 0.4rem;
     }
+    .cycle-pill-label { font-size: 0.78rem; }
+    .cycle-pill-tag { font-size: 0.55rem; }
     .addon-group {
       display: flex;
       flex-direction: column;
@@ -1460,8 +1453,6 @@
     .section-eyebrow { font-size: 0.7rem; }
 
     .addon-group-label { font-size: 0.72rem; }
-    .cycle-save-above { font-size: 0.65rem; padding: 0.25rem 0.6rem 0.25rem 0.5rem; }
-
     .plan-card { padding: 1.5rem 1.25rem 1.25rem; gap: 1rem; }
     .plan-name { font-size: 1.15rem; }
     .plan-tagline { font-size: 0.78rem; }
