@@ -150,6 +150,7 @@
               <PromoCountdown endsAt={promoCountryCfg.endsAt} />
             </div>
           {/if}
+          <p class="promo-banner__fineprint">* Válido solo para clientes nuevos.</p>
         </div>
       </div>
     {/if}
@@ -251,7 +252,7 @@
       {#each selfServePlans as plan}
         {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
         {@const promoPrice = getPromoPrice(plan, selectedCountry.code)}
-        {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code, false)}
+        {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code, withWhatsapp)}
         {@const isPromo = promoPrice !== null}
         {@const hasSavings = isPromo && refPrice !== null && promoPrice < refPrice}
         <article
@@ -314,9 +315,6 @@
                   <span class="price-strike">
                     <s>{baseParts.symbol}{baseParts.number}</s>
                   </span>
-                  {#if savingsPct > 0}
-                    <span class="price-savings">−{savingsPct}%</span>
-                  {/if}
                 </div>
               {/if}
               <div class="price-main-row">
@@ -629,6 +627,12 @@
     color: rgba(255,255,255,0.6);
     letter-spacing: 0.06em;
     text-transform: uppercase;
+  }
+  .promo-banner__fineprint {
+    margin: 0.25rem 0 0;
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
   }
   @media (max-width: 640px) {
     .promo-banner { padding: 1rem 1rem; border-radius: 16px; }
