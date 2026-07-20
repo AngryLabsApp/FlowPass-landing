@@ -7,14 +7,20 @@
     taxRates,
     PRICES_INCLUDE_TAX,
     getPlanPrice,
+    getBasePlanPrice,
+    getPromoPrice,
     formatPrice,
     formatPriceParts,
+    promoConfig,
+    isPromoActive,
+    getPromoCountryConfig,
   } from "$lib/data/pricingData.js";
   import { siteConfig } from "$lib/config/site";
   import { trackContact } from "$lib/tracking/track";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
-  import { Sprout, Rocket, Trophy, Zap, Building2 } from "@lucide/svelte";
+  import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles } from "@lucide/svelte";
   import { onMount } from "svelte";
+  import PromoCountdown from "./PromoCountdown.svelte";
 
   const planIcons = new Map([
     ["pocket", Sprout],
@@ -61,6 +67,12 @@
   $: taxLabel = taxLabels[selectedCountry.code] ?? "";
   $: taxInline =
     PRICES_INCLUDE_TAX && taxRate > 0 && taxLabel ? `· ${taxLabel} incluido` : "";
+
+  // Config de promo del país seleccionado (o null si no hay promo)
+  $: promoCountryCfg = isPromoActive(selectedCountry.code)
+    ? getPromoCountryConfig(selectedCountry.code)
+    : null;
+  $: countryHasPromo = promoCountryCfg !== null;
 
   /**
    * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
@@ -119,6 +131,29 @@
 >
   <!-- Header -->
   <div class="section-header">
+    {#if countryHasPromo && promoCountryCfg}
+      {@const cheapest = Math.min(...Object.values(promoCountryCfg.prices))}
+      <div class="promo-banner" role="region" aria-label={promoCountryCfg.label}>
+        <div class="promo-banner__glow" aria-hidden="true"></div>
+        <div class="promo-banner__content">
+          <div class="promo-banner__badge">
+            <Sparkles size={14} strokeWidth={2.4} />
+            <span>{promoCountryCfg.label}</span>
+          </div>
+          <p class="promo-banner__headline">
+            {promoCountryCfg.headline} — desde
+            <strong>{formatPrice(cheapest, selectedCountry.code)}/mes</strong>
+          </p>
+          {#if promoCountryCfg.showCountdown && promoCountryCfg.endsAt}
+            <div class="promo-banner__timer">
+              <span class="promo-banner__timer-label">Termina en</span>
+              <PromoCountdown endsAt={promoCountryCfg.endsAt} />
+            </div>
+          {/if}
+        </div>
+      </div>
+    {/if}
+
     <span class="section-eyebrow">Planes</span>
     <h2 class="section-title">El plan ideal para tu negocio</h2>
     <p class="section-subtitle">
@@ -215,13 +250,24 @@
     {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
       {#each selfServePlans as plan}
         {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
+        {@const promoPrice = getPromoPrice(plan, selectedCountry.code)}
+        {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code, false)}
+        {@const isPromo = promoPrice !== null}
+        {@const hasSavings = isPromo && refPrice !== null && promoPrice < refPrice}
         <article
           class="plan-card"
           class:highlighted={plan.highlight}
           class:enterprise={plan.quoteBased}
+          class:on-promo={isPromo}
           aria-label="Plan {plan.name}"
         >
           <div class="badge-stack">
+            {#if isPromo}
+              <div class="badge badge-promo" aria-label="Oferta de lanzamiento">
+                <Sparkles size={11} strokeWidth={2.6} />
+                Oferta
+              </div>
+            {/if}
             {#if plan.highlight}
               <div class="badge badge-popular" aria-label="Plan más popular">Más popular</div>
             {/if}
@@ -260,14 +306,31 @@
             </div>
           {:else}
             {@const parts = formatPriceParts(price ?? 0, selectedCountry.code)}
-            <div class="plan-price" aria-label="Precio mensual">
-              <span class="price-amount">{parts.symbol}{parts.number}</span>
-              {#if parts.code}
-                <span class="price-code">{parts.code}</span>
+            {@const baseParts = hasSavings ? formatPriceParts(refPrice ?? 0, selectedCountry.code) : null}
+            {@const savingsPct = hasSavings && refPrice ? Math.round((1 - (promoPrice ?? 0) / refPrice) * 100) : 0}
+            <div class="plan-price" class:plan-price--promo={isPromo} aria-label="Precio mensual">
+              {#if hasSavings && baseParts}
+                <div class="price-strike-row">
+                  <span class="price-strike">
+                    <s>{baseParts.symbol}{baseParts.number}</s>
+                  </span>
+                  {#if savingsPct > 0}
+                    <span class="price-savings">−{savingsPct}%</span>
+                  {/if}
+                </div>
               {/if}
-              <span class="price-period">/mes</span>
+              <div class="price-main-row">
+                <span class="price-amount">{parts.symbol}{parts.number}</span>
+                {#if parts.code}
+                  <span class="price-code">{parts.code}</span>
+                {/if}
+                <span class="price-period">/mes</span>
+              </div>
               {#if taxInline}
                 <span class="price-tax">{taxInline}</span>
+              {/if}
+              {#if isPromo && promoCountryCfg}
+                <span class="price-lock">{promoCountryCfg.priceLockLabel}</span>
               {/if}
             </div>
             {#if plan.whatsappAuto || plan.whatsappManual}
@@ -490,6 +553,88 @@
     max-width: 720px;
     margin: 0 auto 2.5rem;
     text-align: center;
+  }
+
+  /* ─── Promo banner ───────────────────────────────────────── */
+  .promo-banner {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto 2rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 20px;
+    background:
+      linear-gradient(140deg, rgba(1,245,158,0.14) 0%, rgba(83,29,216,0.14) 100%),
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 0.5px solid rgba(1,245,158,0.35);
+    box-shadow:
+      0 12px 48px -12px rgba(1,245,158,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.14);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .promo-banner__glow {
+    position: absolute;
+    inset: -40%;
+    background: radial-gradient(closest-side, rgba(1,245,158,0.28), transparent 70%);
+    filter: blur(30px);
+    z-index: -1;
+    animation: promoGlow 6s ease-in-out infinite;
+  }
+  @keyframes promoGlow {
+    0%, 100% { transform: translate(-8%, -6%) scale(1); opacity: 0.55; }
+    50% { transform: translate(8%, 6%) scale(1.08); opacity: 0.85; }
+  }
+  .promo-banner__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .promo-banner__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    background: #01f59e;
+    color: #09090f;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 16px rgba(1,245,158,0.4);
+  }
+  .promo-banner__headline {
+    margin: 0;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+  }
+  .promo-banner__headline strong {
+    color: #01f59e;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+  .promo-banner__timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.25rem;
+  }
+  .promo-banner__timer-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 640px) {
+    .promo-banner { padding: 1rem 1rem; border-radius: 16px; }
+    .promo-banner__headline { font-size: 0.88rem; }
+    .promo-banner__headline strong { font-size: 0.95rem; }
+    .promo-banner__timer-label { font-size: 0.65rem; }
   }
 
   .section-eyebrow {
@@ -920,6 +1065,15 @@
     color: #09090f;
     box-shadow: 0 4px 16px rgba(1,245,158,0.35);
   }
+  .badge-promo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: linear-gradient(135deg, #FFB020 0%, #FF7A45 100%);
+    color: #1a0d00;
+    box-shadow: 0 4px 16px rgba(255,122,69,0.5);
+    padding: 0.28rem 0.7rem 0.28rem 0.55rem;
+  }
   .badge-enterprise {
     background: linear-gradient(135deg, #531DD8 0%, #3168F4 100%);
     color: #fff;
@@ -1004,11 +1158,77 @@
   /* ─── Price ──────────────────────────────────────────────── */
   .plan-price {
     display: flex;
-    align-items: baseline;
-    gap: 0.35rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
     border-top: 0.5px solid rgba(255,255,255,0.06);
     padding-top: 1rem;
     min-height: 3.5rem;
+  }
+  .price-main-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+  .price-strike-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.1rem;
+  }
+  .price-strike {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+    text-decoration: line-through;
+    text-decoration-color: rgba(255,255,255,0.35);
+  }
+  .price-strike s { text-decoration: line-through; }
+  .price-savings {
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #FFB020 0%, #FF7A45 100%);
+    color: #1a0d00;
+    line-height: 1.2;
+    box-shadow: 0 2px 8px rgba(255,122,69,0.35);
+  }
+  .plan-price--promo .price-amount {
+    color: #01f59e;
+    text-shadow: 0 0 24px rgba(1,245,158,0.35);
+  }
+  .price-lock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.65rem;
+    color: rgba(1,245,158,0.85);
+    font-weight: 600;
+    margin-top: 0.15rem;
+    letter-spacing: 0.01em;
+  }
+  .plan-card.on-promo {
+    border-top-color: rgba(255,176,32,0.4);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.08),
+      0 20px 60px rgba(0,0,0,0.32),
+      0 0 60px -14px rgba(255,122,69,0.28),
+      inset 0 1px 0 rgba(255,176,32,0.18),
+      inset 0 -1px 0 rgba(0,0,0,0.08);
+  }
+  .plan-card.on-promo:hover {
+    border-color: rgba(1,245,158,0.35);
+    border-top-color: rgba(255,176,32,0.6);
+    box-shadow:
+      0 4px 6px rgba(0,0,0,0.08),
+      0 28px 72px rgba(0,0,0,0.38),
+      0 0 80px -10px rgba(255,122,69,0.4),
+      inset 0 1px 0 rgba(255,176,32,0.25),
+      inset 0 -1px 0 rgba(0,0,0,0.08);
   }
   .price-amount {
     font-size: 1.875rem;
@@ -1467,6 +1687,10 @@
     .price-amount { font-size: 1.625rem; }
     .price-period { font-size: 0.8rem; }
     .price-quote { font-size: 1.2rem; }
+    .price-strike { font-size: 0.82rem; }
+    .price-savings { font-size: 0.55rem; padding: 0.12rem 0.4rem; }
+    .price-lock { font-size: 0.6rem; }
+    .plan-price { gap: 0.25rem; }
 
     .whatsapp-chip { font-size: 0.72rem; padding: 0.4rem 0.6rem; min-height: 2.2rem; }
 

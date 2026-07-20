@@ -64,6 +64,90 @@ export const taxRates = { PE: 0.18, MX: 0.16, US: 0 };
 export const PRICES_INCLUDE_TAX = true;
 
 /**
+ * PROMO DE LANZAMIENTO — configuración por país
+ *
+ * Precio flat por plan (aplica a todos los ciclos y con/sin WhatsApp auto).
+ *
+ * Estructura:
+ *  - `active` global: interruptor maestro. Pon `false` para apagar toda la promo.
+ *  - `countries[COUNTRY]`: config por país. Solo los países listados tienen promo.
+ *    - `endsAt`: ISO con zona. Si es `null`, la promo no caduca por fecha.
+ *    - `showCountdown`: si mostrar contador (requiere `endsAt`).
+ *    - `label`: badge del banner (Ej. "Oferta de lanzamiento").
+ *    - `headline`: título del banner.
+ *    - `priceLockLabel`: texto pequeño bajo el precio en la card.
+ *    - `prices[planId]`: precio final por plan.
+ *
+ * Para apagar la promo en un país específico: eliminar la key del país en `countries`.
+ * Para apagar toda la promo: `promoConfig.active = false`.
+ */
+export const promoConfig = {
+  active: true,
+  countries: {
+    PE: {
+      endsAt: "2026-07-31T23:59:59-05:00", // 31 julio 2026, medianoche Lima
+      showCountdown: true,
+      label: "Oferta de lanzamiento",
+      headline: "Precio congelado por 1 año",
+      priceLockLabel: "🔒 Precio congelado por 1 año",
+      prices: { pocket: 100, lite: 200, full: 300, ultra: 400 },
+    },
+    MX: {
+      endsAt: null,
+      showCountdown: false,
+      label: "Precio de introducción",
+      headline: "Los primeros 3 meses pagas menos",
+      priceLockLabel: "Los primeros 3 meses · luego precio normal",
+      prices: { pocket: 500, lite: 500, full: 1500, ultra: 1500 },
+    },
+  },
+};
+
+/**
+ * Config de promo para un país, o null si no aplica.
+ * @param {string} country
+ */
+export function getPromoCountryConfig(country) {
+  if (!promoConfig.active) return null;
+  return promoConfig.countries?.[country] ?? null;
+}
+
+/**
+ * Devuelve true si la promo está activa para el país (respeta `endsAt`).
+ * Si se omite country, retorna true si CUALQUIER país tiene promo activa.
+ * @param {string} [country]
+ * @param {number} [nowMs]
+ * @returns {boolean}
+ */
+export function isPromoActive(country, nowMs) {
+  const now = typeof nowMs === "number" ? nowMs : Date.now();
+  if (country) {
+    const cfg = getPromoCountryConfig(country);
+    if (!cfg) return false;
+    if (!cfg.endsAt) return true;
+    const end = new Date(cfg.endsAt).getTime();
+    return Number.isFinite(end) && now < end;
+  }
+  return Object.keys(promoConfig.countries ?? {}).some((c) =>
+    isPromoActive(c, now),
+  );
+}
+
+/**
+ * Precio promo de un plan para un país, o null si no aplica.
+ * @param {Plan} plan
+ * @param {string} country
+ * @param {number} [nowMs]
+ * @returns {number|null}
+ */
+export function getPromoPrice(plan, country, nowMs) {
+  if (!isPromoActive(country, nowMs)) return null;
+  if (plan.quoteBased) return null;
+  const cfg = getPromoCountryConfig(country);
+  return cfg?.prices?.[plan.id] ?? null;
+}
+
+/**
  * @typedef {Object} Plan
  * @property {string} id
  * @property {string} name
@@ -318,6 +402,28 @@ export const FLOWY_BETA_BADGE = { label: "Flowy", tag: "beta" };
 export function getPlanPrice(
   plan,
   cycleId = "trimestral",
+  country = "PE",
+  withWhatsapp = false,
+) {
+  if (plan.quoteBased) return null;
+  const promo = getPromoPrice(plan, country);
+  if (promo !== null) return promo;
+  const grid =
+    withWhatsapp && plan.pricesWhatsapp ? plan.pricesWhatsapp : plan.prices;
+  return grid?.[cycleId]?.[country] ?? null;
+}
+
+/**
+ * Precio original (sin promo) del plan — para mostrar tachado junto al promo.
+ * @param {Plan} plan
+ * @param {string} [cycleId]
+ * @param {string} [country]
+ * @param {boolean} [withWhatsapp]
+ * @returns {number|null}
+ */
+export function getBasePlanPrice(
+  plan,
+  cycleId = "mensual",
   country = "PE",
   withWhatsapp = false,
 ) {
