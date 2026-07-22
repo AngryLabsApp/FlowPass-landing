@@ -95,9 +95,9 @@ export const promoConfig = {
     MX: {
       endsAt: null,
       showCountdown: false,
-      label: "Precio de introducción",
-      headline: "Los primeros 3 meses pagas menos",
-      priceLockLabel: "Los primeros 3 meses · luego precio normal",
+      label: "Oferta de lanzamiento",
+      headline: "Precio congelado por 1 año",
+      priceLockLabel: "🔒 Precio congelado por 1 año",
       prices: { pocket: 500, lite: 500, full: 1500, ultra: 1500 },
     },
   },
