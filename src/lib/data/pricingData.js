@@ -3,13 +3,14 @@
  * 4 planes self-serve (Pocket / Lite / Full / Ultra) + Enterprise (bajo evaluación).
  *
  * Lógica de precios:
- *  - Cada plan tiene dos grillas: `prices` (WhatsApp manual incluido) y
- *    `pricesWhatsapp` (con recordatorios automáticos).
- *  - El toggle "con / sin WhatsApp automático" solo cambia de grilla.
+ *  - Cada plan tiene una única grilla `prices`. WhatsApp automático viene incluido
+ *    siempre; el cliente decide si activarlo. No hay dos precios distintos.
  *  - Los descuentos por ciclo (trimestral ~-10%, anual ~-20%) están FIJADOS A MANO
  *    en números redondos dentro de cada grilla — no se calculan, para no arrastrar
  *    decimales feos (180 * 0.9 = 162 se ve roto; por eso se fija 160).
- *  - Quien supere los recordatorios incluidos suma un pack de `whatsappPackages`.
+ *  - Cada plan trae un cupo mensual `whatsappIncluded.total` de mensajes WhatsApp
+ *    (mezcla recordatorios automáticos + envíos 1-click). Si lo supera, suma un
+ *    pack de `whatsappPackages`.
  *
  * IGV / IVA: los precios se muestran CON impuesto incluido (precio final al cliente).
  * Tu ingreso NETO es precio / 1.18 en Perú (/ 1.16 en México). Usa `getTaxBreakdown`,
@@ -85,20 +86,20 @@ export const promoConfig = {
   active: true,
   countries: {
     PE: {
-      endsAt: "2026-07-31T23:59:59-05:00", // 31 julio 2026, medianoche Lima
+      endsAt: "2026-08-31T23:59:59-05:00", // 31 agosto 2026, medianoche Lima
       showCountdown: true,
       label: "Oferta de lanzamiento",
       headline: "Precio congelado por 1 año",
-      priceLockLabel: "🔒 Precio congelado por 1 año",
+      priceLockLabel: "Precio congelado por 1 año",
       prices: { pocket: 100, lite: 200, full: 300, ultra: 400 },
     },
     MX: {
-      endsAt: null,
-      showCountdown: false,
+      endsAt: "2026-08-31T23:59:59-06:00", // 31 agosto 2026, medianoche CDMX
+      showCountdown: true,
       label: "Oferta de lanzamiento",
       headline: "Precio congelado por 1 año",
-      priceLockLabel: "🔒 Precio congelado por 1 año",
-      prices: { pocket: 500, lite: 500, full: 1500, ultra: 1500 },
+      priceLockLabel: "Precio congelado por 1 año",
+      prices: { pocket: 500, lite: 1000, full: 1500, ultra: 2000 },
     },
   },
 };
@@ -153,15 +154,14 @@ export function getPromoPrice(plan, country, nowMs) {
  * @property {string} name
  * @property {string} tagline
  * @property {string} activeStudents
+ * @property {number} [maxActiveStudents]                                // techo del rango — usado para calcular precio/alumno
  * @property {string} [registeredStudents]
  * @property {boolean} highlight                                          // "Más popular"
  * @property {boolean} freeTrial                                          // "Empieza gratis, sin tarjeta"
  * @property {boolean} flowyBeta                                          // badge "Flowy · beta"
  * @property {boolean} [quoteBased]                                       // Enterprise: "Bajo evaluación"
- * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais] — WhatsApp manual
- * @property {Record<string, Record<string, number>>} [pricesWhatsapp]   // con recordatorios automáticos
- * @property {{includedReminders: number}} [whatsappAuto]                // recordatorios incluidos en `pricesWhatsapp`
- * @property {{included1ClickSends: number}} [whatsappManual]            // envíos 1-click incluidos (links registro, credencial/QR)
+ * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais]
+ * @property {{total: number}} [whatsappIncluded]                        // cupo mensajes WhatsApp/mes (auto + 1-click sumados)
  * @property {Array<{label: string, included: boolean, extraCost?: Record<string, number>}>} features
  */
 
@@ -170,38 +170,29 @@ export const plans = [
   {
     id: "pocket",
     name: "Flow Pocket",
-    tagline: "Ordena tu operación y empieza con lo esencial.",
+    tagline: "Ideal para empezar",
     activeStudents: "0 – 30 alumnos activos",
+    maxActiveStudents: 30,
     registeredStudents: "Hasta 150 alumnos registrados",
     highlight: false,
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 100, MX: 500, US: 30 },
-      trimestral: { PE: 85, MX: 450, US: 25 },
-      anual: { PE: 70, MX: 350, US: 20 },
-    },
-    pricesWhatsapp: {
       mensual: { PE: 120, MX: 600, US: 35 },
       trimestral: { PE: 105, MX: 550, US: 30 },
       anual: { PE: 90, MX: 450, US: 25 },
     },
-    whatsappAuto: { includedReminders: 50 },
-    whatsappManual: { included1ClickSends: 50 },
+    whatsappIncluded: { total: 100 },
     features: [
-      { label: "1 acceso Admin + 2 accesos para tu equipo", included: true },
-      { label: "Alumnos, asistencia y planes activos", included: true },
+      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
-      { label: "Acceso QR", included: true },
+      { label: "Accesos ilimitados para tu equipo", included: true },
       {
         label: "Flowy · asistente de IA que conoce tu negocio (beta)",
         included: true,
       },
-      {
-        label: "Soporte Esencial · respuesta en hasta 72h hábiles",
-        included: true,
-      },
+      { label: "Soporte Esencial", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
       { label: "Varias sedes en un solo panel", included: false },
     ],
@@ -209,121 +200,88 @@ export const plans = [
   {
     id: "lite",
     name: "Flow Lite",
-    tagline: "Para academias en crecimiento.",
+    tagline: "Para seguir creciendo",
     activeStudents: "30 – 80 alumnos activos",
+    maxActiveStudents: 80,
     registeredStudents: "Hasta 400 alumnos registrados",
     highlight: false,
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 210, MX: 1050, US: 60 },
-      trimestral: { PE: 185, MX: 950, US: 55 },
-      anual: { PE: 160, MX: 800, US: 50 },
-    },
-    pricesWhatsapp: {
       mensual: { PE: 230, MX: 1150, US: 65 },
       trimestral: { PE: 205, MX: 1050, US: 60 },
       anual: { PE: 180, MX: 900, US: 55 },
     },
-    whatsappAuto: { includedReminders: 100 },
-    whatsappManual: { included1ClickSends: 100 },
+    whatsappIncluded: { total: 200 },
     features: [
-      { label: "Todo lo de Flow Pocket", included: true },
-      {
-        label: "Hasta 4 accesos Admin + 6 accesos para tu equipo",
-        included: true,
-      },
+      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Ventas, ingresos, gastos e inventario", included: true },
+      { label: "Panel de estadísticas y reportes descargables", included: true },
+      { label: "Accesos ilimitados para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      {
-        label: "Varias sedes en un solo panel — incluidas sin costo extra",
-        included: true
-      },
-      {
-        label: "Soporte Plus · respuesta en hasta 48h hábiles",
-        included: true,
-      },
+      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
+      { label: "Soporte Plus", included: true },
     ],
   },
   {
     id: "full",
     name: "Flow Full",
-    tagline: "Para academias consolidadas.",
+    tagline: "Para operaciones consolidadas",
     activeStudents: "80 – 200 alumnos activos",
+    maxActiveStudents: 200,
     registeredStudents: "Hasta 800 alumnos registrados",
     highlight: true,
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 330, MX: 1700, US: 100 },
-      trimestral: { PE: 295, MX: 1530, US: 90 },
-      anual: { PE: 260, MX: 1360, US: 80 },
-    },
-    pricesWhatsapp: {
       mensual: { PE: 350, MX: 1800, US: 110 },
       trimestral: { PE: 315, MX: 1630, US: 100 },
       anual: { PE: 280, MX: 1460, US: 90 },
     },
-    whatsappAuto: { includedReminders: 200 },
-    whatsappManual: { included1ClickSends: 200 },
+    whatsappIncluded: { total: 400 },
     features: [
-      { label: "Todo lo de Flow Lite", included: true },
-      {
-        label: "Accesos sin restricción para ti y tu equipo (hasta 15 en total)",
-        included: true,
-      },
-      {
-        label: "Varias sedes en un solo panel — incluidas sin costo extra",
-        included: true,
-      },
-      {
-        label: "Soporte Pro · respuesta en hasta 24h hábiles",
-        included: true,
-      },
-      {
-        label:
-          "Visitas y seguimiento de implementación (virtual o presencial)",
-        included: true,
-      },
+      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Ventas, ingresos, gastos e inventario", included: true },
+      { label: "Panel de estadísticas y reportes descargables", included: true },
+      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Membresías simultáneas por alumno", included: true },
+      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
+      { label: "Soporte Pro", included: true },
     ],
   },
   {
     id: "ultra",
     name: "Flow Ultra",
-    tagline: "Máxima potencia, varias sedes en un solo panel y todo incluido.",
+    tagline: "Para operaciones de alto volumen",
     activeStudents: "200 – 350 alumnos activos",
+    maxActiveStudents: 350,
     registeredStudents: "Hasta 1250 alumnos registrados",
     highlight: false,
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 480, MX: 2400, US: 140 },
-      trimestral: { PE: 430, MX: 2160, US: 125 },
-      anual: { PE: 370, MX: 1920, US: 110 },
-    },
-    pricesWhatsapp: {
       mensual: { PE: 500, MX: 2500, US: 150 },
       trimestral: { PE: 450, MX: 2260, US: 135 },
       anual: { PE: 390, MX: 2020, US: 120 },
     },
-    whatsappAuto: { includedReminders: 350 },
-    whatsappManual: { included1ClickSends: 350 },
+    whatsappIncluded: { total: 700 },
     features: [
-      { label: "Todo lo de Flow Full", included: true },
-      {
-        label: "Accesos ilimitados para ti y tu equipo",
-        included: true,
-      },
-      {
-        label:
-          "Soporte VIP · respuesta en hasta 8h hábiles + seguimiento 1 a 1 con tu Customer Success",
-        included: true,
-      },
+      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Ventas, ingresos, gastos e inventario", included: true },
+      { label: "Panel de estadísticas y reportes descargables", included: true },
+      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Membresías simultáneas por alumno", included: true },
+      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
+      { label: "Soporte VIP", included: true },
     ],
   },
   {
     id: "enterprise",
     name: "Flow Enterprise",
-    tagline: "Para cadenas y marcas que necesitan algo a medida.",
+    tagline: "Soluciones a medida",
     activeStudents: "Cadenas y marcas",
     highlight: false,
     freeTrial: false,
@@ -333,11 +291,7 @@ export const plans = [
       { label: "Todo lo de Flow Ultra", included: true },
       { label: "Sedes ilimitadas", included: true },
       { label: "Reportes consolidados de organización", included: true },
-      {
-        label:
-          "Soporte Premium dedicado · respuesta en hasta 4h hábiles + Customer Success dedicado",
-        included: true,
-      },
+      { label: "Soporte Premium", included: true },
       { label: "Onboarding y migración asistida", included: true },
       { label: "Flowy entrenado con tu negocio (beta)", included: true },
       { label: "Desarrollo y personalización a medida", included: true },
@@ -391,26 +345,18 @@ export const FLOWY_BETA_BADGE = { label: "Flowy", tag: "beta" };
 /* ----------------------------- Helpers ----------------------------- */
 
 /**
- * Precio mensual a mostrar para un plan, según ciclo, país y si suma WhatsApp automático.
- * Lee de `pricesWhatsapp` cuando withWhatsapp = true, si no de `prices`.
+ * Precio mensual a mostrar para un plan según ciclo y país.
+ * Si hay promo activa para el país, la promo pisa el precio de lista.
  * @param {Plan} plan
  * @param {string} [cycleId]
  * @param {string} [country]
- * @param {boolean} [withWhatsapp]
  * @returns {number|null} precio/mes, o null si el plan es "bajo evaluación".
  */
-export function getPlanPrice(
-  plan,
-  cycleId = "trimestral",
-  country = "PE",
-  withWhatsapp = false,
-) {
+export function getPlanPrice(plan, cycleId = "trimestral", country = "PE") {
   if (plan.quoteBased) return null;
   const promo = getPromoPrice(plan, country);
   if (promo !== null) return promo;
-  const grid =
-    withWhatsapp && plan.pricesWhatsapp ? plan.pricesWhatsapp : plan.prices;
-  return grid?.[cycleId]?.[country] ?? null;
+  return plan.prices?.[cycleId]?.[country] ?? null;
 }
 
 /**
@@ -418,19 +364,11 @@ export function getPlanPrice(
  * @param {Plan} plan
  * @param {string} [cycleId]
  * @param {string} [country]
- * @param {boolean} [withWhatsapp]
  * @returns {number|null}
  */
-export function getBasePlanPrice(
-  plan,
-  cycleId = "mensual",
-  country = "PE",
-  withWhatsapp = false,
-) {
+export function getBasePlanPrice(plan, cycleId = "mensual", country = "PE") {
   if (plan.quoteBased) return null;
-  const grid =
-    withWhatsapp && plan.pricesWhatsapp ? plan.pricesWhatsapp : plan.prices;
-  return grid?.[cycleId]?.[country] ?? null;
+  return plan.prices?.[cycleId]?.[country] ?? null;
 }
 
 /**

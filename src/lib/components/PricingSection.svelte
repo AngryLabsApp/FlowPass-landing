@@ -18,8 +18,8 @@
   import { siteConfig } from "$lib/config/site";
   import { trackContact } from "$lib/tracking/track";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
-  import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles } from "@lucide/svelte";
-  import { onMount } from "svelte";
+  import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles, X, Snowflake } from "@lucide/svelte";
+  import { onMount, onDestroy } from "svelte";
   import PromoCountdown from "./PromoCountdown.svelte";
 
   const planIcons = new Map([
@@ -35,7 +35,26 @@
 
   let selectedCountry = countries.find((c) => c.code === "US") ?? countries[0];
   let selectedCycle = billingCycles[0]; // mensual
-  let withWhatsapp = true;
+
+  /** @type {import('$lib/data/pricingData.js').Plan | null} */
+  let activeModalPlan = null;
+
+  /** @param {import('$lib/data/pricingData.js').Plan} plan */
+  function openBenefits(plan) {
+    activeModalPlan = plan;
+    if (typeof document !== 'undefined') document.body.style.overflow = 'hidden';
+  }
+  function closeBenefits() {
+    activeModalPlan = null;
+    if (typeof document !== 'undefined') document.body.style.overflow = '';
+  }
+  /** @param {KeyboardEvent} e */
+  function handleModalKeydown(e) {
+    if (e.key === 'Escape' && activeModalPlan) closeBenefits();
+  }
+  onDestroy(() => {
+    if (typeof document !== 'undefined') document.body.style.overflow = '';
+  });
 
   /**
    * Detect user country from browser timezone + locale.
@@ -98,28 +117,6 @@
     });
   }
 
-  function toggleWhatsapp() {
-    withWhatsapp = !withWhatsapp;
-    window.gtag?.('event', 'price_click', {
-      event_category: 'engagement',
-      event_label: `whatsapp_auto_${withWhatsapp ? 'on' : 'off'}`,
-      value: 1
-    });
-  }
-
-  /** @param {KeyboardEvent} e */
-  function handleAddonKeydown(e) {
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight" || e.key === "ArrowUp" || e.key === "ArrowDown") {
-      e.preventDefault();
-      toggleWhatsapp();
-      const target = /** @type {HTMLElement} */ (e.currentTarget);
-      const radios = target.querySelectorAll('[role="radio"]');
-      /** @type {HTMLElement | null} */
-      const next = /** @type {HTMLElement} */ (radios[withWhatsapp ? 0 : 1]);
-      next?.focus();
-    }
-  }
-
   const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
   const enterpriseLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Estoy%20interesado%20en%20Flow%20Enterprise%20para%20mi%20cadena.`;
 </script>
@@ -133,24 +130,26 @@
   <div class="section-header">
     {#if countryHasPromo && promoCountryCfg}
       {@const cheapest = Math.min(...Object.values(promoCountryCfg.prices))}
-      <div class="promo-banner" role="region" aria-label={promoCountryCfg.label}>
+      <div class="promo-banner" role="region" aria-label="Promoción hasta el 31 de agosto">
         <div class="promo-banner__glow" aria-hidden="true"></div>
         <div class="promo-banner__content">
           <div class="promo-banner__badge">
-            <Sparkles size={14} strokeWidth={2.4} />
-            <span>{promoCountryCfg.label}</span>
+            <span aria-hidden="true">🔥</span>
+            <span>PROMOCIÓN HASTA EL 31 DE AGOSTO</span>
           </div>
-          <p class="promo-banner__headline">
-            {promoCountryCfg.headline} — desde
-            <strong>{formatPrice(cheapest, selectedCountry.code)}/mes</strong>
+          <h3 class="promo-banner__headline">
+            Contrata hoy y conserva este precio durante <strong>12 meses</strong>.
+          </h3>
+          <p class="promo-banner__subtitle">
+            Planes desde <strong>{formatPrice(cheapest, selectedCountry.code)}/mes</strong> para clientes nuevos.
           </p>
           {#if promoCountryCfg.showCountdown && promoCountryCfg.endsAt}
             <div class="promo-banner__timer">
-              <span class="promo-banner__timer-label">Termina en</span>
-              <PromoCountdown endsAt={promoCountryCfg.endsAt} />
+              <span class="promo-banner__timer-label">La promoción termina en</span>
+              <PromoCountdown endsAt={promoCountryCfg.endsAt} compact />
             </div>
           {/if}
-          <p class="promo-banner__fineprint">* Válido solo para clientes nuevos.</p>
+          <p class="promo-banner__fineprint">*Después del 31 de agosto volverán las tarifas regulares.</p>
         </div>
       </div>
     {/if}
@@ -187,72 +186,36 @@
         </div>
       </div>
 
-      <div class="cycle-wrap">
-        <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
-          {#each billingCycles as cycle}
-            <button
-              class="cycle-pill"
-              class:active={selectedCycle.id === cycle.id}
-              aria-pressed={selectedCycle.id === cycle.id}
-              on:click={() => selectCycle(cycle)}
-            >
-              <span class="cycle-pill-label">{cycle.label}</span>
-              {#if cycle.discount > 0}
-                <span class="cycle-pill-tag">paga {Math.round(cycle.discount * 100)}% menos</span>
-              {/if}
-            </button>
-          {/each}
+      {#if !countryHasPromo}
+        <div class="cycle-wrap">
+          <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
+            {#each billingCycles as cycle}
+              <button
+                class="cycle-pill"
+                class:active={selectedCycle.id === cycle.id}
+                aria-pressed={selectedCycle.id === cycle.id}
+                on:click={() => selectCycle(cycle)}
+              >
+                <span class="cycle-pill-label">{cycle.label}</span>
+                {#if cycle.discount > 0}
+                  <span class="cycle-pill-tag">paga {Math.round(cycle.discount * 100)}% menos</span>
+                {/if}
+              </button>
+            {/each}
+          </div>
         </div>
-      </div>
+      {/if}
 
-      <div class="addon-group">
-        <span class="addon-group-label" id="addon-group-label">
-          <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
-          </svg>
-          ¿Quién avisa a tus alumnos?
-        </span>
-        <div
-          class="addon-tabs"
-          role="radiogroup"
-          aria-labelledby="addon-group-label"
-          on:keydown={handleAddonKeydown}
-        >
-          <button
-            type="button"
-            class="addon-tab"
-            class:active={withWhatsapp}
-            role="radio"
-            aria-checked={withWhatsapp}
-            tabindex={withWhatsapp ? 0 : -1}
-            on:click={() => { if (!withWhatsapp) toggleWhatsapp(); }}
-          >
-            FlowPass lo hace
-            <span class="addon-tab-badge" aria-label="Recomendado">Recomendado</span>
-          </button>
-          <button
-            type="button"
-            class="addon-tab"
-            class:active={!withWhatsapp}
-            role="radio"
-            aria-checked={!withWhatsapp}
-            tabindex={!withWhatsapp ? 0 : -1}
-            on:click={() => { if (withWhatsapp) toggleWhatsapp(); }}
-          >
-            Yo lo hago
-          </button>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- Plans grid -->
   <div class="plans-grid" aria-live="polite" aria-atomic="true">
-    {#key `${selectedCountry.code}-${selectedCycle.id}-${withWhatsapp}`}
-      {#each selfServePlans as plan}
-        {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code, withWhatsapp)}
+    {#key `${selectedCountry.code}-${selectedCycle.id}`}
+      {#each plans as plan}
+        {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code)}
         {@const promoPrice = getPromoPrice(plan, selectedCountry.code)}
-        {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code, withWhatsapp)}
+        {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code)}
         {@const isPromo = promoPrice !== null}
         {@const hasSavings = isPromo && refPrice !== null && promoPrice < refPrice}
         <article
@@ -263,12 +226,6 @@
           aria-label="Plan {plan.name}"
         >
           <div class="badge-stack">
-            {#if isPromo}
-              <div class="badge badge-promo" aria-label="Oferta de lanzamiento">
-                <Sparkles size={11} strokeWidth={2.6} />
-                Oferta
-              </div>
-            {/if}
             {#if plan.highlight}
               <div class="badge badge-popular" aria-label="Plan más popular">Más popular</div>
             {/if}
@@ -310,11 +267,17 @@
             {@const baseParts = hasSavings ? formatPriceParts(refPrice ?? 0, selectedCountry.code) : null}
             {@const savingsPct = hasSavings && refPrice ? Math.round((1 - (promoPrice ?? 0) / refPrice) * 100) : 0}
             <div class="plan-price" class:plan-price--promo={isPromo} aria-label="Precio mensual">
-              {#if hasSavings && baseParts}
+              {#if isPromo}
                 <div class="price-strike-row">
-                  <span class="price-strike">
-                    <s>{baseParts.symbol}{baseParts.number}</s>
+                  <span class="badge badge-promo badge-inline" aria-label="Oferta de lanzamiento">
+                    <Sparkles size={10} strokeWidth={2.6} />
+                    Oferta
                   </span>
+                  {#if hasSavings && baseParts}
+                    <span class="price-strike">
+                      <s>{baseParts.symbol}{baseParts.number}</s>
+                    </span>
+                  {/if}
                 </div>
               {/if}
               <div class="price-main-row">
@@ -327,68 +290,31 @@
               {#if taxInline}
                 <span class="price-tax">{taxInline}</span>
               {/if}
+              {#if price && plan.maxActiveStudents}
+                {@const perStudent = price / plan.maxActiveStudents}
+                {@const pspParts = formatPriceParts(perStudent, selectedCountry.code)}
+                <span class="price-per-student">
+                  ≈ {pspParts.symbol}{perStudent < 10 ? perStudent.toFixed(perStudent < 1 ? 2 : 1) : Math.round(perStudent)}{pspParts.code ? ` ${pspParts.code}` : ''} por alumno
+                </span>
+              {/if}
               {#if isPromo && promoCountryCfg}
-                <span class="price-lock">{promoCountryCfg.priceLockLabel}</span>
+                <span class="price-lock">
+                  <Snowflake size={11} strokeWidth={2.4} />
+                  {promoCountryCfg.priceLockLabel}
+                </span>
               {/if}
             </div>
-            {#if plan.whatsappAuto || plan.whatsappManual}
-              <div class="whatsapp-card" aria-label="WhatsApp incluido">
-                <div class="whatsapp-card__header">
-                  <svg class="wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
-                  </svg>
-                  <span class="whatsapp-card__title">WhatsApp incluido</span>
-                  <span class="whatsapp-card__badge" title="Integración directa con la API oficial de WhatsApp Business: máxima estabilidad y entregabilidad.">
-                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="badge-check"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.7-9.3a1 1 0 0 0-1.4-1.4L9 10.6 7.7 9.3a1 1 0 0 0-1.4 1.4l2 2a1 1 0 0 0 1.4 0l4-4z" clip-rule="evenodd"/></svg>
-                    API Oficial
-                  </span>
-                </div>
-                <ul class="whatsapp-card__list">
-                  {#if plan.whatsappAuto}
-                    {#if withWhatsapp}
-                      <li class="whatsapp-card__row">
-                        <span class="row-icon row-icon--on" aria-hidden="true">✓</span>
-                        <span><strong>{plan.whatsappAuto.includedReminders}</strong> recordatorios automáticos</span>
-                      </li>
-                    {:else}
-                      <li class="whatsapp-card__row whatsapp-card__row--off">
-                        <span class="row-icon row-icon--off" aria-hidden="true">⊘</span>
-                        <span>Sin recordatorios automáticos</span>
-                      </li>
-                    {/if}
-                  {/if}
-                  {#if plan.whatsappManual}
-                    <li class="whatsapp-card__row">
-                      <span class="row-icon row-icon--on" aria-hidden="true">✓</span>
-                      <span><strong>{plan.whatsappManual.included1ClickSends}</strong> envíos 1-click <span class="row-hint">(link de registro, credencial/QR)</span></span>
-                    </li>
-                  {/if}
-                </ul>
-                {#if withWhatsapp && plan.whatsappAuto && plan.whatsappManual}
-                  <div class="whatsapp-card__total">
-                    = <strong>{plan.whatsappAuto.includedReminders + plan.whatsappManual.included1ClickSends}</strong> mensajes/mes
-                  </div>
-                {:else if !withWhatsapp && plan.whatsappManual}
-                  <div class="whatsapp-card__total">
-                    = <strong>{plan.whatsappManual.included1ClickSends}</strong> mensajes/mes
-                  </div>
-                {/if}
-              </div>
-            {/if}
           {/if}
 
-          <ul class="features-list" aria-label="Características incluidas">
-            {#each plan.features as feature}
-              <li class="feature-item" class:excluded={!feature.included}>
-                <span class="feature-icon" aria-hidden="true">
-                  {feature.included ? "✓" : "✕"}
-                </span>
-                <span>
-                  {feature.label}{#if feature.included && feature.extraCost}<span class="extra-cost"> (+{formatPrice(feature.extraCost[selectedCountry.code], selectedCountry.code)}/sede)</span>{/if}
-                </span>
-              </li>
-            {/each}
-          </ul>
+          <button
+            type="button"
+            class="benefits-link"
+            on:click={() => openBenefits(plan)}
+            aria-label="Ver beneficios del plan {plan.name}"
+          >
+            Ver beneficios
+            <span aria-hidden="true" class="benefits-link__arrow">→</span>
+          </button>
 
           <a
             href={plan.quoteBased ? enterpriseLink : whatsappLink}
@@ -418,78 +344,6 @@
     {/key}
   </div>
 
-  <!-- Enterprise wide card -->
-  {#if enterprisePlan}
-    <div class="enterprise-row">
-      <article
-        class="plan-card enterprise enterprise-wide"
-        aria-label="Plan {enterprisePlan.name}"
-      >
-        <div class="badge-stack">
-          <div class="badge badge-enterprise" aria-label="Plan a medida">Para cadenas</div>
-        </div>
-
-        <div class="enterprise-wide-grid">
-          <div class="enterprise-wide-left">
-            <div class="plan-header">
-              <div class="plan-name-row">
-                {#if planIcons.get(enterprisePlan.id)}
-                  <span class="plan-icon" aria-hidden="true">
-                    <svelte:component this={planIcons.get(enterprisePlan.id)} size={18} strokeWidth={2} />
-                  </span>
-                {/if}
-                <h3 class="plan-name">{enterprisePlan.name}</h3>
-              </div>
-              <p class="plan-tagline">{enterprisePlan.tagline}</p>
-              <div class="plan-students">
-                <p class="plan-range">
-                  <span class="range-icon" aria-hidden="true">🟢</span>
-                  {enterprisePlan.activeStudents}
-                </p>
-              </div>
-            </div>
-
-            <div class="plan-price plan-price--quote" aria-label="Precio bajo evaluación">
-              <span class="price-quote">Bajo evaluación</span>
-            </div>
-
-            <a
-              href={enterpriseLink}
-              class="cta-button cta-primary"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Hablar con el equipo de Flow Enterprise"
-              on:click={() => trackContact(`pricing_plan_${enterprisePlan.id}`)}
-            >
-              <span class="cta-button-inner">
-                Escríbenos
-                <img
-                  src={whatsappIcon}
-                  alt=""
-                  aria-hidden="true"
-                  class="cta-button-icon"
-                  loading="lazy"
-                  width="18"
-                  height="18"
-                />
-              </span>
-            </a>
-          </div>
-
-          <ul class="features-list enterprise-wide-features" aria-label="Características incluidas">
-            {#each enterprisePlan.features as feature}
-              <li class="feature-item" class:excluded={!feature.included}>
-                <span class="feature-icon" aria-hidden="true">
-                  {feature.included ? "✓" : "✕"}
-                </span>
-                <span>{feature.label}</span>
-              </li>
-            {/each}
-          </ul>
-        </div>
-      </article>
-    </div>
-  {/if}
 
   <!-- WhatsApp packages -->
   <div class="wa-section">
@@ -535,21 +389,98 @@
 
 </section>
 
+<svelte:window on:keydown={handleModalKeydown} />
+
+{#if activeModalPlan}
+  <div
+    class="benefits-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="benefits-modal-title"
+    on:click|self={closeBenefits}
+  >
+    <div class="benefits-modal__dialog" role="document">
+      <button
+        type="button"
+        class="benefits-modal__close"
+        on:click={closeBenefits}
+        aria-label="Cerrar"
+      >
+        <X size={18} strokeWidth={2.2} />
+      </button>
+
+      <div class="benefits-modal__header">
+        {#if planIcons.get(activeModalPlan.id)}
+          <span class="benefits-modal__icon" aria-hidden="true">
+            <svelte:component this={planIcons.get(activeModalPlan.id)} size={22} strokeWidth={2} />
+          </span>
+        {/if}
+        <div class="benefits-modal__titles">
+          <h3 id="benefits-modal-title" class="benefits-modal__name">{activeModalPlan.name}</h3>
+          <p class="benefits-modal__tagline">{activeModalPlan.tagline}</p>
+        </div>
+      </div>
+
+      {#if activeModalPlan.whatsappIncluded}
+        <div class="benefits-modal__wa" aria-label="Asistente de WhatsApp">
+          <div class="benefits-modal__wa-header">
+            <svg class="benefits-modal__wa-icon" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.696 4.604 1.892 6.476L4 29l7.71-1.846A11.94 11.94 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm6.93 17.18c-.293.82-1.71 1.566-2.36 1.66-.6.087-1.36.123-2.196-.137-.505-.16-1.155-.376-1.988-.733-3.5-1.5-5.78-5.04-5.953-5.274-.173-.234-1.42-1.887-1.42-3.6 0-1.713.9-2.555 1.22-2.905.32-.35.7-.437.93-.437.235 0 .47.002.674.012.215.01.504-.082.79.604.293.7.997 2.413 1.084 2.588.087.175.146.38.029.613-.117.234-.176.38-.35.585-.176.205-.37.458-.527.616-.176.176-.36.367-.155.72.205.35.91 1.503 1.955 2.434 1.34 1.196 2.472 1.566 2.823 1.742.35.176.555.146.76-.088.205-.234.876-1.022 1.11-1.373.234-.35.468-.293.79-.176.32.117 2.034.96 2.384 1.135.35.176.585.263.672.41.087.146.087.847-.206 1.665z"/>
+            </svg>
+            <div class="benefits-modal__wa-titles">
+              <span class="benefits-modal__wa-name">Asistente de WhatsApp</span>
+              <span class="benefits-modal__wa-official">
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="benefits-modal__wa-check">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm3.7-9.3a1 1 0 0 0-1.4-1.4L9 10.6 7.7 9.3a1 1 0 0 0-1.4 1.4l2 2a1 1 0 0 0 1.4 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                API oficial · WhatsApp Business
+              </span>
+            </div>
+          </div>
+          <ul class="benefits-modal__wa-list">
+            <li>
+              <span class="benefits-modal__wa-row-icon" aria-hidden="true">✓</span>
+              <span><strong>{activeModalPlan.whatsappIncluded.total}</strong> mensajes/mes</span>
+            </li>
+            <li>
+              <span class="benefits-modal__wa-row-icon" aria-hidden="true">✓</span>
+              <span>Actívalo o pausálo cuando quieras</span>
+            </li>
+          </ul>
+        </div>
+      {/if}
+
+      <ul class="benefits-modal__list" aria-label="Beneficios incluidos">
+        {#each activeModalPlan.features as feature}
+          <li class="benefits-modal__row" class:excluded={!feature.included}>
+            <span class="benefits-modal__row-icon" aria-hidden="true">
+              {feature.included ? '✓' : '✕'}
+            </span>
+            <span>
+              {feature.label}{#if feature.included && feature.extraCost}<span class="benefits-modal__extra"> (+{formatPrice(feature.extraCost[selectedCountry.code], selectedCountry.code)}/sede)</span>{/if}
+            </span>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  </div>
+{/if}
+
 <style>
   /* ─── Layout ─────────────────────────────────────────────── */
   .pricing-section {
-    padding: 3rem 1.25rem;
+    padding: 2.25rem 1.25rem;
     color: #fff;
   }
   @media (min-width: 768px) {
-    .pricing-section { padding: 5rem 1.5rem; }
+    .pricing-section { padding: 3.5rem 1.5rem; }
   }
 
   /* ─── Header ─────────────────────────────────────────────── */
   .section-header {
     position: relative;
     max-width: 720px;
-    margin: 0 auto 2.5rem;
+    margin: 0 auto 1.75rem;
     text-align: center;
   }
 
@@ -558,7 +489,7 @@
     position: relative;
     max-width: 640px;
     margin: 0 auto 2rem;
-    padding: 1.25rem 1.5rem;
+    padding: 1.05rem 1.35rem;
     border-radius: 20px;
     background:
       linear-gradient(140deg, rgba(1,245,158,0.14) 0%, rgba(83,29,216,0.14) 100%),
@@ -586,7 +517,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.55rem;
   }
   .promo-banner__badge {
     display: inline-flex;
@@ -603,42 +534,58 @@
     box-shadow: 0 4px 16px rgba(1,245,158,0.4);
   }
   .promo-banner__headline {
-    margin: 0;
-    font-size: 1rem;
-    color: rgba(255,255,255,0.85);
-    line-height: 1.45;
+    margin: 0.1rem 0 0;
+    font-family: 'Epoch', 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    text-align: center;
+    max-width: 32ch;
   }
   .promo-banner__headline strong {
     color: #01f59e;
     font-weight: 800;
-    font-size: 1.1rem;
+  }
+  .promo-banner__subtitle {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.62);
+    line-height: 1.4;
+    text-align: center;
+  }
+  .promo-banner__subtitle strong {
+    color: rgba(255,255,255,0.92);
+    font-weight: 700;
   }
   .promo-banner__timer {
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 0.25rem;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
   }
   .promo-banner__timer-label {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 700;
-    color: rgba(255,255,255,0.6);
-    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
   .promo-banner__fineprint {
-    margin: 0.25rem 0 0;
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.55);
+    margin: 0.2rem 0 0;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.45);
     font-style: italic;
+    text-align: center;
   }
   @media (max-width: 640px) {
-    .promo-banner { padding: 1rem 1rem; border-radius: 16px; }
-    .promo-banner__headline { font-size: 0.88rem; }
-    .promo-banner__headline strong { font-size: 0.95rem; }
-    .promo-banner__timer-label { font-size: 0.65rem; }
+    .promo-banner { padding: 0.85rem 1rem; border-radius: 16px; }
+    .promo-banner__headline { font-size: 0.98rem; line-height: 1.25; }
+    .promo-banner__subtitle { font-size: 0.78rem; }
+    .promo-banner__timer-label { font-size: 0.58rem; letter-spacing: 0.08em; }
+    .promo-banner__fineprint { font-size: 0.64rem; }
   }
 
   .section-eyebrow {
@@ -744,17 +691,17 @@
     max-width: 100%;
   }
   .country-wrap-label {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.7);
     letter-spacing: 0.01em;
   }
   .country-pills {
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.4rem;
-    padding: 0.35rem;
+    gap: 0.3rem;
+    padding: 0.25rem;
     background: rgba(255,255,255,0.04);
     border: 0.5px solid rgba(255,255,255,0.08);
     border-radius: 9999px;
@@ -764,14 +711,14 @@
   .country-pill {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    padding: 0.5rem 0.9rem;
-    min-height: 40px;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    min-height: 32px;
     border-radius: 9999px;
     border: none;
     background: transparent;
     font: inherit;
-    font-size: 0.82rem;
+    font-size: 0.72rem;
     font-weight: 600;
     color: rgba(255,255,255,0.6);
     cursor: pointer;
@@ -792,7 +739,7 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   }
   .country-pill-flag {
-    font-size: 1.05rem;
+    font-size: 0.9rem;
     line-height: 1;
   }
   .country-pill-label {
@@ -827,136 +774,27 @@
     width: 100%;
   }
 
-  /* ─── Add-on tabs (segmented) ────────────────────────────── */
-  .addon-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .addon-group-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 0.01em;
-  }
   .wa-icon {
     width: 16px;
     height: 16px;
     color: #25D366;
     flex-shrink: 0;
   }
-  .addon-tabs {
-    display: inline-flex;
-    gap: 0.25rem;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 9999px;
-    padding: 0.3rem;
-    backdrop-filter: blur(8px);
-  }
-  .addon-tab {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.45rem 0.95rem;
-    min-height: 36px;
-    border-radius: 9999px;
-    border: none;
-    background: transparent;
-    font: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    white-space: nowrap;
-  }
-  .addon-tab:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .addon-tab:focus-visible {
-    outline: 2px solid rgba(255,255,255,0.7);
-    outline-offset: 2px;
-  }
-  .addon-tab.active {
-    background: #fff;
-    color: #09090f;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  }
-  .addon-tab-badge {
-    position: absolute;
-    top: -0.6rem;
-    right: -0.35rem;
-    font-size: 0.58rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-    background: #01f59e;
-    color: #09090f;
-    line-height: 1.2;
-    box-shadow: 0 4px 12px rgba(1,245,158,0.4);
-    pointer-events: none;
-    white-space: nowrap;
-  }
 
   /* ─── Plans grid ─────────────────────────────────────────── */
   .plans-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    max-width: 1280px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.85rem;
+    max-width: 1400px;
     margin: 0 auto 1.5rem;
     align-items: stretch;
   }
-  @media (max-width: 1024px) {
+  @media (max-width: 1199px) {
+    .plans-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  }
+  @media (max-width: 900px) {
     .plans-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  /* ─── Enterprise wide card ───────────────────────────────── */
-  .enterprise-row {
-    max-width: 1280px;
-    margin: 0 auto 4rem;
-  }
-  .plan-card.enterprise-wide {
-    padding: 2rem 2.25rem;
-  }
-  .enterprise-wide-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    gap: 2.5rem;
-    align-items: stretch;
-  }
-  .enterprise-wide-left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-  }
-  .enterprise-wide-left .plan-header { min-height: auto; }
-  .enterprise-wide-left .plan-price { min-height: auto; padding-top: 0.75rem; }
-  .enterprise-wide-left .cta-button { margin-top: auto; }
-  .enterprise-wide-features {
-    border-left: 0.5px solid rgba(255,255,255,0.08);
-    padding-left: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.6rem 1.25rem;
-  }
-  @media (max-width: 768px) {
-    .plan-card.enterprise-wide { padding: 1.75rem 1.5rem; }
-    .enterprise-wide-grid { grid-template-columns: 1fr; gap: 1.25rem; }
-    .enterprise-wide-features {
-      border-left: none;
-      padding-left: 0;
-      border-top: 0.5px solid rgba(255,255,255,0.08);
-      padding-top: 1.25rem;
-      grid-template-columns: 1fr;
-    }
   }
 
   /* ─── Plan card ──────────────────────────────────────────── */
@@ -972,10 +810,10 @@
     border: 1px solid rgba(255,255,255,0.08);
     border-top: 1px solid rgba(255,255,255,0.18);
     border-radius: 20px;
-    padding: 1.75rem 1.5rem 1.5rem;
+    padding: 1.2rem 1.15rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem;
     box-shadow:
       0 4px 6px rgba(0,0,0,0.08),
       0 16px 48px rgba(0,0,0,0.28),
@@ -1078,6 +916,12 @@
     box-shadow: 0 4px 16px rgba(255,122,69,0.5);
     padding: 0.28rem 0.7rem 0.28rem 0.55rem;
   }
+  .badge-inline {
+    font-size: 0.58rem;
+    padding: 0.18rem 0.5rem 0.18rem 0.4rem;
+    letter-spacing: 0.06em;
+    box-shadow: 0 2px 8px rgba(255,122,69,0.4);
+  }
   .badge-enterprise {
     background: linear-gradient(135deg, #531DD8 0%, #3168F4 100%);
     color: #fff;
@@ -1098,8 +942,8 @@
   .plan-header {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    min-height: 7.5rem;
+    gap: 0.15rem;
+    min-height: 4.5rem;
   }
   .plan-name-row {
     display: flex;
@@ -1123,41 +967,46 @@
   }
   .plan-name {
     font-family: 'Epoch', 'Syne', sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #fff;
     margin: 0;
+    letter-spacing: -0.01em;
   }
   .plan-tagline {
-    font-size: 0.8125rem;
+    font-size: 0.72rem;
+    font-weight: 500;
     color: rgba(255,255,255,0.5);
     margin: 0;
-    line-height: 1.45;
-    min-height: 2.4rem;
+    line-height: 1.3;
+    letter-spacing: 0.005em;
   }
   .plan-students {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.08rem;
     margin-top: auto;
-    padding-top: 0.25rem;
-    min-height: 2.6rem;
+    padding-top: 0.55rem;
+    min-height: 2.1rem;
   }
   .plan-range {
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.8125rem;
+    font-size: 0.78rem;
     font-weight: 600;
     color: #01f59e;
     margin: 0;
+    line-height: 1.3;
   }
   .plan-range--registered {
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.4);
-    font-weight: 500;
+    font-size: 0.62rem;
+    color: rgba(255,255,255,0.3);
+    font-weight: 400;
+    line-height: 1.2;
   }
-  .range-icon { font-size: 0.75rem; }
+  .range-icon { font-size: 0.72rem; }
+  .plan-range--registered .range-icon { font-size: 0.6rem; }
 
   /* ─── Price ──────────────────────────────────────────────── */
   .plan-price {
@@ -1166,8 +1015,7 @@
     align-items: flex-start;
     gap: 0.3rem;
     border-top: 0.5px solid rgba(255,255,255,0.06);
-    padding-top: 1rem;
-    min-height: 3.5rem;
+    padding-top: 1.15rem;
   }
   .price-main-row {
     display: flex;
@@ -1182,7 +1030,7 @@
     margin-bottom: 0.1rem;
   }
   .price-strike {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     color: rgba(255,255,255,0.4);
     font-weight: 500;
     text-decoration: line-through;
@@ -1208,12 +1056,21 @@
   .price-lock {
     display: inline-flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.65rem;
-    color: rgba(1,245,158,0.85);
-    font-weight: 600;
-    margin-top: 0.15rem;
-    letter-spacing: 0.01em;
+    gap: 0.28rem;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    background: rgba(49,104,244,0.14);
+    border: 0.5px solid rgba(49,104,244,0.4);
+    color: #9dc0ff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin-top: 0.25rem;
+    box-shadow: 0 2px 8px rgba(49,104,244,0.15);
+  }
+  .price-lock :global(svg) {
+    color: #7ba7ff;
+    flex-shrink: 0;
   }
   .plan-card.on-promo {
     border-top-color: rgba(255,176,32,0.4);
@@ -1235,14 +1092,14 @@
       inset 0 -1px 0 rgba(0,0,0,0.08);
   }
   .price-amount {
-    font-size: 1.875rem;
+    font-size: 1.65rem;
     font-weight: 800;
     color: #fff;
     line-height: 1;
     animation: fadePrice 0.3s ease;
   }
   .price-period {
-    font-size: 0.875rem;
+    font-size: 0.82rem;
     color: rgba(255,255,255,0.4);
     font-weight: 500;
   }
@@ -1263,7 +1120,7 @@
   }
   .price-quote {
     font-family: 'Epoch', 'Syne', sans-serif;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #cbb6ff;
     line-height: 1.1;
@@ -1275,135 +1132,12 @@
     color: rgba(255,255,255,0.4);
     white-space: nowrap;
   }
-  .whatsapp-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    margin-top: -0.4rem;
-    padding: 0.45rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.78rem;
+  .price-per-student {
+    font-size: 0.72rem;
     font-weight: 600;
-    line-height: 1.2;
-    border: 0.5px solid transparent;
-    transition: background 0.25s, border-color 0.25s, color 0.25s;
-    animation: fadePrice 0.3s ease;
-    min-height: 2.4rem;
-    width: 100%;
-    justify-content: flex-start;
-  }
-  .whatsapp-chip--on {
-    background: rgba(37,211,102,0.12);
-    border-color: rgba(37,211,102,0.45);
-    color: #25D366;
-  }
-  .whatsapp-chip--on .wa-icon { color: #25D366; }
-  .whatsapp-chip--on strong { color: #fff; font-weight: 800; }
-  .whatsapp-chip--off {
-    background: rgba(255,255,255,0.04);
-    border-color: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.45);
-  }
-  .whatsapp-card {
-    margin-top: 0.4rem;
-    padding: 0.55rem 0.7rem;
-    border-radius: 12px;
-    background: linear-gradient(180deg, rgba(37,211,102,0.08), rgba(37,211,102,0.04));
-    border: 0.5px solid rgba(37,211,102,0.35);
-    width: 100%;
-    animation: fadePrice 0.3s ease;
-  }
-  .whatsapp-card__header {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    margin-bottom: 0.4rem;
-  }
-  .whatsapp-card__header .wa-icon { color: #25D366; width: 14px; height: 14px; }
-  .whatsapp-card__title {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #fff;
+    color: rgba(1,245,158,0.85);
     letter-spacing: 0.01em;
-  }
-  .whatsapp-card__badge {
-    margin-left: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.2rem;
-    padding: 0.12rem 0.4rem;
-    border-radius: 999px;
-    background: rgba(37,211,102,0.18);
-    border: 0.5px solid rgba(37,211,102,0.45);
-    color: #25D366;
-    font-size: 0.58rem;
-    font-weight: 800;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    cursor: help;
-  }
-  .whatsapp-card__badge .badge-check {
-    width: 10px;
-    height: 10px;
-  }
-  .whatsapp-card__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-  .whatsapp-card__row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.4rem;
-    font-size: 0.7rem;
-    line-height: 1.25;
-    color: rgba(255,255,255,0.88);
-  }
-  .whatsapp-card__row strong { color: #fff; font-weight: 800; }
-  .whatsapp-card__row .row-hint {
-    color: rgba(255,255,255,0.55);
-    font-weight: 500;
-    font-size: 0.65rem;
-  }
-  .whatsapp-card__row--off { color: rgba(255,255,255,0.45); }
-  .row-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    font-size: 0.6rem;
-    font-weight: 800;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .row-icon--on {
-    background: rgba(37,211,102,0.2);
-    color: #25D366;
-  }
-  .row-icon--off {
-    background: rgba(255,255,255,0.06);
-    color: rgba(255,255,255,0.35);
-  }
-  .whatsapp-card__total {
-    margin-top: 0.4rem;
-    padding-top: 0.4rem;
-    border-top: 0.5px dashed rgba(37,211,102,0.3);
-    font-size: 0.72rem;
-    color: #fff;
-    text-align: right;
-  }
-  .whatsapp-card__total strong { color: #25D366; font-weight: 800; }
-  .chip-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.25);
-    flex-shrink: 0;
+    white-space: nowrap;
   }
   @keyframes fadePrice {
     from { opacity: 0; transform: translateY(4px); }
@@ -1439,14 +1173,51 @@
   .feature-item.excluded .feature-icon { color: rgba(255,255,255,0.2); }
   .extra-cost { color: rgba(255,255,255,0.4); font-size: 0.75rem; }
 
+  /* ─── Benefits link (opens modal) ────────────────────────── */
+  .benefits-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    align-self: center;
+    padding: 0.35rem 0.6rem;
+    border: none;
+    background: transparent;
+    color: rgba(1,245,158,0.9);
+    font: inherit;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: color 0.2s, background 0.2s, transform 0.15s;
+    margin-top: auto;
+    text-decoration: none;
+  }
+  .benefits-link:hover {
+    color: #01f59e;
+    background: rgba(1,245,158,0.06);
+    transform: translateY(-1px);
+  }
+  .benefits-link:focus-visible {
+    outline: 2px solid rgba(1,245,158,0.6);
+    outline-offset: 2px;
+  }
+  .benefits-link__arrow {
+    transition: transform 0.2s;
+  }
+  .benefits-link:hover .benefits-link__arrow {
+    transform: translateX(2px);
+  }
+
   /* ─── CTA button ─────────────────────────────────────────── */
   .cta-button {
     display: block;
     text-align: center;
-    padding: 0.85rem 1rem;
-    min-height: 44px;
+    padding: 0.75rem 0.9rem;
+    min-height: 42px;
     border-radius: 12px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 700;
     text-decoration: none;
     transition: background 0.2s, box-shadow 0.2s, transform 0.15s, color 0.2s;
@@ -1570,24 +1341,259 @@
     margin-top: 0.75rem;
   }
 
+  /* ─── Benefits modal ─────────────────────────────────────── */
+  .benefits-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    background: rgba(9,9,15,0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: modalFadeIn 0.22s ease;
+  }
+  .benefits-modal__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 460px;
+    max-height: min(85vh, 720px);
+    overflow-y: auto;
+    padding: 1.75rem 1.5rem 1.5rem;
+    border-radius: 20px;
+    color: #fff;
+    background: linear-gradient(
+      145deg,
+      rgba(255,255,255,0.07) 0%,
+      rgba(255,255,255,0.02) 100%
+    ),
+    linear-gradient(180deg, #14141c 0%, #0b0b12 100%);
+    border: 1px solid rgba(1,245,158,0.22);
+    border-top: 1px solid rgba(1,245,158,0.4);
+    box-shadow:
+      0 24px 80px rgba(0,0,0,0.55),
+      0 0 80px -20px rgba(1,245,158,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.12);
+    animation: modalPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .benefits-modal__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: 0.5px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.7);
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .benefits-modal__close:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+  }
+  .benefits-modal__close:focus-visible {
+    outline: 2px solid rgba(1,245,158,0.6);
+    outline-offset: 2px;
+  }
+  .benefits-modal__header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    padding-right: 2.25rem;
+  }
+  .benefits-modal__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(1,245,158,0.12);
+    color: #01f59e;
+    flex-shrink: 0;
+  }
+  .benefits-modal__titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .benefits-modal__name {
+    font-family: 'Epoch', 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .benefits-modal__tagline {
+    margin: 0;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+  .benefits-modal__wa {
+    margin-bottom: 1.1rem;
+    padding: 0.85rem 0.9rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(37,211,102,0.1), rgba(37,211,102,0.04));
+    border: 0.5px solid rgba(37,211,102,0.4);
+  }
+  .benefits-modal__wa-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    margin-bottom: 0.55rem;
+  }
+  .benefits-modal__wa-icon {
+    width: 18px;
+    height: 18px;
+    color: #25D366;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .benefits-modal__wa-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .benefits-modal__wa-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .benefits-modal__wa-official {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: rgba(37,211,102,0.9);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .benefits-modal__wa-check {
+    width: 10px;
+    height: 10px;
+    color: #25D366;
+    flex-shrink: 0;
+  }
+  .benefits-modal__wa-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .benefits-modal__wa-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.35;
+  }
+  .benefits-modal__wa-list strong { color: #fff; font-weight: 800; }
+  .benefits-modal__wa-row-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+    background: rgba(37,211,102,0.2);
+    color: #25D366;
+  }
+
+  .benefits-modal__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .benefits-modal__row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.45;
+  }
+  .benefits-modal__row.excluded {
+    color: rgba(255,255,255,0.35);
+  }
+  .benefits-modal__row-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 1px;
+    background: rgba(1,245,158,0.14);
+    color: #01f59e;
+  }
+  .benefits-modal__row.excluded .benefits-modal__row-icon {
+    background: rgba(255,255,255,0.06);
+    color: rgba(255,255,255,0.3);
+  }
+  .benefits-modal__extra {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.82rem;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.94) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @media (max-width: 640px) {
+    .benefits-modal { padding: 1rem; align-items: flex-end; }
+    .benefits-modal__dialog {
+      max-height: 88vh;
+      padding: 1.5rem 1.25rem 1.25rem;
+      border-radius: 20px 20px 16px 16px;
+    }
+    .benefits-modal__name { font-size: 1.2rem; }
+    .benefits-modal__tagline { font-size: 0.8rem; }
+    .benefits-modal__row { font-size: 0.85rem; }
+  }
+
   /* ─── Responsive ─────────────────────────────────────────── */
   @media (max-width: 640px) {
     .plans-grid {
       display: flex;
+      flex-direction: column;
       grid-template-columns: none;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding: 1.25rem;
       gap: 0.85rem;
-      padding: 1.5rem 1.25rem 1rem;
-      margin: 0 -1.25rem 1rem;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
+      padding: 0.5rem 0 1rem;
+      margin: 0 0 1rem;
     }
-    .plans-grid::-webkit-scrollbar { display: none; }
     .plans-grid > .plan-card {
-      flex: 0 0 85%;
-      scroll-snap-align: center;
+      width: 100%;
       min-width: 0;
     }
     .plan-card:hover { transform: none; }
@@ -1619,37 +1625,6 @@
     }
     .cycle-pill-label { font-size: 0.78rem; }
     .cycle-pill-tag { font-size: 0.58rem; letter-spacing: 0; }
-    .addon-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      width: 100%;
-    }
-    .addon-group-label { justify-content: center; }
-    .addon-tabs {
-      display: flex;
-      width: 100%;
-      gap: 0.2rem;
-    }
-    .addon-tab {
-      flex: 1 1 0;
-      min-width: 0;
-      min-height: 44px;
-      justify-content: center;
-      text-align: center;
-      padding: 0.45rem 0.5rem;
-      font-size: 0.72rem;
-      white-space: normal;
-      line-height: 1.2;
-      flex-wrap: wrap;
-      gap: 0.25rem;
-    }
-    .addon-tab-badge {
-      top: -0.55rem;
-      right: -0.15rem;
-      font-size: 0.52rem;
-      padding: 0.12rem 0.4rem;
-    }
     .country-wrap { width: 100%; gap: 0.4rem; }
     .country-wrap-label { font-size: 0.72rem; }
     .country-pills {
@@ -1673,7 +1648,6 @@
     }
     .country-pill.active { box-shadow: none; }
     .country-pill-flag { font-size: 0.9rem; }
-    .plan-card.enterprise-wide { padding: 1.5rem 1.25rem; }
     .price-tax { font-size: 0.65rem; }
 
     /* ─── Mobile typography ─────────────────────────────────── */
@@ -1681,7 +1655,6 @@
     .section-subtitle { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
     .section-eyebrow { font-size: 0.7rem; }
 
-    .addon-group-label { font-size: 0.72rem; }
     .plan-card { padding: 1.5rem 1.25rem 1.25rem; gap: 1rem; }
     .plan-name { font-size: 1.15rem; }
     .plan-tagline { font-size: 0.78rem; }
@@ -1695,8 +1668,6 @@
     .price-savings { font-size: 0.55rem; padding: 0.12rem 0.4rem; }
     .price-lock { font-size: 0.6rem; }
     .plan-price { gap: 0.25rem; }
-
-    .whatsapp-chip { font-size: 0.72rem; padding: 0.4rem 0.6rem; min-height: 2.2rem; }
 
     .feature-item { font-size: 0.82rem; line-height: 1.45; }
     .extra-cost { font-size: 0.7rem; }
