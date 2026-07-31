@@ -179,8 +179,8 @@ export const plans = [
     flowyBeta: true,
     prices: {
       mensual: { PE: 120, MX: 600, US: 35 },
-      trimestral: { PE: 105, MX: 550, US: 30 },
-      anual: { PE: 90, MX: 450, US: 25 },
+      trimestral: { PE: 110, MX: 550, US: 30 },
+      anual: { PE: 95, MX: 475, US: 25 },
     },
     whatsappIncluded: { total: 50 },
     features: [
@@ -208,9 +208,9 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 230, MX: 1150, US: 65 },
-      trimestral: { PE: 205, MX: 1050, US: 60 },
-      anual: { PE: 180, MX: 900, US: 55 },
+      mensual: { PE: 240, MX: 1200, US: 65 },
+      trimestral: { PE: 215, MX: 1075, US: 60 },
+      anual: { PE: 190, MX: 950, US: 55 },
     },
     whatsappIncluded: { total: 100 },
     features: [
@@ -235,9 +235,9 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 350, MX: 1800, US: 110 },
-      trimestral: { PE: 315, MX: 1630, US: 100 },
-      anual: { PE: 280, MX: 1460, US: 90 },
+      mensual: { PE: 350, MX: 1750, US: 110 },
+      trimestral: { PE: 315, MX: 1575, US: 100 },
+      anual: { PE: 280, MX: 1400, US: 90 },
     },
     whatsappIncluded: { total: 200 },
     features: [
@@ -263,8 +263,8 @@ export const plans = [
     flowyBeta: true,
     prices: {
       mensual: { PE: 500, MX: 2500, US: 150 },
-      trimestral: { PE: 450, MX: 2260, US: 135 },
-      anual: { PE: 390, MX: 2020, US: 120 },
+      trimestral: { PE: 450, MX: 2250, US: 135 },
+      anual: { PE: 400, MX: 2000, US: 120 },
     },
     whatsappIncluded: { total: 300 },
     features: [
@@ -346,7 +346,8 @@ export const FLOWY_BETA_BADGE = { label: "Flowy", tag: "beta" };
 
 /**
  * Precio mensual a mostrar para un plan según ciclo y país.
- * Si hay promo activa para el país, la promo pisa el precio de lista.
+ * La promo SOLO aplica al ciclo mensual (precio congelado 1 año). Trim y anual
+ * conservan siempre sus descuentos de lista.
  * @param {Plan} plan
  * @param {string} [cycleId]
  * @param {string} [country]
@@ -354,8 +355,10 @@ export const FLOWY_BETA_BADGE = { label: "Flowy", tag: "beta" };
  */
 export function getPlanPrice(plan, cycleId = "trimestral", country = "PE") {
   if (plan.quoteBased) return null;
-  const promo = getPromoPrice(plan, country);
-  if (promo !== null) return promo;
+  if (cycleId === "mensual") {
+    const promo = getPromoPrice(plan, country);
+    if (promo !== null) return promo;
+  }
   return plan.prices?.[cycleId]?.[country] ?? null;
 }
 

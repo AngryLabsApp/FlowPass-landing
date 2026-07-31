@@ -93,6 +93,12 @@
     : null;
   $: countryHasPromo = promoCountryCfg !== null;
 
+  // Durante promo, forzar ciclo mensual (trim/anual quedan ocultos hasta que
+  // termine la promo). Evita quedar en anual/trim al cambiar de país.
+  $: if (countryHasPromo && selectedCycle.id !== "mensual") {
+    selectedCycle = billingCycles[0];
+  }
+
   /**
    * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
    */
@@ -216,7 +222,7 @@
         {@const price = getPlanPrice(plan, selectedCycle.id, selectedCountry.code)}
         {@const promoPrice = getPromoPrice(plan, selectedCountry.code)}
         {@const refPrice = getBasePlanPrice(plan, "mensual", selectedCountry.code)}
-        {@const isPromo = promoPrice !== null}
+        {@const isPromo = promoPrice !== null && selectedCycle.id === "mensual"}
         {@const hasSavings = isPromo && refPrice !== null && promoPrice < refPrice}
         <article
           class="plan-card"
