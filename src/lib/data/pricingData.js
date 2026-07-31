@@ -182,7 +182,7 @@ export const plans = [
       trimestral: { PE: 105, MX: 550, US: 30 },
       anual: { PE: 90, MX: 450, US: 25 },
     },
-    whatsappIncluded: { total: 100 },
+    whatsappIncluded: { total: 50 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -212,7 +212,7 @@ export const plans = [
       trimestral: { PE: 205, MX: 1050, US: 60 },
       anual: { PE: 180, MX: 900, US: 55 },
     },
-    whatsappIncluded: { total: 200 },
+    whatsappIncluded: { total: 100 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -239,7 +239,7 @@ export const plans = [
       trimestral: { PE: 315, MX: 1630, US: 100 },
       anual: { PE: 280, MX: 1460, US: 90 },
     },
-    whatsappIncluded: { total: 400 },
+    whatsappIncluded: { total: 200 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -266,7 +266,7 @@ export const plans = [
       trimestral: { PE: 450, MX: 2260, US: 135 },
       anual: { PE: 390, MX: 2020, US: 120 },
     },
-    whatsappIncluded: { total: 700 },
+    whatsappIncluded: { total: 300 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -315,19 +315,19 @@ export const whatsappPackages = [
     name: "Medio",
     reminders: 100,
     highlight: false,
-    prices: { PE: 40, MX: 180, US: 10 },
+    prices: { PE: 35, MX: 170, US: 10 },
   },
   {
     name: "Pro",
-    reminders: 200,
+    reminders: 250,
     highlight: true,
-    prices: { PE: 60, MX: 300, US: 15 },
+    prices: { PE: 80, MX: 400, US: 20 },
   },
   {
     name: "Avanzado",
-    reminders: 300,
+    reminders: 500,
     highlight: false,
-    prices: { PE: 80, MX: 400, US: 20 },
+    prices: { PE: 150, MX: 750, US: 35 },
   },
 ];
 
