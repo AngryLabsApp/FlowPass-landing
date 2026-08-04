@@ -296,13 +296,6 @@
               {#if taxInline}
                 <span class="price-tax">{taxInline}</span>
               {/if}
-              {#if price && plan.maxActiveStudents}
-                {@const perStudent = price / plan.maxActiveStudents}
-                {@const pspParts = formatPriceParts(perStudent, selectedCountry.code)}
-                <span class="price-per-student">
-                  ≈ {pspParts.symbol}{perStudent < 10 ? perStudent.toFixed(perStudent < 1 ? 2 : 1) : Math.round(perStudent)}{pspParts.code ? ` ${pspParts.code}` : ''} por alumno
-                </span>
-              {/if}
               {#if isPromo && promoCountryCfg}
                 <span class="price-lock">
                   <Snowflake size={11} strokeWidth={2.4} />
@@ -1136,13 +1129,6 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255,255,255,0.4);
-    white-space: nowrap;
-  }
-  .price-per-student {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: rgba(1,245,158,0.85);
-    letter-spacing: 0.01em;
     white-space: nowrap;
   }
   @keyframes fadePrice {
