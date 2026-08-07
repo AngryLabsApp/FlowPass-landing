@@ -307,27 +307,27 @@ export const plans = [
 export const whatsappPackages = [
   {
     name: "Básico",
-    reminders: 50,
+    reminders: 100,
     highlight: false,
-    prices: { PE: 20, MX: 100, US: 5 },
+    prices: { PE: 35, MX: 175, US: 10 },
   },
   {
     name: "Medio",
-    reminders: 100,
+    reminders: 200,
     highlight: false,
-    prices: { PE: 35, MX: 170, US: 10 },
+    prices: { PE: 65, MX: 325, US: 18 },
   },
   {
     name: "Pro",
-    reminders: 250,
+    reminders: 300,
     highlight: true,
-    prices: { PE: 80, MX: 400, US: 20 },
+    prices: { PE: 90, MX: 450, US: 25 },
   },
   {
     name: "Avanzado",
-    reminders: 500,
+    reminders: 400,
     highlight: false,
-    prices: { PE: 150, MX: 750, US: 35 },
+    prices: { PE: 115, MX: 575, US: 30 },
   },
 ];
 
