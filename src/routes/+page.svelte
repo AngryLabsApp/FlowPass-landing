@@ -11,10 +11,14 @@
   import WhatsappBubble from "$components/WhatsappBubble.svelte";
   import { homeSEO } from "$lib/config/seo";
   import { siteConfig } from "$lib/config/site";
-  import { faqMainEntity } from "$lib/seo/faqSchema";
-  
+  import { buildHomeGraph } from "$lib/seo/schemas";
+
   // Fecha para Schema.org
   const currentDate = new Date().toISOString().split('T')[0];
+  // JSON-LD: se escapa "<" para evitar cerrar el <script> prematuramente.
+  // Nota: en Svelte 5 el contenido de <script> no se interpola, por eso se
+  // inyecta el tag completo con {@html}.
+  const jsonLdString = JSON.stringify(buildHomeGraph(currentDate)).replace(/</g, '\\u003c');
 </script>
 
 <svelte:head>
@@ -43,88 +47,8 @@
   <meta name="twitter:image" content={homeSEO.image} />
   <meta name="twitter:image:alt" content="FlowPass - Software para academias" />
 
-  <!-- Schema.org combinado: SoftwareApplication + FAQ -->
-  <script type="application/ld+json">
-    {JSON.stringify({
-      "@context": "https://schema.org",
-      "@graph": [
-        {
-          "@type": "SoftwareApplication",
-          "name": "FlowPass",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Web",
-          "description": homeSEO.description,
-          "url": siteConfig.url,
-          "sameAs": [
-            siteConfig.social.instagram,
-            siteConfig.social.facebook,
-            siteConfig.social.tiktok
-          ],
-          "logo": `${siteConfig.url}/logo.png`,
-          "image": homeSEO.image,
-          "screenshot": `${siteConfig.url}/screenshots/dashboard.jpg`,
-          "softwareVersion": "1.0",
-          "releaseNotes": `${siteConfig.url}/actualizaciones`,
-          "downloadUrl": siteConfig.url,
-          "installUrl": siteConfig.url,
-          "featureList": "Gestión de alumnos, pagos, asistencias, comunicación WhatsApp",
-          "permissions": "online",
-          "memoryRequirements": "Navegador web moderno",
-          "processorRequirements": "Navegador web moderno",
-          "softwareHelp": {
-            "@type": "CreativeWork",
-            "url": `${siteConfig.url}/#faq`
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock",
-            "url": `${siteConfig.url}`,
-            "description": "Prueba gratuita disponible. Precios personalizados según número de alumnos."
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "24",
-            "bestRating": "5",
-            "worstRating": "1"
-          },
-          "review": {
-            "@type": "Review",
-            "reviewRating": {
-              "@type": "Rating",
-              "ratingValue": "5",
-              "bestRating": "5"
-            },
-            "author": {
-              "@type": "Organization",
-              "name": "Academia de Danza Ritmo"
-            },
-            "reviewBody": "FlowPass nos ha ayudado a organizar todos nuestros alumnos y pagos. El soporte es excelente."
-          },
-          "author": {
-            "@type": "Organization",
-            "name": "FlowPass",
-            "url": siteConfig.url,
-            "foundingDate": siteConfig.foundingYear,
-            "email": siteConfig.email,
-            "address": {
-              "@type": "PostalAddress",
-              "addressCountry": siteConfig.location.country,
-              "addressLocality": "Lima"
-            }
-          },
-          "datePublished": "2024-01-15",
-          "dateModified": currentDate
-        },
-        {
-          "@type": "FAQPage", // Extrae el contenido de faqSchema sin el @context
-          "mainEntity": faqMainEntity
-        }
-      ]
-    })}
-  </script>
+  <!-- Schema.org: Organization + WebSite + SoftwareApplication + FAQPage + BreadcrumbList -->
+  {@html `<script type="application/ld+json">${jsonLdString}</script>`}
 </svelte:head>
 
 <!-- Añadimos el Navbar que faltaba en tu layout original -->
