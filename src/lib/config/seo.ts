@@ -37,6 +37,17 @@ export const homeSEO: SEOPage = {
   ogType: 'website'
 };
 
+// SEO para página About / Sobre nosotros
+export const aboutSEO: SEOPage = {
+  title: 'Sobre FlowPass · Quiénes somos y por qué existimos',
+  description:
+    'FlowPass nació en septiembre de 2025 en Lima y lanzó comercialmente en noviembre: 3 fundadores que entrenaban en academias y vieron que casi todas seguían con libreta y Excel. Damos software simple a negocios de membresías en Perú, México y LATAM.',
+  keywords:
+    'sobre FlowPass, quiénes somos FlowPass, fundadores FlowPass, historia FlowPass, equipo FlowPass, Grecia Delgado, Angel Valenzuela, Piero Varillas, startup software academias LATAM',
+  image: defaultSEO.image,
+  ogType: 'website'
+};
+
 // SEO para página de términos
 export const termsSEO: SEOPage = {
   title: 'Términos y Condiciones · FlowPass',

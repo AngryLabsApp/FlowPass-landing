@@ -30,6 +30,9 @@ Diferenciales clave:
 - [Precios y planes](${base}/#pricing): 5 planes (Pocket, Lite, Full, Ultra, Enterprise) segmentados por alumnos activos.
 - [Agendar demo / asesoría](${base}/agenda): reserva 1:1 gratuita.
 
+## Sobre la empresa
+- [Sobre FlowPass](${base}/about): historia, fundadores (Grecia Delgado — CEO, Angel Valenzuela — CTO, Piero Varillas — COO), misión y el problema de mercado que atacamos.
+
 ## Legal
 - [Términos y condiciones](${base}/terminos)
 

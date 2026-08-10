@@ -72,6 +72,14 @@
 
       <li>
         <a
+          href="/about"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >Nosotros</a
+        >
+      </li>
+
+      <li>
+        <a
           href="/#contacto"
           class="hover:text-white transition duration-200 ease-in-out"
           >Contacto</a
@@ -173,6 +181,11 @@
         href="/#faq"
         class="block text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>FAQ</a
+      >
+      <a
+        href="/about"
+        class="block text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>Nosotros</a
       >
       <a
         href="/#contacto"

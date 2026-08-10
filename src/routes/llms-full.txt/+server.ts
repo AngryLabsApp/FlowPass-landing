@@ -84,6 +84,17 @@ Sitio oficial: ${base}
 Empresa: FlowPass · Fundada ${siteConfig.foundingYear} · ${siteConfig.location.address}
 Contacto: ${siteConfig.email} · WhatsApp ${siteConfig.phoneFormatted}
 
+## Equipo fundador
+${siteConfig.founders
+  .map(
+    (f: any) =>
+      `- **${f.name}** — ${f.role}. ${f.background}${f.linkedin ? ` LinkedIn: ${f.linkedin}` : ""}`
+  )
+  .join("\n")}
+
+## El problema de mercado que resolvemos
+Existen más de 500.000 negocios basados en membresías en LatAm (academias, gimnasios, estudios, barberías, coworkings). Según nuestro estudio interno (50+ entrevistas a dueños de negocios de membresías + 20+ entrevistas a clientes FlowPass), estos negocios pierden aproximadamente **USD 6.300 millones al año** por operación floja: cada negocio pierde en promedio **USD 12.700 al año (~20% de sus ingresos)** por pagos que no se cobran a tiempo, renovaciones que nadie recuerda, churn silencioso y complejidad de sus propias herramientas. Los cuatro problemas recurrentes son: (1) todo tracked a mano; (2) datos que no se hablan entre sí; (3) dinero que se queda en la mesa; (4) complejidad que nadie pidió.
+
 ## Qué es FlowPass
 FlowPass es una plataforma web (SaaS multi-tenant) que centraliza la operación diaria de cualquier negocio con cobros recurrentes:
 - Alta y gestión de alumnos/clientes, membresías y planes.

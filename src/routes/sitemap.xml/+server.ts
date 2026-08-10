@@ -10,6 +10,8 @@ export const GET: RequestHandler = async () => {
 
   const pages = [
     { url: "", priority: "1.0", changefreq: "weekly" },
+    { url: "/about", priority: "0.8", changefreq: "monthly" },
+    { url: "/agenda", priority: "0.7", changefreq: "monthly" },
     { url: "/terminos", priority: "0.3", changefreq: "monthly" },
     // Añade aquí más páginas cuando las tengas
     // { url: "/blog", priority: "0.8", changefreq: "weekly" },

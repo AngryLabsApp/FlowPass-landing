@@ -14,7 +14,7 @@ const ORG_ID = `${siteConfig.url}/#organization`;
 const SITE_ID = `${siteConfig.url}/#website`;
 const SOFTWARE_ID = `${siteConfig.url}/#software`;
 
-// ─── Organization ────────────────────────────────────────────────
+// ─── Organization (con fundadores como Person[]) ────────────────
 function organizationSchema() {
   return {
     "@type": "Organization",
@@ -27,7 +27,7 @@ function organizationSchema() {
     },
     email: siteConfig.email,
     telephone: `+${siteConfig.phone}`,
-    foundingDate: String(siteConfig.foundingYear),
+    foundingDate: (siteConfig as any).foundingDateISO ?? String(siteConfig.foundingYear),
     address: {
       "@type": "PostalAddress",
       addressCountry: siteConfig.location.country,
@@ -51,6 +51,16 @@ function organizationSchema() {
       areaServed: ["PE", "MX", "CO", "CL", "AR", "EC", "BO"],
       availableLanguage: ["Spanish"]
     },
+    founder: siteConfig.founders.map((f) => ({
+      "@type": "Person",
+      name: f.name,
+      jobTitle: f.role,
+      nationality: f.country,
+      description: f.background,
+      worksFor: { "@id": ORG_ID },
+      ...(f.photo ? { image: f.photo } : {}),
+      ...(f.linkedin ? { sameAs: [f.linkedin] } : {})
+    })),
     sameAs: [
       siteConfig.social.instagram,
       siteConfig.social.facebook,
@@ -182,7 +192,7 @@ function softwareApplicationSchema(currentDate: string) {
     publisher: { "@id": ORG_ID },
     author: { "@id": ORG_ID },
     provider: { "@id": ORG_ID },
-    datePublished: "2024-01-15",
+    datePublished: (siteConfig as any).commercialLaunchISO ?? "2025-11-01",
     dateModified: currentDate,
     inLanguage: "es"
   };
@@ -224,6 +234,38 @@ export function buildHomeGraph(currentDate: string) {
       softwareApplicationSchema(currentDate),
       faqPageSchema(),
       breadcrumbSchema()
+    ]
+  };
+}
+
+// ─── Grafo específico para /about ───────────────────────────────
+export function buildAboutGraph(currentDate: string) {
+  const aboutUrl = `${siteConfig.url}/about`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organizationSchema(),
+      websiteSchema(),
+      {
+        "@type": "AboutPage",
+        "@id": `${aboutUrl}#aboutpage`,
+        url: aboutUrl,
+        name: "Sobre FlowPass",
+        description:
+          "Historia, fundadores y misión de FlowPass — software SaaS para negocios de membresías en Perú, México y LATAM.",
+        inLanguage: "es",
+        isPartOf: { "@id": SITE_ID },
+        about: { "@id": ORG_ID },
+        mainEntity: { "@id": ORG_ID },
+        dateModified: currentDate
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Sobre nosotros", item: aboutUrl }
+        ]
+      }
     ]
   };
 }
