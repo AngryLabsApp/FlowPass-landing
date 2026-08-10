@@ -1,11 +1,15 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { ChatBubbleOvalLeftEllipsis, AtSymbol, CalendarDays } from "svelte-heros-v2";
   import { siteConfig } from "$lib/config/site";
   import { trackContact, trackEmailClick, trackSchedule } from "$lib/tracking/track";
+  import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
 
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.`;
   const mailtoLink = `mailto:${siteConfig.email}?subject=Consulta%20sobre%20FlowPass`;
   const calendarLink = "/agenda";
+  const waMsg = "?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.";
+
+  onMount(() => waCountry.init());
 </script>
 
 <section
@@ -37,16 +41,31 @@
       </a>
 
       <a
-        href={whatsappLink}
+        href={`${waCountry.phone.whatsapp}${waMsg}`}
         target="_blank"
         rel="noopener noreferrer nofollow"
         class="contact-card"
-        aria-label="WhatsApp FlowPass"
+        aria-label={`WhatsApp FlowPass ${waCountry.phone.label}`}
         onclick={() => trackContact('contact_section')}
       >
         <span class="card-icon"><ChatBubbleOvalLeftEllipsis class="w-6 h-6" /></span>
         <span class="card-title">WhatsApp</span>
-        <span class="card-desc">{siteConfig.phoneFormatted}</span>
+        <span class="card-desc">
+          <span aria-hidden="true">{waCountry.phone.flag}</span> {waCountry.phone.formatted}
+        </span>
+        <span class="wa-country-picker" role="group" aria-label="Elige tu país">
+          {#each waCountry.countries as c}
+            <button
+              type="button"
+              class="wa-chip"
+              class:is-active={waCountry.code === c.code}
+              aria-pressed={waCountry.code === c.code}
+              onclick={(e) => { e.preventDefault(); e.stopPropagation(); waCountry.set(c.code as CountryCode); }}
+            >
+              <span aria-hidden="true">{c.flag}</span> {c.label}
+            </button>
+          {/each}
+        </span>
       </a>
 
       <a
@@ -188,5 +207,35 @@
     font-size: 0.875rem;
     color: rgba(255,255,255,0.55);
     line-height: 1.5;
+  }
+
+  .wa-country-picker {
+    display: inline-flex;
+    gap: 0.15rem;
+    margin-top: 0.75rem;
+    padding: 0.2rem;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.1);
+    border-radius: 999px;
+    align-self: flex-start;
+  }
+  .wa-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+  }
+  .wa-chip:hover { color: #fff; }
+  .wa-chip.is-active {
+    background: rgba(1,245,158,0.14);
+    color: #01f59e;
   }
 </style>

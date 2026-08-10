@@ -4,10 +4,14 @@
   import { buildAboutGraph } from "$lib/seo/schemas";
   import Navbar from "$lib/components/Navbar.svelte";
   import Footer from "$lib/components/Footer.svelte";
+  import { onMount } from "svelte";
+  import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
 
   const currentDate = new Date().toISOString().split("T")[0];
   const aboutUrl = `${siteConfig.url}/about`;
   const jsonLdString = JSON.stringify(buildAboutGraph(currentDate)).replace(/</g, "\\u003c");
+
+  onMount(() => waCountry.init());
 
   const problems = [
     {
@@ -229,15 +233,32 @@
       Si tu negocio cobra por membresía y quieres dejar la libreta, agenda una
       demo con nosotros o escríbenos directo por WhatsApp.
     </p>
+    <div class="cta-country" role="group" aria-label="Elige tu país">
+      <span class="cta-country__label">¿Desde dónde nos escribes?</span>
+      <div class="cta-country__chips">
+        {#each waCountry.countries as c}
+          <button
+            type="button"
+            class="cta-country__chip"
+            class:is-active={waCountry.code === c.code}
+            aria-pressed={waCountry.code === c.code}
+            onclick={() => waCountry.set(c.code as CountryCode)}
+          >
+            <span aria-hidden="true">{c.flag}</span> {c.label}
+          </button>
+        {/each}
+      </div>
+    </div>
+
     <div class="cta-actions">
       <a href="/agenda" class="cta-btn cta-btn--primary">Agendar demo</a>
       <a
-        href={siteConfig.social.whatsapp}
+        href={waCountry.phone.whatsapp}
         target="_blank"
         rel="noopener noreferrer"
         class="cta-btn cta-btn--ghost"
       >
-        WhatsApp {siteConfig.phoneFormatted}
+        <span aria-hidden="true">{waCountry.phone.flag}</span> WhatsApp {waCountry.phone.formatted}
       </a>
     </div>
   </section>
@@ -601,6 +622,46 @@
     margin: 0 auto 1.5rem;
     max-width: 520px;
   }
+  .cta-country {
+    margin: 0 auto 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .cta-country__label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+  }
+  .cta-country__chips {
+    display: inline-flex;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 0.25rem;
+    gap: 0.15rem;
+  }
+  .cta-country__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+  }
+  .cta-country__chip:hover { color: #fff; }
+  .cta-country__chip.is-active {
+    background: rgba(1,245,158,0.14);
+    color: #01f59e;
+  }
+
   .cta-actions {
     display: flex;
     flex-wrap: wrap;

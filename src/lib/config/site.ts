@@ -4,11 +4,30 @@ export const siteConfig = {
   domain: 'flow-pass.com',
   url: 'https://flow-pass.com',
   email: 'contacto@flow-pass.com',
-  phone: '51977854515', // Código de país sin +
+  phone: '51977854515', // Código de país sin + (PE — default histórico)
   phoneFormatted: '+51 977 854 515', // Formato legible
+  // Contacto por país — usado por el selector de banderitas en CTA
+  phones: {
+    PE: {
+      code: 'PE',
+      flag: '🇵🇪',
+      label: 'Perú',
+      raw: '51977854515',
+      formatted: '+51 977 854 515',
+      whatsapp: 'https://wa.me/51977854515'
+    },
+    MX: {
+      code: 'MX',
+      flag: '🇲🇽',
+      label: 'México',
+      raw: '525536506130',
+      formatted: '+52 55 3650 6130',
+      whatsapp: 'https://wa.me/525536506130'
+    }
+  },
   social: {
     instagram: 'https://www.instagram.com/flowpass.app',
-    facebook: 'https://www.facebook.com/share/17fy2RKRvB/',
+    facebook: 'https://www.facebook.com/flowpassapp/',
     tiktok: 'https://www.tiktok.com/@flowpass.app',
     whatsapp: 'https://wa.me/+51977854515'
   },
