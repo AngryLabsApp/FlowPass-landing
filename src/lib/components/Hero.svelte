@@ -1,26 +1,54 @@
 <script lang="ts">
   import { CalendarDays } from "svelte-heros-v2";
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import Laptop from "./../assets/images/laptop.png";
   import Phone from "./../assets/images/phone.png";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
   import { trackContact, trackSchedule } from "$lib/tracking/track";
+  import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
   import gymLogo from "$lib/assets/images/clients/gym.png";
   import karateLogo from "$lib/assets/images/clients/karate.png";
   import musicaLogo from "$lib/assets/images/clients/musica.png";
   import idiomasLogo from "$lib/assets/images/clients/idiomas.png";
 
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.`;
+  const heroMsg = "?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.";
+  const countries = Object.values(siteConfig.phones);
 
   const sloganWords = ["Automatiza.", "Simplifica.", "Fluye."];
   let activeWord = 0;
 
+  let waOpen = $state(false);
+  let waWrapEl: HTMLDivElement | undefined;
+
+  function toggleWa() { waOpen = !waOpen; }
+  function pickWa(code: CountryCode) {
+    waCountry.set(code);
+    trackContact("hero");
+    waOpen = false;
+  }
+  function onDocClickWa(e: MouseEvent) {
+    if (!waOpen) return;
+    if (waWrapEl && !waWrapEl.contains(e.target as Node)) waOpen = false;
+  }
+  function onKeyWa(e: KeyboardEvent) {
+    if (e.key === "Escape") waOpen = false;
+  }
+
   onMount(() => {
+    waCountry.init();
+    document.addEventListener("click", onDocClickWa);
+    document.addEventListener("keydown", onKeyWa);
     const id = setInterval(() => {
       activeWord = (activeWord + 1) % sloganWords.length;
     }, 1500);
     return () => clearInterval(id);
+  });
+  onDestroy(() => {
+    if (typeof document !== "undefined") {
+      document.removeEventListener("click", onDocClickWa);
+      document.removeEventListener("keydown", onKeyWa);
+    }
   });
 
   const verticals = [
@@ -115,21 +143,46 @@
           </button>
         </a>
 
-        <a
-          href={whatsappLink}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Escribir a FlowPass por WhatsApp"
-          class="cta-link"
-          onclick={() => trackContact('hero')}
-        >
+        <div class="cta-link hero-wa-wrap" bind:this={waWrapEl}>
           <button
+            type="button"
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-transparent text-white border border-white/20 hover:border-brand/40 hover:bg-white/[0.04] transition-all duration-300"
+            aria-haspopup="menu"
+            aria-expanded={waOpen}
+            aria-label="Escribir a FlowPass por WhatsApp (elegir país)"
+            onclick={(e) => { e.stopPropagation(); toggleWa(); }}
           >
             Escríbenos
             <img src={whatsappIcon} alt="" class="w-5 h-5 brightness-0 invert" loading="lazy" />
           </button>
-        </a>
+
+          {#if waOpen}
+            <div class="hero-wa-panel" role="menu" aria-label="Elige con qué equipo hablar">
+              <p class="hero-wa-panel__title">¿Con qué equipo quieres hablar?</p>
+              <ul class="hero-wa-panel__list">
+                {#each countries as c}
+                  <li>
+                    <a
+                      href={`${c.whatsapp}${heroMsg}`}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      class="hero-wa-option"
+                      role="menuitem"
+                      onclick={() => pickWa(c.code as CountryCode)}
+                    >
+                      <span class="hero-wa-option__flag" aria-hidden="true">{c.flag}</span>
+                      <span class="hero-wa-option__body">
+                        <span class="hero-wa-option__label">Equipo {c.label}</span>
+                        <span class="hero-wa-option__phone">{c.formatted}</span>
+                      </span>
+                      <span class="hero-wa-option__arrow" aria-hidden="true">↗</span>
+                    </a>
+                  </li>
+                {/each}
+              </ul>
+            </div>
+          {/if}
+        </div>
       </div>
 
       <!-- Social proof -->
@@ -216,6 +269,90 @@
   }
   @media (min-width: 640px) {
     .cta-link { width: auto; }
+  }
+
+  /* CTA Escríbenos: popover selector de país */
+  .hero-wa-wrap {
+    position: relative;
+  }
+  .hero-wa-panel {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    z-index: 40;
+    background: rgba(14, 18, 30, 0.96);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 0.85rem;
+    width: min(19rem, calc(100vw - 2.5rem));
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    animation: heroWaFade 0.16s ease-out both;
+    color: #fff;
+  }
+  @keyframes heroWaFade {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-wa-panel__title {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.65);
+    margin: 0 0 0.6rem;
+    letter-spacing: 0.02em;
+  }
+  .hero-wa-panel__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .hero-wa-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+    border: 0.5px solid rgba(255,255,255,0.08);
+    text-decoration: none;
+    color: #fff;
+    transition: background 0.18s, border-color 0.18s, transform 0.18s;
+  }
+  .hero-wa-option:hover {
+    background: rgba(1,245,158,0.08);
+    border-color: rgba(1,245,158,0.35);
+    transform: translateY(-1px);
+  }
+  .hero-wa-option__flag {
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .hero-wa-option__body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+  }
+  .hero-wa-option__label {
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  .hero-wa-option__phone {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.15;
+    margin-top: 2px;
+  }
+  .hero-wa-option__arrow {
+    color: rgba(1,245,158,0.85);
+    font-weight: 700;
+    flex-shrink: 0;
   }
 
   /* Slogan animado */
