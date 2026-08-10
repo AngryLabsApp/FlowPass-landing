@@ -20,7 +20,9 @@
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles, X, Snowflake } from "@lucide/svelte";
   import { onMount, onDestroy } from "svelte";
+  import { browser } from "$app/environment";
   import PromoCountdown from "./PromoCountdown.svelte";
+  import { waCountry } from "$lib/stores/waCountry.svelte";
 
   const planIcons = new Map([
     ["pocket", Sprout],
@@ -104,6 +106,13 @@
    */
   function selectCountry(country) {
     selectedCountry = country;
+    // Sincroniza el store global (PE/MX) para que los CTA de WhatsApp
+    // en ContactSection, /about y el bubble flotante respeten la elección.
+    if (browser && (country.code === 'PE' || country.code === 'MX')) {
+      try {
+        if (waCountry.code !== country.code) waCountry.set(country.code);
+      } catch (_) { /* nunca bloquear el click por esto */ }
+    }
     window.gtag?.('event', 'price_click', {
       event_category: 'region',
       event_label: 'country_selection',
@@ -123,8 +132,12 @@
     });
   }
 
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
-  const enterpriseLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Estoy%20interesado%20en%20Flow%20Enterprise%20para%20mi%20cadena.`;
+  // WhatsApp destino según el país seleccionado en el selector de precios.
+  // PE→número Perú, MX→número México, US/otros→fallback PE.
+  $: contactPhone = siteConfig.phones[selectedCountry.code] ?? siteConfig.phones.PE;
+  $: whatsappLink = `${contactPhone.whatsapp}?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20academia.`;
+  $: enterpriseLink = `${contactPhone.whatsapp}?text=¡Hola!%20Estoy%20interesado%20en%20Flow%20Enterprise%20para%20mi%20cadena.`;
+
 </script>
 
 <section
@@ -439,13 +452,26 @@
           <ul class="benefits-modal__wa-list">
             <li>
               <span class="benefits-modal__wa-row-icon" aria-hidden="true">✓</span>
-              <span><strong>{activeModalPlan.whatsappIncluded.total}</strong> mensajes/mes</span>
-            </li>
-            <li>
-              <span class="benefits-modal__wa-row-icon" aria-hidden="true">✓</span>
               <span>Actívalo o pausálo cuando quieras</span>
             </li>
           </ul>
+
+          <div class="benefits-modal__wa-sum" aria-label="Desglose de cupo mensual">
+            <ul class="benefits-modal__wa-sum-list">
+              <li>
+                <span class="benefits-modal__wa-row-icon benefits-modal__wa-row-icon--op" aria-hidden="true"></span>
+                <span><strong>{activeModalPlan.whatsappIncluded.auto}</strong> recordatorios automáticos</span>
+              </li>
+              <li>
+                <span class="benefits-modal__wa-row-icon benefits-modal__wa-row-icon--op" aria-hidden="true">+</span>
+                <span><strong>{activeModalPlan.whatsappIncluded.manual}</strong> envíos manuales</span>
+              </li>
+              <li class="benefits-modal__wa-total">
+                <span class="benefits-modal__wa-row-icon benefits-modal__wa-row-icon--op" aria-hidden="true">=</span>
+                <span><strong>{activeModalPlan.whatsappIncluded.total}</strong> mensajes/mes en total</span>
+              </li>
+            </ul>
+          </div>
         </div>
       {/if}
 
@@ -1511,6 +1537,48 @@
     margin-top: 2px;
     background: rgba(37,211,102,0.2);
     color: #25D366;
+  }
+  .benefits-modal__wa-row-icon--op {
+    background: transparent;
+    color: rgba(37,211,102,0.75);
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .benefits-modal__wa-sum {
+    margin-top: 0.7rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 10px;
+    background: rgba(37,211,102,0.08);
+    border: 0.5px solid rgba(37,211,102,0.3);
+  }
+  .benefits-modal__wa-sum-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .benefits-modal__wa-sum-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.35;
+  }
+  .benefits-modal__wa-sum-list strong { color: #fff; font-weight: 800; }
+  .benefits-modal__wa-total {
+    margin-top: 0.35rem;
+    padding-top: 0.5rem;
+    border-top: 0.5px solid rgba(37,211,102,0.35);
+    font-size: 0.95rem !important;
+    font-weight: 700;
+    color: #fff !important;
+  }
+  .benefits-modal__wa-total strong {
+    color: #25D366 !important;
+    font-size: 1.05rem;
   }
 
   .benefits-modal__list {

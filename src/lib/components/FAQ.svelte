@@ -1,7 +1,11 @@
 <script lang="ts">
   import { siteConfig } from "$lib/config/site";
 
-  const whatsappLink = `https://wa.me/${siteConfig.phone}?text=¡Hola!%20Tengo%20una%20duda%20sobre%20FlowPass.`;
+  const waMsg = "?text=¡Hola!%20Tengo%20una%20duda%20sobre%20FlowPass.";
+  const waLinks = Object.values(siteConfig.phones).map((p) => ({
+    ...p,
+    href: `${p.whatsapp}${waMsg}`
+  }));
 
   const faqs = [
     {
@@ -84,13 +88,26 @@
       {/each}
     </ul>
 
-    <p class="faq-footer font-oktah">
-      ¿Tienes otra duda?
-      <a href={whatsappLink} target="_blank" rel="noopener noreferrer" class="faq-footer-link">
-        Escríbenos por WhatsApp
-      </a>
-      y te respondemos.
-    </p>
+    <div class="faq-footer">
+      <p class="faq-footer-lead font-oktah">
+        ¿Tienes otra duda? Escríbenos al equipo que te corresponda:
+      </p>
+      <div class="faq-footer-links">
+        {#each waLinks as w}
+          <a
+            href={w.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="faq-footer-link"
+            aria-label={`WhatsApp equipo ${w.label} ${w.formatted}`}
+          >
+            <span aria-hidden="true">{w.flag}</span>
+            <span class="faq-footer-link__label">{w.label}</span>
+            <span class="faq-footer-link__phone">{w.formatted}</span>
+          </a>
+        {/each}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -256,11 +273,41 @@
     font-size: 0.9rem;
     margin: 2.5rem 0 0;
   }
-  .faq-footer-link {
-    color: #01f59e;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: opacity 0.2s;
+  .faq-footer-lead {
+    margin: 0 0 1rem;
+    color: rgba(255,255,255,0.55);
   }
-  .faq-footer-link:hover { opacity: 0.8; }
+  .faq-footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  .faq-footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 0.95rem;
+    border-radius: 999px;
+    background: rgba(1,245,158,0.06);
+    border: 0.5px solid rgba(1,245,158,0.28);
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  }
+  .faq-footer-link:hover {
+    background: rgba(1,245,158,0.14);
+    border-color: rgba(1,245,158,0.5);
+    transform: translateY(-1px);
+  }
+  .faq-footer-link__label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+  }
+  .faq-footer-link__phone {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    font-variant-numeric: tabular-nums;
+  }
 </style>

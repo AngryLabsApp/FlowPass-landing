@@ -1,13 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
   import { trackLogin, trackSchedule } from "$lib/tracking/track";
 
-  let isOpen = false;
-  let scrolled = false;
+  let isOpen = $state(false);
+  let scrolled = $state(false);
 
   onMount(() => {
     const handleScroll = () => {
@@ -119,20 +118,22 @@
 
     <!-- MOBILE TOGGLE -->
     <button
-      class="lg:hidden text-white hover:text-brand transition"
+      type="button"
+      class="lg:hidden nav-toggle inline-flex items-center justify-center w-11 h-11 rounded-xl text-white bg-white/10 border border-white/25 shadow-sm hover:bg-white/20 hover:border-white/40 active:scale-95 transition"
       onclick={() => (isOpen = !isOpen)}
       aria-expanded={isOpen}
       aria-controls="menu-movil"
-      aria-label="Abrir menú de navegación"
+      aria-label={isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'}
     >
       {#if isOpen}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6"
+          class="w-5 h-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
@@ -143,11 +144,12 @@
       {:else}
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6"
+          class="w-5 h-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="2"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"

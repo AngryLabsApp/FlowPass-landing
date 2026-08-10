@@ -2,7 +2,6 @@
   import tiktokIcon from "$lib/assets/icons/tiktok-icon.svg";
   import facebookIcon from "$lib/assets/icons/facebook-icon.svg";
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
-  import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
 
   const year = new Date().getFullYear();
@@ -11,7 +10,6 @@
     { href: siteConfig.social.tiktok, icon: tiktokIcon, label: "TikTok", event: "tiktok_footer" },
     { href: siteConfig.social.facebook, icon: facebookIcon, label: "Facebook", event: "facebook_footer" },
     { href: siteConfig.social.instagram, icon: instagramIcon, label: "Instagram", event: "instagram_footer" },
-    { href: siteConfig.social.whatsapp, icon: whatsappIcon, label: "WhatsApp", event: "whatsapp_footer" },
   ];
 </script>
 

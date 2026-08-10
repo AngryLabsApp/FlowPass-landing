@@ -161,7 +161,7 @@ export function getPromoPrice(plan, country, nowMs) {
  * @property {boolean} flowyBeta                                          // badge "Flowy · beta"
  * @property {boolean} [quoteBased]                                       // Enterprise: "Bajo evaluación"
  * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais]
- * @property {{total: number}} [whatsappIncluded]                        // cupo mensajes WhatsApp/mes (auto + 1-click sumados)
+ * @property {{total: number, auto: number, manual: number}} [whatsappIncluded]  // cupo mensajes WhatsApp/mes: mitad recordatorios automáticos, mitad envíos manuales
  * @property {Array<{label: string, included: boolean, extraCost?: Record<string, number>}>} features
  */
 
@@ -182,7 +182,7 @@ export const plans = [
       trimestral: { PE: 110, MX: 550, US: 30 },
       anual: { PE: 95, MX: 475, US: 25 },
     },
-    whatsappIncluded: { total: 50 },
+    whatsappIncluded: { total: 60, auto: 30, manual: 30 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -212,7 +212,7 @@ export const plans = [
       trimestral: { PE: 215, MX: 1075, US: 60 },
       anual: { PE: 190, MX: 950, US: 55 },
     },
-    whatsappIncluded: { total: 100 },
+    whatsappIncluded: { total: 160, auto: 80, manual: 80 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -239,7 +239,7 @@ export const plans = [
       trimestral: { PE: 315, MX: 1575, US: 100 },
       anual: { PE: 280, MX: 1400, US: 90 },
     },
-    whatsappIncluded: { total: 200 },
+    whatsappIncluded: { total: 400, auto: 200, manual: 200 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -266,7 +266,7 @@ export const plans = [
       trimestral: { PE: 450, MX: 2250, US: 135 },
       anual: { PE: 400, MX: 2000, US: 120 },
     },
-    whatsappIncluded: { total: 300 },
+    whatsappIncluded: { total: 700, auto: 350, manual: 350 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },

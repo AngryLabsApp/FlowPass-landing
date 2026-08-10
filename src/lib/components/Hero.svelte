@@ -57,7 +57,7 @@
         role="doc-subtitle"
       >
         <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
-        Gestión de membresías para Latinoamérica
+        Gestión de membresías para LATAM
       </span>
 
       <!-- H1 -->
