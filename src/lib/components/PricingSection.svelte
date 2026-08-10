@@ -340,6 +340,7 @@
           >
             <span class="cta-button-inner">
               Escríbenos
+              <span class="cta-button-flag" aria-hidden="true">{selectedCountry.flag}</span>
               <img
                 src={whatsappIcon}
                 alt=""
@@ -1273,6 +1274,11 @@
   .cta-button-icon {
     width: 18px;
     height: 18px;
+    flex-shrink: 0;
+  }
+  .cta-button-flag {
+    font-size: 1rem;
+    line-height: 1;
     flex-shrink: 0;
   }
   /* Tinta el SVG segun la variante:
