@@ -12,18 +12,26 @@ export interface SEOPage {
   author?: string;
 }
 
+// Fallback global — usado si una página no define su propio SEO.
+// Se mantiene amplio (incluye membresías + verticales típicas + geografía)
+// para maximizar cobertura semántica en buscadores tradicionales y LLMs.
 export const defaultSEO: SEOPage = {
-  title: 'FlowPass | Software para academias',
-  description: 'FlowPass es el software que automatiza la gestión de academias: control de alumnos, pagos, asistencias y comunicación por WhatsApp. Simplifica tu administración.',
-  keywords: 'software academias, sistema academias, software qr, gestion alumnos, pagos academias, app academias, gestión escolar',
+  title: 'FlowPass · Software para membresías, academias y negocios',
+  description:
+    'FlowPass: SaaS para academias, gimnasios y negocios de membresías en Perú y México. Alumnos, cobros y WhatsApp oficial. Sin permanencia.',
+  keywords:
+    'software para academias, software de membresías, sistema de suscripciones, software para gimnasios, software para barbería, gestión de alumnos, cobros recurrentes, recordatorios WhatsApp, software academias Perú, software academias México, CRM academias, gestión de asistencia QR',
   image: `${siteConfig.url}/og-image.png`,
   ogType: 'website'
 };
 
-// SEO específico para la página de inicio
+// SEO específico para la página de inicio.
+// Formato: [Marca] · [Categoría] con [Diferencial clave]  (title ≤ 60 chars)
+//          [Marca]: [Qué es] + [Para quién] + [Dónde] + [Diferencial]  (description ≤ 160 chars)
 export const homeSEO: SEOPage = {
-  title: 'FlowPass | Software para academias',
-  description: 'Gestiona tu academia sin complicaciones: alumnos, pagos, asistencias y comunicación automática por WhatsApp. Todo en un solo lugar.',
+  title: 'FlowPass · Software para academias y negocios de membresías',
+  description:
+    'FlowPass: SaaS para academias, gimnasios, barberías y todo negocio con membresías en Perú y México. Alumnos, cobros y WhatsApp oficial. Sin permanencia.',
   keywords: defaultSEO.keywords,
   image: defaultSEO.image,
   ogType: 'website'
@@ -31,9 +39,11 @@ export const homeSEO: SEOPage = {
 
 // SEO para página de términos
 export const termsSEO: SEOPage = {
-  title: 'Términos y Condiciones | FlowPass',
-  description: 'Lee los términos y condiciones de uso de FlowPass. Conoce nuestros acuerdos de confidencialidad, política de datos y condiciones del servicio.',
-  keywords: 'términos y condiciones, política de privacidad, acuerdo de confidencialidad flowpass',
+  title: 'Términos y Condiciones · FlowPass',
+  description:
+    'Términos y condiciones de FlowPass, software para academias y negocios de membresías en Perú, México y LATAM. Política de datos y uso del servicio.',
+  keywords:
+    'términos y condiciones flowpass, política de privacidad, acuerdo de confidencialidad, condiciones software academias',
   image: defaultSEO.image,
   ogType: 'website'
 };
