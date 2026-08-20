@@ -309,25 +309,25 @@ export const whatsappPackages = [
     name: "Básico",
     reminders: 100,
     highlight: false,
-    prices: { PE: 35, MX: 175, US: 10 },
+    prices: { PE: 40, MX: 200, US: 10 },//Costo unitario: 0.4
   },
   {
     name: "Medio",
     reminders: 200,
     highlight: false,
-    prices: { PE: 65, MX: 325, US: 18 },
+    prices: { PE: 70, MX: 350, US: 18 },//Costo unitario: 0.35
   },
   {
     name: "Pro",
     reminders: 300,
     highlight: true,
-    prices: { PE: 90, MX: 450, US: 25 },
+    prices: { PE: 90, MX: 450, US: 25 },//Costo unitario: 0.30
   },
   {
     name: "Avanzado",
     reminders: 400,
     highlight: false,
-    prices: { PE: 115, MX: 575, US: 30 },
+    prices: { PE: 100, MX: 500, US: 30 },//Costo unitario: 0.25
   },
 ];
 
