@@ -178,9 +178,9 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 120, MX: 600, US: 35 },
-      trimestral: { PE: 110, MX: 550, US: 30 },
-      anual: { PE: 95, MX: 475, US: 25 },
+      mensual: { PE: 120, MX: 600, US: 40 },
+      trimestral: { PE: 110, MX: 550, US: 35 },
+      anual: { PE: 95, MX: 475, US: 30 },
     },
     whatsappIncluded: { total: 60, auto: 30, manual: 30 },
     features: [
@@ -208,8 +208,8 @@ export const plans = [
     freeTrial: true,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 240, MX: 1200, US: 65 },
-      trimestral: { PE: 215, MX: 1075, US: 60 },
+      mensual: { PE: 240, MX: 1200, US: 70 },
+      trimestral: { PE: 215, MX: 1075, US: 65 },
       anual: { PE: 190, MX: 950, US: 55 },
     },
     whatsappIncluded: { total: 160, auto: 80, manual: 80 },
