@@ -31,3 +31,6 @@ n8n-workflows/
 supabase/migrations/
 docs/META_PIXEL.md
 
+
+# Graphify — cache local, se regenera con `graphify update`
+graphify-out/cache/
