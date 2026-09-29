@@ -58,3 +58,25 @@ export const termsSEO: SEOPage = {
   image: defaultSEO.image,
   ogType: 'website'
 };
+
+// SEO para términos del portal de alumnos
+export const studentTermsSEO: SEOPage = {
+  title: 'Términos para alumnos · FlowPass',
+  description:
+    'Términos de uso del portal de alumnos de FlowPass: cómo funciona tu cuenta, tu relación con tu academia y el uso del portal.',
+  keywords:
+    'términos alumnos flowpass, portal de alumnos, condiciones de uso app academia',
+  image: defaultSEO.image,
+  ogType: 'website'
+};
+
+// SEO para política de privacidad
+export const privacySEO: SEOPage = {
+  title: 'Política de Privacidad · FlowPass',
+  description:
+    'Cómo FlowPass trata los datos personales de academias y alumnos: qué datos, para qué, con quién se comparten y cómo ejercer tus derechos.',
+  keywords:
+    'política de privacidad flowpass, protección de datos personales, ley 29733, datos alumnos academia',
+  image: defaultSEO.image,
+  ogType: 'website'
+};

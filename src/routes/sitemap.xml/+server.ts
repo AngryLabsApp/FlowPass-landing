@@ -13,6 +13,8 @@ export const GET: RequestHandler = async () => {
     { url: "/about", priority: "0.8", changefreq: "monthly" },
     { url: "/agenda", priority: "0.7", changefreq: "monthly" },
     { url: "/terminos", priority: "0.3", changefreq: "monthly" },
+    { url: "/alumnos/terminos", priority: "0.3", changefreq: "monthly" },
+    { url: "/privacidad", priority: "0.3", changefreq: "monthly" },
     // Añade aquí más páginas cuando las tengas
     // { url: "/blog", priority: "0.8", changefreq: "weekly" },
     // { url: "/precios", priority: "0.9", changefreq: "monthly" },
