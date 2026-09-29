@@ -1,0 +1,89 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "title": "Desktop · noche",
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 5200,
+      "print": "flow"
+    },
+    {
+      "file": "MainDia.dc.html",
+      "title": "Desktop · día",
+      "x": 1560,
+      "y": 0,
+      "w": 1440,
+      "h": 5200,
+      "print": "flow"
+    },
+    {
+      "file": "Mobile.dc.html",
+      "title": "Móvil · noche",
+      "x": 3120,
+      "y": 0,
+      "w": 390,
+      "h": 2900,
+      "print": "flow"
+    },
+    {
+      "file": "MobileDia.dc.html",
+      "title": "Móvil · día",
+      "x": 3630,
+      "y": 0,
+      "w": 390,
+      "h": 2900,
+      "print": "flow"
+    },
+    {
+      "file": "Sistema.dc.html",
+      "title": "Sistema visual + fotos pendientes",
+      "x": 4140,
+      "y": 0,
+      "w": 900,
+      "h": 3400,
+      "print": "flow"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "nota-direccion",
+      "x": 0,
+      "y": -240,
+      "w": 700,
+      "text": "Dirección: evolución seria.\nMisma paleta y tipografías que ya tienes (#09090f, #01f59e, Epoch + OktahNeue). Cambia el uso: un solo acento verde, glow solo en hero y cierre, jerarquía por opacidad en vez de degradados, iconos SVG en vez de emoji."
+    },
+    {
+      "id": "nota-dia",
+      "x": 1560,
+      "y": -240,
+      "w": 700,
+      "text": "Modo día: el verde NO va en botones ni texto largo — sobre blanco pierde contraste. La acción primaria pasa a negro con flecha verde, y el verde queda en etiquetas, checks, números y estados. El bloque de cierre se invierte a negro para que la página no acabe plana."
+    },
+    {
+      "id": "nota-fotos",
+      "x": 2320,
+      "y": -240,
+      "w": 680,
+      "text": "Las fotos van después: por ahora cada hueco lleva la UI dibujada como sustituto, con la misma proporción que tendrá el screenshot.\nLa lista completa de lo que necesito — cuál, para qué y a qué tamaño exportarlo — está en el artboard «Sistema visual», al final."
+    },
+    {
+      "id": "nota-movil",
+      "x": 3120,
+      "y": -240,
+      "w": 880,
+      "text": "Móvil: CTAs de 52 px de alto, una sola columna, precios con Flow Full primero y los dos planes chicos en fila."
+    },
+    {
+      "id": "nota-fuentes",
+      "x": 4140,
+      "y": -240,
+      "w": 700,
+      "text": "Fuentes y logo reales: Epoch y OktahNeue van incrustadas en el diseño (.woff2 de tu repo, en base64) y el logo es tu SVG — versión blanca en noche, negra en día.\nOjo: Epoch solo trae un peso (700) y su unicode-range del repo excluye los dígitos, así que los números grandes de la landing real caen a OktahNeue. Aquí quité ese límite para que veas la fuente completa."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}
