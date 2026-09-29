@@ -31,6 +31,8 @@
         <a href="/#faq">Preguntas</a>
         <a href="/#contacto">Contacto</a>
         <a href="/terminos">Términos</a>
+        <a href="/alumnos/terminos">Términos para alumnos</a>
+        <a href="/privacidad">Privacidad</a>
       </nav>
 
       <ul class="footer-socials">
