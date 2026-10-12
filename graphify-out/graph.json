@@ -752,6 +752,50 @@
       "norm_label": "window"
     },
     {
+      "label": "reveal.ts",
+      "file_type": "code",
+      "source_file": "src/lib/actions/reveal.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_actions_reveal",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "reveal.ts"
+    },
+    {
+      "label": "reveal()",
+      "file_type": "code",
+      "source_file": "src/lib/actions/reveal.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "src_lib_actions_reveal_reveal",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "reveal()"
+    },
+    {
+      "label": "ContactForm.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/ContactForm.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_contactform",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "contactform.svelte"
+    },
+    {
+      "label": "$env/static/public",
+      "file_type": "code",
+      "source_file": "$env/static/public",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "public",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "$env/static/public"
+    },
+    {
       "label": "ContactSection.svelte",
       "file_type": "code",
       "source_file": "src/lib/components/ContactSection.svelte",
@@ -802,8 +846,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_featuressection",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "Testimonials.svelte",
       "norm_label": "featuressection.svelte"
     },
     {
@@ -813,8 +857,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "svelte_splide",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "Testimonials.svelte",
       "norm_label": "@splidejs/svelte-splide"
     },
     {
@@ -824,8 +868,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "splide_extension_auto_scroll",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "Testimonials.svelte",
       "norm_label": "@splidejs/splide-extension-auto-scroll"
     },
     {
@@ -840,14 +884,25 @@
       "norm_label": "footer.svelte"
     },
     {
+      "label": "socials",
+      "file_type": "code",
+      "source_file": "src/lib/components/Footer.svelte",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "src_lib_components_footer_socials",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "socials"
+    },
+    {
       "label": "GoogleAnalytics.svelte",
       "file_type": "code",
       "source_file": "src/lib/components/GoogleAnalytics.svelte",
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_googleanalytics",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "googleanalytics.svelte"
     },
     {
@@ -857,8 +912,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "stores",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "$app/stores"
     },
     {
@@ -868,8 +923,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "environment",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "$app/environment"
     },
     {
@@ -890,20 +945,9 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_leadform",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "community": 0,
+      "community_name": "site.ts",
       "norm_label": "leadform.svelte"
-    },
-    {
-      "label": "$env/static/public",
-      "file_type": "code",
-      "source_file": "$env/static/public",
-      "confidence": "EXTRACTED",
-      "_origin": "ast",
-      "id": "public",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
-      "norm_label": "$env/static/public"
     },
     {
       "label": "zod",
@@ -934,8 +978,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_metapixel",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "metapixel.svelte"
     },
     {
@@ -945,8 +989,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_navbar",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "navbar.svelte"
     },
     {
@@ -1066,8 +1110,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_testimonials",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "Testimonials.svelte",
       "norm_label": "testimonials.svelte"
     },
     {
@@ -1077,9 +1121,152 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_whatsappbubble",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "whatsappbubble.svelte"
+    },
+    {
+      "label": "BeforeAfter.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/BeforeAfter.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_beforeafter",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "beforeafter.svelte"
+    },
+    {
+      "label": "global()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/BeforeAfter.svelte",
+      "source_location": "L143",
+      "_origin": "ast",
+      "id": "src_lib_components_home_beforeafter_global",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "global()"
+    },
+    {
+      "label": "BookFlip.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/BookFlip.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_bookflip",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "bookflip.svelte"
+    },
+    {
+      "label": "HomeClose.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomeClose.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homeclose",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homeclose.svelte"
+    },
+    {
+      "label": "HomeFAQ.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomeFAQ.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homefaq",
+      "community": 5,
+      "community_name": "schemas.ts",
+      "norm_label": "homefaq.svelte"
+    },
+    {
+      "label": "HomeHero.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomeHero.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homehero",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homehero.svelte"
+    },
+    {
+      "label": "HomeIntro.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomeIntro.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homeintro",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homeintro.svelte"
+    },
+    {
+      "label": "HomePricing.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homepricing",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homepricing.svelte"
+    },
+    {
+      "label": "money()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "source_location": "L299",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homepricing_money",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "money()"
+    },
+    {
+      "label": "PlatformTabs.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "platformtabs.svelte"
+    },
+    {
+      "label": "StudentPortal.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/StudentPortal.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_studentportal",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "studentportal.svelte"
+    },
+    {
+      "label": "LegalContact.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/legal/LegalContact.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_legal_legalcontact",
       "community": 0,
       "community_name": "site.ts",
-      "norm_label": "whatsappbubble.svelte"
+      "norm_label": "legalcontact.svelte"
+    },
+    {
+      "label": "LegalLayout.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/legal/LegalLayout.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_legal_legallayout",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "legallayout.svelte"
     },
     {
       "label": "seo.ts",
@@ -1121,8 +1308,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_config_seo_homeseo",
-      "community": 5,
-      "community_name": "schemas.ts",
+      "community": 0,
+      "community_name": "site.ts",
       "norm_label": "homeseo"
     },
     {
@@ -1148,6 +1335,39 @@
       "norm_label": "termsseo"
     },
     {
+      "label": "studentTermsSEO",
+      "file_type": "code",
+      "source_file": "src/lib/config/seo.ts",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "src_lib_config_seo_studenttermsseo",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "studenttermsseo"
+    },
+    {
+      "label": "privacySEO",
+      "file_type": "code",
+      "source_file": "src/lib/config/seo.ts",
+      "source_location": "L74",
+      "_origin": "ast",
+      "id": "src_lib_config_seo_privacyseo",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "privacyseo"
+    },
+    {
+      "label": "contactSEO",
+      "file_type": "code",
+      "source_file": "src/lib/config/seo.ts",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "src_lib_config_seo_contactseo",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "contactseo"
+    },
+    {
       "label": "site.ts",
       "file_type": "code",
       "source_file": "src/lib/config/site.ts",
@@ -1168,6 +1388,83 @@
       "community": 0,
       "community_name": "site.ts",
       "norm_label": "siteconfig"
+    },
+    {
+      "label": "disciplinas.ts",
+      "file_type": "code",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_data_disciplinas",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "disciplinas.ts"
+    },
+    {
+      "label": "Disciplina",
+      "file_type": "code",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L5",
+      "_origin": "ast",
+      "id": "src_lib_data_disciplinas_disciplina",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "disciplina"
+    },
+    {
+      "label": "disciplinas",
+      "file_type": "code",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L23",
+      "_origin": "ast",
+      "id": "src_lib_data_disciplinas_disciplinas",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "disciplinas"
+    },
+    {
+      "label": "disciplinaBySlug()",
+      "file_type": "code",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L208",
+      "_origin": "ast",
+      "id": "src_lib_data_disciplinas_disciplinabyslug",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "disciplinabyslug()"
+    },
+    {
+      "label": "homeData.ts",
+      "file_type": "code",
+      "source_file": "src/lib/data/homeData.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_data_homedata",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homedata.ts"
+    },
+    {
+      "label": "homeStats",
+      "file_type": "code",
+      "source_file": "src/lib/data/homeData.ts",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "src_lib_data_homedata_homestats",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "homestats"
+    },
+    {
+      "label": "clientLogos",
+      "file_type": "code",
+      "source_file": "src/lib/data/homeData.ts",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_lib_data_homedata_clientlogos",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "clientlogos"
     },
     {
       "label": "pricingData.js",
@@ -1283,7 +1580,7 @@
       "label": "whatsappPackages",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L307",
+      "source_location": "L315",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_whatsapppackages",
       "community": 5,
@@ -1291,10 +1588,32 @@
       "norm_label": "whatsapppackages"
     },
     {
+      "label": "EXTRA_SITE_FROM",
+      "file_type": "code",
+      "source_file": "src/lib/data/pricingData.js",
+      "source_location": "L348",
+      "_origin": "ast",
+      "id": "src_lib_data_pricingdata_extra_site_from",
+      "community": 8,
+      "community_name": "pricingData.js",
+      "norm_label": "extra_site_from"
+    },
+    {
+      "label": "sunatPackages",
+      "file_type": "code",
+      "source_file": "src/lib/data/pricingData.js",
+      "source_location": "L355",
+      "_origin": "ast",
+      "id": "src_lib_data_pricingdata_sunatpackages",
+      "community": 8,
+      "community_name": "pricingData.js",
+      "norm_label": "sunatpackages"
+    },
+    {
       "label": "perks",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L335",
+      "source_location": "L363",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_perks",
       "community": 8,
@@ -1305,7 +1624,7 @@
       "label": "FLOWY_BETA_BADGE",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L343",
+      "source_location": "L371",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_flowy_beta_badge",
       "community": 8,
@@ -1316,7 +1635,7 @@
       "label": "getPlanPrice()",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L356",
+      "source_location": "L384",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_getplanprice",
       "community": 8,
@@ -1327,7 +1646,7 @@
       "label": "getBasePlanPrice()",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L372",
+      "source_location": "L400",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_getbaseplanprice",
       "community": 8,
@@ -1338,7 +1657,7 @@
       "label": "formatPrice()",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L386",
+      "source_location": "L414",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_formatprice",
       "community": 8,
@@ -1349,7 +1668,7 @@
       "label": "formatPriceParts()",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L399",
+      "source_location": "L427",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_formatpriceparts",
       "community": 8,
@@ -1360,7 +1679,7 @@
       "label": "getTaxBreakdown()",
       "file_type": "code",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L417",
+      "source_location": "L445",
       "_origin": "ast",
       "id": "src_lib_data_pricingdata_gettaxbreakdown",
       "community": 8,
@@ -1386,7 +1705,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installappbutton",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "installappbutton.svelte"
     },
     {
@@ -1397,7 +1716,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installprompttoast",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "installprompttoast.svelte"
     },
     {
@@ -1408,7 +1727,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_index",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwa/index.ts"
     },
     {
@@ -1419,7 +1738,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "usepwainstall.svelte.ts"
     },
     {
@@ -1430,7 +1749,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_bipevent",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "bipevent"
     },
     {
@@ -1441,7 +1760,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwainstallstate"
     },
     {
@@ -1452,7 +1771,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_init",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": ".init()"
     },
     {
@@ -1463,7 +1782,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_promptinstall",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": ".promptinstall()"
     },
     {
@@ -1474,7 +1793,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstall",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwainstall"
     },
     {
@@ -1525,7 +1844,7 @@
       "label": "websiteSchema()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L73",
+      "source_location": "L87",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_websiteschema",
       "community": 5,
@@ -1536,7 +1855,7 @@
       "label": "offersFromPlans()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L86",
+      "source_location": "L100",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_offersfromplans",
       "community": 5,
@@ -1547,7 +1866,7 @@
       "label": "softwareApplicationSchema()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L132",
+      "source_location": "L146",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_softwareapplicationschema",
       "community": 5,
@@ -1558,7 +1877,7 @@
       "label": "faqPageSchema()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L202",
+      "source_location": "L199",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_faqpageschema",
       "community": 5,
@@ -1569,7 +1888,7 @@
       "label": "breadcrumbSchema()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L213",
+      "source_location": "L210",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_breadcrumbschema",
       "community": 5,
@@ -1580,7 +1899,7 @@
       "label": "buildHomeGraph()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L228",
+      "source_location": "L225",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_buildhomegraph",
       "community": 5,
@@ -1591,7 +1910,7 @@
       "label": "buildAboutGraph()",
       "file_type": "code",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L242",
+      "source_location": "L239",
       "_origin": "ast",
       "id": "src_lib_seo_schemas_buildaboutgraph",
       "community": 5,
@@ -1638,7 +1957,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore",
-      "community": 14,
+      "community": 30,
       "community_name": "WaCountryStore",
       "norm_label": "wacountrystore"
     },
@@ -1649,7 +1968,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_init",
-      "community": 14,
+      "community": 30,
       "community_name": "WaCountryStore",
       "norm_label": ".init()"
     },
@@ -1660,7 +1979,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_set",
-      "community": 14,
+      "community": 30,
       "community_name": "WaCountryStore",
       "norm_label": ".set()"
     },
@@ -1671,7 +1990,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_phone",
-      "community": 14,
+      "community": 30,
       "community_name": "WaCountryStore",
       "norm_label": ".phone()"
     },
@@ -1682,7 +2001,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_countries",
-      "community": 14,
+      "community": 30,
       "community_name": "WaCountryStore",
       "norm_label": ".countries()"
     },
@@ -1704,7 +2023,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_tracking_track",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "track.ts"
     },
@@ -1715,7 +2034,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fbqargs",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "fbqargs"
     },
@@ -1726,7 +2045,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_lib_tracking_track_gtagargs",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "gtagargs"
     },
@@ -1737,7 +2056,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_tracking_track_window",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "window"
     },
@@ -1748,7 +2067,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fire",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "fire()"
     },
@@ -1759,7 +2078,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackschedule",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "trackschedule()"
     },
@@ -1770,7 +2089,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackcontact",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "trackcontact()"
     },
@@ -1781,7 +2100,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackemailclick",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "trackemailclick()"
     },
@@ -1792,7 +2111,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklogin",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "tracklogin()"
     },
@@ -1803,7 +2122,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstallclick",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "trackpwainstallclick()"
     },
@@ -1814,7 +2133,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstalled",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "trackpwainstalled()"
     },
@@ -1825,9 +2144,31 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklead",
-      "community": 6,
+      "community": 14,
       "community_name": "track.ts",
       "norm_label": "tracklead()"
+    },
+    {
+      "label": "+error.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/+error.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_error",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "+error.svelte"
+    },
+    {
+      "label": "$app/state",
+      "file_type": "code",
+      "source_file": "$app/state",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "state",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "$app/state"
     },
     {
       "label": "+layout.svelte",
@@ -1835,10 +2176,32 @@
       "source_file": "src/routes/+layout.svelte",
       "source_location": "L1",
       "_origin": "ast",
-      "id": "src_routes_layout",
-      "community": 7,
-      "community_name": "PricingSection.svelte",
+      "id": "src_routes_layout_svelte_src_routes_layout",
+      "community": 6,
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "+layout.svelte"
+    },
+    {
+      "label": "+layout.ts",
+      "file_type": "code",
+      "source_file": "src/routes/+layout.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_layout_ts_src_routes_layout",
+      "community": 29,
+      "community_name": "prerender",
+      "norm_label": "+layout.ts"
+    },
+    {
+      "label": "prerender",
+      "file_type": "code",
+      "source_file": "src/routes/+layout.ts",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "src_routes_layout_prerender",
+      "community": 29,
+      "community_name": "prerender",
+      "norm_label": "prerender"
     },
     {
       "label": "routes/+page.svelte",
@@ -1847,8 +2210,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_routes_page",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 14,
+      "community_name": "track.ts",
       "norm_label": "routes/+page.svelte"
     },
     {
@@ -1866,7 +2229,7 @@
       "label": "problems",
       "file_type": "code",
       "source_file": "src/routes/about/+page.svelte",
-      "source_location": "L16",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "src_routes_about_page_problems",
       "community": 0,
@@ -1885,6 +2248,28 @@
       "norm_label": "agenda/+page.svelte"
     },
     {
+      "label": "alumnos/terminos/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/alumnos/terminos/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_alumnos_terminos_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "alumnos/terminos/+page.svelte"
+    },
+    {
+      "label": "contacto/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/contacto/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_contacto_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "contacto/+page.svelte"
+    },
+    {
       "label": "launch/+page.svelte",
       "file_type": "code",
       "source_file": "src/routes/launch/+page.svelte",
@@ -1896,7 +2281,7 @@
       "norm_label": "launch/+page.svelte"
     },
     {
-      "label": "+page.ts",
+      "label": "launch/+page.ts",
       "file_type": "code",
       "source_file": "src/routes/launch/+page.ts",
       "source_location": "L1",
@@ -1904,7 +2289,7 @@
       "id": "src_routes_launch_page_ts_src_routes_launch_page",
       "community": 17,
       "community_name": "prerender",
-      "norm_label": "+page.ts"
+      "norm_label": "launch/+page.ts"
     },
     {
       "label": "prerender",
@@ -2020,7 +2405,7 @@
       "label": "prerender",
       "file_type": "code",
       "source_file": "src/routes/llms.txt/+server.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "_origin": "ast",
       "id": "src_routes_llms_txt_server_prerender",
       "community": 0,
@@ -2031,12 +2416,23 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/routes/llms.txt/+server.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "src_routes_llms_txt_server_get",
       "community": 0,
       "community_name": "site.ts",
       "norm_label": "get()"
+    },
+    {
+      "label": "privacidad/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/privacidad/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_privacidad_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "privacidad/+page.svelte"
     },
     {
       "label": "robots.txt/+server.ts",
@@ -2097,7 +2493,7 @@
       "label": "prerender",
       "file_type": "code",
       "source_file": "src/routes/sitemap.xml/+server.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "_origin": "ast",
       "id": "src_routes_sitemap_xml_server_prerender",
       "community": 0,
@@ -2108,7 +2504,7 @@
       "label": "GET()",
       "file_type": "code",
       "source_file": "src/routes/sitemap.xml/+server.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "_origin": "ast",
       "id": "src_routes_sitemap_xml_server_get",
       "community": 0,
@@ -2116,7 +2512,117 @@
       "norm_label": "get()"
     },
     {
-      "label": "terminos/+page.svelte",
+      "label": "software/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/software/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_software_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "software/+page.svelte"
+    },
+    {
+      "label": "[slug]/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "[slug]/+page.svelte"
+    },
+    {
+      "label": "title",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_title",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "title"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_description",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "description"
+    },
+    {
+      "label": "faqs",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_faqs",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "faqs"
+    },
+    {
+      "label": "otras",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L26",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_otras",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "otras"
+    },
+    {
+      "label": "jsonLd",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L28",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_jsonld",
+      "community": 14,
+      "community_name": "track.ts",
+      "norm_label": "jsonld"
+    },
+    {
+      "label": "[slug]/+page.ts",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "[slug]/+page.ts"
+    },
+    {
+      "label": "entries()",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L6",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_entries",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "entries()"
+    },
+    {
+      "label": "load()",
+      "file_type": "code",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L8",
+      "_origin": "ast",
+      "id": "src_routes_software_slug_page_load",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "load()"
+    },
+    {
+      "label": "routes/terminos/+page.svelte",
       "file_type": "code",
       "source_file": "src/routes/terminos/+page.svelte",
       "source_location": "L1",
@@ -2124,7 +2630,7 @@
       "id": "src_routes_terminos_page",
       "community": 0,
       "community_name": "site.ts",
-      "norm_label": "terminos/+page.svelte"
+      "norm_label": "routes/terminos/+page.svelte"
     },
     {
       "label": "service-worker.ts",
@@ -2422,6 +2928,83 @@
       "community": 12,
       "community_name": "sv",
       "norm_label": "building"
+    },
+    {
+      "label": "landing-rediseno/README.md",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "landing-rediseno/readme.md"
+    },
+    {
+      "label": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "rediseno de la landing \u2014 archivos de trabajo"
+    },
+    {
+      "label": "Qu\u00e9 hay",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L9",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_qu\u00e9_hay",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "que hay"
+    },
+    {
+      "label": "Regenerar y republicar",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L24",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_regenerar_y_republicar",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "regenerar y republicar"
+    },
+    {
+      "label": "Decisiones tomadas",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L43",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_decisiones_tomadas",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "decisiones tomadas"
+    },
+    {
+      "label": "Pendiente",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L61",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_pendiente",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "pendiente"
+    },
+    {
+      "label": "Hallazgos en las fuentes de marca",
+      "file_type": "document",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L85",
+      "_origin": "ast",
+      "id": "design_landing_rediseno_readme_hallazgos_en_las_fuentes_de_marca",
+      "community": 28,
+      "community_name": "Redise\u00f1o de la landing \u2014 archivos de trabajo",
+      "norm_label": "hallazgos en las fuentes de marca"
     },
     {
       "label": "CRM_V1_DEV_SPEC.md",
@@ -3958,6 +4541,116 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/actions/reveal.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_actions_reveal",
+      "target": "src_lib_actions_reveal_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/BeforeAfter.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_beforeafter",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeFAQ.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homefaq",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeIntro.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homeintro",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homepricing",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/StudentPortal.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_studentportal",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/ContactForm.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_contactform",
+      "target": "public",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/ContactForm.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_contactform",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/contacto/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_contacto_page",
+      "target": "src_lib_components_contactform",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/LeadForm.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_leadform",
+      "target": "public",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/MetaPixel.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_metapixel",
+      "target": "public",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/components/ContactSection.svelte",
@@ -3987,15 +4680,6 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_contactsection",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/FAQ.svelte",
       "_origin": "ast",
       "source": "src_lib_components_faq",
@@ -4005,15 +4689,6 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_faq",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/FeaturesSection.svelte",
       "_origin": "ast",
       "source": "src_lib_components_featuressection",
@@ -4032,15 +4707,6 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_featuressection",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/Testimonials.svelte",
       "_origin": "ast",
       "source": "src_lib_components_testimonials",
@@ -4054,6 +4720,17 @@
       "_origin": "ast",
       "source": "src_lib_components_testimonials",
       "target": "splide_extension_auto_scroll",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/Footer.svelte",
+      "source_location": "L14",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_footer",
+      "target": "src_lib_components_footer_socials",
       "confidence_score": 1.0
     },
     {
@@ -4063,6 +4740,24 @@
       "_origin": "ast",
       "source": "src_lib_components_footer",
       "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/Footer.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_footer",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/legal/LegalLayout.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_legal_legallayout",
+      "target": "src_lib_components_footer",
       "confidence_score": 1.0
     },
     {
@@ -4086,6 +4781,24 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/routes/contacto/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_contacto_page",
+      "target": "src_lib_components_footer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+error.svelte",
+      "_origin": "ast",
+      "source": "src_routes_error",
+      "target": "src_lib_components_footer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/routes/+page.svelte",
       "_origin": "ast",
       "source": "src_routes_page",
@@ -4095,9 +4808,18 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/terminos/+page.svelte",
+      "source_file": "src/routes/software/+page.svelte",
       "_origin": "ast",
-      "source": "src_routes_terminos_page",
+      "source": "src_routes_software_page",
+      "target": "src_lib_components_footer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
       "target": "src_lib_components_footer",
       "confidence_score": 1.0
     },
@@ -4124,7 +4846,7 @@
       "confidence": "EXTRACTED",
       "source_file": "src/routes/+layout.svelte",
       "_origin": "ast",
-      "source": "src_routes_layout",
+      "source": "src_routes_layout_svelte_src_routes_layout",
       "target": "src_lib_components_googleanalytics",
       "confidence_score": 1.0
     },
@@ -4151,7 +4873,7 @@
       "confidence": "EXTRACTED",
       "source_file": "src/routes/+layout.svelte",
       "_origin": "ast",
-      "source": "src_routes_layout",
+      "source": "src_routes_layout_svelte_src_routes_layout",
       "target": "stores",
       "confidence_score": 1.0
     },
@@ -4203,24 +4925,6 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_hero",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/LeadForm.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_leadform",
-      "target": "public",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/LeadForm.svelte",
       "_origin": "ast",
       "source": "src_lib_components_leadform",
@@ -4239,18 +4943,9 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/MetaPixel.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_metapixel",
-      "target": "public",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/routes/+layout.svelte",
       "_origin": "ast",
-      "source": "src_routes_layout",
+      "source": "src_routes_layout_svelte_src_routes_layout",
       "target": "src_lib_components_metapixel",
       "confidence_score": 1.0
     },
@@ -4275,45 +4970,9 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/about/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_about_page",
-      "target": "src_lib_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/agenda/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_agenda_page",
-      "target": "src_lib_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/routes/+layout.svelte",
       "_origin": "ast",
-      "source": "src_routes_layout",
-      "target": "src_lib_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/terminos/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_terminos_page",
+      "source": "src_routes_layout_svelte_src_routes_layout",
       "target": "src_lib_components_navbar",
       "confidence_score": 1.0
     },
@@ -4441,15 +5100,6 @@
       "confidence_score": 1.0
     },
     {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/routes/+page.svelte",
-      "_origin": "ast",
-      "source": "src_routes_page",
-      "target": "src_lib_components_pricingsection",
-      "confidence_score": 1.0
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -4507,6 +5157,280 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_components_whatsappbubble",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/BeforeAfter.svelte",
+      "source_location": "L143",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_beforeafter",
+      "target": "src_lib_components_home_beforeafter_global",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/BeforeAfter.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_beforeafter",
+      "target": "src_lib_components_home_bookflip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_beforeafter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_components_home_bookflip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeClose.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homeclose",
+      "target": "src_lib_stores_wacountry_svelte",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeClose.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homeclose",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_homeclose",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeFAQ.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homefaq",
+      "target": "src_lib_seo_faqschema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_homefaq",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeHero.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homehero",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_homehero",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeIntro.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homeintro",
+      "target": "src_lib_data_homedata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_homeintro",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "source_location": "L299",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_homepricing",
+      "target": "src_lib_components_home_homepricing_money",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homepricing",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homepricing",
+      "target": "src_lib_data_pricingdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomePricing.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homepricing",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_homepricing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_platformtabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_studentportal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/legal/LegalContact.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_legal_legalcontact",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/alumnos/terminos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_alumnos_terminos_page",
+      "target": "src_lib_components_legal_legalcontact",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/privacidad/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_privacidad_page",
+      "target": "src_lib_components_legal_legalcontact",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/terminos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_terminos_page",
+      "target": "src_lib_components_legal_legalcontact",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/legal/LegalLayout.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_legal_legallayout",
+      "target": "src_lib_config_seo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/legal/LegalLayout.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_legal_legallayout",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/alumnos/terminos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_alumnos_terminos_page",
+      "target": "src_lib_components_legal_legallayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/privacidad/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_privacidad_page",
+      "target": "src_lib_components_legal_legallayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/terminos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_terminos_page",
+      "target": "src_lib_components_legal_legallayout",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/config/seo.ts",
@@ -4515,6 +5439,17 @@
       "_origin": "ast",
       "source": "src_lib_config_seo",
       "target": "src_lib_config_seo_aboutseo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/config/seo.ts",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_config_seo",
+      "target": "src_lib_config_seo_contactseo",
       "confidence_score": 1.0
     },
     {
@@ -4543,11 +5478,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/config/seo.ts",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_config_seo",
+      "target": "src_lib_config_seo_privacyseo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/config/seo.ts",
       "source_location": "L4",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_config_seo",
       "target": "src_lib_config_seo_seopage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/config/seo.ts",
+      "source_location": "L63",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_config_seo",
+      "target": "src_lib_config_seo_studenttermsseo",
       "confidence_score": 1.0
     },
     {
@@ -4609,9 +5566,36 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/routes/alumnos/terminos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_alumnos_terminos_page",
+      "target": "src_lib_config_seo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/contacto/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_contacto_page",
+      "target": "src_lib_config_seo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/routes/+page.svelte",
       "_origin": "ast",
       "source": "src_routes_page",
+      "target": "src_lib_config_seo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/privacidad/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_privacidad_page",
       "target": "src_lib_config_seo",
       "confidence_score": 1.0
     },
@@ -4691,6 +5675,15 @@
     },
     {
       "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/contacto/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_contacto_page",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/llms-full.txt/+server.ts",
@@ -4724,6 +5717,15 @@
     },
     {
       "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/privacidad/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_privacidad_page",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/robots.txt/+server.ts",
@@ -4743,6 +5745,24 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_sitemap_xml_server",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_page",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
       "target": "src_lib_config_site",
       "confidence_score": 1.0
     },
@@ -4830,6 +5850,175 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_disciplinas",
+      "target": "src_lib_data_disciplinas_disciplina",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L208",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_disciplinas",
+      "target": "src_lib_data_disciplinas_disciplinabyslug",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/disciplinas.ts",
+      "source_location": "L23",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_disciplinas",
+      "target": "src_lib_data_disciplinas_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/llms.txt/+server.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_llms_txt_server",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/sitemap.xml/+server.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_sitemap_xml_server",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_page",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "target": "src_lib_data_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/llms.txt/+server.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_llms_txt_server",
+      "target": "src_lib_data_disciplinas_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/sitemap.xml/+server.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_sitemap_xml_server",
+      "target": "src_lib_data_disciplinas_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "target": "src_lib_data_disciplinas_disciplinas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_load",
+      "target": "src_lib_data_disciplinas_disciplinabyslug"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "target": "src_lib_data_disciplinas_disciplinabyslug",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/homeData.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_homedata",
+      "target": "src_lib_data_homedata_clientlogos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/homeData.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_homedata",
+      "target": "src_lib_data_homedata_homestats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
       "source_location": "L50",
       "weight": 1.0,
@@ -4853,7 +6042,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L343",
+      "source_location": "L348",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_pricingdata",
+      "target": "src_lib_data_pricingdata_extra_site_from",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/pricingData.js",
+      "source_location": "L371",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4864,7 +6064,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L386",
+      "source_location": "L414",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4875,7 +6075,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L399",
+      "source_location": "L427",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4886,7 +6086,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L372",
+      "source_location": "L400",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4897,7 +6097,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L356",
+      "source_location": "L384",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4930,7 +6130,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L417",
+      "source_location": "L445",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4952,7 +6152,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L335",
+      "source_location": "L363",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -4996,6 +6196,17 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
+      "source_location": "L355",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_data_pricingdata",
+      "target": "src_lib_data_pricingdata_sunatpackages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/data/pricingData.js",
       "source_location": "L62",
       "weight": 1.0,
       "_origin": "ast",
@@ -5007,7 +6218,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L307",
+      "source_location": "L315",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata",
@@ -5023,6 +6234,15 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
+      "target": "src_lib_data_pricingdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/agenda/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_agenda_page",
       "target": "src_lib_data_pricingdata",
       "confidence_score": 1.0
     },
@@ -5079,7 +6299,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L359",
+      "source_location": "L387",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata_getplanprice",
@@ -5127,7 +6347,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/pricingData.js",
-      "source_location": "L387",
+      "source_location": "L415",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_pricingdata_formatprice",
@@ -5199,7 +6419,7 @@
       "confidence": "EXTRACTED",
       "source_file": "src/routes/+layout.svelte",
       "_origin": "ast",
-      "source": "src_routes_layout",
+      "source": "src_routes_layout_svelte_src_routes_layout",
       "target": "src_lib_pwa_installprompttoast",
       "confidence_score": 1.0
     },
@@ -5345,7 +6565,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L213",
+      "source_location": "L210",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5356,7 +6576,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L242",
+      "source_location": "L239",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5367,7 +6587,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L228",
+      "source_location": "L225",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5378,7 +6598,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L202",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5389,7 +6609,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L86",
+      "source_location": "L100",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5411,7 +6631,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L132",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5422,7 +6642,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L73",
+      "source_location": "L87",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas",
@@ -5452,7 +6672,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L247",
+      "source_location": "L244",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildaboutgraph",
@@ -5464,7 +6684,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L232",
+      "source_location": "L229",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildhomegraph",
@@ -5476,7 +6696,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L248",
+      "source_location": "L245",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildaboutgraph",
@@ -5488,7 +6708,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L233",
+      "source_location": "L230",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildhomegraph",
@@ -5500,7 +6720,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L133",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_softwareapplicationschema",
@@ -5512,7 +6732,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L234",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildhomegraph",
@@ -5524,7 +6744,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L235",
+      "source_location": "L232",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildhomegraph",
@@ -5536,7 +6756,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/seo/schemas.ts",
-      "source_location": "L236",
+      "source_location": "L233",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_seo_schemas_buildhomegraph",
@@ -5762,6 +6982,24 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/about/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_about_page",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "calls",
       "context": "call",
       "confidence": "EXTRACTED",
@@ -5846,10 +7084,30 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+error.svelte",
+      "_origin": "ast",
+      "source": "src_routes_error",
+      "target": "state",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+layout.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_layout_ts_src_routes_layout",
+      "target": "src_routes_layout_prerender",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/about/+page.svelte",
-      "source_location": "L16",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_about_page",
@@ -5949,7 +7207,7 @@
       "context": "argument",
       "confidence": "INFERRED",
       "source_file": "src/routes/llms-full.txt/+server.ts",
-      "source_location": "L140",
+      "source_location": "L143",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_full_txt_server_get",
@@ -5961,7 +7219,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/llms-full.txt/+server.ts",
-      "source_location": "L142",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_full_txt_server_get",
@@ -5973,7 +7231,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/llms-full.txt/+server.ts",
-      "source_location": "L144",
+      "source_location": "L147",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_full_txt_server_get",
@@ -5984,7 +7242,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/llms.txt/+server.ts",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_txt_server",
@@ -5995,7 +7253,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/llms.txt/+server.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_txt_server",
@@ -6039,7 +7297,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/sitemap.xml/+server.ts",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_sitemap_xml_server",
@@ -6050,11 +7308,88 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/sitemap.xml/+server.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_sitemap_xml_server",
       "target": "src_routes_sitemap_xml_server_prerender",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L19",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L22",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_faqs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L28",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_jsonld",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L26",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_otras",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_title",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_entries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_ts_src_routes_software_slug_page",
+      "target": "src_routes_software_slug_page_load",
       "confidence_score": 1.0
     },
     {
@@ -6287,6 +7622,72 @@
       "_origin": "ast",
       "source": "readme_sv",
       "target": "readme_developing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme",
+      "target": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L43",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "target": "design_landing_rediseno_readme_decisiones_tomadas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L85",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "target": "design_landing_rediseno_readme_hallazgos_en_las_fuentes_de_marca",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "target": "design_landing_rediseno_readme_pendiente",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "target": "design_landing_rediseno_readme_qu\u00e9_hay",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "design/landing-rediseno/README.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "design_landing_rediseno_readme_redise\u00f1o_de_la_landing_archivos_de_trabajo",
+      "target": "design_landing_rediseno_readme_regenerar_y_republicar",
       "confidence_score": 1.0
     },
     {
@@ -7039,5 +8440,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "6fbd260a0b4b8a81af868f4af3385c5b141afd19"
+  "built_at_commit": "bbf34a6f819a83dd4af68dd3eca312423ea4bf87"
 }

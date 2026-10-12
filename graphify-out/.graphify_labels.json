@@ -5,7 +5,7 @@
   "3": "devDependencies",
   "4": "Sistema de Leads — FlowPass",
   "5": "schemas.ts",
-  "6": "track.ts",
+  "6": "usePwaInstall.svelte.ts",
   "7": "PricingSection.svelte",
   "8": "pricingData.js",
   "9": "compilerOptions",
@@ -13,7 +13,7 @@
   "11": "package.json",
   "12": "sv",
   "13": "PWA Install — Temporal",
-  "14": "WaCountryStore",
+  "14": "track.ts",
   "15": "app.d.ts",
   "16": "service-worker.ts",
   "17": "prerender",
@@ -26,5 +26,9 @@
   "24": "svelte-heros-v2",
   "25": "svelte",
   "26": "vite.config.ts",
-  "27": "zod"
+  "27": "zod",
+  "28": "Rediseño de la landing — archivos de trabajo",
+  "29": "prerender",
+  "30": "WaCountryStore",
+  "31": "Testimonials.svelte"
 }
