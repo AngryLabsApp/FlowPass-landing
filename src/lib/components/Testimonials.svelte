@@ -27,10 +27,10 @@
     drag: "free" as const,
     breakpoints: {
       1024: { perPage: 2 },
-      640: { perPage: 1 },
+      640: { perPage: 1, arrows: false },
     },
     autoScroll: {
-      speed: 0.8,
+      speed: 0.4,
       pauseOnHover: true,
       pauseOnFocus: true,
     },
@@ -76,27 +76,13 @@
 
 <section
   id="testimonios"
-  class="relative w-full py-24"
+  class="relative w-full"
   aria-labelledby="testimonios-heading"
 >
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="text-center">
-      <span
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium text-white/80 bg-white/5 border border-white/10 backdrop-blur-md"
-      >
-        <span class="w-1.5 h-1.5 rounded-full bg-brand animate-pulse"></span>
-        Testimonios
-      </span>
-
-      <h2
-        id="testimonios-heading"
-        class="font-epoch font-bold text-3xl md:text-5xl text-white mt-5 leading-tight"
-      >
-        Lo que dicen nuestros clientes
-      </h2>
-      <p class="font-oktah text-white/60 mt-3 text-lg">
-        Negocios reales, resultados reales.
-      </p>
+  <div class="wrap">
+    <div class="t-head">
+      <p class="eyebrow">En su día a día</p>
+      <h2 id="testimonios-heading" class="sec-title">Ya nos confiaron su operación. Esto es lo que opinan.</h2>
     </div>
 
     {#if clientLogos.length > 0}
@@ -117,7 +103,7 @@
       </div>
     {/if}
 
-    <div class="mt-12 reel-carousel">
+    <div class="reel-carousel">
       {#if mounted}
         <Splide options={splideOptions} extensions={{ AutoScroll }} aria-label="Testimonios en video">
           {#each reelUrls as url (url)}
@@ -153,6 +139,11 @@
 </section>
 
 <style>
+  .t-head { max-width: 760px; }
+  .reel-carousel { margin-top: 40px; }
+  @media (max-width: 560px) {
+    .reel-carousel { margin-top: 20px; }
+  }
   .reel-frame {
     max-width: 340px;
   }

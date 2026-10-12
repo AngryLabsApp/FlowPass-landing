@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     
     <!-- SEO Básico -->
-    <meta name="robots" content="index, follow" />
     <meta name="author" content="FlowPass" />
     <meta name="theme-color" content="#07F49D" />
     
@@ -23,6 +22,12 @@
     <link rel="preload" href="/fonts/fonnts.com-oktah_neue_medium.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/fonnts.com-oktah_neue_bold.woff2" as="font" type="font/woff2" crossorigin />
     
+    <!-- Respaldo de Epoch solo para letras con tilde y ñ (Epoch no las trae).
+         `text=` hace que Google Fonts sirva únicamente esos glifos: pesa casi nada. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@700&text=%C3%81%C3%89%C3%8D%C3%93%C3%9A%C3%91%C3%9C%C3%A1%C3%A9%C3%AD%C3%B3%C3%BA%C3%B1%C3%BC&display=swap" />
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">

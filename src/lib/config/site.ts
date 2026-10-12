@@ -4,6 +4,16 @@ export const siteConfig = {
   domain: 'flow-pass.com',
   url: 'https://flow-pass.com',
   email: 'contacto@flow-pass.com',
+  // Correo del área comercial (aquí llegan los mensajes de los formularios)
+  emailComercial: 'flowpass.app.contacto@gmail.com',
+  // Datos de la empresa (ficha RUC SUNAT). Se muestran en las páginas legales y el footer.
+  legal: {
+    name: 'FLOWPASS PERU S.A.C.',
+    ruc: '20615483487',
+    address: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno, Ate, Lima, Perú',
+    streetAddress: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno',
+    district: 'Ate'
+  },
   phone: '51977854515', // Código de país sin + (PE — default histórico)
   phoneFormatted: '+51 977 854 515', // Formato legible
   // Contacto por país — usado por el selector de banderitas en CTA

@@ -3,8 +3,13 @@
   import facebookIcon from "$lib/assets/icons/facebook-icon.svg";
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import { disciplinas } from "$lib/data/disciplinas";
 
   const year = new Date().getFullYear();
+  // Las disciplinas con más clientes primero; el resto en "Ver todas".
+  const destacadas = ["academias-de-baile", "artes-marciales", "escuelas-de-futbol", "escuelas-de-natacion", "escuelas-de-musica", "centros-fitness"]
+    .map((slug) => disciplinas.find((d) => d.slug === slug))
+    .filter((d) => d !== undefined);
 
   const socials = [
     { href: siteConfig.social.tiktok, icon: tiktokIcon, label: "TikTok", event: "tiktok_footer" },
@@ -25,15 +30,34 @@
         </p>
       </div>
 
-      <nav class="footer-nav" aria-label="Enlaces del footer">
-        <a href="/#features">Funciones</a>
-        <a href="/#precios">Precios</a>
-        <a href="/#faq">Preguntas</a>
-        <a href="/#contacto">Contacto</a>
-        <a href="/terminos">Términos</a>
-        <a href="/alumnos/terminos">Términos para alumnos</a>
-        <a href="/privacidad">Privacidad</a>
-      </nav>
+      <div class="footer-cols">
+        <nav aria-label="Producto">
+          <p class="footer-h">Producto</p>
+          <a href="/#features">Funciones</a>
+          <a href="/#precios">Precios</a>
+          <a href="/#faq">Preguntas</a>
+          <a href="/about">Nosotros</a>
+          <a href="/contacto">Contacto</a>
+        </nav>
+        <nav aria-label="Por disciplina">
+          <p class="footer-h">Por disciplina</p>
+          {#each destacadas as d (d.slug)}<a href={`/software/${d.slug}`}>{d.name}</a>{/each}
+          <a href="/software">Ver todas →</a>
+        </nav>
+        <div class="footer-contact">
+          <p class="footer-h">Contacto</p>
+          <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          <a href={siteConfig.phones.PE.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.PE.flag} {siteConfig.phones.PE.formatted}</a>
+          <a href={siteConfig.phones.MX.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.MX.flag} {siteConfig.phones.MX.formatted}</a>
+          <a href="/contacto">Escríbenos →</a>
+        </div>
+        <nav aria-label="Legal">
+          <p class="footer-h">Legal</p>
+          <a href="/terminos">Términos</a>
+          <a href="/alumnos/terminos">Términos para alumnos</a>
+          <a href="/privacidad">Privacidad</a>
+        </nav>
+      </div>
 
       <ul class="footer-socials">
         {#each socials as s}
@@ -62,8 +86,8 @@
     <hr class="footer-divider" />
 
     <div class="footer-bottom">
-      <p>© {year} FlowPass. Todos los derechos reservados.</p>
-      <p class="footer-credit">Hecho en Lima 🇵🇪 — para Latinoamérica.</p>
+      <p>© {year} FlowPass · {siteConfig.legal.name} · RUC {siteConfig.legal.ruc}</p>
+      <p class="footer-credit">Hecho por peruanos 🇵🇪 y mexicanos 🇲🇽, para Latinoamérica.</p>
     </div>
   </div>
 </footer>
@@ -94,7 +118,7 @@
     .footer-top {
       flex-direction: row;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 2rem;
     }
   }
@@ -117,18 +141,19 @@
     margin: 0;
   }
 
-  .footer-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.25rem;
-    font-size: 0.875rem;
+  .footer-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem 3rem; }
+  .footer-cols nav,
+  .footer-contact { display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.875rem; }
+  .footer-h { margin: 0 0 0.35rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .footer-contact a { white-space: nowrap; }
+  .footer-cols a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
+  .footer-cols a:hover { color: #01f59e; }
+  @media (max-width: 1100px) {
+    .footer-cols { grid-template-columns: repeat(2, auto); }
   }
-  .footer-nav a {
-    color: rgba(255,255,255,0.55);
-    text-decoration: none;
-    transition: color 0.2s;
+  @media (max-width: 640px) {
+    .footer-cols { grid-template-columns: 1fr 1fr; gap: 1.75rem 1.5rem; }
   }
-  .footer-nav a:hover { color: #01f59e; }
 
   .footer-socials {
     display: flex;

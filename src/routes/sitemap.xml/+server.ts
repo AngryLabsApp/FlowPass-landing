@@ -1,6 +1,7 @@
 // src/routes/sitemap.xml/+server.ts
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
+import { disciplinas } from "$lib/data/disciplinas";
 
 export const prerender = true;
 
@@ -11,10 +12,12 @@ export const GET: RequestHandler = async () => {
   const pages = [
     { url: "", priority: "1.0", changefreq: "weekly" },
     { url: "/about", priority: "0.8", changefreq: "monthly" },
-    { url: "/agenda", priority: "0.7", changefreq: "monthly" },
     { url: "/terminos", priority: "0.3", changefreq: "monthly" },
     { url: "/alumnos/terminos", priority: "0.3", changefreq: "monthly" },
     { url: "/privacidad", priority: "0.3", changefreq: "monthly" },
+    { url: "/contacto", priority: "0.6", changefreq: "monthly" },
+    { url: "/software", priority: "0.7", changefreq: "monthly" },
+    ...disciplinas.map((d) => ({ url: `/software/${d.slug}`, priority: "0.7", changefreq: "monthly" })),
     // Añade aquí más páginas cuando las tengas
     // { url: "/blog", priority: "0.8", changefreq: "weekly" },
     // { url: "/precios", priority: "0.9", changefreq: "monthly" },

@@ -2,6 +2,7 @@
   import { privacySEO } from "$lib/config/seo";
   import LegalLayout from "$lib/components/legal/LegalLayout.svelte";
   import LegalContact from "$lib/components/legal/LegalContact.svelte";
+  import { siteConfig } from "$lib/config/site";
 
   const sections = [
     { id: "alcance", num: "1", title: "A quién aplica" },
@@ -75,6 +76,10 @@
     <p>
       Para los datos de las propias academias (por ejemplo, el dueño o el personal que usa el
       panel), FlowPass es el responsable.
+    </p>
+    <p>
+      FlowPass es operado por <strong>{siteConfig.legal.name}</strong>, RUC {siteConfig.legal.ruc},
+      con domicilio fiscal en {siteConfig.legal.address}.
     </p>
   </section>
 

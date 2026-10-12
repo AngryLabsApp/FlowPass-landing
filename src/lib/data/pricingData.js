@@ -175,26 +175,28 @@ export const plans = [
     maxActiveStudents: 30,
     registeredStudents: "Hasta 150 alumnos registrados",
     highlight: false,
-    freeTrial: true,
+    freeTrial: false,
     flowyBeta: true,
     prices: {
       mensual: { PE: 120, MX: 600, US: 40 },
       trimestral: { PE: 110, MX: 550, US: 35 },
       anual: { PE: 95, MX: 475, US: 30 },
     },
+    teamSeats: 5, // null = ilimitados
+    extraSiteFee: { PE: 30 }, // por sede adicional de ESTE tamaño; MX/US a consultar
     whatsappIncluded: { total: 60, auto: 30, manual: 30 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
-      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Hasta 5 accesos para tu equipo", included: true },
       {
         label: "Flowy · asistente de IA que conoce tu negocio (beta)",
         included: true,
       },
       { label: "Soporte Esencial", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
-      { label: "Varias sedes en un solo panel", included: false },
+      { label: "Sedes adicionales desde S/30 por sede", included: true },
     ],
   },
   {
@@ -205,21 +207,23 @@ export const plans = [
     maxActiveStudents: 80,
     registeredStudents: "Hasta 400 alumnos registrados",
     highlight: false,
-    freeTrial: true,
+    freeTrial: false,
     flowyBeta: true,
     prices: {
       mensual: { PE: 240, MX: 1200, US: 70 },
       trimestral: { PE: 215, MX: 1075, US: 65 },
       anual: { PE: 190, MX: 950, US: 55 },
     },
+    teamSeats: 10, // null = ilimitados
+    extraSiteFee: { PE: 50 }, // por sede adicional de ESTE tamaño; MX/US a consultar
     whatsappIncluded: { total: 160, auto: 80, manual: 80 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
-      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Hasta 10 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Sedes adicionales desde S/30 por sede", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte Plus", included: true },
     ],
@@ -232,21 +236,23 @@ export const plans = [
     maxActiveStudents: 200,
     registeredStudents: "Hasta 800 alumnos registrados",
     highlight: true,
-    freeTrial: true,
+    freeTrial: false,
     flowyBeta: true,
     prices: {
       mensual: { PE: 350, MX: 1750, US: 110 },
       trimestral: { PE: 315, MX: 1575, US: 100 },
       anual: { PE: 280, MX: 1400, US: 90 },
     },
+    teamSeats: 15, // null = ilimitados
+    extraSiteFee: { PE: 100 }, // por sede adicional de ESTE tamaño; MX/US a consultar
     whatsappIncluded: { total: 400, auto: 200, manual: 200 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
-      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Hasta 15 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Sedes adicionales desde S/30 por sede", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte Pro", included: true },
     ],
@@ -259,13 +265,15 @@ export const plans = [
     maxActiveStudents: 350,
     registeredStudents: "Hasta 1250 alumnos registrados",
     highlight: false,
-    freeTrial: true,
+    freeTrial: false,
     flowyBeta: true,
     prices: {
       mensual: { PE: 500, MX: 2500, US: 150 },
       trimestral: { PE: 450, MX: 2250, US: 135 },
       anual: { PE: 400, MX: 2000, US: 120 },
     },
+    teamSeats: null, // null = ilimitados
+    extraSiteFee: { PE: 200 }, // por sede adicional de ESTE tamaño; MX/US a consultar
     whatsappIncluded: { total: 700, auto: 350, manual: 350 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
@@ -273,7 +281,7 @@ export const plans = [
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Accesos ilimitados para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Varias sedes en un solo panel — incluidas sin costo extra", included: true },
+      { label: "Sedes adicionales desde S/30 por sede", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte VIP", included: true },
     ],
@@ -329,6 +337,26 @@ export const whatsappPackages = [
     highlight: false,
     prices: { PE: 100, MX: 500, US: 30 },//Costo unitario: 0.25
   },
+];
+
+/**
+ * Sede adicional: cada sede es 100% independiente (sus propios alumnos,
+ * mensajes y accesos) y paga según SU tamaño, no el del plan principal.
+ * Una sede chica suma desde S/30 aunque la principal sea Full.
+ * Precios MX/US: pendientes (se muestran "a consultar").
+ */
+export const EXTRA_SITE_FROM = { PE: 30 };
+
+/**
+ * Facturación electrónica SUNAT — solo Perú, independiente del plan.
+ * Packs mensuales de comprobantes (boletas y facturas).
+ * @type {Array<{vouchers: number, prices: {PE: number}}>}
+ */
+export const sunatPackages = [
+  { vouchers: 50, prices: { PE: 30 } },
+  { vouchers: 150, prices: { PE: 50 } },
+  { vouchers: 250, prices: { PE: 60 } },
+  { vouchers: 500, prices: { PE: 70 } },
 ];
 
 /** @type {string[]} */

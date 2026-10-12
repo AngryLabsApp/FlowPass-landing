@@ -976,8 +976,7 @@
   }
 
   .grid > .field > input,
-  .grid > .field > select,
-  .grid > .field > textarea {
+  .grid > .field > select {
     margin-top: auto;
   }
 

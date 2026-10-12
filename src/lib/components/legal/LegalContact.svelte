@@ -12,7 +12,15 @@
     <span class="contact-value">{siteConfig.phoneFormatted}</span>
   </a>
   <div class="contact-row static">
-    <span class="contact-label">Ubicación</span>
-    <span class="contact-value">Lima, Perú</span>
+    <span class="contact-label">Razón social</span>
+    <span class="contact-value">{siteConfig.legal.name}</span>
+  </div>
+  <div class="contact-row static">
+    <span class="contact-label">RUC</span>
+    <span class="contact-value">{siteConfig.legal.ruc}</span>
+  </div>
+  <div class="contact-row static">
+    <span class="contact-label">Domicilio fiscal</span>
+    <span class="contact-value">{siteConfig.legal.address}</span>
   </div>
 </address>

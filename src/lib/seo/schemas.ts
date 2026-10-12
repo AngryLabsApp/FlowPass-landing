@@ -20,6 +20,8 @@ function organizationSchema() {
     "@type": "Organization",
     "@id": ORG_ID,
     name: siteConfig.name,
+    legalName: siteConfig.legal.name,
+    taxID: siteConfig.legal.ruc,
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
@@ -31,7 +33,8 @@ function organizationSchema() {
     address: {
       "@type": "PostalAddress",
       addressCountry: siteConfig.location.country,
-      addressLocality: "Lima",
+      streetAddress: siteConfig.legal.streetAddress,
+      addressLocality: siteConfig.legal.district,
       addressRegion: "Lima"
     },
     areaServed: [
@@ -43,14 +46,25 @@ function organizationSchema() {
       { "@type": "Country", name: "Ecuador" },
       { "@type": "Country", name: "Bolivia" }
     ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: `+${siteConfig.phone}`,
-      contactType: "customer service",
-      email: siteConfig.email,
-      areaServed: ["PE", "MX", "CO", "CL", "AR", "EC", "BO"],
-      availableLanguage: ["Spanish"]
-    },
+    // Un punto de contacto por país donde tenemos equipo; Perú atiende al resto de LatAm.
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: `+${siteConfig.phones.PE.raw}`,
+        contactType: "customer service",
+        email: siteConfig.email,
+        areaServed: ["PE", "CO", "CL", "AR", "EC", "BO"],
+        availableLanguage: ["Spanish"]
+      },
+      {
+        "@type": "ContactPoint",
+        telephone: `+${siteConfig.phones.MX.raw}`,
+        contactType: "customer service",
+        email: siteConfig.email,
+        areaServed: "MX",
+        availableLanguage: ["Spanish"]
+      }
+    ],
     founder: siteConfig.founders.map((f) => ({
       "@type": "Person",
       name: f.name,
@@ -106,7 +120,7 @@ function offersFromPlans() {
         }
       },
       availability: "https://schema.org/InStock",
-      url: `${siteConfig.url}/#pricing`,
+      url: `${siteConfig.url}/#precios`,
       eligibleRegion: [
         { "@type": "Country", name: "Perú" },
         { "@type": "Country", name: "México" }
@@ -123,7 +137,7 @@ function offersFromPlans() {
       offerCount: String(priceableOffers.length),
       offers: priceableOffers,
       availability: "https://schema.org/InStock",
-      url: `${siteConfig.url}/#pricing`
+      url: `${siteConfig.url}/#precios`
     }
   };
 }
@@ -153,10 +167,12 @@ function softwareApplicationSchema(currentDate: string) {
       "Control de asistencia con QR",
       "Cobros y facturación",
       "Recordatorios automáticos por WhatsApp (API oficial Meta)",
-      "Multi-sede en un solo panel",
+      "Multi-sede en un solo panel (sedes adicionales desde S/30)",
       "Ventas, ingresos, gastos e inventario",
       "Reportes y estadísticas descargables",
-      "Accesos ilimitados para el equipo",
+      "Accesos para el equipo según plan (5, 10, 15 o ilimitados)",
+      "Portal del alumno con la marca del negocio",
+      "Facturación electrónica SUNAT (Perú)",
       "Flowy — asistente de IA propio (beta)"
     ].join(", "),
     permissions: "online",
@@ -168,27 +184,8 @@ function softwareApplicationSchema(currentDate: string) {
     },
     isAccessibleForFree: false,
     offers: aggregate,
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "24",
-      bestRating: "5",
-      worstRating: "1"
-    },
-    review: {
-      "@type": "Review",
-      reviewRating: {
-        "@type": "Rating",
-        ratingValue: "5",
-        bestRating: "5"
-      },
-      author: {
-        "@type": "Organization",
-        name: "Academia de Danza Ritmo"
-      },
-      reviewBody:
-        "FlowPass nos ha ayudado a organizar todos nuestros alumnos y pagos. El soporte es excelente."
-    },
+    // Sin aggregateRating/review: Google penaliza reseñas propias que no se ven
+    // en la página. Agregar solo con reseñas reales y visibles (Google, Capterra).
     publisher: { "@id": ORG_ID },
     author: { "@id": ORG_ID },
     provider: { "@id": ORG_ID },

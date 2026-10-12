@@ -102,8 +102,11 @@ FlowPass es una plataforma web (SaaS multi-tenant) que centraliza la operación 
 - Cobros, ventas, ingresos, gastos e inventario.
 - Recordatorios automáticos de pago vía WhatsApp.
 - Reportes descargables y panel de estadísticas.
-- Accesos ilimitados para el equipo del negocio.
-- Multi-sede desde el plan Lite (sin costo extra por sede).
+- Accesos para el equipo según plan: 5 (Pocket), 10 (Lite), 15 (Full) o ilimitados (Ultra).
+- Uso real (octubre 2026): más de 40 academias activas en Perú y México, más de 7,700 alumnos gestionados y más de 78 mil asistencias registradas en 2026.
+- Multi-sede: cada sede adicional es independiente y se paga según su tamaño, desde S/30 al mes.
+- Portal del alumno con la marca del negocio (asistencia, plan y pase de acceso con QR).
+- Facturación electrónica SUNAT en Perú: 50 comprobantes S/30, 150 S/50, 250 S/60, 500 S/70 al mes.
 - Flowy: asistente de IA que conoce el negocio (beta).
 
 No requiere instalación: funciona en cualquier navegador moderno (Chrome, Firefox, Safari, Edge) desde computadora, tablet o celular.
@@ -124,7 +127,7 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - Suscripción mensual sin contrato de permanencia. FlowPass no amarra al cliente a ningún plan: el propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel, y puede retomar después sin problemas.
 - Precios segmentados por número de alumnos activos.
 - Ciclos: mensual, trimestral (descuento) y anual (mayor descuento).
-- Prueba gratuita disponible; sin tarjeta para empezar en planes self-serve.
+- No hay período de prueba gratuito: antes de contratar se agenda una demo 1:1 y se configura la plataforma con el negocio.
 - Asesoría 1:1 gratuita antes de suscribirse.
 - Disponible en Perú (PEN), México (MXN) y con precio USD para otros mercados.
 
@@ -132,8 +135,8 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - **Sin permanencia, cliente en control:** el negocio activa, pausa o cancela su suscripción cuando quiera. No hay letra chica ni contratos que amarren.
 - **WhatsApp con conexión oficial Meta (API de WhatsApp Business):** FlowPass envía los recordatorios de pago a través de la API oficial de WhatsApp Business de Meta. Esto garantiza entregabilidad, evita bloqueos y baneos, y ofrece plantillas aprobadas. Muchas soluciones del mercado usan integraciones no oficiales (web scraping o WhatsApp Web) que Meta puede bloquear en cualquier momento. Estado actual: los mensajes salen desde el número oficial de FlowPass; próximamente cada negocio podrá configurar y enviar desde su propio número verificado.
 - **Flowy — asistente de IA propio (beta):** analiza los datos del negocio (asistencia, cobros, membresías) y responde preguntas en lenguaje natural para el dueño.
-- **Multi-sede sin costo extra desde el plan Lite:** otras plataformas cobran por sede adicional; FlowPass las incluye.
-- **Accesos ilimitados para el equipo del negocio.**
+- **Multi-sede flexible:** cada sede adicional paga según su propio tamaño (desde S/30), no según el plan de la sede principal.
+- **Portal del alumno con tu marca:** el alumno entra con su número por un link de WhatsApp, sin descargar apps.
 - **Soporte cercano y personalizado:** acceso directo a promotores/vendedores del equipo FlowPass, sin ticketing frío.
 
 ## Planes disponibles
