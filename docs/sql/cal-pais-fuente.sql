@@ -1,6 +1,8 @@
--- País de la reunión de Cal.com → leads.pais
--- Correr en Supabase FlowPass-CRM (SQL Editor) DESPUÉS de crear en Cal.com la pregunta
--- "País" (tipo Seleccionar, identificador `pais`, opciones Perú / México / Otro).
+-- País y "¿Cómo nos conociste?" de la reunión de Cal.com → leads.pais y leads.fuente
+-- Correr en Supabase FlowPass-CRM (SQL Editor) DESPUÉS de crear en Cal.com las preguntas:
+--   · "País"  (Seleccionar, identificador `pais`,   opciones Perú / México / Otro)
+--   · "¿Cómo nos conociste?" (Seleccionar, identificador `fuente`, mismas opciones que la web:
+--      Vi un anuncio / Me lo recomendó alguien / Busqué en Google / Otro)
 
 -- 1) extract_cal_booking_data: agrega 'pais' (respuesta de la pregunta). Resto sin cambios.
 CREATE OR REPLACE FUNCTION public.extract_cal_booking_data(payload jsonb)
@@ -37,6 +39,8 @@ BEGIN
         'pais_telefono', public.get_country_from_phone(v_phone),
         -- NUEVO: país que eligió en la reserva (Perú / México / Otro)
         'pais', payload->'body'->'payload'->'responses'->'pais'->>'value',
+        -- NUEVO: cómo nos conoció (mismas opciones que el formulario de la web)
+        'fuente', payload->'body'->'payload'->'responses'->'fuente'->>'value',
         'academia', payload->'body'->'payload'->'responses'->'Nombre-de-tu-academia'->>'value',
         'tipo_academia', payload->'body'->'payload'->'responses'->'Tipo-de-academia'->>'value',
         'cantidad_alumnos', payload->'body'->'payload'->'responses'->'Tama-o-de-tu-academia'->>'value',
@@ -72,6 +76,8 @@ DECLARE
     v_academia text := NULLIF(trim(data->>'academia'), '');
     v_pais_telefono text := data->>'pais_telefono';
     v_pais text := COALESCE(NULLIF(trim(data->>'pais'), ''), data->>'pais_telefono');
+    -- `fuente` es obligatoria en leads: si no respondió, queda 'cal.com' como antes
+    v_fuente text := COALESCE(NULLIF(trim(data->>'fuente'), ''), 'cal.com');
     v_timezone text := data->>'attendee_timezone';
     v_tipo_academia text := data->>'tipo_academia';
     v_alumnos text := data->>'cantidad_alumnos';
@@ -91,6 +97,7 @@ BEGIN
                 negocio = COALESCE(negocio, v_academia), tipo_academia = COALESCE(tipo_academia, v_tipo_academia),
                 alumnos = COALESCE(alumnos, v_alumnos), gestion_actual = COALESCE(gestion_actual, v_gestion_actual),
                 pais_telefono = COALESCE(pais_telefono, v_pais_telefono), pais = COALESCE(pais, v_pais),
+                fuente = CASE WHEN fuente IN ('cal.com', 'Otro') AND v_fuente <> 'cal.com' THEN v_fuente ELSE fuente END,
                 preferred_timezone = COALESCE(preferred_timezone, v_timezone),
                 submission_count = submission_count + 1, updated_at = now()
             WHERE id = v_lead.id RETURNING * INTO v_lead;
@@ -108,6 +115,7 @@ BEGIN
                 tipo_academia = COALESCE(tipo_academia, v_tipo_academia), alumnos = COALESCE(alumnos, v_alumnos),
                 gestion_actual = COALESCE(gestion_actual, v_gestion_actual),
                 pais_telefono = COALESCE(pais_telefono, v_pais_telefono), pais = COALESCE(pais, v_pais),
+                fuente = CASE WHEN fuente IN ('cal.com', 'Otro') AND v_fuente <> 'cal.com' THEN v_fuente ELSE fuente END,
                 preferred_timezone = COALESCE(preferred_timezone, v_timezone),
                 submission_count = submission_count + 1, updated_at = now()
             WHERE id = v_lead.id RETURNING * INTO v_lead;
@@ -122,7 +130,7 @@ BEGIN
     INSERT INTO public.leads (nombre, apellido, email, telefono, negocio, tipo_academia, alumnos, gestion_actual,
                               pais_telefono, pais, preferred_timezone, fuente, origen)
     VALUES (COALESCE(v_nombre,'Sin nombre'), COALESCE(v_apellido,''), v_email, v_telefono, v_academia, v_tipo_academia,
-            v_alumnos, v_gestion_actual, v_pais_telefono, v_pais, v_timezone, 'cal.com', 'cal_com')
+            v_alumnos, v_gestion_actual, v_pais_telefono, v_pais, v_timezone, v_fuente, 'cal_com')
     RETURNING * INTO v_lead;
     RETURN jsonb_build_object('action','created','lead_id',v_lead.id,'submission_count',v_lead.submission_count);
 END;
