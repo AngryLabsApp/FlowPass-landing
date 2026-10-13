@@ -48,6 +48,14 @@
     >
       <li>
         <a
+          href="/"
+          class="hover:text-white transition duration-200 ease-in-out"
+          >Inicio</a
+        >
+      </li>
+
+      <li>
+        <a
           href="/#features"
           class="hover:text-white transition duration-200 ease-in-out"
           >Funciones</a
@@ -176,6 +184,11 @@
       aria-label="Menú móvil FlowPass"
       class="lg:hidden glass-nav mt-2 px-4 py-3 rounded-2xl animate-slideDown text-[15px]"
     >
+      <a
+        href="/"
+        class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
+        onclick={() => (isOpen = false)}>Inicio</a
+      >
       <a
         href="/#features"
         class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
