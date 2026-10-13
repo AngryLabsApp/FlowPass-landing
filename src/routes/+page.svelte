@@ -58,6 +58,8 @@
 
 <!-- El Navbar vive en +layout.svelte -->
 <div class="home">
+  <!-- Orden: ¿es para mí? → prueba (cifras) → problema → solución → portal
+       → testimonios → cómo empezar → precio → dudas → acción -->
   <HomeHero />
   <HomeIntro />
   <BeforeAfter />

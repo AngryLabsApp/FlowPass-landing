@@ -9,6 +9,8 @@
   import HomePricing from '$lib/components/home/HomePricing.svelte';
   import HomeSteps from '$lib/components/home/HomeSteps.svelte';
   import PlatformTabs from '$lib/components/home/PlatformTabs.svelte';
+  import HomeIntro from '$lib/components/home/HomeIntro.svelte';
+  import Testimonials from '$lib/components/Testimonials.svelte';
 
   // Portada de cada disciplina: src/lib/assets/images/disciplinas/<slug>.webp
   const fotos = import.meta.glob('$lib/assets/images/disciplinas/*.webp', { eager: true, import: 'default' }) as Record<string, string>;
@@ -84,6 +86,10 @@
     </div>
   </header>
 
+  <!-- Orden: ¿es para mí? → prueba (cifras) → problema → funciones → testimonios
+       → cómo empezar → precio → dudas → acción -->
+  <HomeIntro />
+
   <section class="wrap" aria-labelledby="vs-title">
     <h2 id="vs-title" class="sec-title">Lo que hoy te quita tiempo, resuelto.</h2>
     <BookFlip labels={['Hoy', 'Con FlowPass']} groupLabel="Ver hoy o con FlowPass" class="disc-vs">
@@ -106,6 +112,9 @@
   {#key d.slug}
     <PlatformTabs who={d.who} title={`Todas las funciones para ${d.negocio}.`} />
   {/key}
+
+  <!-- Prueba social justo después de ver lo que hace -->
+  <Testimonials />
 
   <!-- Precios: siempre en cada página por disciplina (misma sección que la home) -->
   <HomeSteps />
