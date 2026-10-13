@@ -8,7 +8,7 @@ create table if not exists public.support_tickets (
   updated_at timestamptz not null default now(),
   nombre text not null,
   email text not null,
-  telefono text,                      -- E.164, opcional
+  telefono text not null,             -- E.164 (+51..., +52...)
   mensaje text not null,
   status text not null default 'open'
     check (status in ('open', 'in_progress', 'resolved', 'closed')),

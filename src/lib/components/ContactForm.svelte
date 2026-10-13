@@ -23,8 +23,8 @@
   const emailOk = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()));
   // Sin "+" se asume Perú; acepta "+52 55..." para México y otros países
   const phone = $derived(parsePhoneNumberFromString(telefono.trim(), 'PE'));
-  // Opcional: si lo escribe, debe ser un número válido
-  const phoneOk = $derived(!telefono.trim() || !!phone?.isValid());
+  // Obligatorio: es el canal para devolverle la llamada
+  const phoneOk = $derived(!!phone?.isValid());
   const valid = $derived(nombre.trim().length >= 2 && emailOk && phoneOk && mensaje.trim().length >= 5);
 
   async function submit(e: SubmitEvent) {
@@ -47,7 +47,7 @@
         body: JSON.stringify({
           nombre: nombre.trim(),
           email: email.trim(),
-          telefono: telefono.trim() && phone ? phone.format('E.164') : null,
+          telefono: phone!.format('E.164'),
           mensaje: mensaje.trim(),
           pagina: location.pathname,
           referrer: document.referrer,
@@ -80,8 +80,8 @@
       <input name="email" type="email" autocomplete="email" inputmode="email" required bind:value={email} aria-invalid={touched && !emailOk} placeholder="tu@correo.com" />
     </label>
     <label>
-      <span>WhatsApp <small>(opcional)</small></span>
-      <input name="telefono" type="tel" autocomplete="tel" inputmode="tel" bind:value={telefono} aria-invalid={touched && !phoneOk} placeholder="+51 999 888 777" />
+      <span>WhatsApp <i aria-hidden="true">*</i></span>
+      <input name="telefono" type="tel" autocomplete="tel" inputmode="tel" required bind:value={telefono} aria-invalid={touched && !phoneOk} placeholder="+51 999 888 777" />
     </label>
     <label>
       <span>Mensaje <i aria-hidden="true">*</i></span>
@@ -90,7 +90,7 @@
     <!-- Honeypot anti-spam -->
     <label class="hp" aria-hidden="true">Empresa <input tabindex="-1" autocomplete="off" bind:value={empresa} /></label>
 
-    {#if touched && !valid}<p class="err" role="alert">Completa tu nombre, un correo válido y tu mensaje. Si dejas tu WhatsApp, inclúyelo con código de país si no es de Perú.</p>{/if}
+    {#if touched && !valid}<p class="err" role="alert">Completa tu nombre, un correo válido, tu WhatsApp (con código de país si no es de Perú) y tu mensaje.</p>{/if}
     {#if status === 'error'}<p class="err" role="alert">{errorMsg}</p>{/if}
 
     <button type="submit" class="btn send" disabled={status === 'loading'}>
