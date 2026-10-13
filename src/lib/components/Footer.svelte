@@ -47,6 +47,7 @@
         <div class="footer-contact">
           <p class="footer-h">Contacto</p>
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          <a href={`mailto:${siteConfig.emailSoporte}`}>{siteConfig.emailSoporte}</a>
           <a href={siteConfig.phones.PE.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.PE.flag} {siteConfig.phones.PE.formatted}</a>
           <a href={siteConfig.phones.MX.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.MX.flag} {siteConfig.phones.MX.formatted}</a>
           <a href="/contacto">¿Tuviste un problema? Soporte →</a>
