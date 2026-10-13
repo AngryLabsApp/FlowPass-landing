@@ -1,6 +1,6 @@
 # Compila la landing en cada PR y en cada push a main.
 # Si el build falla (error de Svelte, import roto, página que no se pre-renderiza), el PR se marca en rojo.
-# En main, si compila, le pide a Coolify que publique (solo si existen los secretos COOLIFY_*).
+# La publicación la hace Coolify con Auto Deploy al mergear a main.
 name: CI
 
 on:
@@ -37,21 +37,3 @@ jobs:
           PUBLIC_N8N_LEADS_WEBHOOK: https://example.com/webhook/leads
           PUBLIC_N8N_SUPPORT_WEBHOOK: https://example.com/webhook/soporte
 
-  deploy:
-    # Solo en main y solo si el build salió bien
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Publicar en Coolify
-        env:
-          COOLIFY_WEBHOOK: ${{ secrets.COOLIFY_WEBHOOK }}
-          COOLIFY_TOKEN: ${{ secrets.COOLIFY_TOKEN }}
-        run: |
-          if [ -z "$COOLIFY_WEBHOOK" ] || [ -z "$COOLIFY_TOKEN" ]; then
-            echo "Faltan los secretos COOLIFY_WEBHOOK / COOLIFY_TOKEN: no se publica desde CI."
-            exit 0
-          fi
-          curl --fail --silent --show-error -X GET "$COOLIFY_WEBHOOK" \
-            -H "Authorization: Bearer $COOLIFY_TOKEN"
