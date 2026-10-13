@@ -77,7 +77,7 @@
         <p class="sub">{d.sub}</p>
         <div class="ctas">
           <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}`)}>
-            Agenda 20 minutos
+            Agenda 15 minutos
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
           </a>
           <a class="btn pill-white" href="#precios">Ver precios</a>
@@ -138,9 +138,9 @@
   <section class="wrap">
     <div class="close">
       <h2>Mira tu negocio <span>funcionando en FlowPass.</span></h2>
-      <p>Una llamada de 20 minutos, con tus planes y tus precios reales.</p>
+      <p>Una llamada de 15 minutos, con tus planes y tus precios reales.</p>
       <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}_cierre`)}>
-        Agenda 20 minutos
+        Agenda 15 minutos
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
       </a>
     </div>

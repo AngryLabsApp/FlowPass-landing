@@ -20,7 +20,7 @@
   <title>Agenda tu llamada | FlowPass</title>
   <meta
     name="description"
-    content="Elige día y hora para una llamada de 20 minutos con FlowPass: vemos tu negocio funcionando con tus planes y precios reales. Gratis y sin compromiso."
+    content="Elige día y hora para una llamada de 15 minutos con FlowPass: vemos tu negocio funcionando con tus planes y precios reales. Gratis y sin compromiso."
   />
   <meta name="robots" content="noindex,follow" />
   <link rel="canonical" href={`${siteConfig.url}/agenda`} />
@@ -33,7 +33,7 @@
     <!-- Prueba social sutil antes de elegir horario -->
     <div class="logos"><LogoMarquee compact title="+50 academias ya ordenan su negocio con FlowPass" /></div>
     <header class="head">
-      <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
+      <p class="eyebrow">15 minutos · Google Meet · Gratis</p>
       <h1>Elige el día y la hora <span>que te acomode.</span></h1>
       <ul class="what">
         <li>Asesoría con un caso como el tuyo</li>

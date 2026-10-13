@@ -31,7 +31,7 @@
       <h1 id="ct-title">¿Tuviste algún problema? Escríbenos.</h1>
       <p class="lead">Consultas, soporte o reclamos. Te respondemos en menos de 24 horas hábiles.</p>
       <ContactForm />
-      <a class="to-demo" href="/agenda">¿Quieres conocer FlowPass? <b>Agenda una asesoría gratis de 20 minutos →</b></a>
+      <a class="to-demo" href="/agenda">¿Quieres conocer FlowPass? <b>Agenda una asesoría gratis de 15 minutos →</b></a>
     </section>
 
     <aside class="info" aria-label="Datos de contacto y de la empresa">

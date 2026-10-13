@@ -4,7 +4,7 @@
 
   // Cómo empezar: 3 pasos cortos, justo antes de precios.
   const steps = [
-    { n: '1', title: 'Habla con un asesor', text: 'Una llamada de 20 minutos para ver tu negocio en FlowPass.' },
+    { n: '1', title: 'Habla con un asesor', text: 'Una llamada de 15 minutos para ver tu negocio en FlowPass.' },
     { n: '2', title: 'Elige tu plan', text: 'Según cuántos alumnos activos tienes. Sin permanencia.' },
     { n: '3', title: 'Empieza en 15 minutos', text: 'Te dejamos la plataforma 100% lista para usar.' }
   ];
