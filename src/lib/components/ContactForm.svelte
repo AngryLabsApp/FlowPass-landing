@@ -1,9 +1,10 @@
 <script lang="ts">
   import { env } from '$env/dynamic/public';
-  import { parsePhoneNumberFromString } from 'libphonenumber-js';
+  import { parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js';
 
   /**
-   * Formulario de soporte y reclamos (nombre, correo, mensaje), distinto del de agenda.
+   * Formulario de soporte y reclamos, distinto del de agenda: nombre, correo, WhatsApp,
+   * academia, país, rol (dueño / trabajador / alumno) y mensaje.
    * Lo pide dLocal Go: un canal para que cualquier persona, sobre todo un cliente que ya
    * pagó, pueda escribir un problema o reclamo.
    * Va a su propio webhook de n8n (PUBLIC_N8N_SUPPORT_WEBHOOK) y a su propia tabla
@@ -15,17 +16,28 @@
   let email = $state('');
   let telefono = $state('');
   let mensaje = $state('');
+  let academia = $state('');
+  let pais = $state('');
+  let rol = $state('');
   let empresa = $state(''); // honeypot: los humanos no lo ven
   let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
   let errorMsg = $state('');
   let touched = $state(false);
 
   const emailOk = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()));
-  // Sin "+" se asume Perú; acepta "+52 55..." para México y otros países
-  const phone = $derived(parsePhoneNumberFromString(telefono.trim(), 'PE'));
+  const PAISES = [
+    { id: 'PE', label: 'Perú' },
+    { id: 'MX', label: 'México' },
+    { id: 'OTRO', label: 'Otro país' }
+  ];
+  const ROLES = ['Dueño o administrador', 'Trabajador o profesor', 'Alumno o cliente'];
+  // Sin "+" se asume el país elegido (Perú por defecto); con "+" acepta cualquiera
+  const phone = $derived(parsePhoneNumberFromString(telefono.trim(), (pais === 'MX' ? 'MX' : 'PE') as CountryCode));
   // Obligatorio: es el canal para devolverle la llamada
   const phoneOk = $derived(!!phone?.isValid());
-  const valid = $derived(nombre.trim().length >= 2 && emailOk && phoneOk && mensaje.trim().length >= 5);
+  const valid = $derived(
+    nombre.trim().length >= 2 && emailOk && phoneOk && academia.trim().length >= 2 && !!pais && !!rol && mensaje.trim().length >= 5
+  );
 
   async function submit(e: SubmitEvent) {
     e.preventDefault();
@@ -48,6 +60,9 @@
           nombre: nombre.trim(),
           email: email.trim(),
           telefono: phone!.format('E.164'),
+          academia: academia.trim(),
+          pais: PAISES.find((p) => p.id === pais)?.label ?? pais,
+          rol,
           mensaje: mensaje.trim(),
           pagina: location.pathname,
           referrer: document.referrer,
@@ -67,7 +82,7 @@
   <div class="done" role="status">
     <b>¡Mensaje enviado!</b>
     <p>Te respondemos en menos de 24 horas hábiles, por correo o WhatsApp.</p>
-    <button type="button" class="link" onclick={() => ((status = 'idle'), (nombre = email = telefono = mensaje = ''), (touched = false))}>Enviar otro mensaje</button>
+    <button type="button" class="link" onclick={() => ((status = 'idle'), (nombre = email = telefono = mensaje = academia = pais = rol = ''), (touched = false))}>Enviar otro mensaje</button>
   </div>
 {:else}
   <form class="cf" onsubmit={submit} novalidate>
@@ -84,13 +99,33 @@
       <input name="telefono" type="tel" autocomplete="tel" inputmode="tel" required bind:value={telefono} aria-invalid={touched && !phoneOk} placeholder="+51 999 888 777" />
     </label>
     <label>
+      <span>Nombre de la academia o negocio <i aria-hidden="true">*</i></span>
+      <input name="academia" autocomplete="organization" required bind:value={academia} aria-invalid={touched && academia.trim().length < 2} placeholder="Ej. Academia Ritmo" />
+    </label>
+    <div class="row">
+      <label>
+        <span>País <i aria-hidden="true">*</i></span>
+        <select name="pais" required bind:value={pais} aria-invalid={touched && !pais}>
+          <option value="" disabled>Elige</option>
+          {#each PAISES as p (p.id)}<option value={p.id}>{p.label}</option>{/each}
+        </select>
+      </label>
+      <label>
+        <span>Tú eres <i aria-hidden="true">*</i></span>
+        <select name="rol" required bind:value={rol} aria-invalid={touched && !rol}>
+          <option value="" disabled>Elige</option>
+          {#each ROLES as r (r)}<option value={r}>{r}</option>{/each}
+        </select>
+      </label>
+    </div>
+    <label>
       <span>Mensaje <i aria-hidden="true">*</i></span>
       <textarea name="mensaje" rows="5" required bind:value={mensaje} aria-invalid={touched && mensaje.trim().length < 5} placeholder="Cuéntanos qué pasó o en qué te podemos ayudar"></textarea>
     </label>
     <!-- Honeypot anti-spam -->
     <label class="hp" aria-hidden="true">Empresa <input tabindex="-1" autocomplete="off" bind:value={empresa} /></label>
 
-    {#if touched && !valid}<p class="err" role="alert">Completa tu nombre, un correo válido, tu WhatsApp (con código de país si no es de Perú) y tu mensaje.</p>{/if}
+    {#if touched && !valid}<p class="err" role="alert">Completa todos los campos. Si tu WhatsApp no es de Perú ni México, escríbelo con su código (ej. +57).</p>{/if}
     {#if status === 'error'}<p class="err" role="alert">{errorMsg}</p>{/if}
 
     <button type="submit" class="btn send" disabled={status === 'loading'}>
@@ -103,7 +138,12 @@
   .cf { display: grid; gap: 14px; }
   label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: var(--fg); }
   label i { color: #531dd8; font-style: normal; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 480px) {
+    .row { grid-template-columns: 1fr; }
+  }
   input,
+  select,
   textarea {
     width: 100%;
     font: 400 15px var(--body);
@@ -115,6 +155,7 @@
     resize: vertical;
   }
   input:focus,
+  select:focus,
   textarea:focus { outline: 2px solid #531dd8; outline-offset: 1px; border-color: transparent; }
   [aria-invalid='true'] { border-color: #e5484d; }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }

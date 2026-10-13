@@ -29,3 +29,9 @@ alter table public.support_tickets enable row level security;
 -- Permisos: en proyectos nuevos de Supabase las tablas creadas por SQL no dan acceso
 -- automático a los roles de la API. Solo el backend (service_role, usado por n8n) la usa.
 grant select, insert, update on public.support_tickets to service_role;
+
+-- Datos para saber quién escribe (se agregaron después de crear la tabla)
+alter table public.support_tickets
+  add column if not exists academia text,
+  add column if not exists pais text,
+  add column if not exists rol text;   -- 'Dueño o administrador' | 'Trabajador o profesor' | 'Alumno o cliente'
