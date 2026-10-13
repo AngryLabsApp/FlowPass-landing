@@ -9,6 +9,8 @@
   import Testimonials from "$lib/components/Testimonials.svelte";
   import HomePricing from "$lib/components/home/HomePricing.svelte";
   import HomeSteps from "$lib/components/home/HomeSteps.svelte";
+  import HomeTeam from "$lib/components/home/HomeTeam.svelte";
+  import HomeSecurity from "$lib/components/home/HomeSecurity.svelte";
   import HomeFAQ from "$lib/components/home/HomeFAQ.svelte";
   import HomeClose from "$lib/components/home/HomeClose.svelte";
   import Footer from "$lib/components/Footer.svelte";
@@ -59,15 +61,17 @@
 <!-- El Navbar vive en +layout.svelte -->
 <div class="home">
   <!-- Orden: ¿es para mí? → prueba (cifras) → problema → solución → portal
-       → testimonios → cómo empezar → precio → dudas → acción -->
+       → testimonios → equipo → cómo empezar → precio → seguridad → dudas → acción -->
   <HomeHero />
   <HomeIntro />
   <BeforeAfter />
   <PlatformTabs />
   <StudentPortal />
   <Testimonials />
+  <HomeTeam />
   <HomeSteps />
   <HomePricing />
+  <HomeSecurity />
   <HomeFAQ />
   <HomeClose />
 </div>
