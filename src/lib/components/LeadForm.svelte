@@ -966,6 +966,8 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
+    /* Cada campo arriba: un mensaje de error en uno no desalinea al de al lado */
+    align-items: start;
   }
 
   .field {
@@ -975,10 +977,6 @@
     min-width: 0;
   }
 
-  .grid > .field > input,
-  .grid > .field > select {
-    margin-top: auto;
-  }
 
   .field--full {
     grid-column: 1 / -1;
