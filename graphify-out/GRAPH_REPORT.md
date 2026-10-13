@@ -1,16 +1,16 @@
 # Graph Report - FlowPass-landing  (2026-10-12)
 
 ## Corpus Check
-- 74 files · ~285,464 words
+- 76 files · ~286,082 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 344 nodes · 435 edges · 32 communities (25 shown, 7 thin omitted)
+- 347 nodes · 433 edges · 33 communities (26 shown, 7 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `bbf34a6f`
+- Built from commit: `bbe815d4`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,7 @@
 - devDependencies
 - Sistema de Leads — FlowPass
 - schemas.ts
-- usePwaInstall.svelte.ts
+- track.ts
 - PricingSection.svelte
 - pricingData.js
 - compilerOptions
@@ -29,7 +29,7 @@
 - package.json
 - sv
 - PWA Install — Temporal
-- track.ts
+- WaCountryStore
 - app.d.ts
 - service-worker.ts
 - prerender
@@ -37,7 +37,7 @@
 - tailwind.config.js
 - Rediseño de la landing — archivos de trabajo
 - prerender
-- WaCountryStore
+- routes/+page.svelte
 
 ## God Nodes (most connected - your core abstractions)
 1. `FlowPass CRM V1 — Dev Spec (Fase 1)` - 14 edges
@@ -58,11 +58,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (32 total, 7 thin omitted)
+## Communities (33 total, 7 thin omitted)
 
 ### Community 0 - "site.ts"
-Cohesion: 0.06
-Nodes (22): socials, aboutSEO, contactSEO, defaultSEO, homeSEO, privacySEO, SEOPage, studentTermsSEO (+14 more)
+Cohesion: 0.07
+Nodes (21): socials, aboutSEO, contactSEO, defaultSEO, privacySEO, SEOPage, studentTermsSEO, termsSEO (+13 more)
 
 ### Community 1 - "FlowPass CRM V1 — Dev Spec (Fase 1)"
 Cohesion: 0.06
@@ -81,12 +81,12 @@ Cohesion: 0.09
 Nodes (21): 10. Roadmap simplificado, 1. ¿Qué estamos construyendo?, 2. Herramientas que usamos, 3. Decisiones tomadas (no las re-discutas), 4. Schema de la tabla `leads` en Supabase, 5. Tareas pendientes (checklist), 6. Lógica de `priority` (calculada en n8n), 7. Stack de eventos de tracking (Pixel / GA) (+13 more)
 
 ### Community 5 - "schemas.ts"
-Cohesion: 0.15
-Nodes (18): plans, whatsappPackages, faqMainEntity, breadcrumbSchema(), buildAboutGraph(), buildHomeGraph(), faqPageSchema(), offersFromPlans() (+10 more)
+Cohesion: 0.14
+Nodes (19): homeSEO, plans, whatsappPackages, faqMainEntity, breadcrumbSchema(), buildAboutGraph(), buildHomeGraph(), faqPageSchema() (+11 more)
 
-### Community 6 - "usePwaInstall.svelte.ts"
-Cohesion: 0.20
-Nodes (3): BIPEvent, pwaInstall, PwaInstallState
+### Community 6 - "track.ts"
+Cohesion: 0.10
+Nodes (14): BIPEvent, pwaInstall, PwaInstallState, FbqArgs, fire(), GtagArgs, trackContact(), trackEmailClick() (+6 more)
 
 ### Community 7 - "PricingSection.svelte"
 Cohesion: 0.25
@@ -116,13 +116,13 @@ Nodes (4): Building, Creating a project, Developing, sv
 Cohesion: 0.40
 Nodes (4): Contenido, Cómo retirar todo cuando salga la app nativa, Cómo se conecta al resto del proyecto, PWA Install — Temporal
 
-### Community 14 - "track.ts"
-Cohesion: 0.08
-Nodes (18): clientLogos, homeStats, FbqArgs, fire(), GtagArgs, trackContact(), trackEmailClick(), trackLead() (+10 more)
-
 ### Community 28 - "Rediseño de la landing — archivos de trabajo"
 Cohesion: 0.29
 Nodes (6): Decisiones tomadas, Hallazgos en las fuentes de marca, Pendiente, Qué hay, Rediseño de la landing — archivos de trabajo, Regenerar y republicar
+
+### Community 31 - "routes/+page.svelte"
+Cohesion: 0.09
+Nodes (7): clientLogos, homeStats, description, faqs, jsonLd, otras, title
 
 ## Knowledge Gaps
 - **159 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+154 more)
@@ -141,7 +141,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **What connects `name`, `private`, `version` to the rest of the system?**
   _159 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `site.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.06334841628959276 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06914893617021277 - nodes in this community are weakly interconnected._
 - **Should `FlowPass CRM V1 — Dev Spec (Fase 1)` be split into smaller, more focused modules?**
   _Cohesion score 0.06451612903225806 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**

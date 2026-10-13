@@ -758,8 +758,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_actions_reveal",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "reveal.ts"
     },
     {
@@ -769,8 +769,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_lib_actions_reveal_reveal",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "reveal()"
     },
     {
@@ -785,15 +785,26 @@
       "norm_label": "contactform.svelte"
     },
     {
-      "label": "$env/static/public",
+      "label": "dynamic/public",
       "file_type": "code",
-      "source_file": "$env/static/public",
+      "source_file": "$env/dynamic/public",
       "confidence": "EXTRACTED",
       "_origin": "ast",
-      "id": "public",
-      "community": 0,
-      "community_name": "site.ts",
-      "norm_label": "$env/static/public"
+      "id": "env_dynamic_public_public",
+      "community": 30,
+      "community_name": "dynamic/public",
+      "norm_label": "dynamic/public"
+    },
+    {
+      "label": "libphonenumber-js",
+      "file_type": "code",
+      "source_file": "libphonenumber-js",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "libphonenumber_js_libphonenumber_js",
+      "community": 20,
+      "community_name": "libphonenumber-js",
+      "norm_label": "libphonenumber-js"
     },
     {
       "label": "ContactSection.svelte",
@@ -847,7 +858,7 @@
       "_origin": "ast",
       "id": "src_lib_components_featuressection",
       "community": 31,
-      "community_name": "Testimonials.svelte",
+      "community_name": "routes/+page.svelte",
       "norm_label": "featuressection.svelte"
     },
     {
@@ -858,7 +869,7 @@
       "_origin": "ast",
       "id": "svelte_splide",
       "community": 31,
-      "community_name": "Testimonials.svelte",
+      "community_name": "routes/+page.svelte",
       "norm_label": "@splidejs/svelte-splide"
     },
     {
@@ -869,7 +880,7 @@
       "_origin": "ast",
       "id": "splide_extension_auto_scroll",
       "community": 31,
-      "community_name": "Testimonials.svelte",
+      "community_name": "routes/+page.svelte",
       "norm_label": "@splidejs/splide-extension-auto-scroll"
     },
     {
@@ -902,7 +913,7 @@
       "_origin": "ast",
       "id": "src_lib_components_googleanalytics",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "googleanalytics.svelte"
     },
     {
@@ -913,7 +924,7 @@
       "_origin": "ast",
       "id": "stores",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "$app/stores"
     },
     {
@@ -924,7 +935,7 @@
       "_origin": "ast",
       "id": "environment",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "$app/environment"
     },
     {
@@ -945,9 +956,20 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_leadform",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 6,
+      "community_name": "track.ts",
       "norm_label": "leadform.svelte"
+    },
+    {
+      "label": "static/public",
+      "file_type": "code",
+      "source_file": "$env/static/public",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "env_static_public_public",
+      "community": 32,
+      "community_name": "static/public",
+      "norm_label": "static/public"
     },
     {
       "label": "zod",
@@ -961,17 +983,6 @@
       "norm_label": "zod"
     },
     {
-      "label": "libphonenumber-js",
-      "file_type": "code",
-      "source_file": "libphonenumber-js",
-      "confidence": "EXTRACTED",
-      "_origin": "ast",
-      "id": "libphonenumber_js_libphonenumber_js",
-      "community": 20,
-      "community_name": "libphonenumber-js",
-      "norm_label": "libphonenumber-js"
-    },
-    {
       "label": "MetaPixel.svelte",
       "file_type": "code",
       "source_file": "src/lib/components/MetaPixel.svelte",
@@ -979,7 +990,7 @@
       "_origin": "ast",
       "id": "src_lib_components_metapixel",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "metapixel.svelte"
     },
     {
@@ -990,7 +1001,7 @@
       "_origin": "ast",
       "id": "src_lib_components_navbar",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "navbar.svelte"
     },
     {
@@ -1111,8 +1122,30 @@
       "_origin": "ast",
       "id": "src_lib_components_testimonials",
       "community": 31,
-      "community_name": "Testimonials.svelte",
+      "community_name": "routes/+page.svelte",
       "norm_label": "testimonials.svelte"
+    },
+    {
+      "label": "ThemeToggle.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/ThemeToggle.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_themetoggle",
+      "community": 6,
+      "community_name": "track.ts",
+      "norm_label": "themetoggle.svelte"
+    },
+    {
+      "label": "toggle()",
+      "file_type": "code",
+      "source_file": "src/lib/components/ThemeToggle.svelte",
+      "source_location": "L18",
+      "_origin": "ast",
+      "id": "src_lib_components_themetoggle_toggle",
+      "community": 6,
+      "community_name": "track.ts",
+      "norm_label": "toggle()"
     },
     {
       "label": "WhatsappBubble.svelte",
@@ -1121,8 +1154,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_whatsappbubble",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "whatsappbubble.svelte"
     },
     {
@@ -1132,8 +1165,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_beforeafter",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "beforeafter.svelte"
     },
     {
@@ -1143,8 +1176,8 @@
       "source_location": "L143",
       "_origin": "ast",
       "id": "src_lib_components_home_beforeafter_global",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "global()"
     },
     {
@@ -1154,8 +1187,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_bookflip",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "bookflip.svelte"
     },
     {
@@ -1165,8 +1198,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_homeclose",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homeclose.svelte"
     },
     {
@@ -1187,8 +1220,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_homehero",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homehero.svelte"
     },
     {
@@ -1198,8 +1231,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_homeintro",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homeintro.svelte"
     },
     {
@@ -1209,8 +1242,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_homepricing",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homepricing.svelte"
     },
     {
@@ -1220,8 +1253,8 @@
       "source_location": "L299",
       "_origin": "ast",
       "id": "src_lib_components_home_homepricing_money",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "money()"
     },
     {
@@ -1231,8 +1264,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_platformtabs",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "platformtabs.svelte"
     },
     {
@@ -1242,8 +1275,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_studentportal",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "studentportal.svelte"
     },
     {
@@ -1308,8 +1341,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_config_seo_homeseo",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 5,
+      "community_name": "schemas.ts",
       "norm_label": "homeseo"
     },
     {
@@ -1440,8 +1473,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_data_homedata",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homedata.ts"
     },
     {
@@ -1451,8 +1484,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_lib_data_homedata_homestats",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "homestats"
     },
     {
@@ -1462,8 +1495,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_lib_data_homedata_clientlogos",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "clientlogos"
     },
     {
@@ -1705,7 +1738,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installappbutton",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "installappbutton.svelte"
     },
     {
@@ -1716,7 +1749,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installprompttoast",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "installprompttoast.svelte"
     },
     {
@@ -1727,7 +1760,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_index",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "pwa/index.ts"
     },
     {
@@ -1738,7 +1771,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "usepwainstall.svelte.ts"
     },
     {
@@ -1749,7 +1782,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_bipevent",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "bipevent"
     },
     {
@@ -1760,7 +1793,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "pwainstallstate"
     },
     {
@@ -1771,7 +1804,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_init",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": ".init()"
     },
     {
@@ -1782,7 +1815,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_promptinstall",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": ".promptinstall()"
     },
     {
@@ -1793,7 +1826,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstall",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "pwainstall"
     },
     {
@@ -1957,7 +1990,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore",
-      "community": 30,
+      "community": 14,
       "community_name": "WaCountryStore",
       "norm_label": "wacountrystore"
     },
@@ -1968,7 +2001,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_init",
-      "community": 30,
+      "community": 14,
       "community_name": "WaCountryStore",
       "norm_label": ".init()"
     },
@@ -1979,7 +2012,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_set",
-      "community": 30,
+      "community": 14,
       "community_name": "WaCountryStore",
       "norm_label": ".set()"
     },
@@ -1990,7 +2023,7 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_phone",
-      "community": 30,
+      "community": 14,
       "community_name": "WaCountryStore",
       "norm_label": ".phone()"
     },
@@ -2001,7 +2034,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountrystore_countries",
-      "community": 30,
+      "community": 14,
       "community_name": "WaCountryStore",
       "norm_label": ".countries()"
     },
@@ -2023,7 +2056,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_tracking_track",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "track.ts"
     },
@@ -2034,7 +2067,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fbqargs",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "fbqargs"
     },
@@ -2045,7 +2078,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_lib_tracking_track_gtagargs",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "gtagargs"
     },
@@ -2056,7 +2089,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_tracking_track_window",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "window"
     },
@@ -2067,7 +2100,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fire",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "fire()"
     },
@@ -2078,7 +2111,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackschedule",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "trackschedule()"
     },
@@ -2089,7 +2122,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackcontact",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "trackcontact()"
     },
@@ -2100,7 +2133,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackemailclick",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "trackemailclick()"
     },
@@ -2111,7 +2144,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklogin",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "tracklogin()"
     },
@@ -2122,7 +2155,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstallclick",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "trackpwainstallclick()"
     },
@@ -2133,7 +2166,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstalled",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "trackpwainstalled()"
     },
@@ -2144,7 +2177,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklead",
-      "community": 14,
+      "community": 6,
       "community_name": "track.ts",
       "norm_label": "tracklead()"
     },
@@ -2178,7 +2211,7 @@
       "_origin": "ast",
       "id": "src_routes_layout_svelte_src_routes_layout",
       "community": 6,
-      "community_name": "usePwaInstall.svelte.ts",
+      "community_name": "track.ts",
       "norm_label": "+layout.svelte"
     },
     {
@@ -2210,8 +2243,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_routes_page",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "routes/+page.svelte"
     },
     {
@@ -2243,8 +2276,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_routes_agenda_page",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 6,
+      "community_name": "track.ts",
       "norm_label": "agenda/+page.svelte"
     },
     {
@@ -2529,8 +2562,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "[slug]/+page.svelte"
     },
     {
@@ -2540,8 +2573,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_title",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "title"
     },
     {
@@ -2551,8 +2584,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_description",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "description"
     },
     {
@@ -2562,8 +2595,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_faqs",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "faqs"
     },
     {
@@ -2573,8 +2606,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_otras",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "otras"
     },
     {
@@ -2584,8 +2617,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_jsonld",
-      "community": 14,
-      "community_name": "track.ts",
+      "community": 31,
+      "community_name": "routes/+page.svelte",
       "norm_label": "jsonld"
     },
     {
@@ -4608,46 +4641,10 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/ContactForm.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_contactform",
-      "target": "public",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/ContactForm.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_contactform",
-      "target": "src_lib_tracking_track",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
       "source_file": "src/routes/contacto/+page.svelte",
       "_origin": "ast",
       "source": "src_routes_contacto_page",
       "target": "src_lib_components_contactform",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/LeadForm.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_leadform",
-      "target": "public",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "confidence": "EXTRACTED",
-      "source_file": "src/lib/components/MetaPixel.svelte",
-      "_origin": "ast",
-      "source": "src_lib_components_metapixel",
-      "target": "public",
       "confidence_score": 1.0
     },
     {
@@ -4955,6 +4952,15 @@
       "source_file": "src/lib/components/Navbar.svelte",
       "_origin": "ast",
       "source": "src_lib_components_navbar",
+      "target": "src_lib_components_themetoggle",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/Navbar.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_navbar",
       "target": "src_lib_pwa_installappbutton",
       "confidence_score": 1.0
     },
@@ -5118,6 +5124,17 @@
       "_origin": "ast",
       "source": "src_routes_page",
       "target": "src_lib_components_testimonials",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/ThemeToggle.svelte",
+      "source_location": "L18",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_themetoggle",
+      "target": "src_lib_components_themetoggle_toggle",
       "confidence_score": 1.0
     },
     {
@@ -8440,5 +8457,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bbf34a6f819a83dd4af68dd3eca312423ea4bf87"
+  "built_at_commit": "bbe815d454f4fb86cf6ca01af5e0ed2d66b99179"
 }

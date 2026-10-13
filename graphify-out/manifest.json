@@ -45,8 +45,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/LeadForm.svelte": {
-    "mtime": 1791847491.5318687,
-    "ast_hash": "6cf2142e60fe5b8f4a324db95efdc803",
+    "mtime": 1791851644.8104155,
+    "ast_hash": "84f83eeb8ec21247af1e3649315aa083",
     "semantic_hash": ""
   },
   "src/lib/components/MetaPixel.svelte": {
@@ -55,8 +55,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/Navbar.svelte": {
-    "mtime": 1791849236.8145783,
-    "ast_hash": "7e983780073cdd5ce980e5936c1a51bb",
+    "mtime": 1791866341.007838,
+    "ast_hash": "bb5dcaeb6376cf9d7c66c92801a6f382",
     "semantic_hash": ""
   },
   "src/lib/components/PricingSection.svelte": {
@@ -85,8 +85,8 @@
     "semantic_hash": ""
   },
   "src/lib/config/site.ts": {
-    "mtime": 1791849209.0837755,
-    "ast_hash": "2cfdb562c55969ef8470f6fa8a000db9",
+    "mtime": 1791865949.6405916,
+    "ast_hash": "8fc7966d29930b03feb108023eb12a26",
     "semantic_hash": ""
   },
   "src/lib/data/pricingData.js": {
@@ -240,8 +240,8 @@
     "semantic_hash": ""
   },
   "src/app.html": {
-    "mtime": 1791832782.107976,
-    "ast_hash": "c758a6f7702aec2a14e45ceee0dd582e",
+    "mtime": 1791866340.849568,
+    "ast_hash": "8890c81ed714c975346e264eff1b65ee",
     "semantic_hash": ""
   },
   "src/lib/pwa/README.md": {
@@ -634,14 +634,24 @@
     "ast_hash": "0556a6842e2202352bfac264a58716c8",
     "semantic_hash": ""
   },
-  "src/lib/components/ContactForm.svelte": {
-    "mtime": 1791849349.4594212,
-    "ast_hash": "cc82912ee5eebe15c721e3e409571f62",
+  "src/routes/contacto/+page.svelte": {
+    "mtime": 1791865949.6409755,
+    "ast_hash": "55ebf54b163c4086053a32bed7b45750",
     "semantic_hash": ""
   },
-  "src/routes/contacto/+page.svelte": {
-    "mtime": 1791849226.8507967,
-    "ast_hash": "b70e1556819c23471ccc05154034ca43",
+  "src/lib/components/ContactForm.svelte": {
+    "mtime": 1791866765.1548023,
+    "ast_hash": "0e11a4cfd54c645ebcb76e02b220fc53",
+    "semantic_hash": ""
+  },
+  "docs/sql/support-tickets.sql": {
+    "mtime": 1791866765.1626723,
+    "ast_hash": "4c7e346a4274a526c55fd18538b82de9",
+    "semantic_hash": ""
+  },
+  "src/lib/components/ThemeToggle.svelte": {
+    "mtime": 1791866340.8555067,
+    "ast_hash": "621ef0d176ae6998b178cac79f38a951",
     "semantic_hash": ""
   }
 }
