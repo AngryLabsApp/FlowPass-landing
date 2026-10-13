@@ -37,7 +37,7 @@
           <a href="/#precios">Precios</a>
           <a href="/#faq">Preguntas</a>
           <a href="/about">Nosotros</a>
-          <a href="/contacto">Contacto</a>
+          <a href="/agenda">Contacto</a>
         </nav>
         <nav aria-label="Por disciplina">
           <p class="footer-h">Por disciplina</p>
@@ -49,7 +49,7 @@
           <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           <a href={siteConfig.phones.PE.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.PE.flag} {siteConfig.phones.PE.formatted}</a>
           <a href={siteConfig.phones.MX.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.MX.flag} {siteConfig.phones.MX.formatted}</a>
-          <a href="/contacto">Escríbenos →</a>
+          <a href="/contacto">¿Tuviste un problema? Soporte →</a>
         </div>
         <nav aria-label="Legal">
           <p class="footer-h">Legal</p>

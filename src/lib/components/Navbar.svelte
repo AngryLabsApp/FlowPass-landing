@@ -80,7 +80,7 @@
 
       <li>
         <a
-          href="/contacto"
+          href="/agenda"
           class="hover:text-white transition duration-200 ease-in-out"
           >Contacto</a
         >
@@ -197,7 +197,7 @@
         onclick={() => (isOpen = false)}>Nosotros</a
       >
       <a
-        href="/contacto"
+        href="/agenda"
         class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Contacto</a
       >
