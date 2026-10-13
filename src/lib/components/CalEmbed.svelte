@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { trackLead } from '$lib/tracking/track';
+  import { detectCountry, CAL_COUNTRY_LABEL } from '$lib/utils/country';
 
   /**
    * Calendario de Cal.com incrustado (inline). Es el snippet oficial de Cal.com
    * ("Inline embed") adaptado a Svelte: carga embed.js solo en el navegador.
    * - forwardQueryParams: los parámetros de la URL (?name=&email=&attendeePhoneNumber=)
    *   llegan al formulario de Cal.com ya escritos (los manda LeadForm al terminar).
+   * - La pregunta "País" (identificador `pais`) se marca según la zona horaria del visitante.
    * - Al confirmar la reserva se registra la conversión.
    * La reserva la procesa n8n por el webhook de Cal.com (find_or_create_lead).
    */
@@ -40,7 +42,14 @@
     const api = Cal.ns[namespace];
     api('inline', {
       elementOrSelector: `#${elId}`,
-      config: { layout: 'month_view', useSlotsViewOnSmallScreen: 'true', theme: dark ? 'dark' : 'light' },
+      // `pais`: la pregunta "País" del formulario de Cal.com llega ya marcada (identificador `pais`).
+      // Si la URL ya trae ?pais=…, gana esa (forwardQueryParams).
+      config: {
+        layout: 'month_view',
+        useSlotsViewOnSmallScreen: 'true',
+        theme: dark ? 'dark' : 'light',
+        ...(new URLSearchParams(location.search).has('pais') ? {} : { pais: CAL_COUNTRY_LABEL[detectCountry()] })
+      },
       calLink
     });
     api('ui', {

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { detectCountry, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackSchedule } from '$lib/tracking/track';
@@ -12,7 +13,6 @@
     formatPriceParts
   } from '$lib/data/pricingData.js';
 
-  type Country = 'PE' | 'MX' | 'US';
   const plans = allPlans.filter((p) => !p.quoteBased);
   const enterprise = allPlans.find((p) => p.quoteBased);
   const minOf = (p: (typeof plans)[number], i: number) => (i === 0 ? 0 : plans[i - 1].maxActiveStudents ?? 0);
@@ -21,17 +21,8 @@
   let cycle = $state('mensual');
   let students = $state(45);
 
-  // País según la zona horaria del navegador (sin pedir permisos ni llamar a otro servicio).
-  // Perú → soles, México → pesos, cualquier otro lugar → dólares. El visitante puede cambiarlo.
-  onMount(() => {
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? '';
-      const MX = ['Mexico_City', 'Cancun', 'Merida', 'Monterrey', 'Matamoros', 'Chihuahua', 'Ciudad_Juarez', 'Ojinaga', 'Mazatlan', 'Bahia_Banderas', 'Hermosillo', 'Tijuana'];
-      if (tz === 'America/Lima') country = 'PE';
-      else if (MX.some((c) => tz === `America/${c}`)) country = 'MX';
-      else if (tz) country = 'US';
-    } catch { /* se queda en Perú */ }
-  });
+  // Moneda según el país del visitante (zona horaria). El visitante puede cambiarlo.
+  onMount(() => (country = detectCountry()));
 
   // Cotizador
   let quotePlan = $state<string | null>(null);
