@@ -103,7 +103,6 @@
   .cf { display: grid; gap: 14px; }
   label { display: grid; gap: 6px; font-size: 14px; font-weight: 600; color: var(--fg); }
   label i { color: #531dd8; font-style: normal; }
-  label small { font-weight: 400; color: var(--fg-3); }
   input,
   textarea {
     width: 100%;
