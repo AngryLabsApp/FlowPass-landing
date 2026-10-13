@@ -41,7 +41,7 @@
       <p class="eyebrow">Sin compromiso · Gratis</p>
       <h1>Estás a un paso de cambiar cómo administras <span>tu negocio.</span></h1>
       <ul class="what">
-        <li>Demo con un caso como el tuyo</li>
+        <li>Asesoría con un caso como el tuyo</li>
         <li>Dudas de planes y precios</li>
         <li>Sin compromiso</li>
       </ul>
