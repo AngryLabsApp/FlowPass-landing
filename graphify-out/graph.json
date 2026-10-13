@@ -1250,7 +1250,7 @@
       "label": "money()",
       "file_type": "code",
       "source_file": "src/lib/components/home/HomePricing.svelte",
-      "source_location": "L299",
+      "source_location": "L303",
       "_origin": "ast",
       "id": "src_lib_components_home_homepricing_money",
       "community": 31,
@@ -5305,7 +5305,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/components/home/HomePricing.svelte",
-      "source_location": "L299",
+      "source_location": "L303",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_components_home_homepricing",
@@ -8457,5 +8457,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "bbe815d454f4fb86cf6ca01af5e0ed2d66b99179"
+  "built_at_commit": "02a5e4e79f33350dfaaa28b32a7d3b86f79fedbb"
 }
