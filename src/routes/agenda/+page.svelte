@@ -64,7 +64,7 @@
 
 <style>
   .agenda { padding-block: 104px 48px; min-height: 100vh; }
-  /* Todo centrado y más angosto: el calendario sin la columna de detalles ocupa menos */
+  /* Todo centrado: 920px alcanza para detalles + calendario + horarios */
   .agenda .wrap { max-width: 920px; }
   .logos { margin-bottom: 22px; }
   .head { text-align: center; margin-inline: auto; }
