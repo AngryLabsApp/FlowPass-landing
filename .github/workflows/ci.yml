@@ -1,11 +1,17 @@
 # Compila la landing en cada PR y en cada push a main.
 # Si el build falla (error de Svelte, import roto, página que no se pre-renderiza), el PR se marca en rojo.
+# La publicación la hace Coolify con Auto Deploy al mergear a main.
 name: CI
 
 on:
   pull_request:
   push:
     branches: [main]
+
+# Si llegan dos ejecuciones para la misma rama, la anterior se cancela
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -30,3 +36,4 @@ jobs:
           PUBLIC_META_PIXEL_ID: ""
           PUBLIC_N8N_LEADS_WEBHOOK: https://example.com/webhook/leads
           PUBLIC_N8N_SUPPORT_WEBHOOK: https://example.com/webhook/soporte
+
