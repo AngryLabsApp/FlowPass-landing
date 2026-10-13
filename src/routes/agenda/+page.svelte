@@ -45,8 +45,14 @@
     </section>
 
     <a class="not-ready" href="/te-llamamos">
-      <span>¿Aún no estás listo para agendar?</span>
-      <b>Déjanos tus datos y te llamamos →</b>
+      <span class="nr-ic" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z" /></svg>
+      </span>
+      <span class="nr-txt">
+        <b>¿Aún no estás listo para agendar?</b>
+        <span>Déjanos tus datos y un asesor te escribe por WhatsApp.</span>
+      </span>
+      <span class="nr-btn">Te llamamos →</span>
     </a>
   </div>
 </main>
@@ -68,24 +74,35 @@
   /* Sin marco propio: el borde lo pone Cal.com, así no hay doble tarjeta */
   /* Cal.com ya trae aire arriba dentro del iframe */
   .cal-card { margin-top: 0; }
+  /* Segunda opción bien visible: tarjeta con ícono y botón */
   .not-ready {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
+    align-items: center;
+    gap: 16px;
     margin-top: 20px;
-    padding: 18px;
-    border: 1px dashed var(--line);
-    border-radius: 16px;
-    font-size: 15px;
-    color: var(--fg-2);
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: color-mix(in srgb, #531dd8 9%, var(--panel));
+    border: 1px solid color-mix(in srgb, #531dd8 28%, var(--line));
+    color: var(--fg);
     text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  .not-ready b { color: var(--accent-text); }
-  .not-ready:hover { border-color: var(--accent); }
+  .not-ready:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .nr-ic { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: #531dd8; color: #fff; }
+  .nr-txt { flex: 1; display: grid; gap: 2px; min-width: 0; }
+  .nr-txt b { font-size: 16px; }
+  .nr-txt span { font-size: 14px; color: var(--fg-2); }
+  .nr-btn { flex: none; padding: 11px 18px; border-radius: 999px; background: #09090f; color: #fff; font-weight: 600; font-size: 14px; white-space: nowrap; }
+  :global(:root[data-theme='dark']) .nr-btn { background: #01f59e; color: #04150e; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .nr-btn { background: #01f59e; color: #04150e; }
+  }
   @media (max-width: 560px) {
     .agenda { padding-top: 92px; }
     .cal-card { margin-top: 0; }
     .what li { font-size: 13px; }
+    .not-ready { flex-wrap: wrap; padding: 16px; }
+    .nr-btn { width: 100%; text-align: center; }
   }
 </style>
