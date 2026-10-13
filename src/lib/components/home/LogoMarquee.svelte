@@ -62,11 +62,12 @@
   .mq-track img { display: block; max-width: 112px; max-height: 68px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
   .mq-track li:hover img { filter: none; opacity: 1; }
   /* Versión sutil: logos chicos, sin ficha, casi transparentes; el título va centrado */
-  .compact { margin-top: 0; gap: 8px; }
-  .compact .mq-title { text-align: center; letter-spacing: 0.08em; text-transform: none; font-weight: 500; font-size: 13px; }
-  .compact .mq-track ul { gap: 28px; padding-left: 28px; animation-duration: 90s; }
-  .compact .mq-track li { width: auto; height: 40px; padding: 0; background: none; border: 0; border-radius: 0; }
-  .compact .mq-track img { max-width: 72px; max-height: 40px; opacity: 0.5; mix-blend-mode: multiply; }
+  /* Ancho acotado: franja discreta, no a todo lo ancho */
+  .compact { margin: 0 auto; gap: 6px; max-width: 760px; }
+  .compact .mq-title { text-align: center; letter-spacing: 0.04em; text-transform: none; font-weight: 500; font-size: 12px; }
+  .compact .mq-track ul { gap: 22px; padding-left: 22px; animation-duration: 90s; }
+  .compact .mq-track li { width: auto; height: 28px; padding: 0; background: none; border: 0; border-radius: 0; }
+  .compact .mq-track img { max-width: 52px; max-height: 28px; opacity: 0.45; mix-blend-mode: multiply; }
   /* Los logos tienen fondo blanco: en claro se funde con multiply; en oscuro se invierte y se funde con screen */
   :global(:root[data-theme='dark']) .compact .mq-track img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.55; }
   @media (prefers-color-scheme: dark) {
