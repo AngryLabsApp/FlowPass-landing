@@ -127,7 +127,7 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - Suscripción mensual sin contrato de permanencia. FlowPass no amarra al cliente a ningún plan: el propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel, y puede retomar después sin problemas.
 - Precios segmentados por número de alumnos activos.
 - Ciclos: mensual, trimestral (descuento) y anual (mayor descuento).
-- No hay período de prueba gratuito: antes de contratar se agenda una demo 1:1 y se configura la plataforma con el negocio.
+- No hay período de prueba gratuito: antes de contratar se agenda una asesoría 1:1 gratuita y se configura la plataforma con el negocio.
 - Asesoría 1:1 gratuita antes de suscribirse.
 - Disponible en Perú (PEN), México (MXN) y con precio USD para otros mercados.
 
@@ -157,7 +157,7 @@ ${renderFaq()}
 - Home: ${base}/
 - Precios: ${base}/#pricing
 - FAQ: ${base}/#faq
-- Agendar demo: ${base}/agenda
+- Agendar asesoría: ${base}/agenda
 - Términos: ${base}/terminos
 - Sitemap: ${base}/sitemap.xml
 - Índice llms: ${base}/llms.txt

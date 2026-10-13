@@ -66,12 +66,12 @@
       de cada cliente y dejamos la plataforma configurada con sus datos. El proceso es:
     </p>
     <ol class="terms-list">
-      <li><strong>Demo de 20 minutos.</strong> El cliente agenda una llamada en <a href="/agenda">flow-pass.com/agenda</a> o nos escribe por WhatsApp. Le mostramos la plataforma con un caso como el suyo.</li>
+      <li><strong>Asesoría de 20 minutos.</strong> El cliente agenda una llamada en <a href="/agenda">flow-pass.com/agenda</a> o nos escribe por WhatsApp. Le mostramos la plataforma con un caso como el suyo.</li>
       <li><strong>Levantamiento.</strong> Revisamos sus planes, precios, sedes y forma de trabajo para configurar la cuenta.</li>
       <li><strong>Propuesta y contrato.</strong> Le enviamos el plan que corresponde a su número de alumnos activos, el ciclo de pago y los extras que necesite. El servicio se formaliza con la firma de un contrato.</li>
       <li><strong>Pago y activación.</strong> Con el primer pago confirmado, activamos la cuenta y acompañamos la puesta en marcha.</li>
     </ol>
-    <p>No ofrecemos un período de prueba gratuito: la demo y el levantamiento son sin costo y sin compromiso.</p>
+    <p>No ofrecemos un período de prueba gratuito: la asesoría y el levantamiento son sin costo y sin compromiso.</p>
   </section>
 
   <section id="responsabilidades">
@@ -127,7 +127,7 @@
     </ul>
     <div class="callout">
       <strong>No hay reembolsos.</strong> Como cada cuenta se configura de forma personalizada tras la
-      demo, el levantamiento y la firma del contrato, los pagos realizados no son reembolsables.
+      asesoría, el levantamiento y la firma del contrato, los pagos realizados no son reembolsables.
     </div>
     <p>
       El cliente puede dejar de renovar su suscripción en cualquier momento, sin penalidades. Seguirá
