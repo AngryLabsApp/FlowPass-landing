@@ -45,7 +45,7 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z" /></svg>
       </span>
       <span class="nr-txt">
-        <b>¿Aún no estás listo para agendar?</b>
+        <b>¿Aún no estás listo{" "}<span class="long">para agendar</span>?</b>
         <span>Déjanos tus datos y un asesor te escribe por WhatsApp.</span>
       </span>
       <span class="nr-btn">Te llamamos →</span>
@@ -81,9 +81,11 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-block: 22px 18px;
-    padding: 14px 18px;
-    border-radius: 18px;
+    max-width: 620px;
+    margin: 18px auto 14px;
+    gap: 12px;
+    padding: 10px 10px 10px 14px;
+    border-radius: 999px;
     background: color-mix(in srgb, #531dd8 9%, var(--panel));
     border: 1px solid color-mix(in srgb, #531dd8 28%, var(--line));
     color: var(--fg);
@@ -91,11 +93,11 @@
     transition: transform 0.2s, box-shadow 0.2s;
   }
   .not-ready:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-  .nr-ic { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 50%; background: #531dd8; color: #fff; }
+  .nr-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #531dd8; color: #fff; }
   .nr-txt { flex: 1; display: grid; gap: 2px; min-width: 0; }
-  .nr-txt b { font-size: 16px; }
-  .nr-txt span { font-size: 14px; color: var(--fg-2); }
-  .nr-btn { flex: none; padding: 11px 18px; border-radius: 999px; background: #09090f; color: #fff; font-weight: 600; font-size: 14px; white-space: nowrap; }
+  .nr-txt b { font-size: 14.5px; }
+  .nr-txt > span { font-size: 13px; color: var(--fg-2); }
+  .nr-btn { flex: none; padding: 9px 16px; border-radius: 999px; background: #09090f; color: #fff; font-weight: 600; font-size: 13.5px; white-space: nowrap; }
   :global(:root[data-theme='dark']) .nr-btn { background: #01f59e; color: #04150e; }
   @media (prefers-color-scheme: dark) {
     :global(:root:not([data-theme='light'])) .nr-btn { background: #01f59e; color: #04150e; }
@@ -105,9 +107,9 @@
     .cal-card { margin-top: 0; }
     .what li { font-size: 13px; }
     /* Celular: una fila compacta (texto + botón), sin ícono ni descripción */
-    .not-ready { gap: 12px; padding: 12px 12px 12px 16px; margin-block: 16px 12px; border-radius: 14px; }
-    .nr-ic, .nr-txt span { display: none; }
-    .nr-txt b { font-size: 14px; line-height: 1.3; }
-    .nr-btn { padding: 9px 14px; font-size: 13px; }
+    .not-ready { gap: 10px; padding: 7px 7px 7px 16px; margin-block: 14px 8px; }
+    .nr-ic, .nr-txt > span, .long { display: none; }
+    .nr-txt b { font-size: 13.5px; }
+    .nr-btn { padding: 8px 13px; font-size: 13px; }
   }
 </style>
