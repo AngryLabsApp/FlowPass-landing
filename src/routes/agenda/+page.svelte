@@ -30,7 +30,7 @@
 <main class="home agenda">
   <div class="wrap">
     <header class="head">
-      <p class="eyebrow">Llamada de 20 minutos · Gratis</p>
+      <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
       <h1>Elige el día y la hora <span>que te acomode.</span></h1>
       <ul class="what">
         <li>Demo con un caso como el tuyo</li>
@@ -54,23 +54,20 @@
 <Footer />
 
 <style>
-  .agenda { padding-block: 112px 56px; min-height: 100vh; }
-  .head { max-width: 760px; }
-  h1 { font-size: clamp(28px, 4.4vw, 48px); margin-top: 12px !important; }
+  .agenda { padding-block: 104px 48px; min-height: 100vh; }
+  /* Todo centrado y más angosto: el calendario sin la columna de detalles ocupa menos */
+  .agenda .wrap { max-width: 920px; }
+  .head { text-align: center; margin-inline: auto; }
+  .what { justify-content: center; }
+  h1 { font-size: clamp(26px, 3.6vw, 40px); margin-top: 10px !important; }
   h1 span { color: var(--accent-text); }
   .what { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
   .what li { display: flex; gap: 8px; font-size: 14.5px; color: var(--fg-2); }
   .what li::before { content: '✓'; color: var(--accent-text); font-weight: 700; }
   .picked { display: inline-block; margin-top: 14px !important; padding: 6px 12px; border-radius: 999px; font-size: 13px; background: color-mix(in srgb, #01f59e 22%, var(--panel)); }
-  .cal-card {
-    margin-top: 28px;
-    padding: 8px;
-    border: 1px solid var(--line);
-    border-radius: 24px;
-    background: var(--panel);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-  }
+  /* Sin marco propio: el borde lo pone Cal.com, así no hay doble tarjeta */
+  /* Cal.com ya trae aire arriba dentro del iframe */
+  .cal-card { margin-top: 0; }
   .not-ready {
     display: flex;
     flex-wrap: wrap;
@@ -88,7 +85,7 @@
   .not-ready:hover { border-color: var(--accent); }
   @media (max-width: 560px) {
     .agenda { padding-top: 92px; }
-    .cal-card { padding: 0; border-radius: 18px; margin-top: 20px; }
+    .cal-card { margin-top: 0; }
     .what li { font-size: 13px; }
   }
 </style>

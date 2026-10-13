@@ -44,7 +44,8 @@
       calLink
     });
     api('ui', {
-      hideEventTypeDetails: false,
+      // El título y los detalles ya están en la página: se oculta la columna de Cal.com
+      hideEventTypeDetails: true,
       layout: 'month_view',
       theme: dark ? 'dark' : 'light',
       cssVarsPerTheme: { light: { 'cal-brand': '#531DD8' }, dark: { 'cal-brand': '#01F59E' } }
@@ -68,8 +69,8 @@
 </div>
 
 <style>
-  .cal-wrap { position: relative; min-height: 560px; }
-  .cal-inline { width: 100%; min-height: 560px; overflow: auto; }
+  .cal-wrap { position: relative; min-height: 460px; }
+  .cal-inline { width: 100%; min-height: 460px; overflow: auto; }
   .cal-loading {
     position: absolute;
     inset: 0;
