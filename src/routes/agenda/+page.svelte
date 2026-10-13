@@ -40,10 +40,6 @@
       {#if planName}<p class="picked">Plan que te interesa: <b>{planName}</b></p>{/if}
     </header>
 
-    <section class="cal-card" aria-label="Calendario para agendar la llamada">
-      <CalEmbed />
-    </section>
-
     <a class="not-ready" href="/te-llamamos">
       <span class="nr-ic" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z" /></svg>
@@ -54,6 +50,11 @@
       </span>
       <span class="nr-btn">Te llamamos →</span>
     </a>
+
+    <section class="cal-card" aria-label="Calendario para agendar la llamada">
+      <CalEmbed />
+    </section>
+
   </div>
 </main>
 
@@ -79,8 +80,8 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-top: 20px;
-    padding: 18px 20px;
+    margin-block: 22px 18px;
+    padding: 14px 18px;
     border-radius: 18px;
     background: color-mix(in srgb, #531dd8 9%, var(--panel));
     border: 1px solid color-mix(in srgb, #531dd8 28%, var(--line));
