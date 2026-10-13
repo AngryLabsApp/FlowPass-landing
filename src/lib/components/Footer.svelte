@@ -153,7 +153,10 @@
     .footer-cols { grid-template-columns: repeat(2, auto); }
   }
   @media (max-width: 640px) {
-    .footer-cols { grid-template-columns: 1fr 1fr; gap: 1.75rem 1.5rem; }
+    /* En celular las columnas se ajustan al ancho y el texto sí puede bajar de línea */
+    .footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem 1.5rem; }
+    .footer-cols a,
+    .footer-h { white-space: normal; overflow-wrap: anywhere; }
   }
 
   .footer-socials {
