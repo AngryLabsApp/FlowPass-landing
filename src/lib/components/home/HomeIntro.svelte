@@ -96,8 +96,8 @@
   .mq-track:hover ul { animation-play-state: paused; }
   /* Cada logo en una ficha blanca: se ven igual en claro y en oscuro (los hay negros y de color).
      En gris por defecto para no competir con la marca; a color al pasar el mouse. */
-  .mq-track li { flex: none; display: grid; place-items: center; width: 112px; height: 72px; padding: 8px 12px; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
-  .mq-track img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
+  .mq-track li { flex: none; display: grid; place-items: center; width: 136px; height: 84px; padding: 8px 12px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
+  .mq-track img { display: block; max-width: 112px; max-height: 68px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
   .mq-track li:hover img { filter: none; opacity: 1; }
   @keyframes mq { to { transform: translateX(-100%); } }
   @media (prefers-reduced-motion: reduce) {
