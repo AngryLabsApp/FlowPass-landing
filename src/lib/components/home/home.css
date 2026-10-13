@@ -1,12 +1,14 @@
 /* Home (rediseño 2026) — tokens y piezas compartidas por las secciones.
-   Dark-first como la marca; en modo claro del sistema pasa a fondo crema.
+   Dark-first como la marca; en claro pasa a fondo crema. El tema lo elige el
+   visitante con ThemeToggle (data-theme en <html>) o, si no eligió, el sistema.
    Todo color sale de la paleta FlowPass: #09090f, #01f59e, #531DD8. */
 
 .home {
-  --bg: #09090f;
-  --bg-2: #101019;
-  --panel: #15151f;
-  --line: rgba(245, 245, 245, 0.1);
+  /* Oscuro suave: grafito con un toque violeta; el negro puro #09090f queda para las tarjetas de marca */
+  --bg: #16151d;
+  --bg-2: #1c1b25;
+  --panel: #22212c;
+  --line: rgba(245, 245, 245, 0.11);
   --fg: #f5f5f5;
   --fg-2: rgba(245, 245, 245, 0.68);
   --fg-3: rgba(245, 245, 245, 0.44);
@@ -32,8 +34,28 @@
   overflow-x: clip;
 }
 
+/* Claro: lo elige el visitante con el botón (data-theme="light"),
+   o el sistema si no eligió nada */
+:root[data-theme='light'] .home {
+  color-scheme: light;
+  --bg: #fbfbf8;
+  --bg-2: #f2f2ee;
+  --panel: #ffffff;
+  --line: rgba(9, 9, 15, 0.1);
+  --fg: #09090f;
+  --fg-2: rgba(9, 9, 15, 0.68);
+  --fg-3: rgba(9, 9, 15, 0.46);
+  --accent-text: #00865a;
+  --violet: #531dd8;
+  --btn: #09090f;
+  --btn-fg: #ffffff;
+  --btn-arrow: #01f59e;
+  --shadow: 0 30px 70px -35px rgba(9, 9, 15, 0.35);
+  --glow: radial-gradient(60% 60% at 70% 30%, rgba(1, 245, 158, 0.16), transparent 70%),
+    radial-gradient(50% 60% at 20% 80%, rgba(83, 29, 216, 0.1), transparent 70%);
+}
 @media (prefers-color-scheme: light) {
-  .home {
+  :root:not([data-theme='dark']) .home {
     color-scheme: light;
     --bg: #fbfbf8;
     --bg-2: #f2f2ee;

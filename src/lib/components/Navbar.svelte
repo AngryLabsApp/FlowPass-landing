@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ThemeToggle from "$lib/components/ThemeToggle.svelte";
   import { onMount } from "svelte";
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
@@ -91,6 +92,8 @@
         <!-- Install PWA -->
         <InstallAppButton variant="desktop" />
 
+        <ThemeToggle />
+
         <!-- Ingresar — secundario -->
         <a
           href="https://app.flow-pass.com/login"
@@ -117,7 +120,9 @@
       </li>
     </ul>
 
-    <!-- MOBILE TOGGLE -->
+    <!-- MOBILE: tema + menú -->
+    <div class="lg:hidden flex items-center gap-2">
+    <ThemeToggle />
     <button
       type="button"
       class="lg:hidden nav-toggle inline-flex items-center justify-center w-10 h-10 rounded-full text-white border border-white/20 hover:border-white/50 active:scale-95 transition"
@@ -160,6 +165,7 @@
         </svg>
       {/if}
     </button>
+    </div>
   </div>
 
   <!-- MOBILE MENU -->

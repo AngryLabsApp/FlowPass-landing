@@ -25,3 +25,7 @@ create index if not exists support_tickets_status_idx on public.support_tickets 
 
 -- Solo el backend (n8n con service_role) escribe; nadie lee desde el navegador.
 alter table public.support_tickets enable row level security;
+
+-- Permisos: en proyectos nuevos de Supabase las tablas creadas por SQL no dan acceso
+-- automático a los roles de la API. Solo el backend (service_role, usado por n8n) la usa.
+grant select, insert, update on public.support_tickets to service_role;

@@ -36,6 +36,13 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="manifest" href="/site.webmanifest">
     
+    <!-- Tema elegido por el visitante (ThemeToggle). Va antes de pintar para no parpadear. -->
+    <script>
+      try {
+        var t = localStorage.getItem('fp_theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     %sveltekit.head%
   </head>
   <body data-sveltekit-preload-data="hover" class="font-oktah text-white">
