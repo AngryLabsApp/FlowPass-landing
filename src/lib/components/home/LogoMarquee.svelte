@@ -58,13 +58,13 @@
   .mq-track:hover ul { animation-play-state: paused; }
   /* Cada logo en una ficha blanca: se ven igual en claro y en oscuro (los hay negros y de color).
      En gris por defecto para no competir con la marca; a color al pasar el mouse. */
-  .mq-track li { flex: none; display: grid; place-items: center; width: 136px; height: 84px; padding: 8px 12px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
-  .mq-track img { display: block; max-width: 112px; max-height: 68px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
+  .mq-track li { flex: none; display: grid; place-items: center; width: 104px; height: 62px; padding: 6px 10px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
+  .mq-track img { display: block; max-width: 84px; max-height: 48px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
   .mq-track li:hover img { filter: none; opacity: 1; }
   /* Versión sutil: logos chicos, sin ficha, casi transparentes; el título va centrado */
   /* Ancho acotado: franja discreta, no a todo lo ancho */
   .compact { margin: 0 auto; gap: 6px; max-width: 760px; }
-  .compact .mq-title { text-align: center; letter-spacing: 0.04em; text-transform: none; font-weight: 500; font-size: 12px; }
+  .compact .mq-title { text-align: center; letter-spacing: 0.02em; text-transform: none; font-weight: 500; font-size: 12px; }
   .compact .mq-track ul { gap: 22px; padding-left: 22px; animation-duration: 90s; }
   .compact .mq-track li { width: auto; height: 28px; padding: 0; background: none; border: 0; border-radius: 0; }
   .compact .mq-track img { max-width: 52px; max-height: 28px; opacity: 0.45; mix-blend-mode: multiply; }
@@ -82,11 +82,11 @@
     .marquee { margin-top: 24px; gap: 10px; }
     .mq-title { font-size: 10.5px; }
     .mq-track ul { gap: 8px; padding-left: 8px; }
-    .mq-track li { width: 84px; height: 54px; padding: 6px 8px; border-radius: 10px; }
-    .mq-track img { max-width: 68px; max-height: 42px; }
+    .mq-track li { width: 76px; height: 48px; padding: 5px 7px; border-radius: 10px; }
+    .mq-track img { max-width: 62px; max-height: 36px; }
     .compact .mq-track ul { gap: 20px; padding-left: 20px; }
     .compact .mq-track li { width: auto; height: 32px; padding: 0; }
     .compact .mq-track img { max-width: 56px; max-height: 32px; }
-    .compact .mq-title { font-size: 12px; }
+    .compact .mq-title { font-size: 11px; }
   }
 </style>
