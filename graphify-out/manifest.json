@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/Footer.svelte": {
-    "mtime": 1791849321.621116,
-    "ast_hash": "6bf3b3d0369c3c9b69c03cfae4c969c0",
+    "mtime": 1791867888.11168,
+    "ast_hash": "948fc87b3fd6fb80f16f1fd265f0b6d2",
     "semantic_hash": ""
   },
   "src/lib/components/GoogleAnalytics.svelte": {
@@ -55,8 +55,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/Navbar.svelte": {
-    "mtime": 1791866341.007838,
-    "ast_hash": "bb5dcaeb6376cf9d7c66c92801a6f382",
+    "mtime": 1791867300.8493912,
+    "ast_hash": "1aa8c268f91342fa8dccef56f662937e",
     "semantic_hash": ""
   },
   "src/lib/components/PricingSection.svelte": {
@@ -70,8 +70,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/Testimonials.svelte": {
-    "mtime": 1791847262.9006686,
-    "ast_hash": "1d1884e77fe4d06f0824b7b0dd81375c",
+    "mtime": 1791867819.5190363,
+    "ast_hash": "acc80ec1610094d7206a51416efdea13",
     "semantic_hash": ""
   },
   "src/lib/components/WhatsappBubble.svelte": {
@@ -155,8 +155,8 @@
     "semantic_hash": ""
   },
   "src/routes/agenda/+page.svelte": {
-    "mtime": 1791848226.1114013,
-    "ast_hash": "a1eacb395ecec30bd09de45b232fdd66",
+    "mtime": 1791867351.2708955,
+    "ast_hash": "adf885c5e0f59c6d6833292de2bba75d",
     "semantic_hash": ""
   },
   "src/routes/launch/+page.svelte": {
@@ -385,8 +385,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/home/HomeHero.svelte": {
-    "mtime": 1791847451.4507656,
-    "ast_hash": "366889baef2f2b2848c59964adba450a",
+    "mtime": 1791867819.5194747,
+    "ast_hash": "e59883e1989e687e451c929b1f70b89d",
     "semantic_hash": ""
   },
   "src/lib/components/home/HomeIntro.svelte": {
@@ -395,8 +395,8 @@
     "semantic_hash": ""
   },
   "src/lib/components/home/HomePricing.svelte": {
-    "mtime": 1791843405.3666408,
-    "ast_hash": "fabbc938e68bd7648ec0e42ecb3fde94",
+    "mtime": 1791867838.5874667,
+    "ast_hash": "7e9bb858be62664feaa52552dd72611f",
     "semantic_hash": ""
   },
   "src/lib/components/home/PlatformTabs.svelte": {

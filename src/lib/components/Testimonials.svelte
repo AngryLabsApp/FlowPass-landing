@@ -67,10 +67,22 @@
     }
   }
 
+  // Los reels de Instagram pesan varios MB: se cargan recién cuando la sección
+  // está por entrar en pantalla, no al abrir la página.
+  let sectionEl: HTMLElement;
   onMount(() => {
-    mounted = true;
-    // espera un tick para que Splide renderice los slides antes de procesar embeds
-    setTimeout(loadInstagram, 100);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (!e.isIntersecting) return;
+        io.disconnect();
+        mounted = true;
+        // espera un tick para que Splide renderice los slides antes de procesar embeds
+        setTimeout(loadInstagram, 100);
+      },
+      { rootMargin: "600px 0px" }
+    );
+    io.observe(sectionEl);
+    return () => io.disconnect();
   });
 </script>
 
@@ -78,6 +90,7 @@
   id="testimonios"
   class="relative w-full"
   aria-labelledby="testimonios-heading"
+  bind:this={sectionEl}
 >
   <div class="wrap">
     <div class="t-head">
