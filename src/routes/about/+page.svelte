@@ -233,7 +233,7 @@
     <h2 class="cta-title font-epoch">¿Charlamos?</h2>
     <p class="cta-body">
       Si tu negocio cobra por membresía y quieres dejar la libreta, agenda una
-      demo con nosotros o escríbenos directo por WhatsApp.
+      asesoría gratis con nosotros o escríbenos directo por WhatsApp.
     </p>
     <div class="cta-country" role="group" aria-label="Elige tu país">
       <span class="cta-country__label">¿Desde dónde nos escribes?</span>

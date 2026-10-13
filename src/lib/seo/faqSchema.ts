@@ -60,7 +60,7 @@ export const faqMainEntity = [
     "name": "¿Puedo probar FlowPass antes de suscribirme?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "¡Claro que sí! Puedes agendar una asesoría personalizada 1:1 donde revisamos tu caso, te mostramos las funcionalidades y resolvemos tus dudas. En la demo vemos tu negocio funcionando en FlowPass, con tus planes y precios reales."
+      "text": "¡Claro que sí! Puedes agendar una asesoría personalizada 1:1 donde revisamos tu caso, te mostramos las funcionalidades y resolvemos tus dudas. En la asesoría vemos tu negocio funcionando en FlowPass, con tus planes y precios reales."
     }
   },
   {

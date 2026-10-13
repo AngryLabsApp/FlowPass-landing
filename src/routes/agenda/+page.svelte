@@ -36,7 +36,7 @@
       <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
       <h1>Elige el día y la hora <span>que te acomode.</span></h1>
       <ul class="what">
-        <li>Demo con un caso como el tuyo</li>
+        <li>Asesoría con un caso como el tuyo</li>
         <li>Dudas de planes y precios</li>
         <li>Sin compromiso</li>
       </ul>

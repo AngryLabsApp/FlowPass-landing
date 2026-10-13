@@ -15,7 +15,7 @@ export const GET: RequestHandler = async () => {
 
 > Software SaaS en la nube para cualquier negocio que cobra por membresía (mensual, quincenal, trimestral, anual o por paquete de clases). Automatiza alumnos/clientes, pagos, asistencias y recordatorios por WhatsApp desde un solo panel web. Disponible en Latinoamérica (Perú, México) y con precios en USD para otros mercados.
 
-FlowPass es una plataforma web (no requiere instalación) diseñada para cualquier negocio con modelo de membresía o suscripción recurrente. Casos de uso típicos: academias de danza, yoga, artes marciales, música, idiomas, natación, fútbol, gimnasios boutique, barberías, salones de belleza, spa, coworkings, centros de estudios, clubes y cualquier servicio que cobre una cuota periódica a sus clientes. Fundada en ${siteConfig.foundingYear} y operada desde ${siteConfig.location.address}. Modelo de suscripción mensual sin permanencia; incluye una demo 1:1 gratuita antes de contratar; no hay período de prueba gratuito.
+FlowPass es una plataforma web (no requiere instalación) diseñada para cualquier negocio con modelo de membresía o suscripción recurrente. Casos de uso típicos: academias de danza, yoga, artes marciales, música, idiomas, natación, fútbol, gimnasios boutique, barberías, salones de belleza, spa, coworkings, centros de estudios, clubes y cualquier servicio que cobre una cuota periódica a sus clientes. Fundada en ${siteConfig.foundingYear} y operada desde ${siteConfig.location.address}. Modelo de suscripción mensual sin permanencia; incluye una asesoría 1:1 gratuita antes de contratar; no hay período de prueba gratuito.
 
 Diferenciales clave:
 - Sin contrato de permanencia: no amarramos al cliente a ningún plan. El propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel.
@@ -32,7 +32,7 @@ Diferenciales clave:
 - [Landing principal](${base}/): visión general, features, precios, testimonios.
 - [Preguntas frecuentes](${base}/#faq): FAQ oficial.
 - [Precios y planes](${base}/#precios): 5 planes (Pocket, Lite, Full, Ultra, Enterprise) segmentados por alumnos activos.
-- [Agendar demo / asesoría](${base}/agenda): reserva 1:1 gratuita.
+- [Agendar asesoría](${base}/agenda): reserva 1:1 gratuita.
 
 ## Por disciplina
 ${disciplinas.map((d) => `- [Software para ${d.negocio}](${base}/software/${d.slug}): ${d.card}`).join("\n")}
