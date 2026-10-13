@@ -58,7 +58,7 @@
   });
 </script>
 
-<div class="cal-wrap">
+<div class="cal-wrap" class:loaded>
   {#if !loaded}
     <div class="cal-loading" aria-live="polite">Cargando el calendario…</div>
   {/if}
@@ -69,8 +69,11 @@
 </div>
 
 <style>
+  /* El alto mínimo solo reserva espacio mientras carga: con el calendario listo,
+     Cal.com centra su iframe en el contenedor y un mínimo fijo dejaría aire arriba */
   .cal-wrap { position: relative; min-height: 460px; }
-  .cal-inline { width: 100%; min-height: 460px; overflow: auto; }
+  .cal-inline { width: 100%; overflow: auto; }
+  .cal-wrap.loaded { min-height: 0; }
   .cal-loading {
     position: absolute;
     inset: 0;

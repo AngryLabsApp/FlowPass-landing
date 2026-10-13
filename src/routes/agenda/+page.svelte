@@ -2,6 +2,7 @@
   import '$lib/components/home/home.css';
   import Footer from '$lib/components/Footer.svelte';
   import CalEmbed from '$lib/components/CalEmbed.svelte';
+  import LogoMarquee from '$lib/components/home/LogoMarquee.svelte';
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
@@ -29,6 +30,8 @@
 <!-- El Navbar vive en +layout.svelte -->
 <main class="home agenda">
   <div class="wrap">
+    <!-- Prueba social sutil antes de elegir horario -->
+    <div class="logos"><LogoMarquee compact title="+50 academias ya ordenan su negocio con FlowPass" /></div>
     <header class="head">
       <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
       <h1>Elige el día y la hora <span>que te acomode.</span></h1>
@@ -45,7 +48,7 @@
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z" /></svg>
       </span>
       <span class="nr-txt">
-        <b>¿Aún no estás listo{" "}<span class="long">para agendar</span>?</b>
+        <b><span class="long">¿Aún no estás listo para agendar?</span><span class="short">¿Aún no estás listo?</span></b>
         <span>Déjanos tus datos y un asesor te escribe por WhatsApp.</span>
       </span>
       <span class="nr-btn">Te llamamos →</span>
@@ -54,7 +57,6 @@
     <section class="cal-card" aria-label="Calendario para agendar la llamada">
       <CalEmbed />
     </section>
-
   </div>
 </main>
 
@@ -64,6 +66,7 @@
   .agenda { padding-block: 104px 48px; min-height: 100vh; }
   /* Todo centrado y más angosto: el calendario sin la columna de detalles ocupa menos */
   .agenda .wrap { max-width: 920px; }
+  .logos { margin-bottom: 22px; }
   .head { text-align: center; margin-inline: auto; }
   .what { justify-content: center; }
   h1 { font-size: clamp(26px, 3.6vw, 40px); margin-top: 10px !important; }
@@ -96,6 +99,7 @@
   .nr-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #531dd8; color: #fff; }
   .nr-txt { flex: 1; display: grid; gap: 2px; min-width: 0; }
   .nr-txt b { font-size: 14.5px; }
+  .short { display: none; }
   .nr-txt > span { font-size: 13px; color: var(--fg-2); }
   .nr-btn { flex: none; padding: 9px 16px; border-radius: 999px; background: #09090f; color: #fff; font-weight: 600; font-size: 13.5px; white-space: nowrap; }
   :global(:root[data-theme='dark']) .nr-btn { background: #01f59e; color: #04150e; }
@@ -103,12 +107,16 @@
     :global(:root:not([data-theme='light'])) .nr-btn { background: #01f59e; color: #04150e; }
   }
   @media (max-width: 560px) {
-    .agenda { padding-top: 92px; }
+    .agenda { padding-top: 78px; }
     .cal-card { margin-top: 0; }
-    .what li { font-size: 13px; }
+    .head .eyebrow { font-size: 10.5px; letter-spacing: 0.1em; }
+    h1 { font-size: clamp(22px, 6.4vw, 26px); }
+    .what { margin-top: 10px; gap: 4px 12px; }
+    .what li { font-size: 12.5px; }
     /* Celular: una fila compacta (texto + botón), sin ícono ni descripción */
     .not-ready { gap: 10px; padding: 7px 7px 7px 16px; margin-block: 14px 8px; }
     .nr-ic, .nr-txt > span, .long { display: none; }
+    .short { display: inline; }
     .nr-txt b { font-size: 13.5px; }
     .nr-btn { padding: 8px 13px; font-size: 13px; }
   }

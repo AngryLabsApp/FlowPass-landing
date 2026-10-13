@@ -5,6 +5,7 @@
   import { plans } from "$lib/data/pricingData.js";
   import { onMount } from "svelte";
   import calmArt from "$lib/assets/images/agenda-ilustracion.webp";
+  import LogoMarquee from "$lib/components/home/LogoMarquee.svelte";
 
   // Para quien aún no quiere agendar: deja sus datos y el equipo lo llama.
   // (Quien ya quiere elegir horario va a /agenda, con el calendario de Cal.com.)
@@ -30,6 +31,8 @@
 <!-- El Navbar vive en +layout.svelte -->
 
 <main class="agenda-page">
+  <!-- Prueba social sutil antes del formulario: "ellos ya lo usan" -->
+  <div class="logos"><LogoMarquee compact title="+50 academias ya ordenan su negocio con FlowPass" /></div>
   <div class="shell">
     <!-- Panel de calma: la promesa + el final del día resuelto -->
     <aside class="panel">
@@ -71,6 +74,7 @@
       radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.12), transparent 70%),
       #fbfbf8;
   }
+  .logos { max-width: 1120px; margin: 0 auto 18px; }
   .shell {
     max-width: 1120px;
     margin: 0 auto;
@@ -131,7 +135,7 @@
     .form-side { padding: 28px 24px 32px; }
   }
   @media (max-width: 560px) {
-    .agenda-page { padding: 92px 12px 40px; }
+    .agenda-page { padding: 78px 12px 40px; }
     .panel { padding: 22px 18px 18px; }
     h1 { font-size: clamp(22px, 6.6vw, 28px); }
     .what { margin-top: 12px; gap: 3px; }
