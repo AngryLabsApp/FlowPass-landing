@@ -2,6 +2,7 @@
   import '$lib/components/home/home.css';
   import Footer from '$lib/components/Footer.svelte';
   import CalEmbed from '$lib/components/CalEmbed.svelte';
+  import LogoMarquee from '$lib/components/home/LogoMarquee.svelte';
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
@@ -55,6 +56,7 @@
       <CalEmbed />
     </section>
 
+    <LogoMarquee title="Academias que ya confían en FlowPass" />
   </div>
 </main>
 

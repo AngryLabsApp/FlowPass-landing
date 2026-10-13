@@ -5,6 +5,7 @@
   import { plans } from "$lib/data/pricingData.js";
   import { onMount } from "svelte";
   import calmArt from "$lib/assets/images/agenda-ilustracion.webp";
+  import LogoMarquee from "$lib/components/home/LogoMarquee.svelte";
 
   // Para quien aún no quiere agendar: deja sus datos y el equipo lo llama.
   // (Quien ya quiere elegir horario va a /agenda, con el calendario de Cal.com.)
@@ -56,6 +57,7 @@
       <a class="to-cal" href="/agenda">¿Ya quieres elegir día y hora? <b>Agenda tu llamada →</b></a>
     </section>
   </div>
+  <div class="logos"><LogoMarquee title="Academias que ya confían en FlowPass" /></div>
 </main>
 
 <Footer />
@@ -71,6 +73,7 @@
       radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.12), transparent 70%),
       #fbfbf8;
   }
+  .logos { max-width: 1120px; margin: 8px auto 0; }
   .shell {
     max-width: 1120px;
     margin: 0 auto;
