@@ -31,6 +31,8 @@
 <!-- El Navbar vive en +layout.svelte -->
 
 <main class="agenda-page">
+  <!-- Prueba social sutil antes del formulario: "ellos ya lo usan" -->
+  <div class="logos"><LogoMarquee compact title="+50 academias ya ordenan su negocio con FlowPass" /></div>
   <div class="shell">
     <!-- Panel de calma: la promesa + el final del día resuelto -->
     <aside class="panel">
@@ -57,7 +59,6 @@
       <a class="to-cal" href="/agenda">¿Ya quieres elegir día y hora? <b>Agenda tu llamada →</b></a>
     </section>
   </div>
-  <div class="logos"><LogoMarquee title="Academias que ya confían en FlowPass" /></div>
 </main>
 
 <Footer />
@@ -73,7 +74,7 @@
       radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.12), transparent 70%),
       #fbfbf8;
   }
-  .logos { max-width: 1120px; margin: 8px auto 0; }
+  .logos { max-width: 1120px; margin: 0 auto 18px; }
   .shell {
     max-width: 1120px;
     margin: 0 auto;

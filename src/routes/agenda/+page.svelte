@@ -30,6 +30,8 @@
 <!-- El Navbar vive en +layout.svelte -->
 <main class="home agenda">
   <div class="wrap">
+    <!-- Prueba social sutil antes de elegir horario -->
+    <div class="logos"><LogoMarquee compact title="+50 academias ya ordenan su negocio con FlowPass" /></div>
     <header class="head">
       <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
       <h1>Elige el día y la hora <span>que te acomode.</span></h1>
@@ -55,8 +57,6 @@
     <section class="cal-card" aria-label="Calendario para agendar la llamada">
       <CalEmbed />
     </section>
-
-    <LogoMarquee title="Academias que ya confían en FlowPass" />
   </div>
 </main>
 
@@ -66,6 +66,7 @@
   .agenda { padding-block: 104px 48px; min-height: 100vh; }
   /* Todo centrado y más angosto: el calendario sin la columna de detalles ocupa menos */
   .agenda .wrap { max-width: 920px; }
+  .logos { margin-bottom: 22px; }
   .head { text-align: center; margin-inline: auto; }
   .what { justify-content: center; }
   h1 { font-size: clamp(26px, 3.6vw, 40px); margin-top: 10px !important; }

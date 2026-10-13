@@ -3,11 +3,12 @@
   import { clientLogos } from '$lib/data/homeData';
 
   // Carrusel de logos de academias clientes. Se usa en la home y en las páginas de contacto.
-  let { title = 'Confían en FlowPass' }: { title?: string } = $props();
+  // compact: franja fina y sutil (sin fichas), pensada para ir arriba de un formulario.
+  let { title = 'Confían en FlowPass', compact = false }: { title?: string; compact?: boolean } = $props();
 </script>
 
 {#if clientLogos.length}
-  <div class="marquee" aria-label="Academias que usan FlowPass" use:reveal>
+  <div class="marquee" class:compact aria-label="Academias que usan FlowPass" use:reveal>
     <p class="mq-title">{title}</p>
     <div class="mq-track">
       {#each [0, 1] as copy (copy)}
@@ -60,6 +61,17 @@
   .mq-track li { flex: none; display: grid; place-items: center; width: 136px; height: 84px; padding: 8px 12px; box-sizing: border-box; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
   .mq-track img { display: block; max-width: 112px; max-height: 68px; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
   .mq-track li:hover img { filter: none; opacity: 1; }
+  /* Versión sutil: logos chicos, sin ficha, casi transparentes; el título va centrado */
+  .compact { margin-top: 0; gap: 8px; }
+  .compact .mq-title { text-align: center; letter-spacing: 0.08em; text-transform: none; font-weight: 500; font-size: 13px; }
+  .compact .mq-track ul { gap: 28px; padding-left: 28px; animation-duration: 90s; }
+  .compact .mq-track li { width: auto; height: 40px; padding: 0; background: none; border: 0; border-radius: 0; }
+  .compact .mq-track img { max-width: 72px; max-height: 40px; opacity: 0.5; mix-blend-mode: multiply; }
+  /* Los logos tienen fondo blanco: en claro se funde con multiply; en oscuro se invierte y se funde con screen */
+  :global(:root[data-theme='dark']) .compact .mq-track img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.55; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .compact .mq-track img { filter: grayscale(1) invert(1); mix-blend-mode: screen; opacity: 0.55; }
+  }
   @keyframes mq { to { transform: translateX(-100%); } }
   @media (prefers-reduced-motion: reduce) {
     .mq-track ul { animation: none; flex-wrap: wrap; }
@@ -71,5 +83,9 @@
     .mq-track ul { gap: 8px; padding-left: 8px; }
     .mq-track li { width: 84px; height: 54px; padding: 6px 8px; border-radius: 10px; }
     .mq-track img { max-width: 68px; max-height: 42px; }
+    .compact .mq-track ul { gap: 20px; padding-left: 20px; }
+    .compact .mq-track li { width: auto; height: 32px; padding: 0; }
+    .compact .mq-track img { max-width: 56px; max-height: 32px; }
+    .compact .mq-title { font-size: 12px; }
   }
 </style>
