@@ -145,7 +145,8 @@
   .footer-cols nav,
   .footer-contact { display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.875rem; }
   .footer-h { margin: 0 0 0.35rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
-  .footer-contact a { white-space: nowrap; }
+  .footer-cols a,
+  .footer-h { white-space: nowrap; }
   .footer-cols a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
   .footer-cols a:hover { color: #01f59e; }
   @media (max-width: 1100px) {

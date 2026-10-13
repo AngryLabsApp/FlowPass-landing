@@ -31,6 +31,8 @@
   <div class="shell">
     <!-- Panel de calma: la promesa + el final del día resuelto -->
     <aside class="panel">
+      <!-- Pegado arriba: si el paso 2 del formulario es largo, el panel acompaña al hacer scroll -->
+      <div class="panel-in">
       <p class="eyebrow">Llamada de 15 minutos · Gratis</p>
       <h1>Estás a un paso de cambiar cómo administras <span>tu negocio.</span></h1>
       <ul class="what">
@@ -41,6 +43,7 @@
       <figure class="calm">
         <img src={calmArt} alt="Ilustración: una dueña de negocio relajada en su sillón, con un té, ve en el celular un check verde; al lado, su calendario ordenado" loading="eager" width="900" height="872" />
       </figure>
+      </div>
     </aside>
 
     <section class="form-side" aria-labelledby="form-title">
@@ -77,8 +80,6 @@
   }
 
   .panel {
-    display: flex;
-    flex-direction: column;
     padding: 44px 40px 0;
     /* Mismo lila que el fondo de la ilustración, para que se funda sin bordes */
     background: #e4ddfe;
@@ -97,7 +98,8 @@
   .what li { display: flex; gap: 8px; font-size: 14px; }
   .what li::before { content: '✓'; flex: none; color: #00865a; font-weight: 700; }
   /* La ilustración se apoya en el borde inferior del panel */
-  .calm { margin: auto -40px 0; padding-top: 24px; }
+  .panel-in { position: sticky; top: 104px; display: flex; flex-direction: column; }
+  .calm { margin: 0 -40px; padding-top: 28px; }
   .calm img { display: block; width: 100%; max-width: 380px; height: auto; margin-inline: auto; }
 
   .form-side { padding: 44px 48px; display: flex; flex-direction: column; justify-content: center; }
@@ -118,6 +120,7 @@
   @media (max-width: 900px) {
     .shell { grid-template-columns: 1fr; border-radius: 22px; }
     .panel { padding: 28px 24px 24px; }
+    .panel-in { position: static; }
     .calm { display: none; }
     .form-side { padding: 28px 24px 32px; }
   }
