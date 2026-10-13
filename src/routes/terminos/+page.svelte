@@ -2,18 +2,20 @@
   import { termsSEO } from "$lib/config/seo";
   import LegalLayout from "$lib/components/legal/LegalLayout.svelte";
   import LegalContact from "$lib/components/legal/LegalContact.svelte";
+  import { siteConfig } from "$lib/config/site";
 
   const sections = [
     { id: "aceptacion", num: "1", title: "Aceptación de los términos" },
     { id: "servicio", num: "2", title: "Descripción del servicio" },
-    { id: "responsabilidades", num: "3", title: "Responsabilidades del usuario" },
-    { id: "datos", num: "4", title: "Propiedad y tratamiento de los datos" },
-    { id: "pagos", num: "5", title: "Pagos y suscripciones" },
-    { id: "cancelacion", num: "6", title: "Cancelación y suspensión" },
-    { id: "responsabilidad", num: "7", title: "Limitación de responsabilidad" },
-    { id: "modificaciones", num: "8", title: "Modificaciones" },
-    { id: "ley", num: "9", title: "Ley aplicable" },
-    { id: "contacto", num: "10", title: "Contacto" },
+    { id: "contratacion", num: "3", title: "Cómo se contrata" },
+    { id: "responsabilidades", num: "4", title: "Responsabilidades del usuario" },
+    { id: "datos", num: "5", title: "Propiedad y tratamiento de los datos" },
+    { id: "pagos", num: "6", title: "Pagos, precios y reembolsos" },
+    { id: "cancelacion", num: "7", title: "Cancelación y suspensión" },
+    { id: "responsabilidad", num: "8", title: "Limitación de responsabilidad" },
+    { id: "modificaciones", num: "9", title: "Modificaciones" },
+    { id: "ley", num: "10", title: "Ley aplicable" },
+    { id: "contacto", num: "11", title: "Contacto" },
   ];
 </script>
 
@@ -24,14 +26,16 @@
   title="Términos y"
   titleGrad="condiciones"
   subtitle="Para academias y negocios que contratan FlowPass."
-  lastUpdate="28 de septiembre de 2026"
-  lastUpdateISO="2026-09-28"
+  lastUpdate="12 de octubre de 2026"
+  lastUpdateISO="2026-10-12"
   {sections}
 >
   <section id="aceptacion">
     <h2 class="terms-h2 font-epoch"><span class="num">01</span> Aceptación de los términos</h2>
     <p>
       Al acceder y utilizar los servicios de <strong>FlowPass</strong> (en adelante, "la Plataforma"),
+      marca operada por <strong>{siteConfig.legal.name}</strong>, con RUC {siteConfig.legal.ruc} y domicilio
+      fiscal en {siteConfig.legal.address},
       usted acepta estar sujeto a estos Términos y Condiciones. Si no está de acuerdo con alguna parte,
       no debe utilizar nuestros servicios.
     </p>
@@ -54,8 +58,24 @@
     </p>
   </section>
 
+
+  <section id="contratacion">
+    <h2 class="terms-h2 font-epoch"><span class="num">03</span> Cómo se contrata</h2>
+    <p>
+      FlowPass es un <strong>servicio personalizado</strong>: antes de empezar, revisamos el negocio
+      de cada cliente y dejamos la plataforma configurada con sus datos. El proceso es:
+    </p>
+    <ol class="terms-list">
+      <li><strong>Demo de 15 minutos.</strong> El cliente agenda una llamada en <a href="/agenda">flow-pass.com/agenda</a> o nos escribe por WhatsApp. Le mostramos la plataforma con un caso como el suyo.</li>
+      <li><strong>Levantamiento.</strong> Revisamos sus planes, precios, sedes y forma de trabajo para configurar la cuenta.</li>
+      <li><strong>Propuesta y contrato.</strong> Le enviamos el plan que corresponde a su número de alumnos activos, el ciclo de pago y los extras que necesite. El servicio se formaliza con la firma de un contrato.</li>
+      <li><strong>Pago y activación.</strong> Con el primer pago confirmado, activamos la cuenta y acompañamos la puesta en marcha.</li>
+    </ol>
+    <p>No ofrecemos un período de prueba gratuito: la demo y el levantamiento son sin costo y sin compromiso.</p>
+  </section>
+
   <section id="responsabilidades">
-    <h2 class="terms-h2 font-epoch"><span class="num">03</span> Responsabilidades del usuario</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">04</span> Responsabilidades del usuario</h2>
     <ul class="terms-list">
       <li>Proporcionar información veraz y actualizada al registrarse.</li>
       <li>Mantener la confidencialidad de sus credenciales de acceso.</li>
@@ -65,7 +85,7 @@
   </section>
 
   <section id="datos">
-    <h2 class="terms-h2 font-epoch"><span class="num">04</span> Propiedad y tratamiento de los datos</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">05</span> Propiedad y tratamiento de los datos</h2>
     <div class="callout">
       <strong>Los datos que usted ingresa en FlowPass son de su exclusiva propiedad.</strong>
     </div>
@@ -93,21 +113,30 @@
   </section>
 
   <section id="pagos">
-    <h2 class="terms-h2 font-epoch"><span class="num">05</span> Pagos y suscripciones</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">06</span> Pagos, precios y reembolsos</h2>
     <p>
-      FlowPass opera bajo un modelo de <strong>suscripción mensual</strong>. El precio se determina
-      según la cantidad de alumnos activos. Los pagos se procesan de forma segura a través de
-      nuestros proveedores de pago.
+      FlowPass funciona por <strong>suscripción</strong>. El precio depende de la cantidad de alumnos
+      activos del negocio y se publica en <a href="/#precios">flow-pass.com/#precios</a> en soles
+      (Perú), pesos mexicanos (México) o dólares (otros países), con impuestos incluidos.
     </p>
+    <ul class="terms-list">
+      <li><strong>Ciclos de pago:</strong> mensual, trimestral (10% de descuento) o anual (20% de descuento). El ciclo trimestral y el anual se pagan por adelantado.</li>
+      <li><strong>Extras opcionales:</strong> sedes adicionales, packs de mensajes de WhatsApp y facturación electrónica SUNAT (solo Perú), que se cobran mes a mes.</li>
+      <li><strong>Promociones:</strong> cuando ofrecemos un descuento (por ejemplo, en el primer mes), sus condiciones se indican por escrito en la propuesta antes de contratar.</li>
+      <li><strong>Medios de pago:</strong> los pagos se procesan de forma segura a través de nuestro procesador de pagos (dLocal Go) o por los medios acordados en el contrato.</li>
+    </ul>
+    <div class="callout">
+      <strong>No hay reembolsos.</strong> Como cada cuenta se configura de forma personalizada tras la
+      demo, el levantamiento y la firma del contrato, los pagos realizados no son reembolsables.
+    </div>
     <p>
-      Puede cancelar su suscripción en cualquier momento. <strong>No hay contratos de permanencia
-      ni penalizaciones por cancelación.</strong> Al cancelar, seguirá teniendo acceso hasta el
-      final del período pagado.
+      El cliente puede dejar de renovar su suscripción en cualquier momento, sin penalidades. Seguirá
+      teniendo acceso hasta el final del período ya pagado.
     </p>
   </section>
 
   <section id="cancelacion">
-    <h2 class="terms-h2 font-epoch"><span class="num">06</span> Cancelación y suspensión</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">07</span> Cancelación y suspensión</h2>
     <p>Nos reservamos el derecho de suspender o cancelar el acceso a la Plataforma si detectamos:</p>
     <ul class="terms-list">
       <li>Uso inapropiado o fraudulento del servicio.</li>
@@ -117,7 +146,7 @@
   </section>
 
   <section id="responsabilidad">
-    <h2 class="terms-h2 font-epoch"><span class="num">07</span> Limitación de responsabilidad</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">08</span> Limitación de responsabilidad</h2>
     <p>
       FlowPass no será responsable por daños indirectos, pérdida de datos o lucro cesante derivados
       del uso o imposibilidad de uso de la Plataforma. Nuestra responsabilidad máxima estará limitada
@@ -126,7 +155,7 @@
   </section>
 
   <section id="modificaciones">
-    <h2 class="terms-h2 font-epoch"><span class="num">08</span> Modificaciones</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">09</span> Modificaciones</h2>
     <p>
       Podemos actualizar estos términos ocasionalmente. Notificaremos cambios significativos a través
       de la Plataforma o por correo electrónico. El uso continuado del servicio después de los cambios
@@ -135,7 +164,7 @@
   </section>
 
   <section id="ley">
-    <h2 class="terms-h2 font-epoch"><span class="num">09</span> Ley aplicable</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">10</span> Ley aplicable</h2>
     <p>
       Estos términos se rigen por las leyes de la República del Perú. Cualquier disputa será resuelta
       en los tribunales de Lima, Perú.
@@ -143,7 +172,7 @@
   </section>
 
   <section id="contacto">
-    <h2 class="terms-h2 font-epoch"><span class="num">10</span> Contacto</h2>
+    <h2 class="terms-h2 font-epoch"><span class="num">11</span> Contacto</h2>
     <p>Si tiene preguntas sobre estos términos, contáctenos:</p>
     <LegalContact />
   </section>

@@ -1,13 +1,16 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-  import Hero from "$lib/components/Hero.svelte";
+  import "$lib/components/home/home.css";
+  import HomeHero from "$lib/components/home/HomeHero.svelte";
+  import HomeIntro from "$lib/components/home/HomeIntro.svelte";
+  import BeforeAfter from "$lib/components/home/BeforeAfter.svelte";
+  import PlatformTabs from "$lib/components/home/PlatformTabs.svelte";
+  import StudentPortal from "$lib/components/home/StudentPortal.svelte";
   import Testimonials from "$lib/components/Testimonials.svelte";
-  import FeaturesSection from "$lib/components/FeaturesSection.svelte";
-  import PricingSection from "$lib/components/PricingSection.svelte";
-  import FAQ from "$lib/components/FAQ.svelte";
-  import ContactSection from "$lib/components/ContactSection.svelte";
+  import HomePricing from "$lib/components/home/HomePricing.svelte";
+  import HomeFAQ from "$lib/components/home/HomeFAQ.svelte";
+  import HomeClose from "$lib/components/home/HomeClose.svelte";
   import Footer from "$lib/components/Footer.svelte";
-  import Navbar from "$lib/components/Navbar.svelte";
   import WhatsappBubble from "$components/WhatsappBubble.svelte";
   import { homeSEO } from "$lib/config/seo";
   import { siteConfig } from "$lib/config/site";
@@ -39,6 +42,7 @@
   <meta property="og:image:alt" content="FlowPass - Software para academias" />
   <meta property="og:site_name" content={siteConfig.name} />
   <meta property="og:locale" content="es_PE" />
+  <meta property="og:locale:alternate" content="es_MX" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
@@ -51,18 +55,17 @@
   {@html `<script type="application/ld+json">${jsonLdString}</script>`}
 </svelte:head>
 
-<!-- Añadimos el Navbar que faltaba en tu layout original -->
-<Navbar />
-<Hero />
-<hr class="section-divider" />
-<FeaturesSection />
-<hr class="section-divider" />
-<Testimonials />
-<hr class="section-divider" />
-<PricingSection />
-<hr class="section-divider" />
-<FAQ />
-<hr class="section-divider" />
-<ContactSection />
+<!-- El Navbar vive en +layout.svelte -->
+<div class="home">
+  <HomeHero />
+  <HomeIntro />
+  <BeforeAfter />
+  <PlatformTabs />
+  <StudentPortal />
+  <Testimonials />
+  <HomePricing />
+  <HomeFAQ />
+  <HomeClose />
+</div>
 <Footer />
 <WhatsappBubble />

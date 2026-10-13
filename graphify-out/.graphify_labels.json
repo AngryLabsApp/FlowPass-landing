@@ -26,5 +26,10 @@
   "24": "svelte-heros-v2",
   "25": "svelte",
   "26": "vite.config.ts",
-  "27": "zod"
+  "27": "zod",
+  "28": "Rediseño de la landing — archivos de trabajo",
+  "29": "prerender",
+  "30": "dynamic/public",
+  "31": "routes/+page.svelte",
+  "32": "static/public"
 }

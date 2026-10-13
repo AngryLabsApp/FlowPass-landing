@@ -20,7 +20,7 @@ export const defaultSEO: SEOPage = {
   description:
     'FlowPass: SaaS para academias, gimnasios y negocios de membresías en Perú y México. Alumnos, cobros y WhatsApp oficial. Sin permanencia.',
   keywords:
-    'software para academias, software de membresías, sistema de suscripciones, software para gimnasios, software para barbería, gestión de alumnos, cobros recurrentes, recordatorios WhatsApp, software academias Perú, software academias México, CRM academias, gestión de asistencia QR',
+    'software para academias, software de membresías, sistema de suscripciones, software para gimnasios, software para barbería, gestión de alumnos, cobros recurrentes, recordatorios WhatsApp, software academias Perú, software academias México, software academias Latinoamérica, CRM academias, gestión de asistencia QR',
   image: `${siteConfig.url}/og-image.png`,
   ogType: 'website'
 };
@@ -31,7 +31,7 @@ export const defaultSEO: SEOPage = {
 export const homeSEO: SEOPage = {
   title: 'FlowPass · Software para academias y negocios de membresías',
   description:
-    'FlowPass: SaaS para academias, gimnasios, barberías y todo negocio con membresías en Perú y México. Alumnos, cobros y WhatsApp oficial. Sin permanencia.',
+    'FlowPass: software para academias, gimnasios y negocios de membresías en Perú, México y Latinoamérica. Cobros, asistencia y recordatorios por WhatsApp.',
   keywords: defaultSEO.keywords,
   image: defaultSEO.image,
   ogType: 'website'
@@ -41,7 +41,7 @@ export const homeSEO: SEOPage = {
 export const aboutSEO: SEOPage = {
   title: 'Sobre FlowPass · Quiénes somos y por qué existimos',
   description:
-    'FlowPass nació en septiembre de 2025 en Lima y lanzó comercialmente en noviembre: 3 fundadores que entrenaban en academias y vieron que casi todas seguían con libreta y Excel. Damos software simple a negocios de membresías en Perú, México y LATAM.',
+    'FlowPass nació en Lima en 2025: 3 fundadores que entrenaban y vieron academias llevando todo en libreta. Software simple para negocios de membresías en LATAM.',
   keywords:
     'sobre FlowPass, quiénes somos FlowPass, fundadores FlowPass, historia FlowPass, equipo FlowPass, Grecia Delgado, Angel Valenzuela, Piero Varillas, startup software academias LATAM',
   image: defaultSEO.image,
@@ -77,6 +77,16 @@ export const privacySEO: SEOPage = {
     'Cómo FlowPass trata los datos personales de academias y alumnos: qué datos, para qué, con quién se comparten y cómo ejercer tus derechos.',
   keywords:
     'política de privacidad flowpass, protección de datos personales, ley 29733, datos alumnos academia',
+  image: defaultSEO.image,
+  ogType: 'website'
+};
+
+// SEO para la página de contacto
+export const contactSEO: SEOPage = {
+  title: 'Contacto · FlowPass',
+  description:
+    'Escríbenos: formulario, correo y WhatsApp en Perú y México. FlowPass es operado por FLOWPASS PERU S.A.C., RUC 20615483487.',
+  keywords: 'contacto FlowPass, FlowPass Perú, FlowPass México, soporte FlowPass',
   image: defaultSEO.image,
   ogType: 'website'
 };
