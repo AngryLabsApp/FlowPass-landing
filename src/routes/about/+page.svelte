@@ -253,7 +253,7 @@
     </div>
 
     <div class="cta-actions">
-      <a href="/agenda" class="cta-btn cta-btn--primary" onclick={() => trackSchedule("about_cta")}>Agenda 15 minutos</a>
+      <a href="/agenda" class="cta-btn cta-btn--primary" onclick={() => trackSchedule("about_cta")}>Agenda 20 minutos</a>
       <a
         href={waCountry.phone.whatsapp}
         target="_blank"

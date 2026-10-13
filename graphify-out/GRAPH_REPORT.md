@@ -1,16 +1,16 @@
-# Graph Report - FlowPass-landing  (2026-10-12)
+# Graph Report - FlowPass-landing  (2026-10-13)
 
 ## Corpus Check
-- 76 files · ~286,597 words
+- 79 files · ~288,510 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 347 nodes · 433 edges · 33 communities (26 shown, 7 thin omitted)
+- 363 nodes · 457 edges · 35 communities (28 shown, 7 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 2 edges (avg confidence: 0.5)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `02a5e4e7`
+- Built from commit: `a87e941d`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -21,7 +21,7 @@
 - devDependencies
 - Sistema de Leads — FlowPass
 - schemas.ts
-- track.ts
+- usePwaInstall.svelte.ts
 - PricingSection.svelte
 - pricingData.js
 - compilerOptions
@@ -37,7 +37,8 @@
 - tailwind.config.js
 - Rediseño de la landing — archivos de trabajo
 - prerender
-- routes/+page.svelte
+- track.ts
+- PlatformTabs.svelte
 
 ## God Nodes (most connected - your core abstractions)
 1. `FlowPass CRM V1 — Dev Spec (Fase 1)` - 14 edges
@@ -58,11 +59,11 @@
 ## Import Cycles
 - None detected.
 
-## Communities (33 total, 7 thin omitted)
+## Communities (35 total, 7 thin omitted)
 
 ### Community 0 - "site.ts"
 Cohesion: 0.07
-Nodes (21): socials, aboutSEO, contactSEO, defaultSEO, privacySEO, SEOPage, studentTermsSEO, termsSEO (+13 more)
+Nodes (19): socials, aboutSEO, contactSEO, defaultSEO, homeSEO, privacySEO, SEOPage, studentTermsSEO (+11 more)
 
 ### Community 1 - "FlowPass CRM V1 — Dev Spec (Fase 1)"
 Cohesion: 0.06
@@ -81,12 +82,12 @@ Cohesion: 0.09
 Nodes (21): 10. Roadmap simplificado, 1. ¿Qué estamos construyendo?, 2. Herramientas que usamos, 3. Decisiones tomadas (no las re-discutas), 4. Schema de la tabla `leads` en Supabase, 5. Tareas pendientes (checklist), 6. Lógica de `priority` (calculada en n8n), 7. Stack de eventos de tracking (Pixel / GA) (+13 more)
 
 ### Community 5 - "schemas.ts"
-Cohesion: 0.14
-Nodes (19): homeSEO, plans, whatsappPackages, faqMainEntity, breadcrumbSchema(), buildAboutGraph(), buildHomeGraph(), faqPageSchema() (+11 more)
+Cohesion: 0.15
+Nodes (18): plans, whatsappPackages, faqMainEntity, breadcrumbSchema(), buildAboutGraph(), buildHomeGraph(), faqPageSchema(), offersFromPlans() (+10 more)
 
-### Community 6 - "track.ts"
-Cohesion: 0.10
-Nodes (14): BIPEvent, pwaInstall, PwaInstallState, FbqArgs, fire(), GtagArgs, trackContact(), trackEmailClick() (+6 more)
+### Community 6 - "usePwaInstall.svelte.ts"
+Cohesion: 0.17
+Nodes (3): BIPEvent, pwaInstall, PwaInstallState
 
 ### Community 7 - "PricingSection.svelte"
 Cohesion: 0.25
@@ -120,12 +121,16 @@ Nodes (4): Contenido, Cómo retirar todo cuando salga la app nativa, Cómo se co
 Cohesion: 0.29
 Nodes (6): Decisiones tomadas, Hallazgos en las fuentes de marca, Pendiente, Qué hay, Rediseño de la landing — archivos de trabajo, Regenerar y republicar
 
-### Community 31 - "routes/+page.svelte"
-Cohesion: 0.09
-Nodes (7): clientLogos, homeStats, description, faqs, jsonLd, otras, title
+### Community 31 - "track.ts"
+Cohesion: 0.08
+Nodes (21): clientLogos, homeStats, CountryCode, VALID, waCountry, FbqArgs, fire(), GtagArgs (+13 more)
+
+### Community 33 - "PlatformTabs.svelte"
+Cohesion: 0.14
+Nodes (9): active, auto, baseTabs, inView, leadText, paused, t, tabs (+1 more)
 
 ## Knowledge Gaps
-- **159 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+154 more)
+- **168 isolated node(s):** `name`, `private`, `version`, `type`, `dev` (+163 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -133,15 +138,15 @@ Nodes (7): clientLogos, homeStats, description, faqs, jsonLd, otras, title
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `dependencies` connect `dependencies` to `package.json`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
 - **Why does `devDependencies` connect `devDependencies` to `package.json`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+  _High betweenness centrality (0.019) - this node is a cross-community bridge._
 - **Why does `FlowPass CRM V1 — Dev Spec (Fase 1)` connect `FlowPass CRM V1 — Dev Spec (Fase 1)` to `Buenas prácticas que esperamos en toda la implementación`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
 - **What connects `name`, `private`, `version` to the rest of the system?**
-  _159 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _168 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `site.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.06914893617021277 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06938020351526364 - nodes in this community are weakly interconnected._
 - **Should `FlowPass CRM V1 — Dev Spec (Fase 1)` be split into smaller, more focused modules?**
   _Cohesion score 0.06451612903225806 - nodes in this community are weakly interconnected._
 - **Should `dependencies` be split into smaller, more focused modules?**

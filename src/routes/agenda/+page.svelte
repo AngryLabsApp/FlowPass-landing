@@ -1,137 +1,115 @@
 <script lang="ts">
-  import Footer from "$lib/components/Footer.svelte";
-  import LeadForm from "$lib/components/LeadForm.svelte";
-  import { siteConfig } from "$lib/config/site";
-  import { plans } from "$lib/data/pricingData.js";
-  import { onMount } from "svelte";
-  import calmArt from "$lib/assets/images/agenda-ilustracion.webp";
+  import '$lib/components/home/home.css';
+  import Footer from '$lib/components/Footer.svelte';
+  import CalEmbed from '$lib/components/CalEmbed.svelte';
+  import { siteConfig } from '$lib/config/site';
+  import { plans } from '$lib/data/pricingData.js';
+  import { onMount } from 'svelte';
 
-  // Si viene desde un plan de la sección de precios (/agenda?plan=lite), lo mostramos.
-  // Se lee en el navegador: la página se pre-renderiza y ahí no hay query string.
+  // Para quien ya quiere elegir día y hora: calendario de Cal.com.
+  // Quien aún no está listo va a /te-llamamos y deja sus datos.
   let planName = $state<string | null>(null);
   onMount(() => {
-    const id = new URLSearchParams(location.search).get("plan");
+    const id = new URLSearchParams(location.search).get('plan');
     planName = plans.find((p) => p.id === id)?.name ?? null;
   });
 </script>
 
 <svelte:head>
-  <title>Agenda tu asesoría | FlowPass</title>
+  <title>Agenda tu llamada | FlowPass</title>
   <meta
     name="description"
-    content="Cuéntanos de tu academia y te ayudamos a ordenar y automatizar tu gestión en una sesión 1:1. Gratuita y sin compromiso."
+    content="Elige día y hora para una llamada de 20 minutos con FlowPass: vemos tu negocio funcionando con tus planes y precios reales. Gratis y sin compromiso."
   />
   <meta name="robots" content="noindex,follow" />
   <link rel="canonical" href={`${siteConfig.url}/agenda`} />
+  <link rel="preconnect" href="https://app.cal.com" />
 </svelte:head>
 
 <!-- El Navbar vive en +layout.svelte -->
-
-<main class="agenda-page">
-  <div class="shell">
-    <!-- Panel de calma: la promesa + el final del día resuelto -->
-    <aside class="panel">
-      <!-- Pegado arriba: si el paso 2 del formulario es largo, el panel acompaña al hacer scroll -->
-      <div class="panel-in">
-      <p class="eyebrow">Llamada de 15 minutos · Gratis</p>
-      <h1>Estás a un paso de cambiar cómo administras <span>tu negocio.</span></h1>
+<main class="home agenda">
+  <div class="wrap">
+    <header class="head">
+      <p class="eyebrow">20 minutos · Google Meet · Gratis</p>
+      <h1>Elige el día y la hora <span>que te acomode.</span></h1>
       <ul class="what">
         <li>Demo con un caso como el tuyo</li>
         <li>Dudas de planes y precios</li>
         <li>Sin compromiso</li>
       </ul>
-      <figure class="calm">
-        <img src={calmArt} alt="Ilustración: una dueña de negocio relajada en su sillón, con un té, ve en el celular un check verde; al lado, su calendario ordenado" loading="eager" width="900" height="872" />
-      </figure>
-      </div>
-    </aside>
-
-    <section class="form-side" aria-labelledby="form-title">
       {#if planName}<p class="picked">Plan que te interesa: <b>{planName}</b></p>{/if}
-      <h2 id="form-title">Agenda tu llamada</h2>
-      <p class="lede">Déjanos tus datos y te escribimos por WhatsApp.</p>
-      <LeadForm />
+    </header>
+
+    <a class="not-ready" href="/te-llamamos">
+      <span class="nr-ic" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z" /></svg>
+      </span>
+      <span class="nr-txt">
+        <b>¿Aún no estás listo{" "}<span class="long">para agendar</span>?</b>
+        <span>Déjanos tus datos y un asesor te escribe por WhatsApp.</span>
+      </span>
+      <span class="nr-btn">Te llamamos →</span>
+    </a>
+
+    <section class="cal-card" aria-label="Calendario para agendar la llamada">
+      <CalEmbed />
     </section>
+
   </div>
 </main>
 
 <Footer />
 
 <style>
-  /* Tarjeta partida: panel de marca a la izquierda, formulario limpio a la derecha. */
-  .agenda-page {
-    min-height: 100vh;
-    padding: 112px 20px 56px;
-    color: #09090f;
-    background:
-      radial-gradient(50% 60% at 85% 10%, rgba(83, 29, 216, 0.1), transparent 70%),
-      radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.12), transparent 70%),
-      #fbfbf8;
-  }
-  .shell {
-    max-width: 1120px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    background: #fff;
-    border-radius: 28px;
-    overflow: hidden;
-    box-shadow: 0 30px 80px -40px rgba(9, 9, 15, 0.35), 0 0 0 1px rgba(9, 9, 15, 0.06);
-  }
-
-  .panel {
-    padding: 44px 40px 0;
-    /* Mismo lila que el fondo de la ilustración, para que se funda sin bordes */
-    background: #e4ddfe;
-  }
-  .eyebrow { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: #531dd8; }
-  h1 {
-    font-family: 'Epoch', 'Syne', system-ui, sans-serif;
-    font-size: clamp(28px, 3.2vw, 42px);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    margin: 14px 0 0;
-    text-wrap: balance;
-  }
-  h1 span { color: #00865a; }
-  .what { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 6px; }
-  .what li { display: flex; gap: 8px; font-size: 14px; }
-  .what li::before { content: '✓'; flex: none; color: #00865a; font-weight: 700; }
-  /* La ilustración se apoya en el borde inferior del panel */
-  .panel-in { position: sticky; top: 104px; display: flex; flex-direction: column; }
-  .calm { margin: 0 -40px; padding-top: 28px; }
-  .calm img { display: block; width: 100%; max-width: 380px; height: auto; margin-inline: auto; }
-
-  .form-side { padding: 44px 48px; display: flex; flex-direction: column; justify-content: center; }
-  .picked {
-    align-self: flex-start;
-    margin: 0 0 12px;
-    padding: 6px 12px;
+  .agenda { padding-block: 104px 48px; min-height: 100vh; }
+  /* Todo centrado y más angosto: el calendario sin la columna de detalles ocupa menos */
+  .agenda .wrap { max-width: 920px; }
+  .head { text-align: center; margin-inline: auto; }
+  .what { justify-content: center; }
+  h1 { font-size: clamp(26px, 3.6vw, 40px); margin-top: 10px !important; }
+  h1 span { color: var(--accent-text); }
+  .what { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+  .what li { display: flex; gap: 8px; font-size: 14.5px; color: var(--fg-2); }
+  .what li::before { content: '✓'; color: var(--accent-text); font-weight: 700; }
+  .picked { display: inline-block; margin-top: 14px !important; padding: 6px 12px; border-radius: 999px; font-size: 13px; background: color-mix(in srgb, #01f59e 22%, var(--panel)); }
+  /* Sin marco propio: el borde lo pone Cal.com, así no hay doble tarjeta */
+  /* Cal.com ya trae aire arriba dentro del iframe */
+  /* Es <section>: anula el padding-block de 96px que home.css da a todas las secciones */
+  .agenda .cal-card { margin-top: 0; padding-block: 0; }
+  /* Segunda opción bien visible: tarjeta con ícono y botón */
+  .not-ready {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 620px;
+    margin: 18px auto 14px;
+    gap: 12px;
+    padding: 10px 10px 10px 14px;
     border-radius: 999px;
-    font-size: 13px;
-    color: #04150e;
-    background: rgba(1, 245, 158, 0.35);
+    background: color-mix(in srgb, #531dd8 9%, var(--panel));
+    border: 1px solid color-mix(in srgb, #531dd8 28%, var(--line));
+    color: var(--fg);
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
-  h2 { font-family: 'Epoch', 'Syne', system-ui, sans-serif; font-size: 26px; letter-spacing: -0.01em; margin: 0; }
-  .lede { margin: 6px 0 18px; font-size: 14.5px; color: rgba(9, 9, 15, 0.62); }
-  /* El formulario vive dentro de la tarjeta: sin su propio marco ni sombra */
-  .form-side :global(.lead-card) { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
-
-  @media (max-width: 900px) {
-    .shell { grid-template-columns: 1fr; border-radius: 22px; }
-    .panel { padding: 28px 24px 24px; }
-    .panel-in { position: static; }
-    .calm { display: none; }
-    .form-side { padding: 28px 24px 32px; }
+  .not-ready:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .nr-ic { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #531dd8; color: #fff; }
+  .nr-txt { flex: 1; display: grid; gap: 2px; min-width: 0; }
+  .nr-txt b { font-size: 14.5px; }
+  .nr-txt > span { font-size: 13px; color: var(--fg-2); }
+  .nr-btn { flex: none; padding: 9px 16px; border-radius: 999px; background: #09090f; color: #fff; font-weight: 600; font-size: 13.5px; white-space: nowrap; }
+  :global(:root[data-theme='dark']) .nr-btn { background: #01f59e; color: #04150e; }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .nr-btn { background: #01f59e; color: #04150e; }
   }
   @media (max-width: 560px) {
-    .agenda-page { padding: 92px 12px 40px; }
-    .panel { padding: 22px 18px 18px; }
-    h1 { font-size: clamp(22px, 6.6vw, 28px); }
-    .what { margin-top: 12px; gap: 3px; }
+    .agenda { padding-top: 92px; }
+    .cal-card { margin-top: 0; }
     .what li { font-size: 13px; }
-    .form-side { padding: 22px 18px 26px; }
-    h2 { font-size: 20px; }
-    .lede { font-size: 13.5px; margin-bottom: 14px; }
+    /* Celular: una fila compacta (texto + botón), sin ícono ni descripción */
+    .not-ready { gap: 10px; padding: 7px 7px 7px 16px; margin-block: 14px 8px; }
+    .nr-ic, .nr-txt > span, .long { display: none; }
+    .nr-txt b { font-size: 13.5px; }
+    .nr-btn { padding: 8px 13px; font-size: 13px; }
   }
 </style>

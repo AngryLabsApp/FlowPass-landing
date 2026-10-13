@@ -14,6 +14,7 @@
   };
 
   let { calLink = "" }: Props = $props();
+  let scheduleUrl = $state("/agenda");
 
   function flag(code: string): string {
     return code
@@ -483,6 +484,12 @@
       });
 
       localStorage.setItem("last_lead_submit", Date.now().toString());
+      // Si después quiere elegir horario, /agenda abre Cal.com con sus datos ya escritos
+      scheduleUrl = `/agenda?${new URLSearchParams({
+        name: `${payload.nombre} ${payload.apellido}`.trim(),
+        email: payload.email,
+        attendeePhoneNumber: payload.telefono,
+      })}`;
       status = "success";
 
       if (calLink) {
@@ -514,8 +521,11 @@
       <h2 class="success-title">¡Listo, {nombre}!</h2>
       <div class="success-divider"></div>
       <p class="success-body">
-        Recibimos tus datos. En breve te escribimos por WhatsApp para coordinar tu asesoría 1:1 de 30 min con FlowPass.
+        Recibimos tus datos. En menos de 24 horas hábiles te escribimos por WhatsApp.
       </p>
+      {#if !calLink}
+        <a class="success-cta" href={scheduleUrl}>¿Prefieres elegir tu horario ahora? <b>Agenda aquí →</b></a>
+      {/if}
 
       {#if calLink}
         <p class="success-redirect">Te llevamos a elegir el horario…</p>
@@ -892,6 +902,16 @@
     opacity: 0;
     pointer-events: none;
   }
+
+  .success-cta {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 14px;
+    color: #4b4b5a;
+    text-decoration: none;
+  }
+  .success-cta b { color: #531dd8; }
+  .success-cta:hover b { text-decoration: underline; }
 
   .lead-card {
     width: 100%;

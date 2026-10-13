@@ -14,10 +14,10 @@
     <div class="media" role="img" aria-label="Una mano toma el celular y las llaves junto a la laptop abierta, al atardecer"></div>
     <div class="copy">
       <h2 id="close-title">FlowPass resuelve tu operación. <span>Y tú recuperas tu tiempo.</span></h2>
-      <p class="sub">Mira tu negocio en FlowPass en una llamada de 15 minutos, con tus planes y tus precios reales.</p>
+      <p class="sub">Mira tu negocio en FlowPass en una llamada de 20 minutos, con tus planes y tus precios reales.</p>
       <div class="ctas">
         <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule('closing_section')}>
-          Agenda 15 minutos
+          Agenda 20 minutos
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         </a>
         <a
@@ -32,7 +32,7 @@
 </section>
 
 <style>
-  .close { padding-block: 40px 64px; }
+  .close { padding-block: var(--section-y) calc(var(--section-y) * 1.4); }
   .card {
     position: relative;
     max-width: 1280px;

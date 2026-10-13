@@ -759,7 +759,7 @@
       "_origin": "ast",
       "id": "src_lib_actions_reveal",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "reveal.ts"
     },
     {
@@ -770,8 +770,30 @@
       "_origin": "ast",
       "id": "src_lib_actions_reveal_reveal",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "reveal()"
+    },
+    {
+      "label": "CalEmbed.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/CalEmbed.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_calembed",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "calembed.svelte"
+    },
+    {
+      "label": "svelte",
+      "file_type": "code",
+      "source_file": "svelte",
+      "confidence": "EXTRACTED",
+      "_origin": "ast",
+      "id": "svelte_svelte",
+      "community": 25,
+      "community_name": "svelte",
+      "norm_label": "svelte"
     },
     {
       "label": "ContactForm.svelte",
@@ -813,20 +835,9 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_contactsection",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "contactsection.svelte"
-    },
-    {
-      "label": "svelte",
-      "file_type": "code",
-      "source_file": "svelte",
-      "confidence": "EXTRACTED",
-      "_origin": "ast",
-      "id": "svelte_svelte",
-      "community": 25,
-      "community_name": "svelte",
-      "norm_label": "svelte"
     },
     {
       "label": "svelte-heros-v2",
@@ -857,8 +868,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_featuressection",
-      "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community": 34,
+      "community_name": "Testimonials.svelte",
       "norm_label": "featuressection.svelte"
     },
     {
@@ -868,8 +879,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "svelte_splide",
-      "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community": 34,
+      "community_name": "Testimonials.svelte",
       "norm_label": "@splidejs/svelte-splide"
     },
     {
@@ -879,8 +890,8 @@
       "confidence": "EXTRACTED",
       "_origin": "ast",
       "id": "splide_extension_auto_scroll",
-      "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community": 34,
+      "community_name": "Testimonials.svelte",
       "norm_label": "@splidejs/splide-extension-auto-scroll"
     },
     {
@@ -913,7 +924,7 @@
       "_origin": "ast",
       "id": "src_lib_components_googleanalytics",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "googleanalytics.svelte"
     },
     {
@@ -924,7 +935,7 @@
       "_origin": "ast",
       "id": "stores",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "$app/stores"
     },
     {
@@ -935,7 +946,7 @@
       "_origin": "ast",
       "id": "environment",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "$app/environment"
     },
     {
@@ -945,8 +956,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_hero",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "hero.svelte"
     },
     {
@@ -956,8 +967,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_leadform",
-      "community": 6,
-      "community_name": "track.ts",
+      "community": 0,
+      "community_name": "site.ts",
       "norm_label": "leadform.svelte"
     },
     {
@@ -990,7 +1001,7 @@
       "_origin": "ast",
       "id": "src_lib_components_metapixel",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "metapixel.svelte"
     },
     {
@@ -1001,7 +1012,7 @@
       "_origin": "ast",
       "id": "src_lib_components_navbar",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "navbar.svelte"
     },
     {
@@ -1121,8 +1132,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_testimonials",
-      "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community": 34,
+      "community_name": "Testimonials.svelte",
       "norm_label": "testimonials.svelte"
     },
     {
@@ -1133,7 +1144,7 @@
       "_origin": "ast",
       "id": "src_lib_components_themetoggle",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "themetoggle.svelte"
     },
     {
@@ -1144,7 +1155,7 @@
       "_origin": "ast",
       "id": "src_lib_components_themetoggle_toggle",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "toggle()"
     },
     {
@@ -1155,7 +1166,7 @@
       "_origin": "ast",
       "id": "src_lib_components_whatsappbubble",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "whatsappbubble.svelte"
     },
     {
@@ -1166,7 +1177,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_beforeafter",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "beforeafter.svelte"
     },
     {
@@ -1177,7 +1188,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_beforeafter_global",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "global()"
     },
     {
@@ -1188,7 +1199,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_bookflip",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "bookflip.svelte"
     },
     {
@@ -1199,7 +1210,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_homeclose",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homeclose.svelte"
     },
     {
@@ -1221,7 +1232,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_homehero",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homehero.svelte"
     },
     {
@@ -1232,7 +1243,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_homeintro",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homeintro.svelte"
     },
     {
@@ -1243,7 +1254,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_homepricing",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homepricing.svelte"
     },
     {
@@ -1254,8 +1265,19 @@
       "_origin": "ast",
       "id": "src_lib_components_home_homepricing_money",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "money()"
+    },
+    {
+      "label": "HomeSteps.svelte",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/HomeSteps.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_lib_components_home_homesteps",
+      "community": 31,
+      "community_name": "track.ts",
+      "norm_label": "homesteps.svelte"
     },
     {
       "label": "PlatformTabs.svelte",
@@ -1264,9 +1286,152 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_components_home_platformtabs",
-      "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
       "norm_label": "platformtabs.svelte"
+    },
+    {
+      "label": "baseTabs",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L33",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_basetabs",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "basetabs"
+    },
+    {
+      "label": "tabs",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L77",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_tabs",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "tabs"
+    },
+    {
+      "label": "leadText",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L80",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_leadtext",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "leadtext"
+    },
+    {
+      "label": "active",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L82",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_active",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "active"
+    },
+    {
+      "label": "t",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L84",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_t",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "t"
+    },
+    {
+      "label": "auto",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L89",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_auto",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "auto"
+    },
+    {
+      "label": "inView",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L90",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_inview",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "inview"
+    },
+    {
+      "label": "zoomed",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L91",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_zoomed",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "zoomed"
+    },
+    {
+      "label": "paused",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L94",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_paused",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "paused"
+    },
+    {
+      "label": "openZoom()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L96",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_openzoom",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "openzoom()"
+    },
+    {
+      "label": "pick()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L100",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_pick",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "pick()"
+    },
+    {
+      "label": "next()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_next",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "next()"
+    },
+    {
+      "label": "onKey()",
+      "file_type": "code",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L121",
+      "_origin": "ast",
+      "id": "src_lib_components_home_platformtabs_onkey",
+      "community": 33,
+      "community_name": "PlatformTabs.svelte",
+      "norm_label": "onkey()"
     },
     {
       "label": "StudentPortal.svelte",
@@ -1276,7 +1441,7 @@
       "_origin": "ast",
       "id": "src_lib_components_home_studentportal",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "studentportal.svelte"
     },
     {
@@ -1341,8 +1506,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "src_lib_config_seo_homeseo",
-      "community": 5,
-      "community_name": "schemas.ts",
+      "community": 0,
+      "community_name": "site.ts",
       "norm_label": "homeseo"
     },
     {
@@ -1448,7 +1613,7 @@
       "label": "disciplinas",
       "file_type": "code",
       "source_file": "src/lib/data/disciplinas.ts",
-      "source_location": "L23",
+      "source_location": "L25",
       "_origin": "ast",
       "id": "src_lib_data_disciplinas_disciplinas",
       "community": 0,
@@ -1459,7 +1624,7 @@
       "label": "disciplinaBySlug()",
       "file_type": "code",
       "source_file": "src/lib/data/disciplinas.ts",
-      "source_location": "L208",
+      "source_location": "L216",
       "_origin": "ast",
       "id": "src_lib_data_disciplinas_disciplinabyslug",
       "community": 0,
@@ -1474,7 +1639,7 @@
       "_origin": "ast",
       "id": "src_lib_data_homedata",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homedata.ts"
     },
     {
@@ -1485,7 +1650,7 @@
       "_origin": "ast",
       "id": "src_lib_data_homedata_homestats",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "homestats"
     },
     {
@@ -1496,7 +1661,7 @@
       "_origin": "ast",
       "id": "src_lib_data_homedata_clientlogos",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "clientlogos"
     },
     {
@@ -1738,7 +1903,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installappbutton",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "installappbutton.svelte"
     },
     {
@@ -1749,7 +1914,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_installprompttoast",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "installprompttoast.svelte"
     },
     {
@@ -1760,7 +1925,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_index",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwa/index.ts"
     },
     {
@@ -1771,7 +1936,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "usepwainstall.svelte.ts"
     },
     {
@@ -1782,7 +1947,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_bipevent",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "bipevent"
     },
     {
@@ -1793,7 +1958,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwainstallstate"
     },
     {
@@ -1804,7 +1969,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_init",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": ".init()"
     },
     {
@@ -1815,7 +1980,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstallstate_promptinstall",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": ".promptinstall()"
     },
     {
@@ -1826,7 +1991,7 @@
       "_origin": "ast",
       "id": "src_lib_pwa_usepwainstall_svelte_pwainstall",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "pwainstall"
     },
     {
@@ -1957,8 +2122,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "wacountry.svelte.ts"
     },
     {
@@ -1968,8 +2133,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_countrycode",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "countrycode"
     },
     {
@@ -1979,8 +2144,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_valid",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "valid"
     },
     {
@@ -2045,8 +2210,8 @@
       "source_location": "L37",
       "_origin": "ast",
       "id": "src_lib_stores_wacountry_svelte_wacountry",
-      "community": 0,
-      "community_name": "site.ts",
+      "community": 31,
+      "community_name": "track.ts",
       "norm_label": "wacountry"
     },
     {
@@ -2056,7 +2221,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_lib_tracking_track",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "track.ts"
     },
@@ -2067,7 +2232,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fbqargs",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "fbqargs"
     },
@@ -2078,7 +2243,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_lib_tracking_track_gtagargs",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "gtagargs"
     },
@@ -2089,7 +2254,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_lib_tracking_track_window",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "window"
     },
@@ -2100,7 +2265,7 @@
       "source_location": "L27",
       "_origin": "ast",
       "id": "src_lib_tracking_track_fire",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "fire()"
     },
@@ -2111,7 +2276,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackschedule",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "trackschedule()"
     },
@@ -2122,7 +2287,7 @@
       "source_location": "L95",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackcontact",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "trackcontact()"
     },
@@ -2133,7 +2298,7 @@
       "source_location": "L108",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackemailclick",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "trackemailclick()"
     },
@@ -2144,7 +2309,7 @@
       "source_location": "L121",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklogin",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "tracklogin()"
     },
@@ -2155,7 +2320,7 @@
       "source_location": "L134",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstallclick",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "trackpwainstallclick()"
     },
@@ -2166,7 +2331,7 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "src_lib_tracking_track_trackpwainstalled",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "trackpwainstalled()"
     },
@@ -2177,7 +2342,7 @@
       "source_location": "L171",
       "_origin": "ast",
       "id": "src_lib_tracking_track_tracklead",
-      "community": 6,
+      "community": 31,
       "community_name": "track.ts",
       "norm_label": "tracklead()"
     },
@@ -2211,7 +2376,7 @@
       "_origin": "ast",
       "id": "src_routes_layout_svelte_src_routes_layout",
       "community": 6,
-      "community_name": "track.ts",
+      "community_name": "usePwaInstall.svelte.ts",
       "norm_label": "+layout.svelte"
     },
     {
@@ -2244,7 +2409,7 @@
       "_origin": "ast",
       "id": "src_routes_page",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "routes/+page.svelte"
     },
     {
@@ -2276,8 +2441,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_routes_agenda_page",
-      "community": 6,
-      "community_name": "track.ts",
+      "community": 0,
+      "community_name": "site.ts",
       "norm_label": "agenda/+page.svelte"
     },
     {
@@ -2563,62 +2728,62 @@
       "_origin": "ast",
       "id": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "[slug]/+page.svelte"
     },
     {
       "label": "title",
       "file_type": "code",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L18",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_title",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "title"
     },
     {
       "label": "description",
       "file_type": "code",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L19",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_description",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "description"
     },
     {
       "label": "faqs",
       "file_type": "code",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L22",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_faqs",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "faqs"
     },
     {
       "label": "otras",
       "file_type": "code",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L26",
+      "source_location": "L28",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_otras",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "otras"
     },
     {
       "label": "jsonLd",
       "file_type": "code",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L28",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "src_routes_software_slug_page_jsonld",
       "community": 31,
-      "community_name": "routes/+page.svelte",
+      "community_name": "track.ts",
       "norm_label": "jsonld"
     },
     {
@@ -2653,6 +2818,17 @@
       "community": 0,
       "community_name": "site.ts",
       "norm_label": "load()"
+    },
+    {
+      "label": "te-llamamos/+page.svelte",
+      "file_type": "code",
+      "source_file": "src/routes/te-llamamos/+page.svelte",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_routes_te_llamamos_page",
+      "community": 0,
+      "community_name": "site.ts",
+      "norm_label": "te-llamamos/+page.svelte"
     },
     {
       "label": "routes/terminos/+page.svelte",
@@ -4623,6 +4799,15 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeSteps.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homesteps",
+      "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/home/PlatformTabs.svelte",
       "_origin": "ast",
       "source": "src_lib_components_home_platformtabs",
@@ -4636,6 +4821,24 @@
       "_origin": "ast",
       "source": "src_lib_components_home_studentportal",
       "target": "src_lib_actions_reveal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/CalEmbed.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_calembed",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/agenda/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_agenda_page",
+      "target": "src_lib_components_calembed",
       "confidence_score": 1.0
     },
     {
@@ -4823,6 +5026,15 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/routes/te-llamamos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_te_llamamos_page",
+      "target": "src_lib_components_footer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/lib/components/GoogleAnalytics.svelte",
       "_origin": "ast",
       "source": "src_lib_components_googleanalytics",
@@ -4931,9 +5143,9 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
-      "source_file": "src/routes/agenda/+page.svelte",
+      "source_file": "src/routes/te-llamamos/+page.svelte",
       "_origin": "ast",
-      "source": "src_routes_agenda_page",
+      "source": "src_routes_te_llamamos_page",
       "target": "src_lib_components_leadform",
       "confidence_score": 1.0
     },
@@ -5351,9 +5563,197 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_components_home_homepricing",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/HomeSteps.svelte",
+      "_origin": "ast",
+      "source": "src_lib_components_home_homesteps",
+      "target": "src_lib_tracking_track",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/routes/+page.svelte",
       "_origin": "ast",
       "source": "src_routes_page",
+      "target": "src_lib_components_home_homesteps",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
+      "target": "src_lib_components_home_homesteps",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L82",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_active",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L89",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_auto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L33",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_basetabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L90",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_inview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L80",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_leadtext",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_next",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L121",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_onkey",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L96",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_openzoom",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L94",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_paused",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L100",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_pick",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L84",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_t",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L77",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_tabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/lib/components/home/PlatformTabs.svelte",
+      "source_location": "L91",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "src_lib_components_home_platformtabs",
+      "target": "src_lib_components_home_platformtabs_zoomed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_page",
+      "target": "src_lib_components_home_platformtabs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/software/[slug]/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
       "target": "src_lib_components_home_platformtabs",
       "confidence_score": 1.0
     },
@@ -5786,6 +6186,15 @@
     {
       "relation": "imports_from",
       "confidence": "EXTRACTED",
+      "source_file": "src/routes/te-llamamos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_te_llamamos_page",
+      "target": "src_lib_config_site",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
       "source_file": "src/routes/terminos/+page.svelte",
       "_origin": "ast",
       "source": "src_routes_terminos_page",
@@ -5879,7 +6288,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/disciplinas.ts",
-      "source_location": "L208",
+      "source_location": "L216",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_disciplinas",
@@ -5890,7 +6299,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/lib/data/disciplinas.ts",
-      "source_location": "L23",
+      "source_location": "L25",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_lib_data_disciplinas",
@@ -6272,6 +6681,15 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_llms_full_txt_server",
+      "target": "src_lib_data_pricingdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src/routes/te-llamamos/+page.svelte",
+      "_origin": "ast",
+      "source": "src_routes_te_llamamos_page",
       "target": "src_lib_data_pricingdata",
       "confidence_score": 1.0
     },
@@ -7336,7 +7754,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
@@ -7347,7 +7765,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
@@ -7358,7 +7776,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L28",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
@@ -7369,7 +7787,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L26",
+      "source_location": "L28",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
@@ -7380,7 +7798,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/routes/software/[slug]/+page.svelte",
-      "source_location": "L18",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "src_routes_software_slug_page_svelte_src_routes_software_slug_page",
@@ -8457,5 +8875,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "02a5e4e79f33350dfaaa28b32a7d3b86f79fedbb"
+  "built_at_commit": "a87e941da082c11a8a71ce122f43f328d8313963"
 }

@@ -5,8 +5,12 @@
   import { siteConfig } from '$lib/config/site';
   import { disciplinas } from '$lib/data/disciplinas';
   import { trackSchedule } from '$lib/tracking/track';
-  import alumnosShot from '$lib/assets/images/home/alumnos.webp';
   import BookFlip from '$lib/components/home/BookFlip.svelte';
+  import HomePricing from '$lib/components/home/HomePricing.svelte';
+  import HomeSteps from '$lib/components/home/HomeSteps.svelte';
+  import PlatformTabs from '$lib/components/home/PlatformTabs.svelte';
+  import HomeIntro from '$lib/components/home/HomeIntro.svelte';
+  import Testimonials from '$lib/components/Testimonials.svelte';
 
   // Portada de cada disciplina: src/lib/assets/images/disciplinas/<slug>.webp
   const fotos = import.meta.glob('$lib/assets/images/disciplinas/*.webp', { eager: true, import: 'default' }) as Record<string, string>;
@@ -21,7 +25,7 @@
   // Preguntas propias de la disciplina + una común sobre precio
   const faqs = $derived([
     ...d.faqs,
-    { q: '¿Cuánto cuesta FlowPass?', a: 'Depende de cuántos alumnos activos tienes. Todos los planes traen las mismas funciones principales; mira los precios en flow-pass.com/#precios.' }
+    { q: '¿Cuánto cuesta FlowPass?', a: 'Depende de cuántos alumnos activos tienes. Todos los planes traen las mismas funciones principales; los ves en la sección de precios de esta página.' }
   ]);
   const otras = $derived(disciplinas.filter((x) => x.slug !== d.slug));
 
@@ -73,14 +77,18 @@
         <p class="sub">{d.sub}</p>
         <div class="ctas">
           <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}`)}>
-            Agenda 15 minutos
+            Agenda 20 minutos
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
           </a>
-          <a class="btn pill-white" href="/#precios">Ver precios</a>
+          <a class="btn pill-white" href="#precios">Ver precios</a>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Orden: ¿es para mí? → prueba (cifras) → problema → funciones → testimonios
+       → cómo empezar → precio → dudas → acción -->
+  <HomeIntro />
 
   <section class="wrap" aria-labelledby="vs-title">
     <h2 id="vs-title" class="sec-title">Lo que hoy te quita tiempo, resuelto.</h2>
@@ -100,14 +108,17 @@
     </BookFlip>
   </section>
 
-  <section class="wrap shot-sec" aria-labelledby="shot-title">
-    <h2 id="shot-title" class="sec-title">Todo en un solo panel.</h2>
-    <p class="lead">Alumnos, planes, asistencia, pagos y reportes. Y un portal con tu marca para cada alumno.</p>
-    <div class="shot">
-      <div class="shot-bar"><i></i><i></i><i></i><em>app.flow-pass.com/alumnos</em></div>
-      <img src={alumnosShot} width="1440" height="723" loading="lazy" alt={`Panel de FlowPass con la lista de alumnos, su plan, clases y estado de pago, usado por ${d.negocio}`} />
-    </div>
-  </section>
+  <!-- Todas las funciones, con los textos del rubro -->
+  {#key d.slug}
+    <PlatformTabs who={d.who} title={`Todas las funciones para ${d.negocio}.`} />
+  {/key}
+
+  <!-- Prueba social justo después de ver lo que hace -->
+  <Testimonials />
+
+  <!-- Precios: siempre en cada página por disciplina (misma sección que la home) -->
+  <HomeSteps />
+  <HomePricing />
 
   <section class="wrap faq-sec" aria-labelledby="faq-title">
     <div>
@@ -127,9 +138,9 @@
   <section class="wrap">
     <div class="close">
       <h2>Mira tu negocio <span>funcionando en FlowPass.</span></h2>
-      <p>Una llamada de 15 minutos, con tus planes y tus precios reales.</p>
+      <p>Una llamada de 20 minutos, con tus planes y tus precios reales.</p>
       <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}_cierre`)}>
-        Agenda 15 minutos
+        Agenda 20 minutos
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
       </a>
     </div>
@@ -146,7 +157,6 @@
 
 <style>
   .disc { padding-top: 92px; }
-  .disc section { padding-block: 48px; }
   .hero { padding-block: 8px; }
   .crumbs { font-size: 13px; color: var(--fg-3); margin-bottom: 14px; padding-inline: 0; }
   .crumbs a { color: var(--fg-2); text-decoration: none; }
@@ -188,8 +198,6 @@
   .good .label { color: var(--accent-text); }
   .side ul { margin-top: 16px; gap: 12px; font-size: 15.5px; }
 
-  .shot-sec .lead { margin-top: 12px; max-width: 52ch; }
-  .shot-sec .shot { margin-top: 24px; }
 
   .faq-sec { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 48px; }
   .faq-sec .sec-title { font-size: clamp(26px, 3.4vw, 40px); }
@@ -218,6 +226,7 @@
   .close h2 span { display: block; color: #01f59e; }
   .close p { color: rgba(255, 255, 255, 0.78); }
 
+  .disc .others { padding-top: 0; }
   .others ul { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .others a { display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--fg-2); text-decoration: none; }
   .others a:hover { border-color: var(--accent); color: var(--fg); }
@@ -248,7 +257,6 @@
     .hero-card:not(.has-photo) .copy { margin-top: 0; padding-top: 28px; }
     h1 { font-size: clamp(26px, 7.8vw, 34px); }
     .sub { font-size: 14px; margin-top: 12px; }
-    .disc section { padding-block: 32px; }
     .ctas .btn { flex: 1 1 100%; justify-content: center; padding: 11px 16px; font-size: 14px; }
     .side { padding: 18px 16px; }
     .side ul { font-size: 14px; }

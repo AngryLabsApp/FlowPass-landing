@@ -12,6 +12,8 @@ export type Disciplina = {
   card: string;
   /** Línea bajo el titular */
   sub: string;
+  /** Cómo llama el rubro a sus clientes (por defecto alumno/alumnos) */
+  who?: { one: string; many: string };
   /** Lo que hoy duele (máx. 3) */
   pains: string[];
   /** Cómo lo resuelve FlowPass (máx. 3) */
@@ -23,6 +25,7 @@ export type Disciplina = {
 export const disciplinas: Disciplina[] = [
   {
     slug: 'academias-de-voley',
+    who: { one: 'jugador', many: 'jugadores' },
     name: 'Vóley',
     negocio: 'academias de vóley',
     card: 'Grupos por nivel, mensualidades y asistencia.',
@@ -79,6 +82,7 @@ export const disciplinas: Disciplina[] = [
   },
   {
     slug: 'escuelas-de-futbol',
+    who: { one: 'jugador', many: 'jugadores' },
     name: 'Fútbol',
     negocio: 'escuelas de fútbol',
     card: 'Categorías, entrenamientos y pagos.',
@@ -107,6 +111,7 @@ export const disciplinas: Disciplina[] = [
   },
   {
     slug: 'desarrollo-infantil',
+    who: { one: 'niño', many: 'niños' },
     name: 'Desarrollo infantil',
     negocio: 'centros de desarrollo infantil',
     card: 'Talleres, estimulación y pagos de las familias.',
@@ -121,6 +126,7 @@ export const disciplinas: Disciplina[] = [
   },
   {
     slug: 'centros-fitness',
+    who: { one: 'socio', many: 'socios' },
     name: 'Centro fitness',
     negocio: 'centros fitness y gimnasios',
     card: 'Membresías, acceso y vencimientos.',
@@ -129,12 +135,13 @@ export const disciplinas: Disciplina[] = [
     wins: ['Check-in con código o QR en recepción.', 'Vencimientos por colores: hoy, esta semana, ya venció.', 'Ventas del mes y socios activos, sin armar nada.'],
     faqs: [
       { q: '¿Avisa cuando una membresía está por vencer?', a: 'Sí. Ves los vencimientos por colores y FlowPass envía el recordatorio por WhatsApp.' },
-      { q: '¿Cuánto cuesta?', a: 'Depende de tus socios activos. Mira los planes en nuestra página de precios.' }
+      { q: '¿Cuánto cuesta?', a: 'Depende de tus socios activos. Los planes están en esta misma página, en la sección de precios.' }
     ],
     keywords: 'software para gimnasio, sistema de membresías gym, control de acceso gimnasio'
   },
   {
     slug: 'gimnasios-de-box',
+    who: { one: 'socio', many: 'socios' },
     name: 'Box',
     negocio: 'gimnasios de box',
     card: 'Clases, membresías y control de acceso.',
@@ -177,6 +184,7 @@ export const disciplinas: Disciplina[] = [
   },
   {
     slug: 'academias-de-basquet',
+    who: { one: 'jugador', many: 'jugadores' },
     name: 'Básquet',
     negocio: 'academias de básquet',
     card: 'Categorías, entrenamientos y mensualidades.',

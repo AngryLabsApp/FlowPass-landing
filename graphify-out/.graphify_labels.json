@@ -5,7 +5,7 @@
   "3": "devDependencies",
   "4": "Sistema de Leads — FlowPass",
   "5": "schemas.ts",
-  "6": "track.ts",
+  "6": "usePwaInstall.svelte.ts",
   "7": "PricingSection.svelte",
   "8": "pricingData.js",
   "9": "compilerOptions",
@@ -30,6 +30,8 @@
   "28": "Rediseño de la landing — archivos de trabajo",
   "29": "prerender",
   "30": "dynamic/public",
-  "31": "routes/+page.svelte",
-  "32": "static/public"
+  "31": "track.ts",
+  "32": "static/public",
+  "33": "PlatformTabs.svelte",
+  "34": "Testimonials.svelte"
 }
