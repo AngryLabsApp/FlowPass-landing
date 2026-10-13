@@ -80,7 +80,7 @@
 
       <li>
         <a
-          href="/agenda"
+          href="/te-llamamos"
           class="hover:text-white transition duration-200 ease-in-out"
           >Contacto</a
         >
@@ -110,11 +110,11 @@
         <!-- Agenda — CTA principal, igual que en la portada -->
         <a
           href="/agenda"
-          aria-label="Agendar una llamada de 15 minutos con FlowPass"
+          aria-label="Agendar una llamada de 20 minutos con FlowPass"
           onclick={() => trackSchedule('navbar_desktop')}
           class="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
         >
-          Agenda 15 min
+          Agenda 20 min
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         </a>
       </li>
@@ -197,7 +197,7 @@
         onclick={() => (isOpen = false)}>Nosotros</a
       >
       <a
-        href="/agenda"
+        href="/te-llamamos"
         class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Contacto</a
       >
@@ -214,7 +214,7 @@
           }}
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold bg-brand text-[#04150e]"
         >
-          Agenda 15 minutos
+          Agenda 20 minutos
         </a>
 
         <a

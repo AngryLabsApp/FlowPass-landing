@@ -37,7 +37,7 @@
           <a href="/#precios">Precios</a>
           <a href="/#faq">Preguntas</a>
           <a href="/about">Nosotros</a>
-          <a href="/agenda">Contacto</a>
+          <a href="/te-llamamos">Contacto</a>
         </nav>
         <nav aria-label="Por disciplina">
           <p class="footer-h">Por disciplina</p>
