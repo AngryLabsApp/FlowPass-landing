@@ -96,7 +96,7 @@
   .site-footer {
     background: #000;
     border-top: 0.5px solid rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.62);
   }
 
   .footer-container {
@@ -136,7 +136,7 @@
   }
   .footer-tagline {
     font-size: 0.875rem;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.62);
     line-height: 1.6;
     margin: 0;
   }
@@ -144,7 +144,7 @@
   .footer-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem 3rem; }
   .footer-cols nav,
   .footer-contact { display: flex; flex-direction: column; gap: 0.55rem; font-size: 0.875rem; }
-  .footer-h { margin: 0 0 0.35rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .footer-h { margin: 0 0 0.35rem; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
   .footer-cols a,
   .footer-h { white-space: nowrap; }
   .footer-cols a { color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.2s; }
@@ -201,7 +201,7 @@
     align-items: center;
     text-align: center;
     font-size: 0.8125rem;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.62);
   }
   @media (min-width: 768px) {
     .footer-bottom {

@@ -3,6 +3,11 @@
   import { trackSchedule } from '$lib/tracking/track';
 </script>
 
+<svelte:head>
+  <!-- La foto de portada es el elemento más grande (LCP): se pide primero -->
+  <link rel="preload" as="image" href={heroPhoto} type="image/webp" fetchpriority="high" />
+</svelte:head>
+
 <!-- Portada: la persona antes que el producto. Foto con gradación de marca encima. -->
 <header class="hero">
   <div class="hero-photo" style={`--photo:url(${heroPhoto})`}>

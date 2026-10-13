@@ -190,126 +190,132 @@
     <p class="cmp-note">¿Abres otra sede? Súmala cuando la necesites. Cada sede paga según su propio tamaño: si tu sede principal es grande y abres una pequeña, esa sede suma desde S/30.</p>
   </details>
 
-  <div class="extras" class:three={country === 'PE'}>
-    {#if enterprise}
-      <div class="extra ent">
-        <span class="x-tag">Flow Enterprise</span>
-        <h3>¿Más de {plans.at(-1)?.maxActiveStudents} alumnos activos o varias marcas?</h3>
-        <p>Sedes ilimitadas incluidas, reportes consolidados, migración asistida y desarrollo a medida.</p>
-        <a class="btn ent-btn" href={waLink('¡Hola! Quiero conocer Flow Enterprise.')} target="_blank" rel="noopener noreferrer" onclick={() => trackContact('pricing_plan_enterprise')}>Hablar con el equipo</a>
-      </div>
-    {/if}
-    <div class="extra">
-      <span class="x-tag">Extra · WhatsApp</span>
-      <h3>¿Te quedas corto de mensajes?</h3>
-      <p>Suma un pack de recordatorios al mes, solo si lo necesitas:</p>
-      <div class="packs">
-        {#each whatsappPackages as w (w.name)}<span><b>+{w.reminders}</b>{money(w.prices[country as keyof typeof w.prices])} / mes</span>{/each}
-      </div>
-    </div>
-    {#if country === 'PE'}
-      <div class="extra">
-        <span class="x-tag">Extra · Solo Perú</span>
-        <h3>Facturación electrónica SUNAT</h3>
-        <p>Todos los planes se pueden conectar con SUNAT para emitir boletas y facturas. Pagas según cuántos comprobantes emites:</p>
-        <div class="packs">
-          {#each sunatPackages as s (s.vouchers)}<span><b>{s.vouchers}</b>comprobantes · S/{s.prices.PE}</span>{/each}
+  <!-- Extras y cotizador: plegados para que lo primero sea simple (tu plan y su precio) -->
+  <details class="more">
+    <summary><span>¿Sedes, facturación SUNAT o más mensajes? <b>Arma tu cotización</b></span></summary>
+    <div class="more-body">
+    <div class="extras" class:three={country === 'PE'}>
+      {#if enterprise}
+        <div class="extra ent">
+          <span class="x-tag">Flow Enterprise</span>
+          <h3>¿Más de {plans.at(-1)?.maxActiveStudents} alumnos activos o varias marcas?</h3>
+          <p>Sedes ilimitadas incluidas, reportes consolidados, migración asistida y desarrollo a medida.</p>
+          <a class="btn ent-btn" href={waLink('¡Hola! Quiero conocer Flow Enterprise.')} target="_blank" rel="noopener noreferrer" onclick={() => trackContact('pricing_plan_enterprise')}>Hablar con el equipo</a>
         </div>
-      </div>
-    {/if}
-  </div>
-
-  <!-- Cotizador -->
-  <div class="quote" id="cotizador">
-    <div class="q-form">
-      <p class="eyebrow">Arma tu plan</p>
-      <h3>Calcula cuánto pagarías al mes.</h3>
-
-      <fieldset>
-        <legend>1. Tu plan</legend>
-        <div class="seg" role="group" aria-label="Plan">
-          {#each plans as p (p.id)}
-            <button type="button" aria-pressed={qPlan.id === p.id} onclick={() => (quotePlan = p.id)}>{p.name.replace('Flow ', '')}</button>
-          {/each}
-        </div>
-        <p class="hint">
-          Hasta {qPlan.maxActiveStudents} alumnos activos · {qPlan.whatsappIncluded?.total} mensajes de WhatsApp · {qPlan.teamSeats ? `hasta ${qPlan.teamSeats} accesos` : 'accesos ilimitados'}
-        </p>
-      </fieldset>
-
-      <fieldset>
-        <legend>2. ¿Tienes o vas a abrir otra sede?</legend>
-        <div class="seg" role="group" aria-label="Sedes adicionales">
-          <button type="button" aria-pressed={!hasSites} onclick={() => (hasSites = false)}>No, solo una</button>
-          <button type="button" aria-pressed={hasSites} onclick={() => (hasSites = true)}>Sí</button>
-        </div>
-        {#if hasSites}
-          <div class="sites">
-            {#each sites as _, i (i)}
-              <div class="site-row">
-                <label for={`sede-${i}`}>Sede {i + 2}</label>
-                <select id={`sede-${i}`} bind:value={sites[i]}>
-                  {#each plans as p (p.id)}
-                    <option value={p.id}>Hasta {p.maxActiveStudents} alumnos{country === 'PE' && p.extraSiteFee?.PE ? ` · ${money(p.extraSiteFee.PE)}` : ''}</option>
-                  {/each}
-                </select>
-                {#if sites.length > 1}
-                  <button type="button" class="rm" aria-label={`Quitar sede ${i + 2}`} onclick={() => (sites = sites.filter((_, j) => j !== i))}>×</button>
-                {/if}
-              </div>
-            {/each}
-            {#if sites.length < 10}
-              <button type="button" class="add" onclick={() => (sites = [...sites, 'pocket'])}>+ Agregar otra sede</button>
-            {/if}
-          </div>
-        {/if}
-        <p class="hint">Cada sede paga según su tamaño, desde S/30. Tiene sus propios alumnos, mensajes y accesos.</p>
-      </fieldset>
-
-      {#if country === 'PE'}
-        <fieldset>
-          <legend>3. ¿Necesitas emitir boletas y facturas con SUNAT?</legend>
-          <div class="seg" role="group" aria-label="Comprobantes SUNAT">
-            <button type="button" aria-pressed={sunat === 0} onclick={() => (sunat = 0)}>No</button>
-            {#each sunatPackages as s (s.vouchers)}
-              <button type="button" aria-pressed={sunat === s.vouchers} onclick={() => (sunat = s.vouchers)}>{s.vouchers}</button>
-            {/each}
-          </div>
-          <p class="hint">Comprobantes al mes. Depende de cuánto facturas.</p>
-        </fieldset>
       {/if}
-
-      <fieldset>
-        <legend>{country === 'PE' ? '4' : '3'}. ¿Mensajes de WhatsApp extra?</legend>
-        <div class="seg" role="group" aria-label="Pack de WhatsApp">
-          <button type="button" aria-pressed={waPack === 0} onclick={() => (waPack = 0)}>No</button>
-          {#each whatsappPackages as w (w.name)}
-            <button type="button" aria-pressed={waPack === w.reminders} onclick={() => (waPack = w.reminders)}>+{w.reminders}</button>
-          {/each}
+      <div class="extra">
+        <span class="x-tag">Extra · WhatsApp</span>
+        <h3>¿Te quedas corto de mensajes?</h3>
+        <p>Suma un pack de recordatorios al mes, solo si lo necesitas:</p>
+        <div class="packs">
+          {#each whatsappPackages as w (w.name)}<span><b>+{w.reminders}</b>{money(w.prices[country as keyof typeof w.prices])} / mes</span>{/each}
         </div>
-        <p class="hint">Tu plan ya trae {qPlan.whatsappIncluded?.total} al mes. Suma un pack solo si te quedas corto.</p>
-      </fieldset>
+      </div>
+      {#if country === 'PE'}
+        <div class="extra">
+          <span class="x-tag">Extra · Solo Perú</span>
+          <h3>Facturación electrónica SUNAT</h3>
+          <p>Todos los planes se pueden conectar con SUNAT para emitir boletas y facturas. Pagas según cuántos comprobantes emites:</p>
+          <div class="packs">
+            {#each sunatPackages as s (s.vouchers)}<span><b>{s.vouchers}</b>comprobantes · S/{s.prices.PE}</span>{/each}
+          </div>
+        </div>
+      {/if}
     </div>
 
-    <aside class="q-sum" aria-live="polite">
-      <p class="q-title">Tu cotización</p>
-      <ul>
-        {#each quote.lines as [a, b] (a)}<li><span>{a}</span><b>{b}</b></li>{/each}
-      </ul>
-      <div class="q-total"><span>Total al mes</span><b>{money(quote.total)}{quote.pending ? ' + sedes' : ''}</b></div>
-      <p class="q-foot">
-        {taxLine}
-        {cycle === 'mensual' ? 'Sin permanencia.' : `El plan se cobra ${cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}; los extras, mes a mes.`}
-        {quote.pending ? 'El precio por sede fuera de Perú te lo damos por WhatsApp.' : ''}
-      </p>
-      <a class="btn wa-btn" href={waLink(quoteText)} target="_blank" rel="noopener noreferrer" onclick={() => trackContact('pricing_quote')}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4 5.2 5.2 0 0 0 3.2.7 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z" /></svg>
-        Hablar con un asesor
-      </a>
-      <p class="wa-note">Te llega esta cotización por WhatsApp y te responde una persona.</p>
-    </aside>
-  </div>
+    <!-- Cotizador -->
+    <div class="quote" id="cotizador">
+      <div class="q-form">
+        <p class="eyebrow">Arma tu plan</p>
+        <h3>Calcula cuánto pagarías al mes.</h3>
 
+        <fieldset>
+          <legend>1. Tu plan</legend>
+          <div class="seg" role="group" aria-label="Plan">
+            {#each plans as p (p.id)}
+              <button type="button" aria-pressed={qPlan.id === p.id} onclick={() => (quotePlan = p.id)}>{p.name.replace('Flow ', '')}</button>
+            {/each}
+          </div>
+          <p class="hint">
+            Hasta {qPlan.maxActiveStudents} alumnos activos · {qPlan.whatsappIncluded?.total} mensajes de WhatsApp · {qPlan.teamSeats ? `hasta ${qPlan.teamSeats} accesos` : 'accesos ilimitados'}
+          </p>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. ¿Tienes o vas a abrir otra sede?</legend>
+          <div class="seg" role="group" aria-label="Sedes adicionales">
+            <button type="button" aria-pressed={!hasSites} onclick={() => (hasSites = false)}>No, solo una</button>
+            <button type="button" aria-pressed={hasSites} onclick={() => (hasSites = true)}>Sí</button>
+          </div>
+          {#if hasSites}
+            <div class="sites">
+              {#each sites as _, i (i)}
+                <div class="site-row">
+                  <label for={`sede-${i}`}>Sede {i + 2}</label>
+                  <select id={`sede-${i}`} bind:value={sites[i]}>
+                    {#each plans as p (p.id)}
+                      <option value={p.id}>Hasta {p.maxActiveStudents} alumnos{country === 'PE' && p.extraSiteFee?.PE ? ` · ${money(p.extraSiteFee.PE)}` : ''}</option>
+                    {/each}
+                  </select>
+                  {#if sites.length > 1}
+                    <button type="button" class="rm" aria-label={`Quitar sede ${i + 2}`} onclick={() => (sites = sites.filter((_, j) => j !== i))}>×</button>
+                  {/if}
+                </div>
+              {/each}
+              {#if sites.length < 10}
+                <button type="button" class="add" onclick={() => (sites = [...sites, 'pocket'])}>+ Agregar otra sede</button>
+              {/if}
+            </div>
+          {/if}
+          <p class="hint">Cada sede paga según su tamaño, desde S/30. Tiene sus propios alumnos, mensajes y accesos.</p>
+        </fieldset>
+
+        {#if country === 'PE'}
+          <fieldset>
+            <legend>3. ¿Necesitas emitir boletas y facturas con SUNAT?</legend>
+            <div class="seg" role="group" aria-label="Comprobantes SUNAT">
+              <button type="button" aria-pressed={sunat === 0} onclick={() => (sunat = 0)}>No</button>
+              {#each sunatPackages as s (s.vouchers)}
+                <button type="button" aria-pressed={sunat === s.vouchers} onclick={() => (sunat = s.vouchers)}>{s.vouchers}</button>
+              {/each}
+            </div>
+            <p class="hint">Comprobantes al mes. Depende de cuánto facturas.</p>
+          </fieldset>
+        {/if}
+
+        <fieldset>
+          <legend>{country === 'PE' ? '4' : '3'}. ¿Mensajes de WhatsApp extra?</legend>
+          <div class="seg" role="group" aria-label="Pack de WhatsApp">
+            <button type="button" aria-pressed={waPack === 0} onclick={() => (waPack = 0)}>No</button>
+            {#each whatsappPackages as w (w.name)}
+              <button type="button" aria-pressed={waPack === w.reminders} onclick={() => (waPack = w.reminders)}>+{w.reminders}</button>
+            {/each}
+          </div>
+          <p class="hint">Tu plan ya trae {qPlan.whatsappIncluded?.total} al mes. Suma un pack solo si te quedas corto.</p>
+        </fieldset>
+      </div>
+
+      <aside class="q-sum" aria-live="polite">
+        <p class="q-title">Tu cotización</p>
+        <ul>
+          {#each quote.lines as [a, b] (a)}<li><span>{a}</span><b>{b}</b></li>{/each}
+        </ul>
+        <div class="q-total"><span>Total al mes</span><b>{money(quote.total)}{quote.pending ? ' + sedes' : ''}</b></div>
+        <p class="q-foot">
+          {taxLine}
+          {cycle === 'mensual' ? 'Sin permanencia.' : `El plan se cobra ${cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}; los extras, mes a mes.`}
+          {quote.pending ? 'El precio por sede fuera de Perú te lo damos por WhatsApp.' : ''}
+        </p>
+        <a class="btn wa-btn" href={waLink(quoteText)} target="_blank" rel="noopener noreferrer" onclick={() => trackContact('pricing_quote')}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4 5.2 5.2 0 0 0 3.2.7 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z" /></svg>
+          Hablar con un asesor
+        </a>
+        <p class="wa-note">Te llega esta cotización por WhatsApp y te responde una persona.</p>
+      </aside>
+    </div>
+
+    </div>
+  </details>
 </section>
 
 <style>
@@ -339,6 +345,15 @@
   .plan-btn { background: var(--fg); color: var(--bg); border-radius: 999px; }
   .plan-btn.mine { background: #01f59e; color: #04150e; }
 
+  .more { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+  .more summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; color: var(--fg-2); }
+  .more summary b { color: var(--fg); }
+  .more summary::-webkit-details-marker { display: none; }
+  .more summary::after { content: '+'; color: var(--accent-text); font-size: 20px; line-height: 1; flex: none; }
+  .more[open] summary { border-bottom: 1px solid var(--line); }
+  .more[open] summary::after { content: '–'; }
+  .more-body { padding: 4px 18px 22px; }
+  .more-body > :first-child { margin-top: 18px; }
   .compare { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
   .compare summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: center; gap: 10px; font-weight: 600; }
   .compare summary::-webkit-details-marker { display: none; }
