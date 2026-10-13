@@ -118,11 +118,11 @@
         <!-- Agenda — CTA principal, igual que en la portada -->
         <a
           href="/agenda"
-          aria-label="Agendar una llamada de 20 minutos con FlowPass"
+          aria-label="Agendar una llamada de 15 minutos con FlowPass"
           onclick={() => trackSchedule('navbar_desktop')}
           class="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
         >
-          Agenda 20 min
+          Agenda 15 min
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         </a>
       </li>
@@ -227,7 +227,7 @@
           }}
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold bg-brand text-[#04150e]"
         >
-          Agenda 20 minutos
+          Agenda 15 minutos
         </a>
 
         <a

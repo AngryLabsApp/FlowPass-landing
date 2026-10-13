@@ -18,7 +18,7 @@
       <p class="sub">Cobrar, recordar, anotar y emitir comprobantes. Cada mes, lo mismo. FlowPass lo hace por ti.</p>
       <div class="ctas">
         <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule('hero')}>
-          Agenda 20 minutos
+          Agenda 15 minutos
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         </a>
         <a class="btn pill-white" href="#features">Ver la plataforma</a>

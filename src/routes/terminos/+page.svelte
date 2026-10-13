@@ -66,7 +66,7 @@
       de cada cliente y dejamos la plataforma configurada con sus datos. El proceso es:
     </p>
     <ol class="terms-list">
-      <li><strong>Asesoría de 20 minutos.</strong> El cliente agenda una llamada en <a href="/agenda">flow-pass.com/agenda</a> o nos escribe por WhatsApp. Le mostramos la plataforma con un caso como el suyo.</li>
+      <li><strong>Asesoría de 15 minutos.</strong> El cliente agenda una llamada en <a href="/agenda">flow-pass.com/agenda</a> o nos escribe por WhatsApp. Le mostramos la plataforma con un caso como el suyo.</li>
       <li><strong>Levantamiento.</strong> Revisamos sus planes, precios, sedes y forma de trabajo para configurar la cuenta.</li>
       <li><strong>Propuesta y contrato.</strong> Le enviamos el plan que corresponde a su número de alumnos activos, el ciclo de pago y los extras que necesite. El servicio se formaliza con la firma de un contrato.</li>
       <li><strong>Pago y activación.</strong> Con el primer pago confirmado, activamos la cuenta y acompañamos la puesta en marcha.</li>
