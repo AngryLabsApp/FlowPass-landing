@@ -92,7 +92,12 @@
 .home a { color: inherit; }
 
 .home .wrap { max-width: 1200px; margin-inline: auto; }
-.home section { padding-block: 96px; scroll-margin-top: 80px; }
+.home {
+  /* Un solo ritmo vertical entre secciones, fluido: ~56 px en celular, ~104 px en escritorio
+     (dos secciones seguidas suman el doble). Cada sección usa este token, no números sueltos. */
+  --section-y: clamp(28px, 3.6vw, 52px);
+}
+.home section { padding-block: var(--section-y); scroll-margin-top: 80px; }
 .home .eyebrow {
   font-size: 12px;
   letter-spacing: 0.14em;
@@ -228,13 +233,9 @@
 }
 .home .seg button[aria-pressed='true'] { background: var(--fg); color: var(--bg); }
 
-@media (max-width: 900px) {
-  .home section { padding-block: 72px; }
-}
 /* Celular: escala de texto más contenida */
 @media (max-width: 560px) {
   .home { padding-inline: 16px; font-size: 15px; }
-  .home section { padding-block: 34px; }
   .home .sec-title { font-size: clamp(25px, 7.2vw, 32px); }
   .home .lead { font-size: 15.5px; }
   .home h3 { font-size: 20px; }

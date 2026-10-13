@@ -157,7 +157,6 @@
 
 <style>
   .disc { padding-top: 92px; }
-  .disc section { padding-block: 48px; }
   .hero { padding-block: 8px; }
   .crumbs { font-size: 13px; color: var(--fg-3); margin-bottom: 14px; padding-inline: 0; }
   .crumbs a { color: var(--fg-2); text-decoration: none; }
@@ -227,6 +226,7 @@
   .close h2 span { display: block; color: #01f59e; }
   .close p { color: rgba(255, 255, 255, 0.78); }
 
+  .disc .others { padding-top: 0; }
   .others ul { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .others a { display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: 14px; color: var(--fg-2); text-decoration: none; }
   .others a:hover { border-color: var(--accent); color: var(--fg); }
@@ -257,7 +257,6 @@
     .hero-card:not(.has-photo) .copy { margin-top: 0; padding-top: 28px; }
     h1 { font-size: clamp(26px, 7.8vw, 34px); }
     .sub { font-size: 14px; margin-top: 12px; }
-    .disc section { padding-block: 32px; }
     .ctas .btn { flex: 1 1 100%; justify-content: center; padding: 11px 16px; font-size: 14px; }
     .side { padding: 18px 16px; }
     .side ul { font-size: 14px; }

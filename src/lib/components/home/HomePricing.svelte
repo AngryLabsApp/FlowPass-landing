@@ -99,7 +99,7 @@
   </div>
 
   <div class="finder" use:reveal>
-    <label for="n-alumnos">¿Cuántos alumnos activos tienes hoy?</label>
+    <label for="n-alumnos">¿Cuántos alumnos activos tienes hoy? <span class="def">(los que tienen un plan vigente)</span></label>
     <div class="finder-row">
       <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} />
       <output for="n-alumnos">
@@ -130,15 +130,14 @@
   <div class="plans">
     {#each plans as p, i (p.id)}
       <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`}>
-        {#if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
+        {#if fit?.id === p.id}<span class="pop mine-tag">TU PLAN</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
-        <div class="size">{sizeLabel(p, i)} alumnos activos<small>{p.registeredStudents}</small></div>
+        <div class="size">{sizeLabel(p, i)} alumnos activos</div>
         <div class="amt">{money(priceOf(p))} <small>{code} / mes</small></div>
-        <p class="per">
-          {cycle === 'mensual' ? 'Pago mes a mes' : `Se cobra ${money(priceOf(p) * months)} ${cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}`}
-        </p>
-        <p class="yours">{fit?.id === p.id ? 'Este es tu plan' : ''}</p>
+        {#if cycle !== 'mensual'}
+          <p class="per">Se cobra {money(priceOf(p) * months)} {cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}</p>
+        {/if}
         <p class="key">{p.whatsappIncluded?.total} mensajes de WhatsApp al mes</p>
         <a
           class="btn plan-btn"
@@ -321,6 +320,8 @@
 <style>
   .finder { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); display: grid; gap: 12px; }
   .finder label { font-weight: 600; }
+  .finder label .def { font-weight: 400; color: var(--fg-3); font-size: 0.9em; }
+  .mine-tag { background: #01f59e; color: #04150e; }
   .finder-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
   .finder input { flex: 1 1 260px; min-width: 0; accent-color: var(--accent-text); }
   .finder output { font-size: 15px; color: var(--fg-2); }
@@ -334,11 +335,9 @@
   .tag { font-size: 12px; color: var(--fg-3); }
   .plan h3 { font-size: 22px; }
   .size { font-family: var(--display); font-size: 20px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-  .size small { display: block; font-family: var(--body); font-size: 13px; color: var(--fg-3); letter-spacing: 0; margin-top: 2px; }
   .amt { font-family: var(--display); font-size: 36px; letter-spacing: -0.02em; margin-top: 8px; font-variant-numeric: tabular-nums; }
   .amt small { font-family: var(--body); font-size: 14px; color: var(--fg-3); letter-spacing: 0; }
   .per { font-size: 12px; color: var(--fg-3); }
-  .yours { font-size: 12px; font-weight: 700; color: var(--accent-text); min-height: 16px; }
   .key { font-size: 14px; color: var(--fg-2); padding-top: 12px; border-top: 1px solid var(--line); }
   .plan .btn { margin-top: auto; justify-content: center; }
   /* Todos los planes con botón sólido; el que le corresponde, en verde */
@@ -428,7 +427,7 @@
     .plan {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'name amt' 'size size' 'per per' 'yours yours' 'key key' 'btn btn';
+      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn';
       gap: 2px 12px;
       padding: 16px;
       border-radius: 14px;
@@ -437,13 +436,9 @@
     .plan h3 { grid-area: name; font-size: 18px; align-self: end; }
     .size { grid-area: size; font-size: 13.5px; font-family: var(--body); font-weight: 600; }
     .size { margin-top: 6px; }
-    .size small { display: inline; font-size: 12px; font-weight: 400; }
-    .size small::before { content: ' · '; }
     .amt { grid-area: amt; font-size: 24px; margin: 0; text-align: right; align-self: end; }
     .amt small { font-size: 11px; }
     .per { grid-area: per; font-size: 11.5px; }
-    .yours { grid-area: yours; min-height: 0; }
-    .yours:empty { display: none; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .q-form { padding: 18px 16px; gap: 18px; }

@@ -32,7 +32,7 @@
 </section>
 
 <style>
-  .close { padding-block: 40px 64px; }
+  .close { padding-block: var(--section-y) calc(var(--section-y) * 1.4); }
   .card {
     position: relative;
     max-width: 1280px;

@@ -44,7 +44,7 @@
 </div>
 
 <style>
-  .intro { padding-block: 64px 8px; }
+  .intro { padding-block: calc(var(--section-y) * 1.2) 0; }
   .what {
     max-width: 900px;
     font-size: clamp(22px, 2.6vw, 32px);
@@ -106,7 +106,6 @@
     .stat:nth-child(n + 3) { border-top: 1px solid var(--line); }
   }
   @media (max-width: 560px) {
-    .intro { padding-top: 44px; }
     .what { font-size: 19px; }
     .stats { margin-top: 28px; }
     .stat { padding: 16px 0 16px 16px; }
