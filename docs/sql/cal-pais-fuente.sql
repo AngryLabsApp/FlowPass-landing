@@ -62,13 +62,15 @@ BEGIN
 END;
 $function$;
 
--- 2) find_or_create_lead: guarda `pais` (elegido; si falta, el del teléfono) y origen 'cal_com'.
+-- 2) find_or_create_lead: guarda pais (elegido; si falta, el del teléfono), fuente y origen 'cal_com'.
+--    Sin "RETURNING * INTO": el SQL Editor de Supabase lo rechazaba ("INTO specified more than once").
 CREATE OR REPLACE FUNCTION public.find_or_create_lead(data jsonb)
  RETURNS jsonb
  LANGUAGE plpgsql
 AS $function$
 DECLARE
-    v_lead public.leads%ROWTYPE;
+    v_id uuid;
+    v_count integer;
     v_nombre text := NULLIF(trim(data->>'nombre'), '');
     v_apellido text := NULLIF(trim(data->>'apellido'), '');
     v_email text := lower(NULLIF(trim(data->>'email'), ''));
@@ -76,12 +78,12 @@ DECLARE
     v_academia text := NULLIF(trim(data->>'academia'), '');
     v_pais_telefono text := data->>'pais_telefono';
     v_pais text := COALESCE(NULLIF(trim(data->>'pais'), ''), data->>'pais_telefono');
-    -- `fuente` es obligatoria en leads: si no respondió, queda 'cal.com' como antes
     v_fuente text := COALESCE(NULLIF(trim(data->>'fuente'), ''), 'cal.com');
     v_timezone text := data->>'attendee_timezone';
     v_tipo_academia text := data->>'tipo_academia';
     v_alumnos text := data->>'cantidad_alumnos';
     v_gestion_actual text := data->>'como_gestiona_hoy';
+    v_action text;
 BEGIN
     IF v_email IS NOT NULL AND (v_email LIKE '%@sms.cal.com' OR v_email LIKE '%@flow-pass.com'
         OR v_email IN ('flowpass.app.contacto@gmail.com','greciadm2596@gmail.com')) THEN
@@ -89,50 +91,48 @@ BEGIN
     END IF;
 
     IF v_telefono IS NOT NULL THEN
-        SELECT * INTO v_lead FROM public.leads WHERE telefono = v_telefono LIMIT 1;
-        IF FOUND THEN
-            UPDATE public.leads SET
-                nombre = COALESCE(nombre, v_nombre), apellido = COALESCE(apellido, v_apellido),
-                email = CASE WHEN email IS NULL OR email LIKE '%@sms.cal.com' THEN COALESCE(v_email, email) ELSE email END,
-                negocio = COALESCE(negocio, v_academia), tipo_academia = COALESCE(tipo_academia, v_tipo_academia),
-                alumnos = COALESCE(alumnos, v_alumnos), gestion_actual = COALESCE(gestion_actual, v_gestion_actual),
-                pais_telefono = COALESCE(pais_telefono, v_pais_telefono), pais = COALESCE(pais, v_pais),
-                fuente = CASE WHEN fuente IN ('cal.com', 'Otro') AND v_fuente <> 'cal.com' THEN v_fuente ELSE fuente END,
-                preferred_timezone = COALESCE(preferred_timezone, v_timezone),
-                submission_count = submission_count + 1, updated_at = now()
-            WHERE id = v_lead.id RETURNING * INTO v_lead;
-            RETURN jsonb_build_object('action','found_by_phone','lead_id',v_lead.id,'submission_count',v_lead.submission_count);
+        SELECT id INTO v_id FROM public.leads WHERE telefono = v_telefono LIMIT 1;
+        IF v_id IS NOT NULL THEN v_action := 'found_by_phone'; END IF;
+    END IF;
+
+    IF v_id IS NULL AND v_email IS NOT NULL THEN
+        SELECT id INTO v_id FROM public.leads
+        WHERE lower(email) = v_email AND (v_telefono IS NULL OR telefono IS NULL OR telefono = v_telefono)
+        LIMIT 1;
+        IF v_id IS NOT NULL THEN v_action := 'found_by_email'; END IF;
+    END IF;
+
+    IF v_id IS NOT NULL THEN
+        UPDATE public.leads SET
+            nombre = COALESCE(nombre, v_nombre),
+            apellido = COALESCE(apellido, v_apellido),
+            email = CASE WHEN email IS NULL OR email LIKE '%@sms.cal.com' THEN COALESCE(v_email, email) ELSE email END,
+            telefono = COALESCE(telefono, v_telefono),
+            negocio = COALESCE(negocio, v_academia),
+            tipo_academia = COALESCE(tipo_academia, v_tipo_academia),
+            alumnos = COALESCE(alumnos, v_alumnos),
+            gestion_actual = COALESCE(gestion_actual, v_gestion_actual),
+            pais_telefono = COALESCE(pais_telefono, v_pais_telefono),
+            pais = COALESCE(pais, v_pais),
+            fuente = CASE WHEN fuente IN ('cal.com', 'Otro') AND v_fuente <> 'cal.com' THEN v_fuente ELSE fuente END,
+            preferred_timezone = COALESCE(preferred_timezone, v_timezone),
+            submission_count = submission_count + 1,
+            updated_at = now()
+        WHERE id = v_id;
+    ELSE
+        IF v_telefono IS NULL THEN
+            RAISE EXCEPTION 'Reserva sin teléfono: no se puede crear el lead';
         END IF;
+        v_id := gen_random_uuid();
+        v_action := 'created';
+        INSERT INTO public.leads (id, nombre, apellido, email, telefono, negocio, tipo_academia, alumnos,
+                                  gestion_actual, pais_telefono, pais, preferred_timezone, fuente, origen)
+        VALUES (v_id, COALESCE(v_nombre, 'Sin nombre'), COALESCE(v_apellido, ''), v_email, v_telefono, v_academia,
+                v_tipo_academia, v_alumnos, v_gestion_actual, v_pais_telefono, v_pais, v_timezone, v_fuente, 'cal_com');
     END IF;
 
-    IF v_email IS NOT NULL THEN
-        SELECT * INTO v_lead FROM public.leads
-        WHERE lower(email) = v_email AND (v_telefono IS NULL OR telefono IS NULL OR telefono = v_telefono) LIMIT 1;
-        IF FOUND THEN
-            UPDATE public.leads SET
-                nombre = COALESCE(nombre, v_nombre), apellido = COALESCE(apellido, v_apellido),
-                telefono = COALESCE(telefono, v_telefono), negocio = COALESCE(negocio, v_academia),
-                tipo_academia = COALESCE(tipo_academia, v_tipo_academia), alumnos = COALESCE(alumnos, v_alumnos),
-                gestion_actual = COALESCE(gestion_actual, v_gestion_actual),
-                pais_telefono = COALESCE(pais_telefono, v_pais_telefono), pais = COALESCE(pais, v_pais),
-                fuente = CASE WHEN fuente IN ('cal.com', 'Otro') AND v_fuente <> 'cal.com' THEN v_fuente ELSE fuente END,
-                preferred_timezone = COALESCE(preferred_timezone, v_timezone),
-                submission_count = submission_count + 1, updated_at = now()
-            WHERE id = v_lead.id RETURNING * INTO v_lead;
-            RETURN jsonb_build_object('action','found_by_email','lead_id',v_lead.id,'submission_count',v_lead.submission_count);
-        END IF;
-    END IF;
-
-    IF v_telefono IS NULL THEN
-        RAISE EXCEPTION 'Reserva sin teléfono: no se puede crear el lead';
-    END IF;
-
-    INSERT INTO public.leads (nombre, apellido, email, telefono, negocio, tipo_academia, alumnos, gestion_actual,
-                              pais_telefono, pais, preferred_timezone, fuente, origen)
-    VALUES (COALESCE(v_nombre,'Sin nombre'), COALESCE(v_apellido,''), v_email, v_telefono, v_academia, v_tipo_academia,
-            v_alumnos, v_gestion_actual, v_pais_telefono, v_pais, v_timezone, v_fuente, 'cal_com')
-    RETURNING * INTO v_lead;
-    RETURN jsonb_build_object('action','created','lead_id',v_lead.id,'submission_count',v_lead.submission_count);
+    SELECT submission_count INTO v_count FROM public.leads WHERE id = v_id;
+    RETURN jsonb_build_object('action', v_action, 'lead_id', v_id, 'submission_count', v_count);
 END;
 $function$;
 
