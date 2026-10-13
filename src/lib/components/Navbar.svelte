@@ -21,22 +21,22 @@
 <!-- FLOATING GLASS NAVBAR -->
 <nav
   aria-label="Menú principal de FlowPass"
-  class="fixed top-3 lg:top-4 left-1/2 -translate-x-1/2 z-50 w-[min(calc(100%-32px),1280px)] transition-all duration-500 ease-in-out"
+  class="fixed top-3 lg:top-4 inset-x-3 sm:inset-x-4 mx-auto z-50 max-w-[1280px] transition-[top] duration-500 ease-in-out"
 >
   <div
-    class="glass-nav flex justify-between items-center pl-4 pr-1.5 py-1.5 lg:pl-5 lg:pr-2 lg:py-2 rounded-full"
+    class="glass-nav flex justify-between items-center gap-2 min-w-0 pl-4 pr-1.5 py-1.5 lg:pl-5 lg:pr-2 lg:py-2 rounded-full"
     class:glass-scrolled={scrolled}
   >
     <!-- LOGO -->
     <a
       href="/"
-      class="flex items-center gap-2 group"
+      class="flex items-center gap-2 group min-w-0 shrink"
       title="FlowPass - Software para academias, volver al inicio"
       aria-label="FlowPass inicio">
       <img
         src={logoIcon}
         alt="FlowPass: software de gestión para academias"
-        class="w-20 h-7 lg:w-28 lg:h-9 transition-transform duration-300 group-hover:scale-105"
+        class="w-20 h-7 max-w-full object-contain object-left lg:w-28 lg:h-9 transition-transform duration-300 group-hover:scale-105"
         width="32"
         height="32"
       />
@@ -121,7 +121,7 @@
     </ul>
 
     <!-- MOBILE: tema + menú -->
-    <div class="lg:hidden flex items-center gap-2">
+    <div class="lg:hidden flex shrink-0 items-center gap-2">
     <ThemeToggle />
     <button
       type="button"
