@@ -135,7 +135,7 @@
     .form-side { padding: 28px 24px 32px; }
   }
   @media (max-width: 560px) {
-    .agenda-page { padding: 92px 12px 40px; }
+    .agenda-page { padding: 78px 12px 40px; }
     .panel { padding: 22px 18px 18px; }
     h1 { font-size: clamp(22px, 6.6vw, 28px); }
     .what { margin-top: 12px; gap: 3px; }

@@ -107,7 +107,7 @@
     :global(:root:not([data-theme='light'])) .nr-btn { background: #01f59e; color: #04150e; }
   }
   @media (max-width: 560px) {
-    .agenda { padding-top: 92px; }
+    .agenda { padding-top: 78px; }
     .cal-card { margin-top: 0; }
     .head .eyebrow { font-size: 10.5px; letter-spacing: 0.1em; }
     h1 { font-size: clamp(22px, 6.4vw, 26px); }
