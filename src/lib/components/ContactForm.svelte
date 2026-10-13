@@ -1,12 +1,15 @@
 <script lang="ts">
-  import { PUBLIC_N8N_LEADS_WEBHOOK } from '$env/static/public';
+  import { env } from '$env/dynamic/public';
+  import { parsePhoneNumberFromString } from 'libphonenumber-js';
 
   /**
-   * Formulario de soporte y consultas (nombre, correo, mensaje), distinto del de agenda.
+   * Formulario de soporte y reclamos (nombre, correo, mensaje), distinto del de agenda.
    * Lo pide dLocal Go: un canal para que cualquier persona, sobre todo un cliente que ya
    * pagó, pueda escribir un problema o reclamo.
-   * Usa el webhook de n8n con `origen: "soporte"`: en n8n esa rama debe avisar al equipo
-   * (correo o WhatsApp) en vez de guardarse como lead nuevo.
+   * Va a su propio webhook de n8n (PUBLIC_N8N_SUPPORT_WEBHOOK) y a su propia tabla
+   * (`support_tickets`, ver docs/sql/support-tickets.sql): no se mezcla con los leads.
+   * Se lee con $env/dynamic/public dentro del envío para que la compilación no falle
+   * si la variable aún no está definida en el deploy.
    */
   let nombre = $state('');
   let email = $state('');
@@ -18,7 +21,11 @@
   let touched = $state(false);
 
   const emailOk = $derived(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()));
-  const valid = $derived(nombre.trim().length >= 2 && emailOk && mensaje.trim().length >= 5);
+  // Sin "+" se asume Perú; acepta "+52 55..." para México y otros países
+  const phone = $derived(parsePhoneNumberFromString(telefono.trim(), 'PE'));
+  // Opcional: si lo escribe, debe ser un número válido
+  const phoneOk = $derived(!telefono.trim() || !!phone?.isValid());
+  const valid = $derived(nombre.trim().length >= 2 && emailOk && phoneOk && mensaje.trim().length >= 5);
 
   async function submit(e: SubmitEvent) {
     e.preventDefault();
@@ -32,24 +39,19 @@
     status = 'loading';
     errorMsg = '';
     try {
-      if (!PUBLIC_N8N_LEADS_WEBHOOK) throw new Error('El formulario no está configurado. Escríbenos a contacto@flow-pass.com.');
-      const [first, ...rest] = nombre.trim().split(/\s+/);
-      const res = await fetch(PUBLIC_N8N_LEADS_WEBHOOK, {
+      const webhook = env.PUBLIC_N8N_SUPPORT_WEBHOOK;
+      if (!webhook) throw new Error('El formulario no está disponible. Escríbenos a contacto@flow-pass.com.');
+      const res = await fetch(webhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nombre: first,
-          apellido: rest.join(' '),
+          nombre: nombre.trim(),
           email: email.trim(),
-          telefono: telefono.trim(),
+          telefono: telefono.trim() && phone ? phone.format('E.164') : null,
           mensaje: mensaje.trim(),
-          negocio: 'No especificado',
-          pais: 'No especificado',
-          rol: 'No especificado',
-          fuente: 'Soporte',
-          origen: 'soporte',
-          created_at: new Date().toISOString(),
-          referrer: document.referrer
+          pagina: location.pathname,
+          referrer: document.referrer,
+          created_at: new Date().toISOString()
         })
       });
       if (!res.ok) throw new Error(`No pudimos enviar tu mensaje (código ${res.status}). Intenta de nuevo.`);
@@ -79,7 +81,7 @@
     </label>
     <label>
       <span>WhatsApp <small>(opcional)</small></span>
-      <input name="telefono" type="tel" autocomplete="tel" inputmode="tel" bind:value={telefono} placeholder="+51 999 888 777" />
+      <input name="telefono" type="tel" autocomplete="tel" inputmode="tel" bind:value={telefono} aria-invalid={touched && !phoneOk} placeholder="+51 999 888 777" />
     </label>
     <label>
       <span>Mensaje <i aria-hidden="true">*</i></span>
@@ -88,7 +90,7 @@
     <!-- Honeypot anti-spam -->
     <label class="hp" aria-hidden="true">Empresa <input tabindex="-1" autocomplete="off" bind:value={empresa} /></label>
 
-    {#if touched && !valid}<p class="err" role="alert">Completa tu nombre, un correo válido y tu mensaje.</p>{/if}
+    {#if touched && !valid}<p class="err" role="alert">Completa tu nombre, un correo válido y tu mensaje. Si dejas tu WhatsApp, inclúyelo con código de país si no es de Perú.</p>{/if}
     {#if status === 'error'}<p class="err" role="alert">{errorMsg}</p>{/if}
 
     <button type="submit" class="btn send" disabled={status === 'loading'}>
