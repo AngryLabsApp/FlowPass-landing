@@ -74,6 +74,26 @@
       radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.12), transparent 70%),
       #fbfbf8;
   }
+  /* Oscuro: el fondo de la página pasa a grafito; la tarjeta (lila + formulario blanco)
+     se mantiene clara, como una ficha encima, porque la ilustración y el formulario son claros. */
+  :global(:root[data-theme='dark']) .agenda-page {
+    --fg-3: rgba(245, 245, 245, 0.58);
+    background:
+      radial-gradient(50% 60% at 85% 10%, rgba(83, 29, 216, 0.25), transparent 70%),
+      radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.1), transparent 70%),
+      #16151d;
+  }
+  :global(:root[data-theme='dark']) .shell { box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .agenda-page {
+      --fg-3: rgba(245, 245, 245, 0.58);
+      background:
+        radial-gradient(50% 60% at 85% 10%, rgba(83, 29, 216, 0.25), transparent 70%),
+        radial-gradient(40% 50% at 0% 100%, rgba(1, 245, 158, 0.1), transparent 70%),
+        #16151d;
+    }
+    :global(:root:not([data-theme='light'])) .shell { box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); }
+  }
   .logos { max-width: 1120px; margin: 0 auto 18px; }
   .shell {
     max-width: 1120px;
