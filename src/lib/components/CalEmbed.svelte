@@ -53,8 +53,8 @@
       calLink
     });
     api('ui', {
-      // El título y los detalles ya están en la página: se oculta la columna de Cal.com
-      hideEventTypeDetails: true,
+      // Se muestra la columna de detalles: ahí está el selector de zona horaria
+      hideEventTypeDetails: false,
       layout: 'month_view',
       theme: dark ? 'dark' : 'light',
       cssVarsPerTheme: { light: { 'cal-brand': '#531DD8' }, dark: { 'cal-brand': '#01F59E' } }
