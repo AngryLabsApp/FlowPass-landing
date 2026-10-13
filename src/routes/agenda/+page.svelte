@@ -74,7 +74,8 @@
   .picked { display: inline-block; margin-top: 14px !important; padding: 6px 12px; border-radius: 999px; font-size: 13px; background: color-mix(in srgb, #01f59e 22%, var(--panel)); }
   /* Sin marco propio: el borde lo pone Cal.com, así no hay doble tarjeta */
   /* Cal.com ya trae aire arriba dentro del iframe */
-  .cal-card { margin-top: 0; }
+  /* Es <section>: anula el padding-block de 96px que home.css da a todas las secciones */
+  .agenda .cal-card { margin-top: 0; padding-block: 0; }
   /* Segunda opción bien visible: tarjeta con ícono y botón */
   .not-ready {
     display: flex;
@@ -103,7 +104,10 @@
     .agenda { padding-top: 92px; }
     .cal-card { margin-top: 0; }
     .what li { font-size: 13px; }
-    .not-ready { flex-wrap: wrap; padding: 16px; }
-    .nr-btn { width: 100%; text-align: center; }
+    /* Celular: una fila compacta (texto + botón), sin ícono ni descripción */
+    .not-ready { gap: 12px; padding: 12px 12px 12px 16px; margin-block: 16px 12px; border-radius: 14px; }
+    .nr-ic, .nr-txt span { display: none; }
+    .nr-txt b { font-size: 14px; line-height: 1.3; }
+    .nr-btn { padding: 9px 14px; font-size: 13px; }
   }
 </style>
