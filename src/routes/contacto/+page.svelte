@@ -37,6 +37,7 @@
     <aside class="info" aria-label="Datos de contacto y de la empresa">
       <div class="block">
         <h2>Correo</h2>
+        <a href={`mailto:${siteConfig.emailSoporte}`}>{siteConfig.emailSoporte} <small>· soporte</small></a>
         <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
         <a href={`mailto:${siteConfig.emailComercial}`}>{siteConfig.emailComercial} <small>· comercial</small></a>
       </div>

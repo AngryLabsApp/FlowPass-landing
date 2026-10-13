@@ -6,6 +6,8 @@ export const siteConfig = {
   email: 'contacto@flow-pass.com',
   // Correo del área comercial (aquí llegan los mensajes de los formularios)
   emailComercial: 'flowpass.app.contacto@gmail.com',
+  // Soporte y reclamos de clientes (formulario de /contacto)
+  emailSoporte: 'soporte@flow-pass.com',
   // Datos de la empresa (ficha RUC SUNAT). Se muestran en las páginas legales y el footer.
   legal: {
     name: 'FLOWPASS PERU S.A.C.',

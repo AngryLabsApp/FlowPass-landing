@@ -40,7 +40,7 @@
     errorMsg = '';
     try {
       const webhook = env.PUBLIC_N8N_SUPPORT_WEBHOOK;
-      if (!webhook) throw new Error('El formulario no está disponible. Escríbenos a contacto@flow-pass.com.');
+      if (!webhook) throw new Error('El formulario no está disponible. Escríbenos a soporte@flow-pass.com.');
       const res = await fetch(webhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
