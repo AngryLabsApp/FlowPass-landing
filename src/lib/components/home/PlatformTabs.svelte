@@ -8,9 +8,29 @@
   import analitica from '$lib/assets/images/home/analitica.webp';
   import flowy from '$lib/assets/images/home/flowy.webp';
 
+  /**
+   * En las páginas por disciplina los textos se adaptan al rubro:
+   * `who` cambia "alumno/alumnos" (ej. socios en un gimnasio, jugadores en fútbol)
+   * y `title` / `lead` cambian el encabezado. En la home quedan los valores por defecto.
+   */
+  let {
+    who = { one: 'alumno', many: 'alumnos' },
+    title = 'Todo lo que necesitas en tu operación diaria.',
+    lead = ''
+  }: { who?: { one: string; many: string }; title?: string; lead?: string } = $props();
+
+  const cap = (x: string) => x.charAt(0).toUpperCase() + x.slice(1);
+  // Reemplaza alumno(s) por el término del rubro, respetando mayúscula inicial
+  const w = (x: string) =>
+    x
+      .replace(/Alumnos/g, cap(who.many))
+      .replace(/alumnos/g, who.many)
+      .replace(/Alumno/g, cap(who.one))
+      .replace(/alumno/g, who.one);
+
   // Capturas reales de la cuenta demo FlowDance (datos ficticios).
   // Orden: de lo más importante para el negocio a lo menos.
-  const tabs = [
+  const baseTabs = [
     {
       id: 'alumnos', name: 'Alumnos', title: 'Alumnos',
       text: 'Cada alumno con su plan, sus clases y su estado de pago.',
@@ -54,6 +74,10 @@
       alt: 'Pantalla de Flowy, el asistente de IA de FlowPass, con un ejemplo de conversación'
     }
   ];
+  const tabs = $derived(
+    baseTabs.map((tb) => ({ ...tb, name: w(tb.name), title: w(tb.title), text: w(tb.text), points: tb.points.map(w) }))
+  );
+  const leadText = $derived(lead || w('Asistencia, alumnos, cobros y reportes. En un solo lugar.'));
 
   let active = $state(0);
   let zoomDlg = $state<HTMLDialogElement>();
@@ -106,9 +130,9 @@
   <div class="head" use:reveal>
     <div>
       <p class="eyebrow">La plataforma</p>
-      <h2 id="pf-title" class="sec-title">Todo lo que necesitas en tu operación diaria.</h2>
+      <h2 id="pf-title" class="sec-title">{title}</h2>
     </div>
-    <p class="lead">Asistencia, alumnos, cobros y reportes. En un solo lugar.</p>
+    <p class="lead">{leadText}</p>
   </div>
 
   <div class="tabs" role="tablist" aria-label="Funciones" tabindex="-1" onkeydown={onKey} bind:this={tabsEl}>

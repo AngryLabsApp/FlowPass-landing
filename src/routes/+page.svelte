@@ -8,6 +8,7 @@
   import StudentPortal from "$lib/components/home/StudentPortal.svelte";
   import Testimonials from "$lib/components/Testimonials.svelte";
   import HomePricing from "$lib/components/home/HomePricing.svelte";
+  import HomeSteps from "$lib/components/home/HomeSteps.svelte";
   import HomeFAQ from "$lib/components/home/HomeFAQ.svelte";
   import HomeClose from "$lib/components/home/HomeClose.svelte";
   import Footer from "$lib/components/Footer.svelte";
@@ -63,6 +64,7 @@
   <PlatformTabs />
   <StudentPortal />
   <Testimonials />
+  <HomeSteps />
   <HomePricing />
   <HomeFAQ />
   <HomeClose />
