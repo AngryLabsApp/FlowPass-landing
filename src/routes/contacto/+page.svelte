@@ -1,7 +1,7 @@
 <script lang="ts">
   import '$lib/components/home/home.css';
   import Footer from '$lib/components/Footer.svelte';
-  import ContactForm from '$lib/components/ContactForm.svelte';
+  import LeadForm from '$lib/components/LeadForm.svelte';
   import { siteConfig } from '$lib/config/site';
   import { contactSEO } from '$lib/config/seo';
 
@@ -29,8 +29,8 @@
     <section class="form-card" aria-labelledby="ct-title">
       <p class="eyebrow">Contacto</p>
       <h1 id="ct-title">Escríbenos.</h1>
-      <p class="lead">Te respondemos en menos de 24 horas hábiles.</p>
-      <ContactForm />
+      <p class="lead">Déjanos tus datos y te escribimos por WhatsApp en menos de 24 horas hábiles.</p>
+      <LeadForm />
     </section>
 
     <aside class="info" aria-label="Datos de contacto y de la empresa">
@@ -70,6 +70,8 @@
   .form-card { background: var(--panel); border: 1px solid var(--line); border-radius: 24px; padding: clamp(22px, 4vw, 40px); box-shadow: var(--shadow); }
   h1 { font-size: clamp(30px, 4.4vw, 48px); margin-top: 10px !important; }
   .form-card .lead { margin: 8px 0 22px; font-size: 15.5px; }
+  /* El formulario vive dentro de la tarjeta: sin su propio marco ni sombra */
+  .form-card :global(.lead-card) { max-width: none; margin: 0; padding: 0; border: 0; box-shadow: none; }
   .info { display: grid; gap: 14px; }
   .block { display: grid; gap: 6px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--bg-2); }
   .block h2 { font-family: var(--body); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 2px; }

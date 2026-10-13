@@ -169,14 +169,12 @@
       .trim()
       .min(2, "Ingresa tu apellido.")
       .regex(NAME_REGEX, "El apellido solo debe contener letras."),
+    // REQUERIDO (dLocal Go pide formulario con nombre, correo y mensaje)
     email: z
       .string()
       .trim()
-      .optional()
-      .refine(
-        (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-        "Ingresa un correo válido.",
-      ),
+      .min(1, "Ingresa tu correo.")
+      .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Ingresa un correo válido."),
     // OPCIONAL: si llega vacío, se rellena con default antes de enviar.
     negocio: z.string().trim().optional(),
     // REQUERIDO
@@ -312,7 +310,7 @@
     validateField(field, touched[field] ? "full" : "live");
   }
 
-  // Validación de paso 1: nombre, apellido, telefono (obligatorios) + email (si llega)
+  // Validación de paso 1: nombre, apellido, telefono y email (todos obligatorios)
   function validateStep1(): boolean {
     ["nombre", "apellido", "email", "telefono"].forEach((f) =>
       validateField(f, "full"),
@@ -632,7 +630,7 @@
             </div>
 
             <div class="field field--full">
-              <label for="email">Mail <span class="opt">(opcional)</span></label>
+              <label for="email">Correo <span class="req" aria-hidden="true">*</span></label>
               <input
                 id="email"
                 type="email"
@@ -644,6 +642,8 @@
                 onblur={() => markTouched("email")}
                 aria-invalid={!!fieldErrors.email}
                 aria-describedby={fieldErrors.email ? "err-email" : undefined}
+                aria-required="true"
+                required
               />
               {#if fieldErrors.email}
                 <span id="err-email" class="err">{fieldErrors.email}</span>
