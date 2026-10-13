@@ -29,10 +29,10 @@
               <li>
                 {#if logo.href}
                   <a href={logo.href} target="_blank" rel="noopener noreferrer" tabindex={copy === 1 ? -1 : 0}>
-                    <img src={logo.src} alt={copy === 1 ? '' : logo.name} loading="lazy" height="44" />
+                    <img src={logo.src} alt={copy === 1 ? '' : logo.name} loading="lazy" decoding="async" />
                   </a>
                 {:else}
-                  <img src={logo.src} alt={copy === 1 ? '' : logo.name} loading="lazy" height="44" />
+                  <img src={logo.src} alt={copy === 1 ? '' : logo.name} loading="lazy" decoding="async" />
                 {/if}
               </li>
             {/each}
@@ -86,15 +86,19 @@
   .mq-track ul {
     list-style: none;
     margin: 0;
-    padding: 0 0 0 40px;
+    padding: 0 0 0 14px;
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 14px;
     flex: none;
-    animation: mq 36s linear infinite;
+    animation: mq 70s linear infinite;
   }
   .mq-track:hover ul { animation-play-state: paused; }
-  .mq-track img { display: block; height: 44px; width: auto; opacity: 0.8; }
+  /* Cada logo en una ficha blanca: se ven igual en claro y en oscuro (los hay negros y de color).
+     En gris por defecto para no competir con la marca; a color al pasar el mouse. */
+  .mq-track li { flex: none; display: grid; place-items: center; width: 112px; height: 72px; padding: 8px 12px; border-radius: 14px; background: #fff; border: 1px solid rgba(9, 9, 15, 0.06); }
+  .mq-track img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; filter: grayscale(1) contrast(1.05); opacity: 0.72; transition: filter 0.25s, opacity 0.25s; }
+  .mq-track li:hover img { filter: none; opacity: 1; }
   @keyframes mq { to { transform: translateX(-100%); } }
   @media (prefers-reduced-motion: reduce) {
     .mq-track ul { animation: none; flex-wrap: wrap; }
