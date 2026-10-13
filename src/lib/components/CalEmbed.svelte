@@ -13,8 +13,8 @@
    * La reserva la procesa n8n por el webhook de Cal.com (find_or_create_lead).
    */
   let {
-    calLink = 'flowpass/conoce-flowpass-en-20-min',
-    namespace = 'conoce-flowpass-en-20-min'
+    calLink = 'flowpass/conoce-flowpass',
+    namespace = 'conoce-flowpass'
   }: { calLink?: string; namespace?: string } = $props();
 
   const elId = `cal-inline-${namespace}`;
