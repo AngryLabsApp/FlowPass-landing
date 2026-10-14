@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { ChatBubbleOvalLeftEllipsis, AtSymbol, CalendarDays } from "svelte-heros-v2";
   import { siteConfig } from "$lib/config/site";
-  import { trackContact, trackEmailClick, trackSchedule } from "$lib/tracking/track";
+  import { trackContact, trackEmailClick, trackAgendaClick } from "$lib/tracking/track";
   import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
 
   const mailtoLink = `mailto:${siteConfig.email}?subject=Consulta%20sobre%20FlowPass`;
@@ -33,7 +33,7 @@
         href={calendarLink}
         class="contact-card primary"
         aria-label="Agendar asesoría gratuita"
-        onclick={() => trackSchedule('contact_section')}
+        onclick={() => trackAgendaClick('contact_section')}
       >
         <span class="card-icon"><CalendarDays class="w-6 h-6" /></span>
         <span class="card-title">Agendar asesoría</span>

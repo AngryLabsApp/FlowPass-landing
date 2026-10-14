@@ -6,6 +6,8 @@
 
   let scriptLoaded = false;
   let initialPageViewSent = false;
+  // Ruta del último PageView: evita contar dos veces la primera carga
+  let lastTrackedPath = '';
 
   onMount(() => {
     if (!browser) return;
@@ -45,11 +47,13 @@
     // 3. Disparar PageView inicial
     (window as any).fbq('track', 'PageView');
 
+    lastTrackedPath = location.pathname;
     initialPageViewSent = true;
   });
 
   // 4. Tracking SPA — cada cambio de ruta dispara nuevo PageView
-  $: if (browser && !dev && initialPageViewSent && $page.url.pathname) {
+  $: if (browser && !dev && initialPageViewSent && $page.url.pathname !== lastTrackedPath) {
+    lastTrackedPath = $page.url.pathname;
     setTimeout(() => {
       (window as any).fbq?.('track', 'PageView');
     }, 100);

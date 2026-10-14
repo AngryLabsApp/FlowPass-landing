@@ -2,7 +2,7 @@
 //
 // Si más adelante agregas TikTok Pixel, LinkedIn Insight, etc., solo
 // extiendes las funciones de abajo: los componentes siguen llamando
-// `trackContact()` o `trackSchedule()` sin enterarse.
+// `trackContact()` o `trackBooking()` sin enterarse.
 
 import { browser, dev } from '$app/environment';
 
@@ -61,24 +61,39 @@ function fire(
 // ─── Eventos de negocio ──────────────────────────────────────────
 
 /**
- * Click en cualquier botón "Agendar demo" del sitio (Hero, Navbar
- * desktop/mobile, ContactSection).
+ * Click en cualquier botón "Agenda 15 min" del sitio (Hero, Navbar,
+ * precios, cierres de sección, páginas de disciplina).
  *
- * **Para comercial:** persona mostró INTENCIÓN de agendar una demo
- * (clickeó el botón) pero todavía no llenó el form. Es prospect
- * tibio: vio el sitio, le interesó, pero no se comprometió aún.
+ * **Para comercial:** persona mostró INTENCIÓN de agendar (clickeó el
+ * botón) pero todavía no eligió horario. Prospect tibio.
  *
- * Funnel paso 1 — INTENT. El botón dispara esto y luego navega
- * a `/agenda`. La conversión real la dispara `trackLead` cuando
- * la persona completa el form de captación.
+ * Funnel paso 1 — INTENT. El botón dispara esto y luego navega a
+ * `/agenda`. La reserva real la dispara `trackBooking`.
  *
- * Si ves Schedule >> Lead en reportes, hay drop-off en el form
- * (algo del form los espanta).
+ * Si ves AgendaClick >> Schedule en reportes, hay drop-off en el
+ * calendario.
  *
- * Aparece en Meta como "Schedule", en GA4 como `schedule_demo_click`.
+ * Aparece en Meta como `AgendaClick` (custom), en GA4 como
+ * `schedule_demo_click`.
  */
-export function trackSchedule(source: string) {
-  fire('Schedule', null, 'schedule_demo_click', { source });
+export function trackAgendaClick(source: string) {
+  fire(null, 'AgendaClick', 'schedule_demo_click', { source });
+}
+
+/**
+ * Reserva confirmada en el calendario de Cal.com (`/agenda`).
+ *
+ * **Para comercial:** la persona eligió día y hora: tiene reunión.
+ * Es la conversión más fuerte del sitio.
+ *
+ * Funnel paso 2 — CONVERSION (agenda). Distinto de `trackLead`, que es
+ * dejar datos para que un asesor escriba.
+ *
+ * Aparece en Meta como "Schedule" (evento estándar), en GA4 como
+ * `schedule_booked`.
+ */
+export function trackBooking(source: string, params: Record<string, unknown> = {}) {
+  fire('Schedule', null, 'schedule_booked', { source, ...params });
 }
 
 /**
@@ -139,30 +154,29 @@ export function trackPwaInstallClick(source: string) {
  * El navegador confirmó que la PWA quedó instalada (prompt aceptado).
  *
  * **Para comercial:** usuario instaló FlowPass como app. Es señal fuerte
- * de engagement — vuelve más rápido a la plataforma. Se considera Lead
- * en Meta porque indica compromiso con la marca.
+ * de engagement — vuelve más rápido a la plataforma. NO es un lead nuevo
+ * (casi siempre es un cliente que ya usa FlowPass), por eso no va como Lead.
  *
- * Aparece en Meta como "Lead" + `PwaInstall` (custom), en GA4 como
+ * Aparece en Meta como `PwaInstall` (custom), en GA4 como
  * `pwa_install_success`.
  */
 export function trackPwaInstalled(source: string) {
-  fire('Lead', 'PwaInstall', 'pwa_install_success', { source });
+  fire(null, 'PwaInstall', 'pwa_install_success', { source });
 }
 
 /**
- * El form de captación `/agenda` se envió con éxito.
+ * El form de captación `/te-llamamos` se envió con éxito.
  *
- * **Para comercial:** ESTE es el evento que importa. La persona
- * llenó nombre, WhatsApp, país, tipo de academia, alumnos, etc. y el
- * webhook de n8n confirmó recepción → lead calificado entró a la
- * base. Inicia contacto comercial.
+ * **Para comercial:** la persona llenó nombre, WhatsApp, país, tipo
+ * de academia, alumnos, etc. y el webhook de n8n confirmó recepción →
+ * lead entró a la base. Un asesor le escribe por WhatsApp.
  *
- * Funnel paso 2 — CONVERSION. Solo dispara si el POST al webhook
+ * Funnel paso 2 — CONVERSION (dejar datos). Solo dispara si el POST al webhook
  * responde 2xx. Pasa params del lead (`pais`, `tipo_academia`,
  * `alumnos`, `fuente`) para que Meta Ads y GA4 segmenten audiencias
  * (ej: "leads de Perú con +200 alumnos").
  *
- * Pareja conceptual con `trackSchedule`. La ratio Lead / Schedule =
+ * Pareja conceptual con `trackAgendaClick`. La ratio Lead / AgendaClick =
  * tasa de conversión del form (ideal >40%).
  *
  * Aparece en Meta como "Lead" (evento estándar de conversión), en
@@ -170,4 +184,29 @@ export function trackPwaInstalled(source: string) {
  */
 export function trackLead(source: string, params: Record<string, unknown> = {}) {
   fire('Lead', null, 'generate_lead', { source, ...params });
+}
+
+/**
+ * La persona empezó a llenar el form de `/te-llamamos` (primer campo
+ * que escribe o elige). Se dispara una sola vez por visita al form.
+ *
+ * **Para comercial:** FormStart vs Lead = cuántos abandonan el form.
+ * Si muchos empiezan y pocos terminan, el form es muy largo.
+ *
+ * Aparece en Meta como `FormStart` (custom), en GA4 como `form_start`.
+ */
+export function trackFormStart(source: string) {
+  fire(null, 'FormStart', 'form_start', { source });
+}
+
+/**
+ * La sección de precios entró en pantalla (una vez por visita).
+ *
+ * **Para comercial:** sirve para remarketing: mostrar anuncios a quien
+ * vio precios y no agendó ni dejó datos.
+ *
+ * Aparece en Meta como `ViewPricing` (custom), en GA4 como `view_pricing`.
+ */
+export function trackViewPricing(source: string) {
+  fire(null, 'ViewPricing', 'view_pricing', { source });
 }

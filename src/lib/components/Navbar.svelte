@@ -4,7 +4,7 @@
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
-  import { trackLogin, trackSchedule } from "$lib/tracking/track";
+  import { trackLogin, trackAgendaClick } from "$lib/tracking/track";
 
   let isOpen = $state(false);
   let scrolled = $state(false);
@@ -119,7 +119,7 @@
         <a
           href="/agenda"
           aria-label="Agendar una llamada de 15 minutos con FlowPass"
-          onclick={() => trackSchedule('navbar_desktop')}
+          onclick={() => trackAgendaClick('navbar_desktop')}
           class="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
         >
           Agenda 15 min
@@ -222,7 +222,7 @@
           href="/agenda"
           aria-label="Agendar una asesoría gratuita con FlowPass"
           onclick={() => {
-            trackSchedule('navbar_mobile');
+            trackAgendaClick('navbar_mobile');
             isOpen = false;
           }}
           class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold bg-brand text-[#04150e]"

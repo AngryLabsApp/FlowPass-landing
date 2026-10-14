@@ -7,7 +7,7 @@
     parsePhoneNumberFromString,
     type CountryCode,
   } from "libphonenumber-js";
-  import { trackLead } from "$lib/tracking/track";
+  import { trackLead, trackFormStart } from "$lib/tracking/track";
 
   type Props = {
     calLink?: string;
@@ -118,6 +118,14 @@
   let errorMsg = $state("");
   let fieldErrors = $state<Record<string, string>>({});
   let formLoadedAt = 0;
+
+  // Primer campo que la persona toca: se avisa una sola vez (FormStart)
+  let formStarted = false;
+  function markFormStarted() {
+    if (formStarted) return;
+    formStarted = true;
+    trackFormStart("te_llamamos_form");
+  }
 
   // Autodetect país por IP (ipapi.co — gratis, sin key). Cae a 'PE' si falla.
   onMount(async () => {
@@ -548,7 +556,7 @@
       </div>
     </div>
 
-    <form onsubmit={handleSubmit} novalidate>
+    <form onsubmit={handleSubmit} oninput={markFormStarted} novalidate>
       <div class="honeypot" aria-hidden="true">
         <label for="website">No completar este campo</label>
         <input
