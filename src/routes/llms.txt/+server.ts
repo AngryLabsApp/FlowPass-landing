@@ -21,7 +21,7 @@ Diferenciales clave:
 - Sin contrato de permanencia: no amarramos al cliente a ningún plan. El propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel.
 - Recordatorios automáticos de pago vía WhatsApp con conexión oficial a la API de WhatsApp Business (Meta), lo que asegura la entrega y evita bloqueos que sí ocurren con soluciones no oficiales. Hoy los mensajes salen desde el número oficial de FlowPass; próximamente cada cliente podrá enviarlos desde su propio número verificado.
 - Flowy: asistente de IA entrenado con datos del negocio (beta).
-- Uso real (octubre 2026): más de 40 academias activas en Perú y México, más de 7,700 alumnos gestionados y más de 78 mil asistencias registradas en 2026.
+- Uso real (octubre 2026): más de 50 academias activas en Perú y México, más de 7,700 alumnos gestionados y más de 78 mil asistencias registradas en 2026.
 - Multi-sede: cada sede adicional es independiente (sus propios alumnos, mensajes y accesos) y se paga según su tamaño, desde S/30 al mes.
 - Portal del alumno con el logo y colores del negocio: marca asistencia, ve su plan y su pase de acceso con QR, sin descargar nada.
 - Facturación electrónica SUNAT en Perú, en packs de comprobantes desde S/30 al mes.
