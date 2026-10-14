@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { trackBooking } from '$lib/tracking/track';
   import { detectCountry, CAL_COUNTRY_LABEL } from '$lib/utils/country';
+  import { metaCookies } from '$lib/tracking/meta';
 
   /**
    * Calendario de Cal.com incrustado (inline). Es el snippet oficial de Cal.com
@@ -27,16 +28,12 @@
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type CalFn = any;
 
-  const cookie = (name: string) =>
-    document.cookie.split('; ').find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1) ?? '';
-
   // Datos para la API de conversiones de Meta (los lee n8n desde la reserva)
   function metaMetadata(): Record<string, string> {
-    const fbclid = new URLSearchParams(location.search).get('fbclid');
-    const fbc = cookie('_fbc') || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : '');
+    const { fbp, fbc } = metaCookies();
     const m: Record<string, string> = { 'metadata[ua]': navigator.userAgent.slice(0, 450) };
-    if (cookie('_fbp')) m['metadata[fbp]'] = cookie('_fbp');
-    if (fbc) m['metadata[fbc]'] = fbc.slice(0, 450);
+    if (fbp) m['metadata[fbp]'] = fbp;
+    if (fbc) m['metadata[fbc]'] = fbc;
     return m;
   }
 

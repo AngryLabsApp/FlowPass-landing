@@ -191,11 +191,18 @@ export function trackPwaInstalled(source: string) {
  * Pareja conceptual con `trackAgendaClick`. La ratio Lead / AgendaClick =
  * tasa de conversión del form (ideal >40%).
  *
+ * `eventID`: el mismo ID viaja a n8n, que manda el Lead por la API de
+ * conversiones; Meta deduplica.
+ *
  * Aparece en Meta como "Lead" (evento estándar de conversión), en
  * GA4 como `generate_lead` (evento estándar de conversión).
  */
-export function trackLead(source: string, params: Record<string, unknown> = {}) {
-  fire('Lead', null, 'generate_lead', { source, ...params });
+export function trackLead(
+  source: string,
+  params: Record<string, unknown> = {},
+  eventID?: string
+) {
+  fire('Lead', null, 'generate_lead', { source, ...params }, eventID);
 }
 
 /**
