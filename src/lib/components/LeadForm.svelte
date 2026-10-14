@@ -8,6 +8,7 @@
     type CountryCode,
   } from "libphonenumber-js";
   import { trackLead, trackFormStart } from "$lib/tracking/track";
+  import { metaCookies, newEventId } from "$lib/tracking/meta";
 
   type Props = {
     calLink?: string;
@@ -472,7 +473,14 @@
         throw new Error("Webhook no configurado. Avisa al equipo.");
       }
 
-      const res = await fetch(PUBLIC_N8N_LEADS_WEBHOOK, {
+      // Datos para la API de conversiones de Meta: van en la URL, no en el body,
+      // porque el body se guarda tal cual en el CRM. El navegador e IP los lee n8n
+      // de los headers.
+      const metaEventId = newEventId();
+      const meta = new URLSearchParams({ meta_event_id: metaEventId, ...metaCookies() });
+      const webhookUrl = `${PUBLIC_N8N_LEADS_WEBHOOK}${PUBLIC_N8N_LEADS_WEBHOOK.includes("?") ? "&" : "?"}${meta}`;
+
+      const res = await fetch(webhookUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -489,7 +497,7 @@
         tipo_academia: payload.tipo_academia,
         alumnos: payload.alumnos,
         fuente: payload.fuente,
-      });
+      }, metaEventId);
 
       localStorage.setItem("last_lead_submit", Date.now().toString());
       // Si después quiere elegir horario, /agenda abre Cal.com con sus datos ya escritos
