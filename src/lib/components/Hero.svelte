@@ -5,7 +5,7 @@
   import Phone from "./../assets/images/phone.png";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
-  import { trackContact, trackSchedule } from "$lib/tracking/track";
+  import { trackContact, trackAgendaClick } from "$lib/tracking/track";
   import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
   import gymLogo from "$lib/assets/images/clients/gym.png";
   import karateLogo from "$lib/assets/images/clients/karate.png";
@@ -133,7 +133,7 @@
           href="/agenda"
           aria-label="Agendar una asesoría gratuita con FlowPass"
           class="cta-link"
-          onclick={() => trackSchedule('hero')}
+          onclick={() => trackAgendaClick('hero')}
         >
           <button
             class="w-full sm:w-auto flex justify-center items-center gap-2 px-6 py-3 min-h-[44px] text-base font-semibold rounded-xl bg-brand text-dark-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(1,245,158,0.45)] transition-all duration-300"

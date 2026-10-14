@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import closePhoto from '$lib/assets/images/home/cierre.webp';
-  import { trackContact, trackSchedule } from '$lib/tracking/track';
+  import { trackContact, trackAgendaClick } from '$lib/tracking/track';
   import { waCountry } from '$lib/stores/waCountry.svelte';
 
   const waMsg = '?text=¡Hola!%20Quisiera%20conocer%20cómo%20FlowPass%20puede%20ayudar%20a%20mi%20negocio.';
@@ -16,7 +16,7 @@
       <h2 id="close-title">FlowPass resuelve tu operación. <span>Y tú recuperas tu tiempo.</span></h2>
       <p class="sub">Mira tu negocio en FlowPass en una llamada de 15 minutos, con tus planes y tus precios reales.</p>
       <div class="ctas">
-        <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule('closing_section')}>
+        <a class="btn pill-green" href="/agenda" onclick={() => trackAgendaClick('closing_section')}>
           Agenda 15 minutos
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
         </a>

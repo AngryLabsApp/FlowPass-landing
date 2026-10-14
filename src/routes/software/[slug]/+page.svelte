@@ -4,7 +4,7 @@
   import WhatsappBubble from '$components/WhatsappBubble.svelte';
   import { siteConfig } from '$lib/config/site';
   import { disciplinas } from '$lib/data/disciplinas';
-  import { trackSchedule } from '$lib/tracking/track';
+  import { trackAgendaClick } from '$lib/tracking/track';
   import BookFlip from '$lib/components/home/BookFlip.svelte';
   import HomePricing from '$lib/components/home/HomePricing.svelte';
   import HomeSteps from '$lib/components/home/HomeSteps.svelte';
@@ -76,7 +76,7 @@
         <h1>Software para <span>{d.negocio}.</span></h1>
         <p class="sub">{d.sub}</p>
         <div class="ctas">
-          <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}`)}>
+          <a class="btn pill-green" href="/agenda" onclick={() => trackAgendaClick(`disciplina_${d.slug}`)}>
             Agenda 15 minutos
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
           </a>
@@ -139,7 +139,7 @@
     <div class="close">
       <h2>Mira tu negocio <span>funcionando en FlowPass.</span></h2>
       <p>Una llamada de 15 minutos, con tus planes y tus precios reales.</p>
-      <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule(`disciplina_${d.slug}_cierre`)}>
+      <a class="btn pill-green" href="/agenda" onclick={() => trackAgendaClick(`disciplina_${d.slug}_cierre`)}>
         Agenda 15 minutos
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
       </a>

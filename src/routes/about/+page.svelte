@@ -3,7 +3,7 @@
   import { aboutSEO } from "$lib/config/seo";
   import { buildAboutGraph } from "$lib/seo/schemas";
   import "$lib/components/home/home.css";
-  import { trackSchedule, trackContact } from "$lib/tracking/track";
+  import { trackAgendaClick, trackContact } from "$lib/tracking/track";
   import Footer from "$lib/components/Footer.svelte";
   import { onMount } from "svelte";
   import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
@@ -253,7 +253,7 @@
     </div>
 
     <div class="cta-actions">
-      <a href="/agenda" class="cta-btn cta-btn--primary" onclick={() => trackSchedule("about_cta")}>Agenda 15 minutos</a>
+      <a href="/agenda" class="cta-btn cta-btn--primary" onclick={() => trackAgendaClick("about_cta")}>Agenda 15 minutos</a>
       <a
         href={waCountry.phone.whatsapp}
         target="_blank"

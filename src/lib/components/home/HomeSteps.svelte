@@ -1,6 +1,6 @@
 <script lang="ts">
   import { reveal } from '$lib/actions/reveal';
-  import { trackSchedule } from '$lib/tracking/track';
+  import { trackAgendaClick } from '$lib/tracking/track';
 
   // Cómo empezar: 3 pasos cortos, justo antes de precios.
   const steps = [
@@ -27,7 +27,7 @@
   </ol>
 
   <div class="cta" use:reveal={120}>
-    <a class="btn pill-green" href="/agenda" onclick={() => trackSchedule('steps_section')}>
+    <a class="btn pill-green" href="/agenda" onclick={() => trackAgendaClick('steps_section')}>
       Empezar con el paso 1
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
     </a>

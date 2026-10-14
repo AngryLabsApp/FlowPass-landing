@@ -3,7 +3,7 @@
   import { detectCountry, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
-  import { trackContact, trackSchedule } from '$lib/tracking/track';
+  import { trackContact, trackAgendaClick } from '$lib/tracking/track';
   import {
     plans as allPlans,
     billingCycles,
@@ -134,7 +134,7 @@
           class="btn plan-btn"
           class:mine={fit?.id === p.id}
           href={`/agenda?plan=${p.id}`}
-          onclick={() => trackSchedule(`pricing_plan_${p.id}`)}
+          onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a
         >

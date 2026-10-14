@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { trackLead } from '$lib/tracking/track';
+  import { trackBooking } from '$lib/tracking/track';
   import { detectCountry, CAL_COUNTRY_LABEL } from '$lib/utils/country';
 
   /**
@@ -9,7 +9,7 @@
    * - forwardQueryParams: los parámetros de la URL (?name=&email=&attendeePhoneNumber=)
    *   llegan al formulario de Cal.com ya escritos (los manda LeadForm al terminar).
    * - La pregunta "País" (identificador `pais`) se marca según la zona horaria del visitante.
-   * - Al confirmar la reserva se registra la conversión.
+   * - Al confirmar la reserva se registra la conversión (Schedule en Meta).
    * La reserva la procesa n8n por el webhook de Cal.com (find_or_create_lead).
    */
   let {
@@ -62,7 +62,7 @@
     api('on', { action: 'linkReady', callback: () => (loaded = true) });
     api('on', {
       action: 'bookingSuccessfulV2',
-      callback: () => trackLead('cal_booking', { fuente: 'cal.com' })
+      callback: () => trackBooking('cal_booking', { fuente: 'cal.com' })
     });
   });
 </script>
