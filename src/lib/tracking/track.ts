@@ -23,12 +23,15 @@ declare global {
  * - `fbCustom`: nombre custom si no hay equivalente estándar.
  * - `gaEvent`: nombre del evento en GA4 (snake_case por convención).
  * - `params`: payload opcional con detalles (source, plan, etc.).
+ * - `eventID`: opcional. Si el mismo evento también llega por la API de
+ *   conversiones (n8n), Meta usa este ID para no contarlo dos veces.
  */
 function fire(
   fbStandard: string | null,
   fbCustom: string | null,
   gaEvent: string,
-  params: Record<string, unknown> = {}
+  params: Record<string, unknown> = {},
+  eventID?: string
 ) {
   if (!browser) return;
   if (dev) {
@@ -39,10 +42,11 @@ function fire(
   // Meta Pixel
   try {
     if (window.fbq) {
+      const opts = eventID ? [{ eventID }] : [];
       if (fbStandard) {
-        window.fbq('track', fbStandard, params);
+        window.fbq('track', fbStandard, params, ...opts);
       } else if (fbCustom) {
-        window.fbq('trackCustom', fbCustom, params);
+        window.fbq('trackCustom', fbCustom, params, ...opts);
       }
     }
   } catch (e) {
@@ -89,11 +93,19 @@ export function trackAgendaClick(source: string) {
  * Funnel paso 2 — CONVERSION (agenda). Distinto de `trackLead`, que es
  * dejar datos para que un asesor escriba.
  *
+ * `bookingUid` (el uid de la reserva en Cal.com) va como eventID: n8n
+ * manda el mismo Schedule por la API de conversiones con ese uid y Meta
+ * deduplica.
+ *
  * Aparece en Meta como "Schedule" (evento estándar), en GA4 como
  * `schedule_booked`.
  */
-export function trackBooking(source: string, params: Record<string, unknown> = {}) {
-  fire('Schedule', null, 'schedule_booked', { source, ...params });
+export function trackBooking(
+  source: string,
+  params: Record<string, unknown> = {},
+  bookingUid?: string
+) {
+  fire('Schedule', null, 'schedule_booked', { source, ...params }, bookingUid);
 }
 
 /**
