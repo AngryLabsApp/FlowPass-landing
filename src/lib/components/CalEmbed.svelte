@@ -9,7 +9,11 @@
    * - forwardQueryParams: los parámetros de la URL (?name=&email=&attendeePhoneNumber=)
    *   llegan al formulario de Cal.com ya escritos (los manda LeadForm al terminar).
    * - La pregunta "País" (identificador `pais`) se marca según la zona horaria del visitante.
-   * - Al confirmar la reserva se registra la conversión (Schedule en Meta).
+   * - Al confirmar la reserva se registra la conversión (Schedule en Meta) con el uid
+   *   de la reserva como eventID.
+   * - `metadata[ua|fbp|fbc]`: navegador y cookies de Meta viajan dentro de la reserva.
+   *   n8n los usa para mandar el mismo Schedule por la API de conversiones (mismo uid →
+   *   Meta no lo cuenta dos veces) y para que Meta reconozca mejor a la persona.
    * La reserva la procesa n8n por el webhook de Cal.com (find_or_create_lead).
    */
   let {
@@ -22,6 +26,19 @@
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type CalFn = any;
+
+  const cookie = (name: string) =>
+    document.cookie.split('; ').find((c) => c.startsWith(`${name}=`))?.slice(name.length + 1) ?? '';
+
+  // Datos para la API de conversiones de Meta (los lee n8n desde la reserva)
+  function metaMetadata(): Record<string, string> {
+    const fbclid = new URLSearchParams(location.search).get('fbclid');
+    const fbc = cookie('_fbc') || (fbclid ? `fb.1.${Date.now()}.${fbclid}` : '');
+    const m: Record<string, string> = { 'metadata[ua]': navigator.userAgent.slice(0, 450) };
+    if (cookie('_fbp')) m['metadata[fbp]'] = cookie('_fbp');
+    if (fbc) m['metadata[fbc]'] = fbc.slice(0, 450);
+    return m;
+  }
 
   onMount(() => {
     const w = window as unknown as { Cal?: CalFn };
@@ -48,6 +65,7 @@
         layout: 'month_view',
         useSlotsViewOnSmallScreen: 'true',
         theme: dark ? 'dark' : 'light',
+        ...metaMetadata(),
         ...(new URLSearchParams(location.search).has('pais') ? {} : { pais: CAL_COUNTRY_LABEL[detectCountry()] })
       },
       calLink
@@ -62,7 +80,8 @@
     api('on', { action: 'linkReady', callback: () => (loaded = true) });
     api('on', {
       action: 'bookingSuccessfulV2',
-      callback: () => trackBooking('cal_booking', { fuente: 'cal.com' })
+      callback: (e: CustomEvent<{ data?: { uid?: string } }>) =>
+        trackBooking('cal_booking', { fuente: 'cal.com' }, e.detail?.data?.uid)
     });
   });
 </script>
