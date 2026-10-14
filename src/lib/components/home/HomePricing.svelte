@@ -3,7 +3,7 @@
   import { detectCountry, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
-  import { trackContact, trackAgendaClick } from '$lib/tracking/track';
+  import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
   import {
     plans as allPlans,
     billingCycles,
@@ -23,6 +23,21 @@
 
   // Moneda según el país del visitante (zona horaria). El visitante puede cambiarlo.
   onMount(() => (country = detectCountry()));
+
+  // Vio los precios (remarketing): una vez, cuando la sección entra en pantalla
+  let pricingEl: HTMLElement;
+  onMount(() => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        trackViewPricing('home_pricing');
+        io.disconnect();
+      },
+      { threshold: 0.3 }
+    );
+    io.observe(pricingEl);
+    return () => io.disconnect();
+  });
 
   // Cotizador
   let quotePlan = $state<string | null>(null);
@@ -83,7 +98,7 @@
   const taxLine = $derived(country === 'PE' ? 'IGV incluido.' : country === 'MX' ? 'IVA incluido.' : 'Sin impuestos extra.');
 </script>
 
-<section id="precios" class="wrap" aria-labelledby="pr-title">
+<section id="precios" class="wrap" aria-labelledby="pr-title" bind:this={pricingEl}>
   <div use:reveal>
     <p class="eyebrow">Precios</p>
     <h2 id="pr-title" class="sec-title">Descubre el plan ideal para el tamaño de tu negocio.</h2>

@@ -185,3 +185,28 @@ export function trackPwaInstalled(source: string) {
 export function trackLead(source: string, params: Record<string, unknown> = {}) {
   fire('Lead', null, 'generate_lead', { source, ...params });
 }
+
+/**
+ * La persona empezó a llenar el form de `/te-llamamos` (primer campo
+ * que escribe o elige). Se dispara una sola vez por visita al form.
+ *
+ * **Para comercial:** FormStart vs Lead = cuántos abandonan el form.
+ * Si muchos empiezan y pocos terminan, el form es muy largo.
+ *
+ * Aparece en Meta como `FormStart` (custom), en GA4 como `form_start`.
+ */
+export function trackFormStart(source: string) {
+  fire(null, 'FormStart', 'form_start', { source });
+}
+
+/**
+ * La sección de precios entró en pantalla (una vez por visita).
+ *
+ * **Para comercial:** sirve para remarketing: mostrar anuncios a quien
+ * vio precios y no agendó ni dejó datos.
+ *
+ * Aparece en Meta como `ViewPricing` (custom), en GA4 como `view_pricing`.
+ */
+export function trackViewPricing(source: string) {
+  fire(null, 'ViewPricing', 'view_pricing', { source });
+}
