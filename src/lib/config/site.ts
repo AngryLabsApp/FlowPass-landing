@@ -41,7 +41,10 @@ export const siteConfig = {
     instagram: 'https://www.instagram.com/flowpass.app',
     facebook: 'https://www.facebook.com/flowpassapp/',
     tiktok: 'https://www.tiktok.com/@flowpass.app',
-    whatsapp: 'https://wa.me/+51977854515'
+    whatsapp: 'https://wa.me/+51977854515',
+    // Perfil de Empresa en Google (opiniones). /review abre el formulario para dejar una.
+    google: 'https://g.page/r/CQbO5PNnyesCEBM',
+    googleReview: 'https://g.page/r/CQbO5PNnyesCEBM/review'
   },
   foundingYear: 2025,
   foundingDateISO: '2025-09',        // fecha de fundación (mes/año)

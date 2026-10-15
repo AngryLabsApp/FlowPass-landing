@@ -78,7 +78,8 @@ function organizationSchema() {
     sameAs: [
       siteConfig.social.instagram,
       siteConfig.social.facebook,
-      siteConfig.social.tiktok
+      siteConfig.social.tiktok,
+      siteConfig.social.google
     ]
   };
 }
