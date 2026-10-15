@@ -120,7 +120,7 @@
       (Perú), pesos mexicanos (México) o dólares (otros países), con impuestos incluidos.
     </p>
     <ul class="terms-list">
-      <li><strong>Ciclos de pago:</strong> mensual, trimestral (10% de descuento) o anual (20% de descuento). El ciclo trimestral y el anual se pagan por adelantado.</li>
+      <li><strong>Ciclos de pago:</strong> mensual, trimestral (10% de descuento) o anual (25% de descuento). El ciclo trimestral y el anual se pagan por adelantado.</li>
       <li><strong>Extras opcionales:</strong> sedes adicionales, packs de mensajes de WhatsApp y facturación electrónica SUNAT (solo Perú), que se cobran mes a mes.</li>
       <li><strong>Promociones:</strong> cuando ofrecemos un descuento (por ejemplo, en el primer mes), sus condiciones se indican por escrito en la propuesta antes de contratar.</li>
       <li><strong>Medios de pago:</strong> los pagos se procesan de forma segura a través de nuestro procesador de pagos (dLocal Go) o por los medios acordados en el contrato.</li>
