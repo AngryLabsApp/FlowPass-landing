@@ -150,6 +150,20 @@ export function trackLogin(source: string) {
 }
 
 /**
+ * Cuenta creada en /registro (signUp OK; falta que confirme el correo).
+ *
+ * **Para comercial:** prospecto que se registró solo, sin hablar con nadie.
+ * Funnel freemium: signup → confirma correo → crea su academia (en el SaaS).
+ *
+ * Evento estándar de Meta `CompleteRegistration` (sirve para optimizar
+ * campañas), en GA4 `sign_up`. `eventID` para deduplicar si después llega
+ * también por la API de conversiones.
+ */
+export function trackSignup(source: string, eventID?: string) {
+  fire('CompleteRegistration', null, 'sign_up', { source, method: 'email' }, eventID);
+}
+
+/**
  * Click en botón "Crear acceso directo" — el user pidió instalar la PWA.
  *
  * **Para comercial:** intención de instalar. NO confirma que instaló
