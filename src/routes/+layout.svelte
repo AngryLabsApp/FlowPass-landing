@@ -12,7 +12,7 @@
   import "../app.css";
 
   // Rutas donde el toast de instalación PWA NO debe aparecer (formularios, etc.).
-  const HIDE_INSTALL_TOAST_ROUTES = ['/agenda'];
+  const HIDE_INSTALL_TOAST_ROUTES = ['/agenda', '/registro', '/registro/confirmado'];
 </script>
 
 <svelte:head>

@@ -32,6 +32,7 @@
     "@popperjs/core": "^2.11.8",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
     "@splidejs/svelte-splide": "^0.2.9",
+    "@supabase/supabase-js": "2.117.2",
     "flowbite": "^3.1.2",
     "flowbite-svelte": "^1.27.0",
     "libphonenumber-js": "^1.13.7",
