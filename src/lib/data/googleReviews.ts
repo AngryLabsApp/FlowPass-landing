@@ -2,7 +2,7 @@
 // Se copian a mano tal cual las escribió el cliente: nunca inventar ni editar el texto.
 // Al agregar una, actualizar también `count` y `rating` con lo que muestra Google.
 
-export const googleRating = { rating: 5, count: 1 };
+export const googleRating = { rating: 5, count: 3 };
 
 export const googleReviews: { author: string; stars: number; text: string }[] = [
   {
