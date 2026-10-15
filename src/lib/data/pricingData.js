@@ -5,7 +5,7 @@
  * Lógica de precios:
  *  - Cada plan tiene una única grilla `prices`. WhatsApp automático viene incluido
  *    siempre; el cliente decide si activarlo. No hay dos precios distintos.
- *  - Los descuentos por ciclo (trimestral ~-10%, anual ~-20%) están FIJADOS A MANO
+ *  - Los descuentos por ciclo (trimestral ~-10%, anual ~-25%) están FIJADOS A MANO
  *    en números redondos dentro de cada grilla — no se calculan, para no arrastrar
  *    decimales feos (180 * 0.9 = 162 se ve roto; por eso se fija 160).
  *  - Cada plan trae un cupo mensual `whatsappIncluded.total` de mensajes WhatsApp
@@ -50,7 +50,7 @@ export const countries = [
 export const billingCycles = [
   { id: "mensual", label: "Mensual", discount: 0, note: "Pago mes a mes" },
   { id: "trimestral", label: "Trimestral", discount: 0.1, note: "Ahorra ~10%" },
-  { id: "anual", label: "Anual", discount: 0.2, note: "Ahorra ~20%" },
+  { id: "anual", label: "Anual", discount: 0.25, note: "Ahorra ~25%" },
 ];
 
 /**
@@ -180,7 +180,7 @@ export const plans = [
     prices: {
       mensual: { PE: 120, MX: 600, US: 40 },
       trimestral: { PE: 110, MX: 550, US: 35 },
-      anual: { PE: 95, MX: 475, US: 30 },
+      anual: { PE: 90, MX: 450, US: 30 },
     },
     teamSeats: 5, // null = ilimitados
     extraSiteFee: { PE: 30 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -212,7 +212,7 @@ export const plans = [
     prices: {
       mensual: { PE: 240, MX: 1200, US: 70 },
       trimestral: { PE: 215, MX: 1075, US: 65 },
-      anual: { PE: 190, MX: 950, US: 55 },
+      anual: { PE: 180, MX: 900, US: 52 },
     },
     teamSeats: 10, // null = ilimitados
     extraSiteFee: { PE: 50 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -241,7 +241,7 @@ export const plans = [
     prices: {
       mensual: { PE: 350, MX: 1750, US: 110 },
       trimestral: { PE: 315, MX: 1575, US: 100 },
-      anual: { PE: 280, MX: 1400, US: 90 },
+      anual: { PE: 260, MX: 1300, US: 82 },
     },
     teamSeats: 15, // null = ilimitados
     extraSiteFee: { PE: 100 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -270,7 +270,7 @@ export const plans = [
     prices: {
       mensual: { PE: 500, MX: 2500, US: 150 },
       trimestral: { PE: 450, MX: 2250, US: 135 },
-      anual: { PE: 400, MX: 2000, US: 120 },
+      anual: { PE: 375, MX: 1875, US: 112 },
     },
     teamSeats: null, // null = ilimitados
     extraSiteFee: { PE: 200 }, // por sede adicional de ESTE tamaño; MX/US a consultar
