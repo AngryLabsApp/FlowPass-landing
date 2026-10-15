@@ -2,6 +2,10 @@
   import { onMount } from "svelte";
   import { Splide, SplideSlide } from "@splidejs/svelte-splide";
   import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
+  import { siteConfig } from "$lib/config/site";
+  import { googleRating, googleReviews } from "$lib/data/googleReviews";
+
+  const ratingText = googleRating.rating.toFixed(1).replace(".", ",");
 
   const reelUrls = [
     "https://www.instagram.com/p/DVl81gqkfOn/",
@@ -97,6 +101,29 @@
       <p class="eyebrow">En su día a día</p>
       <h2 id="testimonios-heading" class="sec-title">Ya nos confiaron su operación. Esto es lo que opinan.</h2>
     </div>
+
+    <!-- Opiniones reales de Google (src/lib/data/googleReviews.ts) -->
+    {#if googleReviews.length > 0}
+      <div class="g-reviews">
+        <p class="g-score">
+          <span class="g-stars" aria-hidden="true">★★★★★</span>
+          <b>{ratingText}</b> en Google · {googleRating.count} {googleRating.count === 1 ? "opinión" : "opiniones"}
+        </p>
+        <div class="g-list">
+          {#each googleReviews as r (r.author)}
+            <figure class="g-card">
+              <span class="g-stars" aria-label={`${r.stars} de 5 estrellas`}>{"★".repeat(r.stars)}</span>
+              <blockquote>“{r.text}”</blockquote>
+              <figcaption>— {r.author}</figcaption>
+            </figure>
+          {/each}
+        </div>
+        <div class="g-links">
+          <a href={siteConfig.social.google} target="_blank" rel="noopener noreferrer">Ver en Google →</a>
+          <a href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer">¿Ya usas FlowPass? Deja tu opinión ★</a>
+        </div>
+      </div>
+    {/if}
 
     {#if clientLogos.length > 0}
       <div class="mt-12">
@@ -277,4 +304,15 @@
     background: rgba(255,255,255,0.03);
     z-index: 0;
   }
+  .g-reviews { display: grid; gap: 14px; justify-items: start; margin-top: 28px; }
+  .g-score { margin: 0; font-size: 14.5px; color: var(--fg-2); }
+  .g-score b { color: var(--fg); }
+  .g-stars { color: #f5b301; letter-spacing: 1px; }
+  .g-list { display: grid; gap: 12px; width: 100%; max-width: 640px; }
+  .g-card { margin: 0; display: grid; gap: 8px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); text-align: left; }
+  .g-card blockquote { margin: 0; font-size: 15px; line-height: 1.55; color: var(--fg); }
+  .g-card figcaption { font-size: 13px; color: var(--fg-2); }
+  .g-links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; }
+  .g-links a { color: var(--accent-text); text-decoration: none; }
+  .g-links a:hover { text-decoration: underline; }
 </style>
