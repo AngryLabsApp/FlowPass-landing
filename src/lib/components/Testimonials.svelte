@@ -6,6 +6,11 @@
   import { googleRating, googleReviews } from "$lib/data/googleReviews";
 
   const ratingText = googleRating.rating.toFixed(1).replace(".", ",");
+  // El carrusel se mueve en bucle: repetimos la lista hasta tener varias tarjetas por mitad
+  const reviewLoop = Array.from({ length: Math.max(2, Math.ceil(6 / Math.max(googleReviews.length, 1))) }, () => googleReviews).flat();
+  const initial = (name: string) => name.trim().charAt(0).toUpperCase();
+  let reviewsEl: HTMLElement;
+  let reviewsIn = false;
 
   const reelUrls = [
     "https://www.instagram.com/p/DVl81gqkfOn/",
@@ -75,6 +80,15 @@
   // está por entrar en pantalla, no al abrir la página.
   let sectionEl: HTMLElement;
   onMount(() => {
+    // Estrellas: se animan cuando las opiniones entran en pantalla
+    if (reviewsEl) {
+      const rio = new IntersectionObserver(([e]) => {
+        if (!e.isIntersecting) return;
+        reviewsIn = true;
+        rio.disconnect();
+      }, { threshold: 0.3 });
+      rio.observe(reviewsEl);
+    }
     const io = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;
@@ -104,23 +118,38 @@
 
     <!-- Opiniones reales de Google (src/lib/data/googleReviews.ts) -->
     {#if googleReviews.length > 0}
-      <div class="g-reviews">
-        <p class="g-score">
-          <span class="g-stars" aria-hidden="true">★★★★★</span>
-          <b>{ratingText}</b> en Google · {googleRating.count} {googleRating.count === 1 ? "opinión" : "opiniones"}
-        </p>
-        <div class="g-list">
-          {#each googleReviews as r (r.author)}
-            <figure class="g-card">
-              <span class="g-stars" aria-label={`${r.stars} de 5 estrellas`}>{"★".repeat(r.stars)}</span>
-              <blockquote>“{r.text}”</blockquote>
-              <figcaption>— {r.author}</figcaption>
-            </figure>
-          {/each}
+      <div class="g-reviews" class:in={reviewsIn} bind:this={reviewsEl}>
+        <div class="g-top">
+          <div class="g-score">
+            <span class="g-num">{ratingText}</span>
+            <div>
+              <span class="g-stars g-stars-lg" aria-label={`${ratingText} de 5 estrellas`}>
+                {#each [0, 1, 2, 3, 4] as i (i)}<span class="g-star" style={`--d:${i * 110}ms`}>★</span>{/each}
+              </span>
+              <p class="g-count">{googleRating.count} {googleRating.count === 1 ? "opinión" : "opiniones"} en Google</p>
+            </div>
+          </div>
+          <div class="g-links">
+            <a href={siteConfig.social.google} target="_blank" rel="noopener noreferrer">Ver en Google →</a>
+            <a class="g-cta" href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer">¿Ya usas FlowPass? Deja tu opinión ★</a>
+          </div>
         </div>
-        <div class="g-links">
-          <a href={siteConfig.social.google} target="_blank" rel="noopener noreferrer">Ver en Google →</a>
-          <a href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer">¿Ya usas FlowPass? Deja tu opinión ★</a>
+        <div class="g-marquee" aria-label="Opiniones de clientes en Google">
+          <ul class="g-track">
+            {#each [...reviewLoop, ...reviewLoop] as r, i (i)}
+              <li class="g-card" aria-hidden={i >= googleReviews.length ? "true" : undefined}>
+                <span class="g-quote" aria-hidden="true">“</span>
+                <span class="g-stars" aria-label={`${r.stars} de 5 estrellas`}>
+                  {#each Array(r.stars) as _, k (k)}<span class="g-star" style={`--d:${500 + k * 90}ms`}>★</span>{/each}
+                </span>
+                <blockquote>{r.text}</blockquote>
+                <div class="g-who">
+                  <span class="g-avatar" aria-hidden="true">{initial(r.author)}</span>
+                  <span><b>{r.author}</b>{#if r.business}<small>{r.business}</small>{/if}</span>
+                </div>
+              </li>
+            {/each}
+          </ul>
         </div>
       </div>
     {/if}
@@ -304,15 +333,53 @@
     background: rgba(255,255,255,0.03);
     z-index: 0;
   }
-  .g-reviews { display: grid; gap: 14px; justify-items: start; margin-top: 28px; }
-  .g-score { margin: 0; font-size: 14.5px; color: var(--fg-2); }
-  .g-score b { color: var(--fg); }
-  .g-stars { color: #f5b301; letter-spacing: 1px; }
-  .g-list { display: grid; gap: 12px; width: 100%; max-width: 640px; }
-  .g-card { margin: 0; display: grid; gap: 8px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); text-align: left; }
-  .g-card blockquote { margin: 0; font-size: 15px; line-height: 1.55; color: var(--fg); }
-  .g-card figcaption { font-size: 13px; color: var(--fg-2); }
-  .g-links { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13.5px; }
-  .g-links a { color: var(--accent-text); text-decoration: none; }
+  /* ── Opiniones de Google ─────────────────────────────── */
+  .g-reviews { margin-top: 32px; display: grid; gap: 22px; }
+  .g-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; }
+  .g-score { display: flex; align-items: center; gap: 14px; }
+  .g-num { font: 700 clamp(44px, 6vw, 60px)/1 var(--display); letter-spacing: -0.02em; background: linear-gradient(135deg, #531dd8, #01f59e); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .g-count { margin: 4px 0 0 !important; font-size: 14px; color: var(--fg-2); }
+  .g-stars { display: inline-flex; gap: 2px; color: #f5b301; line-height: 1; }
+  .g-stars-lg { font-size: 26px; gap: 4px; }
+  .g-star { display: inline-block; }
+  .g-links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; font-size: 14px; }
+  .g-links a { color: var(--accent-text); text-decoration: none; font-weight: 600; }
   .g-links a:hover { text-decoration: underline; }
+  .g-links .g-cta { padding: 9px 16px; border-radius: 999px; border: 1px solid color-mix(in srgb, #01f59e 45%, var(--line)); background: color-mix(in srgb, #01f59e 10%, transparent); }
+  .g-links .g-cta:hover { text-decoration: none; background: color-mix(in srgb, #01f59e 18%, transparent); }
+
+  .g-marquee { overflow: hidden; padding: 6px 0 14px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .g-track { list-style: none; margin: 0; padding: 0; display: flex; gap: 18px; width: max-content; animation: g-scroll 45s linear infinite; }
+  .g-marquee:hover .g-track, .g-marquee:focus-within .g-track { animation-play-state: paused; }
+  @keyframes g-scroll { to { transform: translateX(calc(-50% - 9px)); } }
+
+  .g-card { position: relative; width: min(380px, 82vw); flex: none; display: flex; flex-direction: column; gap: 14px; padding: 26px 24px 22px; border-radius: 22px; background:
+      linear-gradient(var(--panel), var(--panel)) padding-box,
+      linear-gradient(135deg, color-mix(in srgb, #531dd8 70%, transparent), color-mix(in srgb, #01f59e 70%, transparent)) border-box;
+    border: 1.5px solid transparent; box-shadow: 0 18px 40px -28px rgba(83, 29, 216, 0.55); transition: transform 0.25s, box-shadow 0.25s; }
+  .g-card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -26px rgba(83, 29, 216, 0.7); }
+  .g-quote { position: absolute; top: 4px; right: 18px; font: 700 76px/1 var(--display); color: color-mix(in srgb, #531dd8 22%, transparent); pointer-events: none; }
+  .g-card .g-stars { font-size: 17px; }
+  .g-card blockquote { margin: 0; flex: 1; font-size: 15.5px; line-height: 1.6; color: var(--fg); }
+  .g-who { display: flex; align-items: center; gap: 12px; }
+  .g-avatar { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; font: 700 16px var(--display); color: #fff; background: linear-gradient(135deg, #531dd8, #01f59e); }
+  .g-who b { display: block; font-size: 14.5px; }
+  .g-who small { display: block; font-size: 12.5px; color: var(--fg-2); }
+
+  /* Estrellas: se encienden una por una al entrar en pantalla y luego brillan de vez en cuando */
+  @media (prefers-reduced-motion: no-preference) {
+    .g-reviews .g-star { opacity: 0.25; transform: scale(0.6); filter: grayscale(1); }
+    .g-reviews.in .g-star { animation: g-pop 0.5s cubic-bezier(.34, 1.56, .64, 1) var(--d) forwards, g-shine 4s ease-in-out calc(var(--d) + 1.2s) infinite; }
+  }
+  @keyframes g-pop { to { opacity: 1; transform: scale(1); filter: none; } }
+  @keyframes g-shine { 0%, 88%, 100% { text-shadow: none; transform: scale(1); } 92% { text-shadow: 0 0 12px rgba(245, 179, 1, 0.9); transform: scale(1.18); } }
+  @media (prefers-reduced-motion: reduce) {
+    .g-track { animation: none; width: auto; }
+    .g-marquee { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+    .g-card[aria-hidden="true"] { display: none; }
+  }
+  @media (max-width: 560px) {
+    .g-top { align-items: flex-start; }
+    .g-links { width: 100%; }
+  }
 </style>

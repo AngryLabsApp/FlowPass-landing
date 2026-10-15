@@ -4,14 +4,15 @@
 
 export const googleRating = { rating: 5, count: 5 };
 
-export const googleReviews: { author: string; stars: number; text: string }[] = [
+export const googleReviews: { author: string; business?: string; stars: number; text: string }[] = [
   {
     author: 'Academia de DJ Niño Azul',
     stars: 5,
     text: 'Ha sido la mejor elección! Nuestra Institución se ordenó, se digitalizo y con las actualizaciones y requerimientos que siempre pedimos nos cumplen al 100%, gracias por todo el profesionalismo que tienen.'
   },
   {
-    author: 'Joel Muñiz · Nokema, academia de vóley',
+    author: 'Joel Muñiz',
+    business: 'Nokema · academia de vóley',
     stars: 5,
     text: 'Excelente aplicacion, completa, atencion de primera y soporte todos los dias. Realmente recomendado.'
   }
