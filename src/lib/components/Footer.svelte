@@ -51,6 +51,7 @@
           <a href={siteConfig.phones.PE.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.PE.flag} {siteConfig.phones.PE.formatted}</a>
           <a href={siteConfig.phones.MX.whatsapp} target="_blank" rel="noopener noreferrer">{siteConfig.phones.MX.flag} {siteConfig.phones.MX.formatted}</a>
           <a href="/contacto">¿Tuviste un problema? Soporte →</a>
+          <a href={siteConfig.social.googleReview} target="_blank" rel="noopener noreferrer">¿Ya usas FlowPass? Déjanos tu opinión ★</a>
         </div>
         <nav aria-label="Legal">
           <p class="footer-h">Legal</p>
