@@ -5,6 +5,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 import { disciplinas } from "$lib/data/disciplinas";
+import { posts } from "$lib/blog";
 
 export const prerender = true;
 
@@ -36,6 +37,10 @@ Diferenciales clave:
 
 ## Por disciplina
 ${disciplinas.map((d) => `- [Software para ${d.negocio}](${base}/software/${d.slug}): ${d.card}`).join("\n")}
+
+## Blog (guías para dueños de academias)
+- [Blog FlowPass](${base}/blog): guías cortas sobre cobros, alumnos, asistencia y cómo crecer.
+${posts.map((p) => `- [${p.title}](${base}/blog/${p.slug}): ${p.resumen}`).join("\n")}
 
 ## Sobre la empresa
 - [Sobre FlowPass](${base}/about): historia, fundadores (Grecia Delgado — CEO, Angel Valenzuela — CTO, Piero Varillas — COO), misión y el problema de mercado que atacamos.

@@ -2,6 +2,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 import { disciplinas } from "$lib/data/disciplinas";
+import { posts } from "$lib/blog";
 
 export const prerender = true;
 
@@ -18,8 +19,9 @@ export const GET: RequestHandler = async () => {
     { url: "/contacto", priority: "0.6", changefreq: "monthly" },
     { url: "/software", priority: "0.7", changefreq: "monthly" },
     ...disciplinas.map((d) => ({ url: `/software/${d.slug}`, priority: "0.7", changefreq: "monthly" })),
+    { url: "/blog", priority: "0.8", changefreq: "weekly" },
+    ...posts.map((p) => ({ url: `/blog/${p.slug}`, priority: "0.7", changefreq: "monthly" })),
     // Añade aquí más páginas cuando las tengas
-    // { url: "/blog", priority: "0.8", changefreq: "weekly" },
     // { url: "/precios", priority: "0.9", changefreq: "monthly" },
     // { url: "/caracteristicas", priority: "0.9", changefreq: "monthly" },
   ];

@@ -5,6 +5,7 @@
 import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 import { faqMainEntity } from "$lib/seo/faqSchema";
+import { posts } from "$lib/blog";
 import { plans, whatsappPackages } from "$lib/data/pricingData.js";
 
 export const prerender = true;
@@ -167,6 +168,9 @@ ${renderFaq()}
 - TikTok: ${siteConfig.social.tiktok}
 - Facebook: ${siteConfig.social.facebook}
 - WhatsApp directo: ${siteConfig.social.whatsapp}
+
+## Blog FlowPass (artículos completos)
+${posts.map((p) => `### ${p.title}\nURL: ${siteConfig.url}/blog/${p.slug}\nPublicado: ${p.date} · Autor: ${p.author}${p.authorRole ? ` (${p.authorRole})` : ""}\nResumen: ${p.resumen}\n\n${p.text}`).join("\n\n")}
 `;
 
   return new Response(intro, {
