@@ -3,14 +3,16 @@
   import { page } from "$app/stores";
   import { z } from "zod";
   import { siteConfig } from "$lib/config/site";
-  import { getSupabase, signupRedirectUrl } from "$lib/supabase";
+  import { getSupabase, signupLandingPlanId, signupRedirectUrl, signupTrialDays } from "$lib/supabase";
+  import { plans } from "$lib/data/pricingData.js";
+  import { detectCountry } from "$lib/utils/country";
   import { trackSignup, trackFormStart } from "$lib/tracking/track";
   import { metaCookies, newEventId } from "$lib/tracking/meta";
   import heroPhoto from "$lib/assets/images/home/hero.webp";
 
   // Registro self-service (fase 1): crea el usuario en Supabase Auth y Supabase manda el
   // correo de confirmación. La academia se crea después, en el SaaS (fase 2).
-  // OCULTA hasta lanzar: sin CTAs que la enlacen, noindex y fuera del sitemap.
+  // Los botones que llevan aquí (precios, menú) solo aparecen con PUBLIC_SIGNUP; noindex y fuera del sitemap.
 
   // Misma regla que la API (users.controller.ts PASSWORD_REGEX) y que Supabase Auth.
   const PASSWORD_RULE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
@@ -30,6 +32,12 @@
   let acepta = $state(false);
   let showPassword = $state(false);
   let website = $state(""); // honeypot — debe quedar vacío
+
+  const trialDays = signupTrialDays();
+  const chosenPlanName = $derived.by(() => {
+    const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
+    return plans.find((p) => p.id === landingId)?.name ?? null;
+  });
 
   let status = $state<"idle" | "loading" | "sent" | "error">("idle");
   let errorMsg = $state("");
@@ -60,6 +68,11 @@
     }, 1000);
   }
 
+  function signupCountry(pais: string | null): string {
+    const code = (pais || detectCountry()).toUpperCase();
+    return /^[A-Z]{2}$/.test(code) && code !== "US" ? code : "";
+  }
+
   // Datos de origen (sin permisos): quedan en user_metadata del usuario para medir campañas.
   function signupMetadata() {
     const q = $page.url.searchParams;
@@ -72,6 +85,11 @@
       utm_campaign: q.get("utm_campaign") || "",
       utm_content: q.get("utm_content") || "",
       promo_code: (q.get("promo") || q.get("promo_code") || "").toUpperCase().trim(),
+      // Plan elegido en los precios (tier_key del catálogo). El SaaS lo muestra en la bienvenida; el API decide si aplica.
+      signup_plan: /^[a-z0-9_-]{1,64}$/.test(q.get("plan") ?? "") ? q.get("plan") : "",
+      signup_cycle: ["mensual", "trimestral", "anual"].includes(q.get("ciclo") ?? "") ? q.get("ciclo") : "",
+      // País de los precios que vio (o el de su zona horaria). "US" = "Otros": que lo elija en la bienvenida.
+      signup_country: signupCountry(q.get("pais")),
       ...metaCookies(),
     };
   }
@@ -171,12 +189,22 @@
     <aside class="photo" style={`--photo:url(${heroPhoto})`}>
       <div class="media" role="img" aria-label="Dueña de un estudio de danza haciendo las cuentas del mes"></div>
       <div class="photo-copy">
-        <h2>Prueba FlowPass <span>14 días gratis</span></h2>
-        <ul>
-          <li>Todas las funciones, sin tarjeta</li>
-          <li>Tu academia lista en 2 minutos</li>
-          <li>Después sigues gratis o eliges un plan</li>
-        </ul>
+        <!-- Con plan elegido en los precios: ese plan (días gratis y cobro se ven en la bienvenida). Sin plan: la prueba. -->
+        {#if chosenPlanName}
+          <h2>Empieza con <span>{chosenPlanName}</span></h2>
+          <ul>
+            <li>Tu academia lista en 2 minutos</li>
+            <li>Sin tarjeta para crear tu cuenta</li>
+            <li>Confirmas tu plan antes de pagar</li>
+          </ul>
+        {:else}
+          <h2>Prueba FlowPass <span>{trialDays ? `${trialDays} días gratis` : "gratis"}</span></h2>
+          <ul>
+            <li>Sin tarjeta ni compromiso</li>
+            <li>Tu academia lista en 2 minutos</li>
+            <li>Al terminar, eliges el plan que te acomode</li>
+          </ul>
+        {/if}
       </div>
     </aside>
 
@@ -191,6 +219,11 @@
             Si <strong>{email.trim()}</strong> es válido, te enviamos un enlace para confirmar tu cuenta. Ábrelo desde este u otro dispositivo.
           </p>
           <p class="hint">¿No lo ves? Revisa <strong>Spam</strong> o <strong>Promociones</strong>. El enlace vence en 24 horas.</p>
+          <!-- Supabase no avisa si el correo ya tenía cuenta (no revela qué correos existen): se explica sin confirmarlo. -->
+          <p class="hint">
+            ¿Ya tenías cuenta con este correo? No te llegará nada: <a href="https://app.flow-pass.com/login">ingresa aquí</a>.
+            Si no recuerdas tu contraseña, ahí mismo puedes recuperarla.
+          </p>
           <button type="button" class="btn-white" onclick={resend} disabled={resendIn > 0}>
             {resendIn > 0 ? `Reenviar correo (${resendIn} s)` : "Reenviar correo"}
           </button>

@@ -6,13 +6,18 @@
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
+  import { signupTierKey } from '$lib/supabase';
 
   // Para quien ya quiere elegir día y hora: calendario de Cal.com.
   // Quien aún no está listo va a /te-llamamos y deja sus datos.
   let planName = $state<string | null>(null);
+  // Camino inverso: quien llegó aquí desde un plan puede crear su cuenta sin esperar la llamada.
+  let signupHref = $state('/registro');
   onMount(() => {
     const id = new URLSearchParams(location.search).get('plan');
     planName = plans.find((p) => p.id === id)?.name ?? null;
+    const tierKey = id ? signupTierKey(id) : null;
+    if (tierKey) signupHref = `/registro?plan=${tierKey}`;
   });
 </script>
 
@@ -41,6 +46,7 @@
         <li>Sin compromiso</li>
       </ul>
       {#if planName}<p class="picked">Plan que te interesa: <b>{planName}</b></p>{/if}
+      <p class="self">¿Prefieres empezar por tu cuenta? <a href={signupHref}>Crea tu cuenta y pruébalo gratis</a></p>
     </header>
 
     <a class="not-ready" href="/te-llamamos">
@@ -69,6 +75,8 @@
   .logos { margin-bottom: 22px; }
   .head { text-align: center; margin-inline: auto; }
   .what { justify-content: center; }
+  .self { margin: 12px 0 0; font-size: 14px; color: var(--fg-2); }
+  .self a { color: var(--fg); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
   h1 { font-size: clamp(26px, 3.6vw, 40px); margin-top: 10px !important; }
   h1 span { color: var(--accent-text); }
   .what { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px 18px; }

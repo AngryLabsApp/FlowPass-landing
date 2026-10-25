@@ -4,6 +4,9 @@
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
+  import { signupTierKey, signupTrialDays } from '$lib/supabase';
+
+  const trialDays = signupTrialDays();
   import {
     plans as allPlans,
     billingCycles,
@@ -148,14 +151,25 @@
         <a
           class="btn plan-btn"
           class:mine={fit?.id === p.id}
-          href={`/agenda?plan=${p.id}`}
-          onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}
+          href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${country}` : `/agenda?plan=${p.id}`}
+          onclick={() => !signupTierKey(p.id) && trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a
         >
+        <!-- Con registro directo, quien prefiere hablar antes sigue teniendo la llamada. -->
+        {#if signupTierKey(p.id)}
+          <a class="plan-alt" href={`/agenda?plan=${p.id}`} onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}>o agenda una llamada</a>
+        {/if}
       </article>
     {/each}
   </div>
+
+  {#if trialDays}
+    <div class="trial">
+      <p><b>¿Aún no sabes qué plan elegir?</b> Pruébalo gratis {trialDays} días. Sin tarjeta.</p>
+      <a class="btn trial-btn" href={`/registro?pais=${country}`}>Empezar prueba gratis</a>
+    </div>
+  {/if}
 
   <details class="compare">
     <summary><span>Comparar planes</span></summary>
@@ -349,6 +363,12 @@
   /* Todos los planes con botón sólido; el que le corresponde, en verde */
   .plan-btn { background: var(--fg); color: var(--bg); border-radius: 999px; }
   .plan-btn.mine { background: #01f59e; color: #04150e; }
+  .plan-alt { margin-top: 10px; text-align: center; font-size: 13.5px; color: var(--fg-2); text-decoration: underline; text-underline-offset: 3px; }
+  .plan-alt:hover { color: var(--fg); }
+  .trial { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; border: 1px solid rgba(1, 245, 158, 0.35); border-radius: 18px; background: rgba(1, 245, 158, 0.06); }
+  .trial p { margin: 0; color: var(--fg-2); }
+  .trial b { color: var(--fg); }
+  .trial-btn { background: #01f59e; color: #04150e; border-radius: 999px; }
 
   .more { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
   .more summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; color: var(--fg-2); }
@@ -433,7 +453,7 @@
     .plan {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn';
+      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt';
       gap: 2px 12px;
       padding: 16px;
       border-radius: 14px;
@@ -447,6 +467,7 @@
     .per { grid-area: per; font-size: 11.5px; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
+    .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }
     .q-form { padding: 18px 16px; gap: 18px; }
     .q-form h3 { font-size: 20px; }
     legend { font-size: 14px; margin-bottom: 8px; }
