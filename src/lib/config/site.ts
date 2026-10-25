@@ -14,7 +14,9 @@ export const siteConfig = {
     ruc: '20615483487',
     address: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno, Ate, Lima, Perú',
     streetAddress: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno',
-    district: 'Ate'
+    district: 'Ate',
+    // Fecha de la última versión de /terminos. Se guarda en la cuenta al registrarse: al cambiar los términos, cambiarla.
+    termsVersion: '2026-10-12'
   },
   phone: '51977854515', // Código de país sin + (PE — default histórico)
   phoneFormatted: '+51 977 854 515', // Formato legible

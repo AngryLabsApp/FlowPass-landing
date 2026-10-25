@@ -65,6 +65,8 @@
     const q = $page.url.searchParams;
     return {
       signup_source: "landing",
+      // Aceptó los términos (casilla obligatoria): el API los copia al crear su negocio.
+      terms_version: siteConfig.legal.termsVersion,
       utm_source: q.get("utm_source") || "",
       utm_medium: q.get("utm_medium") || "",
       utm_campaign: q.get("utm_campaign") || "",
