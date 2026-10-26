@@ -34,10 +34,8 @@
   let website = $state(""); // honeypot — debe quedar vacío
 
   const trialDays = signupTrialDays();
-  const chosenPlanName = $derived.by(() => {
-    const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
-    return plans.find((p) => p.id === landingId)?.name ?? null;
-  });
+  // La página se prerenderiza (sin query string): el plan de ?plan= se lee recién en el navegador.
+  let chosenPlanName = $state<string | null>(null);
 
   let status = $state<"idle" | "loading" | "sent" | "error">("idle");
   let errorMsg = $state("");
@@ -50,6 +48,8 @@
 
   onMount(() => {
     formLoadedAt = Date.now();
+    const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
+    chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
   });
   onDestroy(() => clearInterval(timer));
 

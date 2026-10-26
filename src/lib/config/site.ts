@@ -1,4 +1,21 @@
 // src/lib/config/site.ts
+
+// WhatsApp de FlowPass por país: única fuente del número. El enlace de wa.me se arma desde `raw`.
+// El SaaS tiene su copia en FlowPass-new/src/lib/utils/supportWhatsapp.ts (otro repo): cambiar los dos juntos.
+const whatsappContact = (code: string, flag: string, label: string, raw: string, formatted: string) => ({
+  code,
+  flag,
+  label,
+  raw,
+  formatted,
+  whatsapp: `https://wa.me/${raw}`
+});
+
+const PHONES = {
+  PE: whatsappContact('PE', '🇵🇪', 'Perú', '51977854515', '+51 977 854 515'),
+  MX: whatsappContact('MX', '🇲🇽', 'México', '525536506130', '+52 55 3650 6130')
+};
+
 export const siteConfig = {
   name: 'FlowPass',
   domain: 'flow-pass.com',
@@ -18,32 +35,15 @@ export const siteConfig = {
     // Fecha de la última versión de /terminos. Se guarda en la cuenta al registrarse: al cambiar los términos, cambiarla.
     termsVersion: '2026-10-12'
   },
-  phone: '51977854515', // Código de país sin + (PE — default histórico)
-  phoneFormatted: '+51 977 854 515', // Formato legible
+  phone: PHONES.PE.raw, // Código de país sin + (PE — default histórico)
+  phoneFormatted: PHONES.PE.formatted,
   // Contacto por país — usado por el selector de banderitas en CTA
-  phones: {
-    PE: {
-      code: 'PE',
-      flag: '🇵🇪',
-      label: 'Perú',
-      raw: '51977854515',
-      formatted: '+51 977 854 515',
-      whatsapp: 'https://wa.me/51977854515'
-    },
-    MX: {
-      code: 'MX',
-      flag: '🇲🇽',
-      label: 'México',
-      raw: '525536506130',
-      formatted: '+52 55 3650 6130',
-      whatsapp: 'https://wa.me/525536506130'
-    }
-  },
+  phones: PHONES,
   social: {
     instagram: 'https://www.instagram.com/flowpass.app',
     facebook: 'https://www.facebook.com/flowpassapp/',
     tiktok: 'https://www.tiktok.com/@flowpass.app',
-    whatsapp: 'https://wa.me/+51977854515',
+    whatsapp: PHONES.PE.whatsapp,
     // Perfil de Empresa en Google (opiniones). /review abre el formulario para dejar una.
     google: 'https://g.page/r/CQbO5PNnyesCEBM',
     googleReview: 'https://g.page/r/CQbO5PNnyesCEBM/review'
