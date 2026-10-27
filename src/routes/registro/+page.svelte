@@ -36,6 +36,8 @@
   const trialDays = signupTrialDays();
   // La página se prerenderiza (sin query string): el plan de ?plan= se lee recién en el navegador.
   let chosenPlanName = $state<string | null>(null);
+  // Invitación de FlowPass (?invitacion=FP-XXXXX-XXXXX): el gym ya está armado; la bienvenida lo carga con este código.
+  let inviteCode = $state("");
 
   let status = $state<"idle" | "loading" | "sent" | "error">("idle");
   let errorMsg = $state("");
@@ -50,6 +52,7 @@
     formLoadedAt = Date.now();
     const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
     chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
+    inviteCode = inviteFromUrl($page.url.searchParams.get("invitacion"));
   });
   onDestroy(() => clearInterval(timer));
 
@@ -73,6 +76,12 @@
     return /^[A-Z]{2}$/.test(code) && code !== "US" ? code : "";
   }
 
+  /** Solo letras, números y guiones, como el código de invitación; lo valida el API al reclamar. */
+  function inviteFromUrl(raw: string | null): string {
+    const code = (raw ?? "").toUpperCase().trim();
+    return /^[A-Z0-9-]{10,20}$/.test(code) ? code : "";
+  }
+
   // Datos de origen (sin permisos): quedan en user_metadata del usuario para medir campañas.
   function signupMetadata() {
     const q = $page.url.searchParams;
@@ -90,6 +99,8 @@
       signup_cycle: ["mensual", "trimestral", "anual"].includes(q.get("ciclo") ?? "") ? q.get("ciclo") : "",
       // País de los precios que vio (o el de su zona horaria). "US" = "Otros": que lo elija en la bienvenida.
       signup_country: signupCountry(q.get("pais")),
+      // Invitación de FlowPass: la bienvenida busca con esto el gym pre-creado (plan y precio ya acordados).
+      signup_invite: inviteFromUrl(q.get("invitacion")),
       ...metaCookies(),
     };
   }
@@ -190,7 +201,14 @@
       <div class="media" role="img" aria-label="Dueña de un estudio de danza haciendo las cuentas del mes"></div>
       <div class="photo-copy">
         <!-- Con plan elegido en los precios: ese plan (días gratis y cobro se ven en la bienvenida). Sin plan: la prueba. -->
-        {#if chosenPlanName}
+        {#if inviteCode}
+          <h2>Te invitó <span>FlowPass</span></h2>
+          <ul>
+            <li>Tu academia ya está preparada</li>
+            <li>Con el plan y el precio que acordaste</li>
+            <li>Solo crea tu cuenta y confirma tus datos</li>
+          </ul>
+        {:else if chosenPlanName}
           <h2>Empieza con <span>{chosenPlanName}</span></h2>
           <ul>
             <li>Tu academia lista en 2 minutos</li>
@@ -235,7 +253,7 @@
         </div>
       {:else}
         <p class="eyebrow">Paso 1 de 2 · Tu cuenta</p>
-        <h1 id="signup-title">Crea tu cuenta gratis</h1>
+        <h1 id="signup-title">{inviteCode ? "Crea tu cuenta" : "Crea tu cuenta gratis"}</h1>
         <p class="small">¿Ya tienes cuenta? <a href="https://app.flow-pass.com/login">Ingresar</a></p>
 
         <form onsubmit={handleSubmit} novalidate>
