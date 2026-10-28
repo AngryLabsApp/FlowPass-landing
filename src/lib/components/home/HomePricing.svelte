@@ -41,6 +41,8 @@
 
   // Cotizador
   let quotePlan = $state<string | null>(null);
+  // Sedes adicionales ocultas en el cotizador hasta que se cobre por sede
+  const showSites = false;
   let hasSites = $state(false);
   let sites = $state<string[]>(['pocket']);
   let sunat = $state(0);
@@ -246,6 +248,7 @@
           </p>
         </fieldset>
 
+        {#if showSites}
         <fieldset>
           <legend>2. ¿Tienes o vas a abrir otra sede?</legend>
           <div class="seg" role="group" aria-label="Sedes adicionales">
@@ -274,10 +277,11 @@
           {/if}
           <p class="hint">Cada sede paga según su tamaño, desde S/30. Tiene sus propios alumnos, mensajes y accesos.</p>
         </fieldset>
+        {/if}
 
         {#if country === 'PE'}
           <fieldset>
-            <legend>3. ¿Necesitas emitir boletas y facturas con SUNAT?</legend>
+            <legend>{showSites ? 3 : 2}. ¿Necesitas emitir boletas y facturas con SUNAT?</legend>
             <div class="seg" role="group" aria-label="Comprobantes SUNAT">
               <button type="button" aria-pressed={sunat === 0} onclick={() => (sunat = 0)}>No</button>
               {#each sunatPackages as s (s.vouchers)}
@@ -289,7 +293,7 @@
         {/if}
 
         <fieldset>
-          <legend>{country === 'PE' ? '4' : '3'}. ¿Mensajes de WhatsApp extra?</legend>
+          <legend>{(showSites ? 3 : 2) + (country === 'PE' ? 1 : 0)}. ¿Mensajes de WhatsApp extra?</legend>
           <div class="seg" role="group" aria-label="Pack de WhatsApp">
             <button type="button" aria-pressed={waPack === 0} onclick={() => (waPack = 0)}>No</button>
             {#each whatsappPackages as w (w.name)}
