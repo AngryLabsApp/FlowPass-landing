@@ -27,7 +27,7 @@
   titleGrad="condiciones"
   subtitle="Para academias y negocios que contratan FlowPass."
   lastUpdate="12 de octubre de 2026"
-  lastUpdateISO="2026-10-12"
+  lastUpdateISO={siteConfig.legal.termsVersion}
   {sections}
 >
   <section id="aceptacion">

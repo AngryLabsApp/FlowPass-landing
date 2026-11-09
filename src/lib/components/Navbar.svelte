@@ -5,6 +5,12 @@
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
   import { trackLogin, trackAgendaClick } from "$lib/tracking/track";
+  import { signupTrialDays, signupOpenFor } from "$lib/supabase";
+  import { detectCountry } from "$lib/utils/country";
+
+  // "Pruébalo gratis" solo en países con registro (PE, MX); el país se lee en el navegador.
+  let trialDays = $state<number | null>(null);
+  onMount(() => (trialDays = signupOpenFor(detectCountry()) ? signupTrialDays() : null));
 
   let isOpen = $state(false);
   let scrolled = $state(false);
@@ -114,6 +120,16 @@
           Ingresar
           <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
+
+        <!-- Prueba gratis — solo con el registro self-service configurado (PUBLIC_SIGNUP) -->
+        {#if trialDays}
+          <a
+            href="/registro"
+            class="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold text-white border border-brand/60 hover:border-brand transition-colors duration-200"
+          >
+            Pruébalo gratis
+          </a>
+        {/if}
 
         <!-- Agenda — CTA principal, igual que en la portada -->
         <a
@@ -229,6 +245,16 @@
         >
           Agenda 15 minutos
         </a>
+
+        {#if trialDays}
+          <a
+            href="/registro"
+            onclick={() => (isOpen = false)}
+            class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold text-white border border-brand/60"
+          >
+            Pruébalo gratis {trialDays} días
+          </a>
+        {/if}
 
         <a
           href="https://app.flow-pass.com/login"
