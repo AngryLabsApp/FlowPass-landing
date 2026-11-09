@@ -4,6 +4,7 @@
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import { siteConfig } from "$lib/config/site";
   import { trackPlayStoreClick } from "$lib/tracking/track";
+  import PlayIcon from "$lib/components/PlayIcon.svelte";
   import { disciplinas } from "$lib/data/disciplinas";
 
   const year = new Date().getFullYear();
@@ -37,12 +38,7 @@
           aria-label="Descarga la app de FlowPass en Google Play"
           onclick={() => trackPlayStoreClick('footer')}
         >
-          <svg viewBox="0 0 24 26" width="22" height="24" aria-hidden="true">
-            <path d="M1 1l12.2 12L1 25c-.6-.3-1-.9-1-1.7V2.7C0 1.9.4 1.3 1 1z" fill="#00d7fe" />
-            <path d="M17.3 8.9L13.2 13 1 1c.2-.1.4-.2.7-.2.3 0 .6.1.9.2l14.7 7.9z" fill="#00f076" />
-            <path d="M17.3 17.1L2.6 25c-.3.2-.6.2-.9.2-.3 0-.5-.1-.7-.2l12.2-12 4.1 4.1z" fill="#ff3a44" />
-            <path d="M22 14.6l-4.7 2.5-4.1-4.1 4.1-4.1L22 11.4c.6.3 1 .9 1 1.6s-.4 1.3-1 1.6z" fill="#ffd400" />
-          </svg>
+          <PlayIcon size={22} />
           <span class="play-text">
             <span class="play-small">Disponible en</span>
             <span class="play-big">Google Play</span>
