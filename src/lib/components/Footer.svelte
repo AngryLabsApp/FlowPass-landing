@@ -136,6 +136,8 @@
   @media (min-width: 768px) {
     .footer-top {
       flex-direction: row;
+      /* En tablet no entra todo en una fila: las redes bajan en vez de sacar la página de ancho. */
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: flex-start;
       gap: 2rem;
