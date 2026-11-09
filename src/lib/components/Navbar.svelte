@@ -36,7 +36,7 @@
     <!-- LOGO -->
     <a
       href="/"
-      class="flex items-center gap-2 group min-w-0 shrink"
+      class="flex items-center gap-2 group min-w-0 shrink-0"
       title="FlowPass - Software para academias, volver al inicio"
       aria-label="FlowPass inicio">
       <img
@@ -50,7 +50,7 @@
 
     <!-- DESKTOP MENU -->
     <ul
-      class="hidden lg:flex items-center gap-7 text-white/70 font-medium text-[15px] list-none"
+      class="hidden lg:flex items-center gap-4 xl:gap-7 text-white/70 font-medium text-sm xl:text-[15px] list-none whitespace-nowrap"
     >
       <li>
         <a
@@ -100,11 +100,11 @@
         >
       </li>
 
-      <li class="flex items-center gap-3 ml-2">
+      <li class="flex items-center gap-2 xl:gap-3 ml-1 xl:ml-2">
         <span class="w-px h-5 bg-white/15" aria-hidden="true"></span>
 
-        <!-- Install PWA -->
-        <InstallAppButton variant="desktop" />
+        <!-- Install PWA / app. Solo desde xl: en 1024 no entra junto al resto. -->
+        <span class="hidden xl:contents"><InstallAppButton variant="desktop" /></span>
 
         <ThemeToggle />
 
@@ -115,7 +115,7 @@
           rel="noopener noreferrer"
           aria-label="Ingresar a la plataforma FlowPass"
           onclick={() => trackLogin('navbar_desktop')}
-          class="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold text-white border border-white/20 hover:border-white/50 transition-colors duration-200"
+          class="flex items-center gap-1.5 px-3.5 xl:px-4 py-2.5 rounded-full text-sm font-semibold text-white border border-white/20 hover:border-white/50 transition-colors duration-200"
         >
           Ingresar
           <ArrowRightOnRectangle class="w-4 h-4" />
@@ -136,7 +136,7 @@
           href="/agenda"
           aria-label="Agendar una llamada de 15 minutos con FlowPass"
           onclick={() => trackAgendaClick('navbar_desktop')}
-          class="flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
+          class="flex items-center gap-1.5 px-4 xl:px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
         >
           Agenda 15 min
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
