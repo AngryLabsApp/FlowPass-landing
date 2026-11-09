@@ -197,6 +197,17 @@
     </div>
   {/if}
 
+  <!-- Medio de pago: tarjeta por defecto vía dLocal. En Perú, otros medios llevan recargo. -->
+  <div class="pay-note">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+    <div>
+      <p><b>Pagas con tarjeta de crédito o débito</b>, con cobro automático cada ciclo. El pago lo procesa <b>dLocal</b>, nuestra pasarela de pago certificada PCI DSS. <b>FlowPass no guarda datos de tu tarjeta ni ninguna información financiera.</b></p>
+      {#if country === 'PE'}
+        <p class="pay-pe">En Perú también aceptamos Yape, Plin o transferencia, con un cargo adicional por gestión (desde +S/10 al mes, según tu plan). Con tarjeta te olvidas de pagar cada mes y no pagas nada extra.</p>
+      {/if}
+    </div>
+  </div>
+
   <details class="compare" bind:this={compareEl} bind:open={compareOpen}>
     <summary><span class="cmp-sum"><b>Comparar planes</b><small>Todo lo que incluye cada plan, lado a lado</small></span></summary>
     <div class="cmp-wrap">
@@ -229,6 +240,9 @@
           <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Precio</th></tr>
           <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
+          {#if country === 'PE'}
+          <tr class="nocard"><th scope="row">Sin tarjeta<small>Yape, Plin o transferencia</small></th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>+{money(p.nonCardFee?.PE ?? 0)} al mes</td>{/each}</tr>
+          {/if}
         </tbody>
       </table>
     </div>
@@ -352,6 +366,7 @@
           {taxLine}
           {cycle === 'mensual' ? 'Sin permanencia.' : `El plan se cobra ${cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}; los extras, mes a mes.`}
           {quote.pending ? 'El precio por sede fuera de Perú te lo damos por WhatsApp.' : ''}
+          Pago con tarjeta vía dLocal.{country === 'PE' ? ` Sin tarjeta (Yape, Plin o transferencia): +${money(qPlan.nonCardFee?.PE ?? 0)} al mes.` : ''}
         </p>
         <a class="btn wa-btn" href={waLink(quoteText)} target="_blank" rel="noopener noreferrer" onclick={() => trackContact('pricing_quote')}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4 5.2 5.2 0 0 0 3.2.7 2.7 2.7 0 0 0 1.8-1.3 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z" /></svg>
@@ -405,6 +420,11 @@
   .trial p { margin: 0; color: var(--fg-2); }
   .trial b { color: var(--fg); }
   .trial-btn { background: #01f59e; color: #04150e; border-radius: 999px; }
+  .pay-note { margin-top: 18px; display: flex; gap: 12px; align-items: flex-start; padding: 16px 20px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); font-size: 14px; }
+  .pay-note svg { flex: none; margin-top: 2px; color: var(--accent-text); }
+  .pay-note p { margin: 0; color: var(--fg-2); }
+  .pay-note b { color: var(--fg); }
+  .pay-note .pay-pe { margin-top: 6px; }
 
   .more { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
   .more summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; color: var(--fg-2); }
@@ -446,6 +466,8 @@
   .yes { color: var(--accent-text); font-weight: 700; }
   .nope { color: var(--fg-3); }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .nocard th small { display: block; font-size: 12px; font-weight: 400; color: var(--fg-3); }
+  .nocard td { font-size: 13.5px; color: var(--fg-2); }
   .cmp-note { padding: 14px 22px 18px; font-size: 13.5px; color: var(--fg-2); }
 
   .extras { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }

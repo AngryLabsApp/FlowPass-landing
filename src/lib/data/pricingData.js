@@ -163,6 +163,7 @@ export function getPromoPrice(plan, country, nowMs) {
  * @property {Record<string, Record<string, number>>} [prices]           // prices[ciclo][pais]
  * @property {{total: number, auto: number, manual: number}} [whatsappIncluded]  // cupo mensajes WhatsApp/mes: mitad recordatorios automáticos, mitad envíos manuales
  * @property {Array<{label: string, included: boolean, extraCost?: Record<string, number>}>} features
+ * @property {Record<string, number>} [nonCardFee]                       // recargo mensual si paga sin tarjeta (solo PE)
  */
 
 /** @type {Plan[]} */
@@ -184,6 +185,7 @@ export const plans = [
     },
     teamSeats: 5, // null = ilimitados
     extraSiteFee: { PE: 30 }, // por sede adicional de ESTE tamaño; MX/US a consultar
+    nonCardFee: { PE: 10 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 100, auto: 50, manual: 50 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
@@ -216,6 +218,7 @@ export const plans = [
     },
     teamSeats: 10, // null = ilimitados
     extraSiteFee: { PE: 50 }, // por sede adicional de ESTE tamaño; MX/US a consultar
+    nonCardFee: { PE: 20 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 200, auto: 100, manual: 100 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
@@ -245,6 +248,7 @@ export const plans = [
     },
     teamSeats: 15, // null = ilimitados
     extraSiteFee: { PE: 100 }, // por sede adicional de ESTE tamaño; MX/US a consultar
+    nonCardFee: { PE: 30 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 400, auto: 200, manual: 200 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
@@ -274,6 +278,7 @@ export const plans = [
     },
     teamSeats: 20, // null = ilimitados
     extraSiteFee: { PE: 200 }, // por sede adicional de ESTE tamaño; MX/US a consultar
+    nonCardFee: { PE: 50 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 700, auto: 350, manual: 350 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },

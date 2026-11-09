@@ -12,7 +12,7 @@ export const faqMainEntity = [
     "name": "¿Tengo que instalar algo para usar FlowPass?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "No, FlowPass funciona completamente desde la nube. Solo necesitas un navegador web moderno (Chrome, Firefox, Safari, Edge) y conexión a internet. Puedes acceder desde cualquier dispositivo: computadora, tablet o celular."
+      "text": "No, FlowPass funciona completamente desde la nube. Solo necesitas un navegador web moderno (Chrome, Firefox, Safari, Edge) y conexión a internet. Puedes acceder desde cualquier dispositivo: computadora, tablet o celular. Si prefieres, también hay app Android en Google Play, para ti y para tus alumnos."
     }
   },
   {
@@ -53,6 +53,14 @@ export const faqMainEntity = [
     "acceptedAnswer": {
       "@type": "Answer",
       "text": "FlowPass opera con suscripción mensual, sin contratos de permanencia. Pagas una cuota mensual basada en la cantidad de alumnos activos. Puedes cancelar o pausar cuando quieras, y retomar después sin problemas. Además, ofrecemos una asesoría gratuita 1:1 para que conozcas la plataforma antes de decidirte."
+    }
+  },
+  {
+    "@type": "Question",
+    "name": "¿Cómo pago mi suscripción?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "Con tarjeta de crédito o débito, con cobro automático en cada ciclo. El pago lo procesa dLocal, nuestra pasarela de pago. FlowPass no guarda datos de tu tarjeta ni ninguna información financiera. En Perú también aceptamos Yape, Plin o transferencia, con un cargo adicional por gestión: +S/10 al mes en Pocket, +S/20 en Lite, +S/30 en Full y +S/50 en Ultra."
     }
   },
   {

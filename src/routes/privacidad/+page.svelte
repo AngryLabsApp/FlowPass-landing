@@ -105,6 +105,11 @@
       <strong>FlowPass no guarda números de tarjetas ni datos bancarios</strong> de los alumnos.
       Cuando la academia registra un pago, solo queda anotado el monto, la fecha y el medio usado.
     </p>
+    <p>
+      Tampoco guardamos datos de tarjetas ni información financiera de las academias. La suscripción
+      a FlowPass se paga con tarjeta a través de nuestra pasarela de pago, <strong>dLocal</strong>,
+      certificada PCI DSS, que es la única que recibe y protege esos datos.
+    </p>
   </section>
 
   <section id="salud">
