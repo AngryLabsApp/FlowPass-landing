@@ -397,6 +397,8 @@
   /* Sutil, como "o agenda una llamada": el botón de color sigue siendo "Elegir". */
   .plan-ben { align-self: center; margin-top: 8px; padding: 6px 10px; border: 0; background: none; font: inherit; font-size: 13.5px; color: var(--fg-2); cursor: pointer; border-radius: 8px; }
   .plan-ben:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+  /* En la tarjeta de tu plan, en verde como el resto de la tarjeta. */
+  .plan.match .plan-ben { color: var(--accent-text); font-weight: 600; }
   .plan-ben:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
   .compare { scroll-margin-top: 110px; }
   .trial { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; border: 1px solid rgba(1, 245, 158, 0.35); border-radius: 18px; background: rgba(1, 245, 158, 0.06); }
