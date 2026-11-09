@@ -6,18 +6,20 @@
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
-  import { signupTierKey } from '$lib/supabase';
+  import { signupTierKey, signupOpenFor } from '$lib/supabase';
+  import { detectCountry } from '$lib/utils/country';
 
   // Para quien ya quiere elegir día y hora: calendario de Cal.com.
   // Quien aún no está listo va a /te-llamamos y deja sus datos.
   let planName = $state<string | null>(null);
   // Camino inverso: quien llegó aquí desde un plan puede crear su cuenta sin esperar la llamada.
-  let signupHref = $state('/registro');
+  let signupHref = $state<string | null>(null);
   onMount(() => {
     const id = new URLSearchParams(location.search).get('plan');
     planName = plans.find((p) => p.id === id)?.name ?? null;
+    if (!signupOpenFor(detectCountry())) return; // otros países: solo la llamada
     const tierKey = id ? signupTierKey(id) : null;
-    if (tierKey) signupHref = `/registro?plan=${tierKey}`;
+    signupHref = tierKey ? `/registro?plan=${tierKey}` : '/registro';
   });
 </script>
 
@@ -46,7 +48,7 @@
         <li>Sin compromiso</li>
       </ul>
       {#if planName}<p class="picked">Plan que te interesa: <b>{planName}</b></p>{/if}
-      <p class="self">¿Prefieres empezar por tu cuenta? <a href={signupHref}>Crea tu cuenta y pruébalo gratis</a></p>
+      {#if signupHref}<p class="self">¿Prefieres empezar por tu cuenta? <a href={signupHref}>Crea tu cuenta y pruébalo gratis</a></p>{/if}
     </header>
 
     <a class="not-ready" href="/te-llamamos">

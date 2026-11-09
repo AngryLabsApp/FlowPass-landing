@@ -4,9 +4,11 @@
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
-  import { signupTierKey, signupTrialDays } from '$lib/supabase';
+  import { signupTierKey as tierKeyFor, signupTrialDays, signupOpenFor } from '$lib/supabase';
 
   const trialDays = signupTrialDays();
+  // Solo PE y MX crean su cuenta; otros países agendan una llamada.
+  const signupTierKey = (id: string) => (signupOpenFor(country) ? tierKeyFor(id) : null);
   import {
     plans as allPlans,
     billingCycles,
@@ -166,7 +168,7 @@
     {/each}
   </div>
 
-  {#if trialDays}
+  {#if trialDays && signupOpenFor(country)}
     <div class="trial">
       <p><b>¿Aún no sabes qué plan elegir?</b> Pruébalo gratis {trialDays} días. Sin tarjeta.</p>
       <a class="btn trial-btn" href={`/registro?pais=${country}`}>Empezar prueba gratis</a>

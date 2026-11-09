@@ -3,7 +3,7 @@
   import { page } from "$app/stores";
   import { z } from "zod";
   import { siteConfig } from "$lib/config/site";
-  import { getSupabase, signupLandingPlanId, signupRedirectUrl, signupTrialDays } from "$lib/supabase";
+  import { getSupabase, signupLandingPlanId, signupOpenFor, signupRedirectUrl, signupTrialDays } from "$lib/supabase";
   import { plans } from "$lib/data/pricingData.js";
   import { detectCountry } from "$lib/utils/country";
   import { trackSignup, trackFormStart } from "$lib/tracking/track";
@@ -53,6 +53,8 @@
     const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
     chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
     inviteCode = inviteFromUrl($page.url.searchParams.get("invitacion"));
+    // Sin invitación, solo PE y MX crean su cuenta; otros países agendan (con invitación, el país ya lo puso FlowPass).
+    if (!inviteCode && !signupOpenFor(signupCountry($page.url.searchParams.get("pais")))) location.replace("/agenda");
   });
   onDestroy(() => clearInterval(timer));
 
