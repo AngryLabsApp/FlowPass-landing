@@ -7,6 +7,14 @@ import { siteConfig } from "$lib/config/site";
 import { faqMainEntity } from "$lib/seo/faqSchema";
 import { posts } from "$lib/blog";
 import { plans, whatsappPackages } from "$lib/data/pricingData.js";
+import { signupTrialDays } from "$lib/supabase";
+
+// Prueba gratis y registro directo: salen de la misma config que la web (PUBLIC_SIGNUP).
+const trialDays = signupTrialDays();
+const trialLine = trialDays
+  ? `Prueba gratis de ${trialDays} días sin tarjeta (Perú y México, con registro directo en ${siteConfig.url}/registro). También se puede agendar una asesoría 1:1 gratuita.`
+  : "No hay período de prueba gratuito: antes de contratar se agenda una asesoría 1:1 gratuita.";
+const payLine = "Medio de pago por defecto: tarjeta de crédito o débito con cobro automático, procesado por dLocal (pasarela de pago). FlowPass no guarda datos de tarjetas ni ninguna información financiera. Solo en Perú también se acepta Yape, Plin o transferencia, con un cargo adicional por gestión: +S/10 al mes (Pocket), +S/20 (Lite), +S/30 (Full) o +S/50 (Ultra).";
 
 export const prerender = true;
 
@@ -110,7 +118,7 @@ FlowPass es una plataforma web (SaaS multi-tenant) que centraliza la operación 
 - Facturación electrónica SUNAT en Perú: 50 comprobantes S/30, 150 S/50, 250 S/60, 500 S/70 al mes.
 - Flowy: asistente de IA que conoce el negocio (beta).
 
-No requiere instalación: funciona en cualquier navegador moderno (Chrome, Firefox, Safari, Edge) desde computadora, tablet o celular.
+No requiere instalación: funciona en cualquier navegador moderno (Chrome, Firefox, Safari, Edge) desde computadora, tablet o celular. También hay apps Android en Google Play: para el negocio (${siteConfig.playStore}) y para alumnos (${siteConfig.playStoreAlumnos}).
 
 ## Público objetivo — ¿A quién le sirve FlowPass?
 Cualquier negocio que cobre a sus clientes por membresía, suscripción o paquete recurrente (mensual, quincenal, trimestral, semestral, anual o por bloques de clases). Ejemplos concretos:
@@ -128,16 +136,16 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - Suscripción mensual sin contrato de permanencia. FlowPass no amarra al cliente a ningún plan: el propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel, y puede retomar después sin problemas.
 - Precios segmentados por número de alumnos activos.
 - Ciclos: mensual, trimestral (descuento) y anual (mayor descuento).
-- No hay período de prueba gratuito: antes de contratar se agenda una asesoría 1:1 gratuita y se configura la plataforma con el negocio.
-- Asesoría 1:1 gratuita antes de suscribirse.
+- ${trialLine}
 - Disponible en Perú (PEN), México (MXN) y con precio USD para otros mercados.
+- ${payLine} Con tarjeta no hay cargos extra.
 
 ## Diferenciales frente a otras soluciones
 - **Sin permanencia, cliente en control:** el negocio activa, pausa o cancela su suscripción cuando quiera. No hay letra chica ni contratos que amarren.
 - **WhatsApp con conexión oficial Meta (API de WhatsApp Business):** FlowPass envía los recordatorios de pago a través de la API oficial de WhatsApp Business de Meta. Esto garantiza entregabilidad, evita bloqueos y baneos, y ofrece plantillas aprobadas. Muchas soluciones del mercado usan integraciones no oficiales (web scraping o WhatsApp Web) que Meta puede bloquear en cualquier momento. Estado actual: los mensajes salen desde el número oficial de FlowPass; próximamente cada negocio podrá configurar y enviar desde su propio número verificado.
 - **Flowy — asistente de IA propio (beta):** analiza los datos del negocio (asistencia, cobros, membresías) y responde preguntas en lenguaje natural para el dueño.
 - **Multi-sede flexible:** cada sede adicional paga según su propio tamaño (desde S/30), no según el plan de la sede principal.
-- **Portal del alumno con tu marca:** el alumno entra con su número por un link de WhatsApp, sin descargar apps.
+- **Portal del alumno con tu marca:** el alumno entra con su número por un link de WhatsApp desde la web, o usa la app Android.
 - **Soporte cercano y personalizado:** acceso directo a promotores/vendedores del equipo FlowPass, sin ticketing frío.
 
 ## Planes disponibles
@@ -153,13 +161,16 @@ ${renderFaq()}
 - Autenticación segura.
 - Acuerdo de confidencialidad (NDA) firmado con cada academia cliente.
 - Los datos pertenecen a la academia; FlowPass solo los gestiona.
+- FlowPass no guarda números de tarjeta ni datos bancarios o financieros (ni de las academias ni de sus alumnos). Los pagos de la suscripción los procesa dLocal.
 
 ## Enlaces canónicos
 - Home: ${base}/
-- Precios: ${base}/#pricing
+- Precios: ${base}/#precios
 - FAQ: ${base}/#faq
 - Agendar asesoría: ${base}/agenda
 - Términos: ${base}/terminos
+- Privacidad: ${base}/privacidad
+- Contacto y soporte: ${base}/contacto
 - Sitemap: ${base}/sitemap.xml
 - Índice llms: ${base}/llms.txt
 

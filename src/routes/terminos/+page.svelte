@@ -123,7 +123,9 @@
       <li><strong>Ciclos de pago:</strong> mensual, trimestral (10% de descuento) o anual (25% de descuento). El ciclo trimestral y el anual se pagan por adelantado.</li>
       <li><strong>Extras opcionales:</strong> sedes adicionales, packs de mensajes de WhatsApp y facturación electrónica SUNAT (solo Perú), que se cobran mes a mes.</li>
       <li><strong>Promociones:</strong> cuando ofrecemos un descuento (por ejemplo, en el primer mes), sus condiciones se indican por escrito en la propuesta antes de contratar.</li>
-      <li><strong>Medios de pago:</strong> los pagos se procesan de forma segura a través de nuestro procesador de pagos (dLocal Go) o por los medios acordados en el contrato.</li>
+      <li><strong>Medio de pago por defecto:</strong> tarjeta de crédito o débito, con cobro automático en cada ciclo. Los pagos los procesa nuestra pasarela de pago, dLocal (dLocal Go).</li>
+      <li><strong>Datos financieros:</strong> FlowPass no guarda datos de tarjetas ni ninguna información financiera del cliente. Esa información la recibe y protege únicamente la pasarela de pago, certificada bajo el estándar de seguridad PCI DSS.</li>
+      <li><strong>Otros medios (solo Perú):</strong> también se aceptan pagos por Yape, Plin o transferencia bancaria, con un cargo adicional por gestión sobre el precio publicado: +S/10 al mes (Pocket), +S/20 (Lite), +S/30 (Full) o +S/50 (Ultra). El pago con tarjeta no tiene cargos extra.</li>
     </ul>
     <div class="callout">
       <strong>No hay reembolsos.</strong> Como cada cuenta se configura de forma personalizada tras la
