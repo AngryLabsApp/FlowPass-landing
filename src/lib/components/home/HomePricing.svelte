@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { detectCountry, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
@@ -31,6 +31,15 @@
 
   // Vio los precios (remarketing): una vez, cuando la sección entra en pantalla
   let pricingEl: HTMLElement;
+
+  // "Ver beneficios" de cada tarjeta: abre "Comparar planes" y baja hasta la tabla.
+  let compareEl: HTMLDetailsElement;
+  let compareOpen = $state(false);
+  async function verBeneficios() {
+    compareOpen = true;
+    await tick();
+    compareEl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
   onMount(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -164,6 +173,7 @@
         {#if signupTierKey(p.id)}
           <a class="plan-alt" href={`/agenda?plan=${p.id}`} onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}>o agenda una llamada</a>
         {/if}
+        <button type="button" class="plan-ben" onclick={verBeneficios}>Ver beneficios ↓</button>
       </article>
     {/each}
   </div>
@@ -175,7 +185,7 @@
     </div>
   {/if}
 
-  <details class="compare">
+  <details class="compare" bind:this={compareEl} bind:open={compareOpen}>
     <summary><span class="cmp-sum"><b>Comparar planes</b><small>Todo lo que incluye cada plan, lado a lado</small></span></summary>
     <div class="cmp-wrap">
       <table>
@@ -371,6 +381,11 @@
   .plan-btn.mine { background: #01f59e; color: #04150e; }
   .plan-alt { margin-top: 10px; text-align: center; font-size: 13.5px; color: var(--fg-2); text-decoration: underline; text-underline-offset: 3px; }
   .plan-alt:hover { color: var(--fg); }
+  /* Sutil, como "o agenda una llamada": el botón de color sigue siendo "Elegir". */
+  .plan-ben { align-self: center; margin-top: 8px; padding: 6px 10px; border: 0; background: none; font: inherit; font-size: 13.5px; color: var(--fg-2); cursor: pointer; border-radius: 8px; }
+  .plan-ben:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+  .plan-ben:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .compare { scroll-margin-top: 110px; }
   .trial { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; border: 1px solid rgba(1, 245, 158, 0.35); border-radius: 18px; background: rgba(1, 245, 158, 0.06); }
   .trial p { margin: 0; color: var(--fg-2); }
   .trial b { color: var(--fg); }
@@ -470,7 +485,7 @@
     .plan {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt';
+      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt' 'ben ben';
       gap: 2px 12px;
       padding: 16px;
       border-radius: 14px;
@@ -485,6 +500,7 @@
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }
+    .plan-ben { grid-area: ben; justify-self: center; margin-top: 4px; font-size: 12.5px; }
     .q-form { padding: 18px 16px; gap: 18px; }
     .q-form h3 { font-size: 20px; }
     legend { font-size: 14px; margin-bottom: 8px; }
