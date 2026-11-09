@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { detectCountry, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
@@ -31,6 +31,16 @@
 
   // Vio los precios (remarketing): una vez, cuando la sección entra en pantalla
   let pricingEl: HTMLElement;
+
+  // "Ver beneficios" de cada tarjeta: abre "Comparar planes" y baja hasta la tabla.
+  let compareEl: HTMLDetailsElement;
+  let compareOpen = $state(false);
+  async function verBeneficios(id: string) {
+    elegir(id);
+    compareOpen = true;
+    await tick();
+    compareEl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  }
   onMount(() => {
     const io = new IntersectionObserver(
       (entries) => {
@@ -54,6 +64,15 @@
   let waPack = $state(0);
 
   const fit = $derived(plans.find((p) => students <= (p.maxActiveStudents ?? 0)) ?? null);
+  // Tocar un plan (tarjeta, "Ver beneficios" o su nombre en la tabla) mueve el deslizador a ese plan,
+  // así el texto de arriba, la tarjeta y la columna dicen lo mismo. Si ya está en su rango, no se mueve.
+  function elegir(id: string) {
+    const i = plans.findIndex((p) => p.id === id);
+    const min = minOf(plans[i], i);
+    const max = plans[i].maxActiveStudents ?? 0;
+    if (students > min && students <= max) return;
+    students = Math.round((min + max) / 2 / 5) * 5; // mitad del rango: Pocket 15, Lite 55, Full 140, Ultra 275
+  }
   const qPlan = $derived(plans.find((p) => p.id === (quotePlan ?? fit?.id ?? 'ultra'))!);
   const priceOf = (p: (typeof plans)[number]) => getPlanPrice(p, cycle, country) ?? 0;
   const money = (v: number) => {
@@ -142,7 +161,9 @@
 
   <div class="plans">
     {#each plans as p, i (p.id)}
-      <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`}>
+      <!-- Tocar la tarjeta la resalta (también su columna en Comparar planes). Con teclado: "Ver beneficios". -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+      <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`} onclick={() => elegir(p.id)}>
         {#if fit?.id === p.id}<span class="pop mine-tag">TU PLAN</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
@@ -164,6 +185,7 @@
         {#if signupTierKey(p.id)}
           <a class="plan-alt" href={`/agenda?plan=${p.id}`} onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}>o agenda una llamada</a>
         {/if}
+        <button type="button" class="plan-ben" onclick={() => verBeneficios(p.id)}>Ver beneficios ↓</button>
       </article>
     {/each}
   </div>
@@ -175,14 +197,14 @@
     </div>
   {/if}
 
-  <details class="compare">
-    <summary><span>Comparar planes</span></summary>
+  <details class="compare" bind:this={compareEl} bind:open={compareOpen}>
+    <summary><span class="cmp-sum"><b>Comparar planes</b><small>Todo lo que incluye cada plan, lado a lado</small></span></summary>
     <div class="cmp-wrap">
       <table>
         <thead>
           <tr>
             <th scope="col"><span class="sr">Característica</span></th>
-            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={fit?.id === p.id}>{p.name.replace('Flow ', '')}</th>{/each}
+            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={fit?.id === p.id}><button type="button" class="col-pick" aria-pressed={fit?.id === p.id} onclick={() => elegir(p.id)}>{p.name.replace('Flow ', '')}</button></th>{/each}
           </tr>
         </thead>
         <tbody>
@@ -195,7 +217,7 @@
           <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
           <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Funciones</th></tr>
-          {#each ['Alumnos, asistencia y membresías', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
+          {#each ['Alumnos, asistencia y membresías', 'Portal de alumnos (web y app)', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
             <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
           {/each}
           <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
@@ -356,6 +378,7 @@
 
   .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
   .plan { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); }
+  .plan { cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
   .plan.match { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .pop { position: absolute; top: -11px; left: 20px; background: var(--fg); color: var(--bg); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 999px; }
   .tag { font-size: 12px; color: var(--fg-3); }
@@ -371,6 +394,13 @@
   .plan-btn.mine { background: #01f59e; color: #04150e; }
   .plan-alt { margin-top: 10px; text-align: center; font-size: 13.5px; color: var(--fg-2); text-decoration: underline; text-underline-offset: 3px; }
   .plan-alt:hover { color: var(--fg); }
+  /* Sutil, como "o agenda una llamada": el botón de color sigue siendo "Elegir". */
+  .plan-ben { align-self: center; margin-top: 8px; padding: 6px 10px; border: 0; background: none; font: inherit; font-size: 13.5px; color: var(--fg-2); cursor: pointer; border-radius: 8px; }
+  .plan-ben:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+  /* En la tarjeta de tu plan, en verde como el resto de la tarjeta. */
+  .plan.match .plan-ben { color: var(--accent-text); font-weight: 600; }
+  .plan-ben:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+  .compare { scroll-margin-top: 110px; }
   .trial { margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 22px; border: 1px solid rgba(1, 245, 158, 0.35); border-radius: 18px; background: rgba(1, 245, 158, 0.06); }
   .trial p { margin: 0; color: var(--fg-2); }
   .trial b { color: var(--fg); }
@@ -386,12 +416,26 @@
   .more-body { padding: 4px 18px 22px; }
   .more-body > :first-child { margin-top: 18px; }
   .compare { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
-  .compare summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: center; gap: 10px; font-weight: 600; }
+  /* Fila de acordeón (como "Arma tu cotización"), no botón: el verde relleno se leía como "comprar". */
+  .compare summary { cursor: pointer; list-style: none; padding: 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 16px; transition: background 0.2s; }
   .compare summary::-webkit-details-marker { display: none; }
-  .compare summary span { border-bottom: 0; }
-  .compare summary::after { content: '+'; color: var(--accent-text); font-size: 20px; line-height: 1; }
-  .compare[open] summary { border-bottom: 1px solid var(--line); }
-  .compare[open] summary::after { content: '–'; }
+  .compare summary:hover { background: var(--bg-2); }
+  .compare summary:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+  .cmp-sum { display: flex; flex-direction: column; gap: 2px; }
+  .cmp-sum b { font-size: 16px; color: var(--fg); }
+  .cmp-sum small { font-size: 13.5px; color: var(--fg-2); }
+  /* Flecha en un círculo: dice "se abre", no "se compra". */
+  .compare summary::after {
+    content: ''; flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 18px no-repeat;
+    transition: transform 0.25s;
+  }
+  .compare[open] summary { border-bottom: 1px solid var(--line); border-radius: 16px 16px 0 0; }
+  .compare[open] summary::after { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .compare summary::after { transition: none; } }
+  .col-pick { border: 0; background: none; font: inherit; color: inherit; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
+  .col-pick:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .col-pick:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
   .cmp-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
   th, td { padding: 11px 14px; text-align: center; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
@@ -459,7 +503,7 @@
     .plan {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt';
+      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt' 'ben ben';
       gap: 2px 12px;
       padding: 16px;
       border-radius: 14px;
@@ -474,6 +518,7 @@
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }
+    .plan-ben { grid-area: ben; justify-self: center; margin-top: 4px; font-size: 12.5px; }
     .q-form { padding: 18px 16px; gap: 18px; }
     .q-form h3 { font-size: 20px; }
     legend { font-size: 14px; margin-bottom: 8px; }
@@ -497,5 +542,8 @@
     tr.same td:nth-of-type(1) { display: block; grid-column: 1 / -1; background: none; }
     tr.grp th { padding: 14px 14px 2px; font-size: 10px; color: var(--accent-text); }
     .compare summary { padding: 12px 16px; font-size: 13px; }
+    .cmp-sum b { font-size: 14px; }
+    .cmp-sum small { font-size: 12px; }
+    .compare summary::after { width: 32px; height: 32px; }
   }
 </style>

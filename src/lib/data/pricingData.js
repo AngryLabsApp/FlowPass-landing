@@ -272,14 +272,14 @@ export const plans = [
       trimestral: { PE: 450, MX: 2250, US: 135 },
       anual: { PE: 375, MX: 1875, US: 112 },
     },
-    teamSeats: null, // null = ilimitados
+    teamSeats: 20, // null = ilimitados
     extraSiteFee: { PE: 200 }, // por sede adicional de ESTE tamaño; MX/US a consultar
     whatsappIncluded: { total: 700, auto: 350, manual: 350 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
-      { label: "Accesos ilimitados para tu equipo", included: true },
+      { label: "Hasta 20 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
       { label: "Sedes adicionales desde S/30 por sede", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },

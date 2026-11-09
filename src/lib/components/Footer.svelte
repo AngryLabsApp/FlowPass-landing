@@ -3,6 +3,7 @@
   import facebookIcon from "$lib/assets/icons/facebook-icon.svg";
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import PlayBadge from "$lib/components/PlayBadge.svelte";
   import { disciplinas } from "$lib/data/disciplinas";
 
   const year = new Date().getFullYear();
@@ -28,6 +29,7 @@
         <p class="footer-tagline font-oktah">
           Software de gestión para negocios que venden clases, planes o membresías.
         </p>
+        <PlayBadge source="footer" class="footer-play" />
       </div>
 
       <div class="footer-cols">
@@ -120,6 +122,8 @@
   @media (min-width: 768px) {
     .footer-top {
       flex-direction: row;
+      /* En tablet no entra todo en una fila: las redes bajan en vez de sacar la página de ancho. */
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: flex-start;
       gap: 2rem;
@@ -143,6 +147,8 @@
     line-height: 1.6;
     margin: 0;
   }
+
+  .footer-brand :global(.footer-play) { margin-top: 1.25rem; }
 
   .footer-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem 3rem; }
   .footer-cols nav,

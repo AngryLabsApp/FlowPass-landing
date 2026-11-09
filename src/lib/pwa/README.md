@@ -2,6 +2,8 @@
 
 Toda la UI y lógica del "instalar como PWA" vive aquí. Es temporal hasta lanzar la app nativa de FlowPass.
 
+**Android (2026-11-09):** ya hay app nativa (`siteConfig.playStore`). En Android el botón del navbar dice "Descarga la app" y el aviso "Descarga la app de FlowPass": los dos llevan a Play Store (`trackPlayStoreClick`). iPhone y computadora siguen con el acceso directo. El footer tiene además el badge "Disponible en Google Play" para todos.
+
 ## Contenido
 
 - `usePwaInstall.svelte.ts` — estado reactivo compartido (`beforeinstallprompt`, `appinstalled`, detección iOS / standalone).

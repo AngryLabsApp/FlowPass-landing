@@ -103,7 +103,7 @@ FlowPass es una plataforma web (SaaS multi-tenant) que centraliza la operación 
 - Cobros, ventas, ingresos, gastos e inventario.
 - Recordatorios automáticos de pago vía WhatsApp.
 - Reportes descargables y panel de estadísticas.
-- Accesos para el equipo según plan: 5 (Pocket), 10 (Lite), 15 (Full) o ilimitados (Ultra).
+- Accesos para el equipo según plan: 5 (Pocket), 10 (Lite), 15 (Full) o 20 (Ultra).
 - Uso real (octubre 2026): más de 50 academias activas en Perú y México, más de 7,700 alumnos gestionados y más de 78 mil asistencias registradas en 2026.
 - Multi-sede: cada sede adicional es independiente y se paga según su tamaño, desde S/30 al mes.
 - Portal del alumno con la marca del negocio (asistencia, plan y pase de acceso con QR).

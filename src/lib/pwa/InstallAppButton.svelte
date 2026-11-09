@@ -3,7 +3,8 @@
   import { onMount } from 'svelte';
   import { ArrowDownTray } from 'svelte-heros-v2';
   import { pwaInstall } from './usePwaInstall.svelte';
-  import { trackPwaInstallClick, trackPwaInstalled } from '$lib/tracking/track';
+  import { trackPwaInstallClick, trackPwaInstalled, trackPlayStoreClick } from '$lib/tracking/track';
+  import { siteConfig } from '$lib/config/site';
 
   interface Props {
     variant?: 'desktop' | 'mobile';
@@ -27,7 +28,8 @@
   }
 
   let show = $derived(
-    !pwaInstall.isStandalone && (pwaInstall.deferred !== null || pwaInstall.isIOS)
+    pwaInstall.isAndroid ||
+      (!pwaInstall.isStandalone && (pwaInstall.deferred !== null || pwaInstall.isIOS))
   );
 
   const baseClasses =
@@ -44,7 +46,7 @@
 
 {#snippet content()}
   <ArrowDownTray class="w-4 h-4 flex-shrink-0" />
-  <span class="whitespace-nowrap">Crear acceso directo</span>
+  <span class="whitespace-nowrap">{pwaInstall.isAndroid ? 'Descarga la app' : 'Crear acceso directo'}</span>
   {#if variant === 'desktop'}
     <span
       class="ml-1 px-1.5 py-0.5 rounded-md bg-brand/20 text-brand text-[10px] font-semibold uppercase tracking-wider leading-none"
@@ -55,7 +57,21 @@
 {/snippet}
 
 {#if show}
-  {#if pwaInstall.deferred}
+  {#if pwaInstall.isAndroid}
+    <a
+      href={siteConfig.playStore}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Descargar la app de FlowPass en Google Play"
+      onclick={() => {
+        trackPlayStoreClick(`navbar_${variant}`);
+        onInstall?.();
+      }}
+      class="{baseClasses} {sizing}"
+    >
+      {@render content()}
+    </a>
+  {:else if pwaInstall.deferred}
     <button
       type="button"
       onclick={handleInstall}

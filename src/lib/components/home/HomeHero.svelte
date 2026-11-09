@@ -1,6 +1,9 @@
 <script lang="ts">
   import heroPhoto from '$lib/assets/images/home/hero.webp';
-  import { trackAgendaClick } from '$lib/tracking/track';
+  import { trackAgendaClick, trackPlayStoreClick } from '$lib/tracking/track';
+  import { siteConfig } from '$lib/config/site';
+  import PlayIcon from '$lib/components/PlayIcon.svelte';
+  import PlayBadge from '$lib/components/PlayBadge.svelte';
 </script>
 
 <svelte:head>
@@ -24,6 +27,19 @@
         <a class="btn pill-white" href="#features">Ver la plataforma</a>
       </div>
       <p class="trust">Sin permanencia · Operativo 24/7 · Soporte 1 a 1</p>
+      <!-- Las dos apps, chiquito: no compite con los botones. -->
+      <p class="play">
+        <PlayIcon size={12} />
+        <span>Apps en Google Play:</span>
+        <a href={siteConfig.playStore} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero')}>para tu academia</a>
+        <span aria-hidden="true">·</span>
+        <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}>para tus alumnos</a>
+      </p>
+      <!-- Celular: badge oficial + link chico a la app de alumnos (la línea de arriba se partía). -->
+      <div class="play-cel">
+        <PlayBadge source="hero" small />
+        <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}>¿Eres alumno? <u>App de alumnos</u></a>
+      </div>
     </div>
   </div>
 </header>
@@ -42,6 +58,7 @@
     isolation: isolate;
     background: #09090f;
   }
+  .play-cel { display: none; }
   .media {
     position: absolute;
     inset: 0;
@@ -76,6 +93,11 @@
   .sub { margin-top: 18px; font-size: 18px; max-width: 46ch; color: rgba(255, 255, 255, 0.86); }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .trust { margin-top: 20px; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+  /* Sutil a propósito: no compite con los dos botones. */
+  .play { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin-top: 10px; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+  .play a { padding: 4px 0; color: #fff; text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.35); text-underline-offset: 3px; transition: text-decoration-color 0.2s; }
+  .play a:hover { text-decoration-color: #01f59e; }
+  .play a:focus-visible { outline: 2px solid #01f59e; outline-offset: 3px; border-radius: 4px; }
   /* Celular: foto arriba, texto abajo sobre negro (la foto no queda tapada). */
   @media (max-width: 560px) {
     .hero { padding-top: 84px; }
@@ -97,5 +119,10 @@
     .ctas .btn { flex: 1 1 100%; justify-content: center; padding: 11px 16px; font-size: 14px; line-height: 1.2; }
     .ctas .btn svg { width: 15px; height: 15px; }
     .trust { font-size: 10.5px; margin-top: 14px; white-space: nowrap; }
+    .play { display: none; }
+    .play-cel { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 16px; }
+    .play-cel > a { padding: 4px 0; font-size: 12px; color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+    .play-cel u { color: #fff; text-decoration-color: rgba(255, 255, 255, 0.35); text-underline-offset: 3px; }
+    .play-cel > a:focus-visible { outline: 2px solid #01f59e; outline-offset: 2px; border-radius: 4px; }
   }
 </style>

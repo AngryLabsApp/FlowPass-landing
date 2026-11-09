@@ -48,6 +48,10 @@ export const siteConfig = {
     google: 'https://g.page/r/CQbO5PNnyesCEBM',
     googleReview: 'https://g.page/r/CQbO5PNnyesCEBM/review'
   },
+  // App de FlowPass para academias (Android).
+  playStore: 'https://play.google.com/store/apps/details?id=com.flowpass.admin',
+  // App del portal de alumnos (Android).
+  playStoreAlumnos: 'https://play.google.com/store/apps/details?id=com.flowpass.students',
   foundingYear: 2025,
   foundingDateISO: '2025-09',        // fecha de fundación (mes/año)
   commercialLaunchISO: '2025-11-01', // lanzamiento comercial público

@@ -171,7 +171,7 @@ function softwareApplicationSchema(currentDate: string) {
       "Multi-sede en un solo panel (sedes adicionales desde S/30)",
       "Ventas, ingresos, gastos e inventario",
       "Reportes y estadísticas descargables",
-      "Accesos para el equipo según plan (5, 10, 15 o ilimitados)",
+      "Accesos para el equipo según plan (5, 10, 15 o 20)",
       "Portal del alumno con la marca del negocio",
       "Facturación electrónica SUNAT (Perú)",
       "Flowy — asistente de IA propio (beta)"
