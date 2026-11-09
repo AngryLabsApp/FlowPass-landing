@@ -13,6 +13,11 @@
 <!-- Portada: la persona antes que el producto. Foto con gradación de marca encima. -->
 <header class="hero">
   <div class="hero-photo" style={`--photo:url(${heroPhoto})`}>
+    <!-- Celular: las dos apps van sobre la foto (abajo, en una línea, se partían). -->
+    <div class="play-foto">
+      <a href={siteConfig.playStore} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero')}><PlayIcon size={11} /> App para tu academia</a>
+      <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}><PlayIcon size={11} /> App para tus alumnos</a>
+    </div>
     <div class="media" role="img" aria-label="Dueña de un estudio de danza haciendo las cuentas del mes a mano, de noche, en su casa"></div>
     <div class="copy">
       <p class="kicker">Academias, gimnasios y estudios · Perú y México</p>
@@ -52,6 +57,7 @@
     isolation: isolate;
     background: #09090f;
   }
+  .play-foto { display: none; }
   .media {
     position: absolute;
     inset: 0;
@@ -112,6 +118,18 @@
     .ctas .btn { flex: 1 1 100%; justify-content: center; padding: 11px 16px; font-size: 14px; line-height: 1.2; }
     .ctas .btn svg { width: 15px; height: 15px; }
     .trust { font-size: 10.5px; margin-top: 14px; white-space: nowrap; }
-    .play { font-size: 10.5px; margin-top: 4px; }
+    .play { display: none; }
+    .play-foto {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      position: absolute; top: 12px; left: 12px; right: 12px; z-index: 2;
+    }
+    .play-foto a {
+      display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 12px;
+      border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(9, 9, 15, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      color: #fff; font-size: 11.5px; font-weight: 600; text-decoration: none;
+    }
+    .play-foto a:active { background: rgba(9, 9, 15, 0.75); }
+    .play-foto a:focus-visible { outline: 2px solid #01f59e; outline-offset: 2px; }
   }
 </style>
