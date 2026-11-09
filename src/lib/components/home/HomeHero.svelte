@@ -3,6 +3,7 @@
   import { trackAgendaClick, trackPlayStoreClick } from '$lib/tracking/track';
   import { siteConfig } from '$lib/config/site';
   import PlayIcon from '$lib/components/PlayIcon.svelte';
+  import PlayBadge from '$lib/components/PlayBadge.svelte';
 </script>
 
 <svelte:head>
@@ -13,12 +14,6 @@
 <!-- Portada: la persona antes que el producto. Foto con gradación de marca encima. -->
 <header class="hero">
   <div class="hero-photo" style={`--photo:url(${heroPhoto})`}>
-    <!-- Celular: las dos apps van sobre la foto (abajo, en una línea, se partían). -->
-    <div class="play-foto">
-      <span class="pf-label"><PlayIcon size={9} /> Google Play</span>
-      <a href={siteConfig.playStore} target="_blank" rel="noopener noreferrer" aria-label="App para tu academia en Google Play" onclick={() => trackPlayStoreClick('hero')}>Academia</a>
-      <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" aria-label="App para tus alumnos en Google Play" onclick={() => trackPlayStoreClick('hero_alumnos')}>Alumnos</a>
-    </div>
     <div class="media" role="img" aria-label="Dueña de un estudio de danza haciendo las cuentas del mes a mano, de noche, en su casa"></div>
     <div class="copy">
       <p class="kicker">Academias, gimnasios y estudios · Perú y México</p>
@@ -40,6 +35,11 @@
         <span aria-hidden="true">·</span>
         <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}>para tus alumnos</a>
       </p>
+      <!-- Celular: badge oficial + link chico a la app de alumnos (la línea de arriba se partía). -->
+      <div class="play-cel">
+        <PlayBadge source="hero" />
+        <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}>¿Eres alumno? <u>App de alumnos</u></a>
+      </div>
     </div>
   </div>
 </header>
@@ -58,7 +58,7 @@
     isolation: isolate;
     background: #09090f;
   }
-  .play-foto { display: none; }
+  .play-cel { display: none; }
   .media {
     position: absolute;
     inset: 0;
@@ -120,23 +120,9 @@
     .ctas .btn svg { width: 15px; height: 15px; }
     .trust { font-size: 10.5px; margin-top: 14px; white-space: nowrap; }
     .play { display: none; }
-    /* Una cápsula de vidrio, tipo selector: Google Play · Academia | Alumnos. */
-    .play-foto {
-      display: inline-flex; align-items: center; gap: 2px; padding: 2px;
-      position: absolute; top: 10px; left: 10px; z-index: 2;
-      border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.14);
-      background: rgba(9, 9, 15, 0.45); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    }
-    .pf-label {
-      display: inline-flex; align-items: center; gap: 4px; padding: 0 6px 0 8px;
-      font-size: 8.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
-    }
-    .play-foto a {
-      display: inline-flex; align-items: center; min-height: 24px; padding: 0 10px; border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1); color: #fff; font-size: 11px; font-weight: 600; text-decoration: none;
-      transition: background 0.2s;
-    }
-    .play-foto a:active { background: rgba(255, 255, 255, 0.2); }
-    .play-foto a:focus-visible { outline: 2px solid #01f59e; outline-offset: 2px; }
+    .play-cel { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 16px; }
+    .play-cel > a { padding: 4px 0; font-size: 12px; color: rgba(255, 255, 255, 0.7); text-decoration: none; }
+    .play-cel u { color: #fff; text-decoration-color: rgba(255, 255, 255, 0.35); text-underline-offset: 3px; }
+    .play-cel > a:focus-visible { outline: 2px solid #01f59e; outline-offset: 2px; border-radius: 4px; }
   }
 </style>
