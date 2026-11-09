@@ -37,7 +37,7 @@
       </p>
       <!-- Celular: badge oficial + link chico a la app de alumnos (la línea de arriba se partía). -->
       <div class="play-cel">
-        <PlayBadge source="hero" />
+        <PlayBadge source="hero" small />
         <a href={siteConfig.playStoreAlumnos} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero_alumnos')}>¿Eres alumno? <u>App de alumnos</u></a>
       </div>
     </div>

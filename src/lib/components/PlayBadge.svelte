@@ -4,18 +4,19 @@
   import { siteConfig } from '$lib/config/site';
   import { trackPlayStoreClick } from '$lib/tracking/track';
 
-  let { source, class: cls = '' }: { source: string; class?: string } = $props();
+  let { source, class: cls = '', small = false }: { source: string; class?: string; small?: boolean } = $props();
 </script>
 
 <a
   class="play-badge {cls}"
+  class:small
   href={siteConfig.playStore}
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Descarga la app de FlowPass en Google Play"
   onclick={() => trackPlayStoreClick(source)}
 >
-  <PlayIcon size={22} />
+  <PlayIcon size={small ? 17 : 22} />
   <span class="play-text">
     <span class="play-small">Disponible en</span>
     <span class="play-big">Google Play</span>
@@ -42,4 +43,8 @@
   .play-text { display: flex; flex-direction: column; line-height: 1.1; }
   .play-small { font-size: 0.625rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
   .play-big { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
+  /* Portada en celular: un poco más chico. */
+  .small { min-height: 40px; gap: 0.5rem; padding: 0.3rem 0.8rem 0.3rem 0.6rem; border-radius: 9px; }
+  .small .play-small { font-size: 0.55rem; }
+  .small .play-big { font-size: 0.9rem; }
 </style>
