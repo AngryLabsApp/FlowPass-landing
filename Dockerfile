@@ -1,5 +1,9 @@
+# Versión de Node: cambiarla acá Y en .nvmrc (lo lee GitHub Actions). Un
+# Dockerfile no puede leer .nvmrc, por eso son dos líneas.
+ARG NODE_VERSION=24
+
 # Etapa 1: compilamos la app de SvelteKit
-FROM node:22-alpine AS build
+FROM node:${NODE_VERSION}-alpine AS build
 WORKDIR /app
 
 ENV PNPM_HOME="/pnpm"
