@@ -4,8 +4,8 @@
   "2": "dependencies",
   "3": "devDependencies",
   "4": "Sistema de Leads — FlowPass",
-  "5": "schemas.ts",
-  "6": "usePwaInstall.svelte.ts",
+  "5": "llms-full.txt/+server.ts",
+  "6": "track.ts",
   "7": "PricingSection.svelte",
   "8": "pricingData.js",
   "9": "compilerOptions",
@@ -30,8 +30,10 @@
   "28": "Rediseño de la landing — archivos de trabajo",
   "29": "prerender",
   "30": "dynamic/public",
-  "31": "track.ts",
+  "31": "routes/+page.svelte",
   "32": "static/public",
-  "33": "PlatformTabs.svelte",
-  "34": "Testimonials.svelte"
+  "33": "supabase.ts",
+  "34": "Testimonials.svelte",
+  "35": "blog/index.ts",
+  "36": "como-cobrar-mensualidades-sin-perseguir.md"
 }
