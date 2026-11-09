@@ -386,12 +386,26 @@
   .more-body { padding: 4px 18px 22px; }
   .more-body > :first-child { margin-top: 18px; }
   .compare { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
-  .compare summary { cursor: pointer; list-style: none; padding: 18px 22px; display: flex; justify-content: center; gap: 10px; font-weight: 600; }
+  /* Antes era solo texto con un "+" y casi no se veía: ahora es una píldora con borde verde. */
+  .compare summary { cursor: pointer; list-style: none; padding: 16px 22px; display: flex; justify-content: center; font-weight: 600; }
   .compare summary::-webkit-details-marker { display: none; }
-  .compare summary span { border-bottom: 0; }
-  .compare summary::after { content: '+'; color: var(--accent-text); font-size: 20px; line-height: 1; }
+  .compare summary span {
+    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 22px;
+    border: 1.5px solid var(--accent-text); border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--fg);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .compare summary:hover span { background: color-mix(in srgb, var(--accent) 22%, transparent); transform: translateY(-1px); }
+  .compare summary:focus-visible { outline: none; }
+  .compare summary:focus-visible span { outline: 2px solid var(--accent-text); outline-offset: 3px; }
+  .compare summary span::after {
+    content: ''; width: 7px; height: 7px; margin-top: -4px;
+    border-right: 2px solid var(--accent-text); border-bottom: 2px solid var(--accent-text);
+    transform: rotate(45deg); transition: transform 0.25s, margin 0.25s;
+  }
   .compare[open] summary { border-bottom: 1px solid var(--line); }
-  .compare[open] summary::after { content: '–'; }
+  .compare[open] summary span::after { transform: rotate(-135deg); margin-top: 4px; }
+  @media (prefers-reduced-motion: reduce) { .compare summary span, .compare summary span::after { transition: none; } .compare summary:hover span { transform: none; } }
   .cmp-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
   th, td { padding: 11px 14px; text-align: center; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
@@ -497,5 +511,6 @@
     tr.same td:nth-of-type(1) { display: block; grid-column: 1 / -1; background: none; }
     tr.grp th { padding: 14px 14px 2px; font-size: 10px; color: var(--accent-text); }
     .compare summary { padding: 12px 16px; font-size: 13px; }
+    .compare summary span { min-height: 40px; padding: 0 18px; }
   }
 </style>
