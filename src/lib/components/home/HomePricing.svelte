@@ -35,7 +35,8 @@
   // "Ver beneficios" de cada tarjeta: abre "Comparar planes" y baja hasta la tabla.
   let compareEl: HTMLDetailsElement;
   let compareOpen = $state(false);
-  async function verBeneficios() {
+  async function verBeneficios(id: string) {
+    elegido = id;
     compareOpen = true;
     await tick();
     compareEl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -63,6 +64,9 @@
   let waPack = $state(0);
 
   const fit = $derived(plans.find((p) => students <= (p.maxActiveStudents ?? 0)) ?? null);
+  // Plan resaltado (tarjeta + columna de la tabla): el que tocó, o el que le corresponde por el deslizador.
+  let elegido = $state<string | null>(null);
+  const sel = $derived(plans.find((p) => p.id === elegido) ?? fit);
   const qPlan = $derived(plans.find((p) => p.id === (quotePlan ?? fit?.id ?? 'ultra'))!);
   const priceOf = (p: (typeof plans)[number]) => getPlanPrice(p, cycle, country) ?? 0;
   const money = (v: number) => {
@@ -123,7 +127,7 @@
   <div class="finder" use:reveal>
     <label for="n-alumnos">¿Cuántos alumnos activos tienes hoy? <span class="def">(los que tienen un plan vigente)</span></label>
     <div class="finder-row">
-      <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} />
+      <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} oninput={() => (elegido = null)} />
       <output for="n-alumnos">
         {#if fit}
           Con <b>{students}</b> alumnos activos te corresponde <b>{fit.name}</b>: {money(priceOf(fit))} al mes.
@@ -151,8 +155,10 @@
 
   <div class="plans">
     {#each plans as p, i (p.id)}
-      <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`}>
-        {#if fit?.id === p.id}<span class="pop mine-tag">TU PLAN</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
+      <!-- Tocar la tarjeta la resalta (también su columna en Comparar planes). Con teclado: "Ver beneficios". -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
+      <article class="plan" class:match={sel?.id === p.id} aria-label={`Plan ${p.name}`} onclick={() => (elegido = p.id)}>
+        {#if sel?.id === p.id}<span class="pop mine-tag">{fit?.id === p.id ? 'TU PLAN' : 'ELEGIDO'}</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
@@ -163,7 +169,7 @@
         <p class="key">{p.whatsappIncluded?.total} mensajes de WhatsApp al mes</p>
         <a
           class="btn plan-btn"
-          class:mine={fit?.id === p.id}
+          class:mine={sel?.id === p.id}
           href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${country}` : `/agenda?plan=${p.id}`}
           onclick={() => !signupTierKey(p.id) && trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
@@ -173,7 +179,7 @@
         {#if signupTierKey(p.id)}
           <a class="plan-alt" href={`/agenda?plan=${p.id}`} onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}>o agenda una llamada</a>
         {/if}
-        <button type="button" class="plan-ben" onclick={verBeneficios}>Ver beneficios ↓</button>
+        <button type="button" class="plan-ben" onclick={() => verBeneficios(p.id)}>Ver beneficios ↓</button>
       </article>
     {/each}
   </div>
@@ -192,31 +198,31 @@
         <thead>
           <tr>
             <th scope="col"><span class="sr">Característica</span></th>
-            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={fit?.id === p.id}>{p.name.replace('Flow ', '')}</th>{/each}
+            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={sel?.id === p.id}><button type="button" class="col-pick" aria-pressed={sel?.id === p.id} onclick={() => (elegido = p.id)}>{p.name.replace('Flow ', '')}</button></th>{/each}
           </tr>
         </thead>
         <tbody>
           <tr class="grp"><th scope="rowgroup" colspan="5">Tamaño</th></tr>
-          <tr><th scope="row">Alumnos activos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{sizeLabel(p, i)}</td>{/each}</tr>
-          <tr><th scope="row">Alumnos registrados</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.registeredStudents?.replace(' alumnos registrados', '')}</td>{/each}</tr>
-          <tr><th scope="row">Accesos para tu equipo</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.teamSeats ? `Hasta ${p.teamSeats}` : 'Ilimitados'}</td>{/each}</tr>
+          <tr><th scope="row">Alumnos activos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{sizeLabel(p, i)}</td>{/each}</tr>
+          <tr><th scope="row">Alumnos registrados</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.registeredStudents?.replace(' alumnos registrados', '')}</td>{/each}</tr>
+          <tr><th scope="row">Accesos para tu equipo</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.teamSeats ? `Hasta ${p.teamSeats}` : 'Ilimitados'}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">WhatsApp</th></tr>
-          <tr><th scope="row">Mensajes al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{p.whatsappIncluded?.total}</b></td>{/each}</tr>
-          <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
-          <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
+          <tr><th scope="row">Mensajes al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><b>{p.whatsappIncluded?.total}</b></td>{/each}</tr>
+          <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
+          <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Funciones</th></tr>
           {#each ['Alumnos, asistencia y membresías', 'Portal de alumnos (web y app)', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
-            <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
+            <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
           {/each}
-          <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
+          <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
           {#if country === 'PE'}
-          <tr class="same"><th scope="row">Facturación SUNAT</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>Opcional · desde S/30</td>{/each}</tr>
+          <tr class="same"><th scope="row">Facturación SUNAT</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>Opcional · desde S/30</td>{/each}</tr>
           {/if}
-          <tr class="same"><th scope="row">Sedes adicionales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{country === 'PE' ? 'Opcional · desde S/30 por sede' : 'Opcional · a consultar'}</td>{/each}</tr>
+          <tr class="same"><th scope="row">Sedes adicionales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{country === 'PE' ? 'Opcional · desde S/30 por sede' : 'Opcional · a consultar'}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Soporte</th></tr>
-          <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
+          <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Precio</th></tr>
-          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
+          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
         </tbody>
       </table>
     </div>
@@ -366,6 +372,7 @@
 
   .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
   .plan { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); }
+  .plan { cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s; }
   .plan.match { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
   .pop { position: absolute; top: -11px; left: 20px; background: var(--fg); color: var(--bg); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 999px; }
   .tag { font-size: 12px; color: var(--fg-3); }
@@ -418,6 +425,9 @@
   .compare[open] summary { border-bottom: 1px solid var(--line); border-radius: 16px 16px 0 0; }
   .compare[open] summary::after { transform: rotate(180deg); }
   @media (prefers-reduced-motion: reduce) { .compare summary::after { transition: none; } }
+  .col-pick { border: 0; background: none; font: inherit; color: inherit; cursor: pointer; padding: 6px 10px; border-radius: 8px; }
+  .col-pick:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .col-pick:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
   .cmp-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
   th, td { padding: 11px 14px; text-align: center; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
