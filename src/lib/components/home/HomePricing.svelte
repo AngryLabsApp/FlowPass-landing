@@ -176,7 +176,7 @@
   {/if}
 
   <details class="compare">
-    <summary><span>Comparar planes</span></summary>
+    <summary><span class="cmp-sum"><b>Comparar planes</b><small>Todo lo que incluye cada plan, lado a lado</small></span></summary>
     <div class="cmp-wrap">
       <table>
         <thead>
@@ -386,26 +386,23 @@
   .more-body { padding: 4px 18px 22px; }
   .more-body > :first-child { margin-top: 18px; }
   .compare { margin-top: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
-  /* Antes era solo texto con un "+" y casi no se veía: ahora es una píldora con borde verde. */
-  .compare summary { cursor: pointer; list-style: none; padding: 16px 22px; display: flex; justify-content: center; font-weight: 600; }
+  /* Fila de acordeón (como "Arma tu cotización"), no botón: el verde relleno se leía como "comprar". */
+  .compare summary { cursor: pointer; list-style: none; padding: 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 12px; border-radius: 16px; transition: background 0.2s; }
   .compare summary::-webkit-details-marker { display: none; }
-  .compare summary span {
-    display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 22px;
-    border: 1.5px solid var(--accent-text); border-radius: 999px;
-    background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--fg);
-    transition: background 0.2s, transform 0.2s;
+  .compare summary:hover { background: var(--bg-2); }
+  .compare summary:focus-visible { outline: 2px solid var(--accent-text); outline-offset: -2px; }
+  .cmp-sum { display: flex; flex-direction: column; gap: 2px; }
+  .cmp-sum b { font-size: 16px; color: var(--fg); }
+  .cmp-sum small { font-size: 13.5px; color: var(--fg-2); }
+  /* Flecha en un círculo: dice "se abre", no "se compra". */
+  .compare summary::after {
+    content: ''; flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line);
+    background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") center / 18px no-repeat;
+    transition: transform 0.25s;
   }
-  .compare summary:hover span { background: color-mix(in srgb, var(--accent) 22%, transparent); transform: translateY(-1px); }
-  .compare summary:focus-visible { outline: none; }
-  .compare summary:focus-visible span { outline: 2px solid var(--accent-text); outline-offset: 3px; }
-  .compare summary span::after {
-    content: ''; width: 7px; height: 7px; margin-top: -4px;
-    border-right: 2px solid var(--accent-text); border-bottom: 2px solid var(--accent-text);
-    transform: rotate(45deg); transition: transform 0.25s, margin 0.25s;
-  }
-  .compare[open] summary { border-bottom: 1px solid var(--line); }
-  .compare[open] summary span::after { transform: rotate(-135deg); margin-top: 4px; }
-  @media (prefers-reduced-motion: reduce) { .compare summary span, .compare summary span::after { transition: none; } .compare summary:hover span { transform: none; } }
+  .compare[open] summary { border-bottom: 1px solid var(--line); border-radius: 16px 16px 0 0; }
+  .compare[open] summary::after { transform: rotate(180deg); }
+  @media (prefers-reduced-motion: reduce) { .compare summary::after { transition: none; } }
   .cmp-wrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
   th, td { padding: 11px 14px; text-align: center; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
@@ -511,6 +508,8 @@
     tr.same td:nth-of-type(1) { display: block; grid-column: 1 / -1; background: none; }
     tr.grp th { padding: 14px 14px 2px; font-size: 10px; color: var(--accent-text); }
     .compare summary { padding: 12px 16px; font-size: 13px; }
-    .compare summary span { min-height: 40px; padding: 0 18px; }
+    .cmp-sum b { font-size: 14px; }
+    .cmp-sum small { font-size: 12px; }
+    .compare summary::after { width: 32px; height: 32px; }
   }
 </style>
