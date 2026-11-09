@@ -184,7 +184,7 @@ export const plans = [
     },
     teamSeats: 5, // null = ilimitados
     extraSiteFee: { PE: 30 }, // por sede adicional de ESTE tamaño; MX/US a consultar
-    whatsappIncluded: { total: 60, auto: 30, manual: 30 },
+    whatsappIncluded: { total: 100, auto: 50, manual: 50 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
@@ -216,7 +216,7 @@ export const plans = [
     },
     teamSeats: 10, // null = ilimitados
     extraSiteFee: { PE: 50 }, // por sede adicional de ESTE tamaño; MX/US a consultar
-    whatsappIncluded: { total: 160, auto: 80, manual: 80 },
+    whatsappIncluded: { total: 200, auto: 100, manual: 100 },
     features: [
       { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
