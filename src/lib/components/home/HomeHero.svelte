@@ -1,6 +1,7 @@
 <script lang="ts">
   import heroPhoto from '$lib/assets/images/home/hero.webp';
-  import { trackAgendaClick } from '$lib/tracking/track';
+  import { trackAgendaClick, trackPlayStoreClick } from '$lib/tracking/track';
+  import { siteConfig } from '$lib/config/site';
 </script>
 
 <svelte:head>
@@ -24,6 +25,15 @@
         <a class="btn pill-white" href="#features">Ver la plataforma</a>
       </div>
       <p class="trust">Sin permanencia · Operativo 24/7 · Soporte 1 a 1</p>
+      <a class="play" href={siteConfig.playStore} target="_blank" rel="noopener noreferrer" onclick={() => trackPlayStoreClick('hero')}>
+        <svg viewBox="0 0 24 26" width="12" height="13" aria-hidden="true">
+          <path d="M1 1l12.2 12L1 25c-.6-.3-1-.9-1-1.7V2.7C0 1.9.4 1.3 1 1z" fill="#00d7fe" />
+          <path d="M17.3 8.9L13.2 13 1 1c.2-.1.4-.2.7-.2.3 0 .6.1.9.2l14.7 7.9z" fill="#00f076" />
+          <path d="M17.3 17.1L2.6 25c-.3.2-.6.2-.9.2-.3 0-.5-.1-.7-.2l12.2-12 4.1 4.1z" fill="#ff3a44" />
+          <path d="M22 14.6l-4.7 2.5-4.1-4.1 4.1-4.1L22 11.4c.6.3 1 .9 1 1.6s-.4 1.3-1 1.6z" fill="#ffd400" />
+        </svg>
+        App disponible en Google Play
+      </a>
     </div>
   </div>
 </header>
@@ -76,6 +86,10 @@
   .sub { margin-top: 18px; font-size: 18px; max-width: 46ch; color: rgba(255, 255, 255, 0.86); }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
   .trust { margin-top: 20px; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
+  /* Sutil a propósito: no compite con los dos botones. */
+  .play { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 4px 0; font-size: 13px; color: rgba(255, 255, 255, 0.7); text-decoration: none; transition: color 0.2s; }
+  .play:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+  .play:focus-visible { outline: 2px solid #01f59e; outline-offset: 3px; border-radius: 4px; }
   /* Celular: foto arriba, texto abajo sobre negro (la foto no queda tapada). */
   @media (max-width: 560px) {
     .hero { padding-top: 84px; }
@@ -97,5 +111,6 @@
     .ctas .btn { flex: 1 1 100%; justify-content: center; padding: 11px 16px; font-size: 14px; line-height: 1.2; }
     .ctas .btn svg { width: 15px; height: 15px; }
     .trust { font-size: 10.5px; margin-top: 14px; white-space: nowrap; }
+    .play { font-size: 10.5px; margin-top: 4px; }
   }
 </style>
