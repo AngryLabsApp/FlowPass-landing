@@ -191,6 +191,15 @@ export function trackPwaInstalled(source: string) {
 }
 
 /**
+ * Clic en "Descarga la app" / badge de Google Play (app nativa Android).
+ *
+ * Aparece en Meta como `PlayStoreClick` (custom), en GA4 como `play_store_click`.
+ */
+export function trackPlayStoreClick(source: string) {
+  fire(null, 'PlayStoreClick', 'play_store_click', { source });
+}
+
+/**
  * El form de captación `/te-llamamos` se envió con éxito.
  *
  * **Para comercial:** la persona llenó nombre, WhatsApp, país, tipo

@@ -3,6 +3,7 @@
   import facebookIcon from "$lib/assets/icons/facebook-icon.svg";
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import { siteConfig } from "$lib/config/site";
+  import { trackPlayStoreClick } from "$lib/tracking/track";
   import { disciplinas } from "$lib/data/disciplinas";
 
   const year = new Date().getFullYear();
@@ -28,6 +29,25 @@
         <p class="footer-tagline font-oktah">
           Software de gestión para negocios que venden clases, planes o membresías.
         </p>
+        <a
+          class="play-badge"
+          href={siteConfig.playStore}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Descarga la app de FlowPass en Google Play"
+          onclick={() => trackPlayStoreClick('footer')}
+        >
+          <svg viewBox="0 0 24 26" width="22" height="24" aria-hidden="true">
+            <path d="M1 1l12.2 12L1 25c-.6-.3-1-.9-1-1.7V2.7C0 1.9.4 1.3 1 1z" fill="#00d7fe" />
+            <path d="M17.3 8.9L13.2 13 1 1c.2-.1.4-.2.7-.2.3 0 .6.1.9.2l14.7 7.9z" fill="#00f076" />
+            <path d="M17.3 17.1L2.6 25c-.3.2-.6.2-.9.2-.3 0-.5-.1-.7-.2l12.2-12 4.1 4.1z" fill="#ff3a44" />
+            <path d="M22 14.6l-4.7 2.5-4.1-4.1 4.1-4.1L22 11.4c.6.3 1 .9 1 1.6s-.4 1.3-1 1.6z" fill="#ffd400" />
+          </svg>
+          <span class="play-text">
+            <span class="play-small">Disponible en</span>
+            <span class="play-big">Google Play</span>
+          </span>
+        </a>
       </div>
 
       <div class="footer-cols">
@@ -143,6 +163,27 @@
     line-height: 1.6;
     margin: 0;
   }
+
+  .play-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+    min-height: 48px;
+    padding: 0.4rem 1rem 0.4rem 0.75rem;
+    border-radius: 10px;
+    background: #000;
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .play-badge:hover { border-color: #01f59e; transform: translateY(-2px); }
+  .play-badge:focus-visible { outline: 2px solid #01f59e; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .play-badge:hover { transform: none; } }
+  .play-text { display: flex; flex-direction: column; line-height: 1.1; }
+  .play-small { font-size: 0.625rem; letter-spacing: 0.04em; text-transform: uppercase; color: rgba(255,255,255,0.75); }
+  .play-big { font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em; }
 
   .footer-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem 3rem; }
   .footer-cols nav,

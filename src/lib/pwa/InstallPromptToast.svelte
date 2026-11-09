@@ -3,9 +3,11 @@
   import { onMount } from 'svelte';
   import { ArrowDownTray, XMark } from 'svelte-heros-v2';
   import { pwaInstall } from './usePwaInstall.svelte';
-  import { trackPwaInstallClick, trackPwaInstalled } from '$lib/tracking/track';
+  import { trackPwaInstallClick, trackPwaInstalled, trackPlayStoreClick } from '$lib/tracking/track';
+  import { siteConfig } from '$lib/config/site';
 
-  const STORAGE_KEY = 'fp-install-toast-dismissed';
+  // Android tiene su propia key: quien cerró el de acceso directo igual ve una vez el de la app.
+  const storageKey = () => (pwaInstall.isAndroid ? 'fp-play-toast-dismissed' : 'fp-install-toast-dismissed');
   const DELAY_MS = 3_000;
   const EXIT_MS = 750;
 
@@ -15,7 +17,7 @@
 
   onMount(() => {
     pwaInstall.init();
-    dismissed = localStorage.getItem(STORAGE_KEY) === '1';
+    dismissed = localStorage.getItem(storageKey()) === '1';
 
     const timer = setTimeout(() => {
       elapsed = true;
@@ -28,7 +30,7 @@
     if (exiting) return;
     exiting = true;
     try {
-      localStorage.setItem(STORAGE_KEY, '1');
+      localStorage.setItem(storageKey(), '1');
     } catch {
       // ignore quota / privacy mode errors
     }
@@ -51,8 +53,9 @@
   let show = $derived(
     elapsed &&
       !dismissed &&
-      !pwaInstall.isStandalone &&
-      (pwaInstall.deferred !== null || pwaInstall.isIOS)
+      // Android: app nativa (también si ya tiene el acceso directo). Resto: acceso directo.
+      (pwaInstall.isAndroid ||
+        (!pwaInstall.isStandalone && (pwaInstall.deferred !== null || pwaInstall.isIOS)))
   );
 </script>
 
@@ -63,7 +66,7 @@
   >
     <div
       role="dialog"
-      aria-label="Instalar FlowPass como app"
+      aria-label={pwaInstall.isAndroid ? 'Descargar la app de FlowPass' : 'Instalar FlowPass como app'}
       class="ml-auto max-w-[340px] sm:max-w-sm pointer-events-auto relative
              rounded-xl sm:rounded-2xl border border-brand/25
              bg-[#0f0f14]/90 backdrop-blur-md
@@ -92,14 +95,25 @@
 
         <div class="flex-1 min-w-0">
           <p class="text-xs sm:text-sm font-semibold text-white leading-tight">
-            Crea un acceso directo
+            {pwaInstall.isAndroid ? 'Descarga la app de FlowPass' : 'Crea un acceso directo'}
           </p>
           <p class="mt-0.5 text-[11px] sm:text-xs text-neutral-400 leading-snug">
-            Quedará en tu inicio. Sin descargas.
+            {pwaInstall.isAndroid ? 'Gratis en Google Play.' : 'Quedará en tu inicio. Sin descargas.'}
           </p>
 
           <div class="mt-2.5 sm:mt-3 flex items-center gap-1.5 sm:gap-2">
-            {#if pwaInstall.deferred}
+            {#if pwaInstall.isAndroid}
+              <a
+                href={siteConfig.playStore}
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick={() => trackPlayStoreClick('toast')}
+                class="px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold bg-brand text-[#09090f]
+                       hover:shadow-[0_0_18px_rgba(1,245,158,0.4)] transition-all duration-200"
+              >
+                Descargar
+              </a>
+            {:else if pwaInstall.deferred}
               <button
                 type="button"
                 onclick={install}

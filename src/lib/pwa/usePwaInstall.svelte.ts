@@ -12,6 +12,8 @@ class PwaInstallState {
   deferred = $state<BIPEvent | null>(null);
   isStandalone = $state(false);
   isIOS = $state(false);
+  /** Android: en vez de acceso directo se ofrece la app nativa de Play Store. */
+  isAndroid = $state(false);
 
   private initialized = false;
 
@@ -28,6 +30,8 @@ class PwaInstallState {
     this.isIOS =
       /iphone|ipad|ipod/i.test(navigator.userAgent) &&
       !/crios|fxios/i.test(navigator.userAgent);
+
+    this.isAndroid = /android/i.test(navigator.userAgent);
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
