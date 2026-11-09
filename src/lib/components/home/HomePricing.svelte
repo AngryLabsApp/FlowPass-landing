@@ -36,7 +36,7 @@
   let compareEl: HTMLDetailsElement;
   let compareOpen = $state(false);
   async function verBeneficios(id: string) {
-    elegido = id;
+    elegir(id);
     compareOpen = true;
     await tick();
     compareEl.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
@@ -64,9 +64,15 @@
   let waPack = $state(0);
 
   const fit = $derived(plans.find((p) => students <= (p.maxActiveStudents ?? 0)) ?? null);
-  // Plan resaltado (tarjeta + columna de la tabla): el que tocó, o el que le corresponde por el deslizador.
-  let elegido = $state<string | null>(null);
-  const sel = $derived(plans.find((p) => p.id === elegido) ?? fit);
+  // Tocar un plan (tarjeta, "Ver beneficios" o su nombre en la tabla) mueve el deslizador a ese plan,
+  // así el texto de arriba, la tarjeta y la columna dicen lo mismo. Si ya está en su rango, no se mueve.
+  function elegir(id: string) {
+    const i = plans.findIndex((p) => p.id === id);
+    const min = minOf(plans[i], i);
+    const max = plans[i].maxActiveStudents ?? 0;
+    if (students > min && students <= max) return;
+    students = Math.round((min + max) / 2 / 5) * 5; // mitad del rango: Pocket 15, Lite 55, Full 140, Ultra 275
+  }
   const qPlan = $derived(plans.find((p) => p.id === (quotePlan ?? fit?.id ?? 'ultra'))!);
   const priceOf = (p: (typeof plans)[number]) => getPlanPrice(p, cycle, country) ?? 0;
   const money = (v: number) => {
@@ -127,7 +133,7 @@
   <div class="finder" use:reveal>
     <label for="n-alumnos">¿Cuántos alumnos activos tienes hoy? <span class="def">(los que tienen un plan vigente)</span></label>
     <div class="finder-row">
-      <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} oninput={() => (elegido = null)} />
+      <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} />
       <output for="n-alumnos">
         {#if fit}
           Con <b>{students}</b> alumnos activos te corresponde <b>{fit.name}</b>: {money(priceOf(fit))} al mes.
@@ -157,8 +163,8 @@
     {#each plans as p, i (p.id)}
       <!-- Tocar la tarjeta la resalta (también su columna en Comparar planes). Con teclado: "Ver beneficios". -->
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
-      <article class="plan" class:match={sel?.id === p.id} aria-label={`Plan ${p.name}`} onclick={() => (elegido = p.id)}>
-        {#if sel?.id === p.id}<span class="pop mine-tag">{fit?.id === p.id ? 'TU PLAN' : 'ELEGIDO'}</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
+      <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`} onclick={() => elegir(p.id)}>
+        {#if fit?.id === p.id}<span class="pop mine-tag">TU PLAN</span>{:else if p.highlight}<span class="pop">MÁS POPULAR</span>{/if}
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
@@ -169,7 +175,7 @@
         <p class="key">{p.whatsappIncluded?.total} mensajes de WhatsApp al mes</p>
         <a
           class="btn plan-btn"
-          class:mine={sel?.id === p.id}
+          class:mine={fit?.id === p.id}
           href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${country}` : `/agenda?plan=${p.id}`}
           onclick={() => !signupTierKey(p.id) && trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
@@ -198,31 +204,31 @@
         <thead>
           <tr>
             <th scope="col"><span class="sr">Característica</span></th>
-            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={sel?.id === p.id}><button type="button" class="col-pick" aria-pressed={sel?.id === p.id} onclick={() => (elegido = p.id)}>{p.name.replace('Flow ', '')}</button></th>{/each}
+            {#each plans as p, i (p.id)}<th scope="col" class={`c${i}`} class:hl={fit?.id === p.id}><button type="button" class="col-pick" aria-pressed={fit?.id === p.id} onclick={() => elegir(p.id)}>{p.name.replace('Flow ', '')}</button></th>{/each}
           </tr>
         </thead>
         <tbody>
           <tr class="grp"><th scope="rowgroup" colspan="5">Tamaño</th></tr>
-          <tr><th scope="row">Alumnos activos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{sizeLabel(p, i)}</td>{/each}</tr>
-          <tr><th scope="row">Alumnos registrados</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.registeredStudents?.replace(' alumnos registrados', '')}</td>{/each}</tr>
-          <tr><th scope="row">Accesos para tu equipo</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.teamSeats ? `Hasta ${p.teamSeats}` : 'Ilimitados'}</td>{/each}</tr>
+          <tr><th scope="row">Alumnos activos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{sizeLabel(p, i)}</td>{/each}</tr>
+          <tr><th scope="row">Alumnos registrados</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.registeredStudents?.replace(' alumnos registrados', '')}</td>{/each}</tr>
+          <tr><th scope="row">Accesos para tu equipo</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.teamSeats ? `Hasta ${p.teamSeats}` : 'Ilimitados'}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">WhatsApp</th></tr>
-          <tr><th scope="row">Mensajes al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><b>{p.whatsappIncluded?.total}</b></td>{/each}</tr>
-          <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
-          <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
+          <tr><th scope="row">Mensajes al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{p.whatsappIncluded?.total}</b></td>{/each}</tr>
+          <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
+          <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Funciones</th></tr>
           {#each ['Alumnos, asistencia y membresías', 'Portal de alumnos (web y app)', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
-            <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
+            <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
           {/each}
-          <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
+          <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
           {#if country === 'PE'}
-          <tr class="same"><th scope="row">Facturación SUNAT</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>Opcional · desde S/30</td>{/each}</tr>
+          <tr class="same"><th scope="row">Facturación SUNAT</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>Opcional · desde S/30</td>{/each}</tr>
           {/if}
-          <tr class="same"><th scope="row">Sedes adicionales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{country === 'PE' ? 'Opcional · desde S/30 por sede' : 'Opcional · a consultar'}</td>{/each}</tr>
+          <tr class="same"><th scope="row">Sedes adicionales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{country === 'PE' ? 'Opcional · desde S/30 por sede' : 'Opcional · a consultar'}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Soporte</th></tr>
-          <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
+          <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Precio</th></tr>
-          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={sel?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
+          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
         </tbody>
       </table>
     </div>
