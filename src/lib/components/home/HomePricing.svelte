@@ -195,7 +195,7 @@
           <tr><th scope="row">Automáticos</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.auto}</td>{/each}</tr>
           <tr><th scope="row">Manuales</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.whatsappIncluded?.manual}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Funciones</th></tr>
-          {#each ['Alumnos, asistencia y membresías', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
+          {#each ['Alumnos, asistencia y membresías', 'Portal de alumnos (web y app)', 'Ventas, ingresos, gastos e inventario', 'Estadísticas y reportes', 'Flowy, asistente de IA (beta)'] as f (f)}
             <tr><th scope="row">{f}</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><span class="yes" aria-label="Incluido">✓</span></td>{/each}</tr>
           {/each}
           <tr><th scope="row">Varias membresías por alumno</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{#if p.features.find((f) => f.label.startsWith('Membresías simultáneas'))?.included}<span class="yes" aria-label="Incluido">✓</span>{:else}<span class="nope" aria-label="No incluido">–</span>{/if}</td>{/each}</tr>
