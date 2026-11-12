@@ -174,7 +174,7 @@ export const plans = [
     tagline: "Ideal para empezar",
     activeStudents: "0 – 30 alumnos activos",
     maxActiveStudents: 30,
-    registeredStudents: "Hasta 150 alumnos registrados",
+    registeredStudents: "Hasta 400 alumnos registrados",
     highlight: false,
     freeTrial: false,
     flowyBeta: true,
@@ -207,7 +207,7 @@ export const plans = [
     tagline: "Para seguir creciendo",
     activeStudents: "30 – 80 alumnos activos",
     maxActiveStudents: 80,
-    registeredStudents: "Hasta 400 alumnos registrados",
+    registeredStudents: "Hasta 1,000 alumnos registrados",
     highlight: false,
     freeTrial: false,
     flowyBeta: true,
@@ -221,7 +221,7 @@ export const plans = [
     nonCardFee: { PE: 20 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 200, auto: 100, manual: 100 },
     features: [
-      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Gestión de alumnos, asistencia con geolocalización y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 10 accesos para tu equipo", included: true },
@@ -237,7 +237,7 @@ export const plans = [
     tagline: "Para operaciones consolidadas",
     activeStudents: "80 – 200 alumnos activos",
     maxActiveStudents: 200,
-    registeredStudents: "Hasta 800 alumnos registrados",
+    registeredStudents: "Hasta 2,000 alumnos registrados",
     highlight: true,
     freeTrial: false,
     flowyBeta: true,
@@ -251,7 +251,7 @@ export const plans = [
     nonCardFee: { PE: 30 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 400, auto: 200, manual: 200 },
     features: [
-      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Gestión de alumnos, asistencia con geolocalización y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 15 accesos para tu equipo", included: true },
@@ -267,7 +267,7 @@ export const plans = [
     tagline: "Para operaciones de alto volumen",
     activeStudents: "200 – 350 alumnos activos",
     maxActiveStudents: 350,
-    registeredStudents: "Hasta 1250 alumnos registrados",
+    registeredStudents: "Hasta 3,500 alumnos registrados",
     highlight: false,
     freeTrial: false,
     flowyBeta: true,
@@ -281,7 +281,7 @@ export const plans = [
     nonCardFee: { PE: 50 }, // recargo mensual si paga sin tarjeta (Yape, Plin, transferencia). Solo Perú.
     whatsappIncluded: { total: 700, auto: 350, manual: 350 },
     features: [
-      { label: "Gestión de alumnos, asistencia y membresías (clases, planes o paquetes)", included: true },
+      { label: "Gestión de alumnos, asistencia con geolocalización y membresías (clases, planes o paquetes)", included: true },
       { label: "Ventas, ingresos, gastos e inventario", included: true },
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 20 accesos para tu equipo", included: true },
