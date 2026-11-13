@@ -250,7 +250,8 @@
             ¿Ya tenías cuenta con este correo? No te llegará nada: <a href="https://app.flow-pass.com/login">ingresa aquí</a>.
             Si no recuerdas tu contraseña, ahí mismo puedes recuperarla.
           </p>
-          <Turnstile bind:this={captcha} bind:token={captchaToken} />
+          <!-- El captcha del reenvío aparece recién al terminar la espera: así su token no vence mientras tanto. -->
+          {#if resendIn <= 0}<Turnstile bind:this={captcha} bind:token={captchaToken} />{/if}
           <button type="button" class="btn-white" onclick={resend} disabled={resendIn > 0}>
             {resendIn > 0 ? `Reenviar correo (${resendIn} s)` : "Reenviar correo"}
           </button>
