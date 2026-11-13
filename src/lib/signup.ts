@@ -1,22 +1,36 @@
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Country } from "$lib/utils/country";
 import { env } from "$env/dynamic/public";
 
-// Cliente SOLO para crear cuentas (signUp) y reenviar el correo de confirmación.
-// La sesión vive en el SaaS (app.flow-pass.com), nunca en la landing:
-// - flowType "implicit": el enlace del correo se abre en otro dominio; con PKCE el
-//   código solo se canjea en el mismo navegador y dominio donde se hizo signUp.
-// - sin persistir ni detectar sesión en la URL.
-// Variables en $env/dynamic/public: si faltan, no rompen el build (devuelve null).
-let client: SupabaseClient | null = null;
-
-export function getSupabase(): SupabaseClient | null {
-  if (client) return client;
-  if (!env.PUBLIC_SUPABASE_URL || !env.PUBLIC_SUPABASE_ANON_KEY) return null;
-  client = createClient(env.PUBLIC_SUPABASE_URL, env.PUBLIC_SUPABASE_ANON_KEY, {
-    auth: { flowType: "implicit", persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-  });
-  return client;
+/**
+ * Crea la cuenta del registro por el API (POST /signup/account), que revisa el captcha (Turnstile) y envía el correo
+ * de confirmación. La landing ya no habla con Supabase: en Supabase el registro público está apagado y la única puerta
+ * es el API. El enlace del correo lleva al SaaS (`/auth/confirmar`), que es donde vive la sesión.
+ * Mismo endpoint para "Reenviar correo": si la cuenta existe sin confirmar, el API manda un enlace nuevo.
+ * Responde igual exista o no el correo. `code`: "captcha_failed" | "weak_password" | "rate_limited" | "unavailable" | "error".
+ */
+export async function createSignupAccount(body: {
+  email: string;
+  password: string;
+  captcha_token: string;
+  metadata?: Record<string, string | null | undefined>;
+}): Promise<{ ok: true } | { ok: false; code: string; message?: string }> {
+  if (!env.PUBLIC_API_URL) return { ok: false, code: "unavailable" };
+  // El API solo acepta textos: los datos vacíos van como "".
+  const metadata = Object.fromEntries(Object.entries(body.metadata ?? {}).map(([k, v]) => [k, v ?? ""]));
+  try {
+    const res = await fetch(`${env.PUBLIC_API_URL.replace(/\/$/, "")}/signup/account`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...body, metadata }),
+    });
+    if (res.ok) return { ok: true };
+    if (res.status === 429) return { ok: false, code: "rate_limited" };
+    if (res.status === 404) return { ok: false, code: "unavailable" };
+    const data = (await res.json().catch(() => null)) as { code?: string; error?: string } | null;
+    return { ok: false, code: data?.code ?? "error", message: data?.error };
+  } catch {
+    return { ok: false, code: "error" };
+  }
 }
 
 /**
@@ -61,9 +75,4 @@ export function signupTrialDays(): number | null {
   if (!signupSelfService()) return null;
   const days = Number(signupConfig().trial_days);
   return days > 0 ? days : null;
-}
-
-/** A dónde lleva el enlace del correo. Fase 1: /registro/confirmado (landing). Fase 2: el SaaS. */
-export function signupRedirectUrl(): string {
-  return env.PUBLIC_SIGNUP_REDIRECT_URL || `${location.origin}/registro/confirmado`;
 }

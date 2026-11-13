@@ -3,15 +3,16 @@
   import { page } from "$app/stores";
   import { z } from "zod";
   import { siteConfig } from "$lib/config/site";
-  import { getSupabase, signupLandingPlanId, signupOpenFor, signupRedirectUrl, signupTrialDays } from "$lib/supabase";
+  import { createSignupAccount, signupLandingPlanId, signupOpenFor, signupTrialDays } from "$lib/signup";
+  import Turnstile from "$lib/components/Turnstile.svelte";
   import { plans } from "$lib/data/pricingData.js";
   import { detectCountry } from "$lib/utils/country";
   import { trackSignup, trackFormStart } from "$lib/tracking/track";
   import { metaCookies, newEventId } from "$lib/tracking/meta";
   import heroPhoto from "$lib/assets/images/home/hero.webp";
 
-  // Registro self-service (fase 1): crea el usuario en Supabase Auth y Supabase manda el
-  // correo de confirmación. La academia se crea después, en el SaaS (fase 2).
+  // Registro self-service: la cuenta la crea el API (POST /signup/account) después de revisar el captcha (Turnstile)
+  // y envía el correo de confirmación. El enlace lleva al SaaS, donde se crea el negocio.
   // Los botones que llevan aquí (precios, menú) solo aparecen con PUBLIC_SIGNUP; noindex y fuera del sitemap.
 
   // Misma regla que la API (users.controller.ts PASSWORD_REGEX) y que Supabase Auth.
@@ -32,6 +33,9 @@
   let acepta = $state(false);
   let showPassword = $state(false);
   let website = $state(""); // honeypot — debe quedar vacío
+  // Captcha: token de un solo uso; después de cada envío se pide otro (captcha.reset()).
+  let captchaToken = $state("");
+  let captcha = $state<ReturnType<typeof Turnstile>>();
 
   const trialDays = signupTrialDays();
   // La página se prerenderiza (sin query string): el plan de ?plan= se lee recién en el navegador.
@@ -107,17 +111,17 @@
     };
   }
 
-  /** Errores de Supabase Auth → mensaje para la persona. Nunca revela si el correo ya existe. */
+  /** Errores del API → mensaje para la persona. El API nunca revela si el correo ya existe. */
   function messageFor(code: string | undefined): string {
     switch (code) {
       case "weak_password":
         return PASSWORD_HINT;
-      case "email_address_invalid":
-      case "validation_failed":
-        return "Revisa el correo";
-      case "over_email_send_rate_limit":
-      case "over_request_rate_limit":
+      case "captcha_failed":
+        return "No pudimos verificar que eres una persona. Recarga la página e inténtalo de nuevo.";
+      case "rate_limited":
         return "Demasiados intentos. Espera un momento y vuelve a intentar.";
+      case "unavailable":
+        return "El registro no está disponible en este momento.";
       default:
         return "No pudimos crear tu cuenta. Inténtalo de nuevo o escríbenos por WhatsApp.";
     }
@@ -142,44 +146,46 @@
       return;
     }
 
-    const supabase = getSupabase();
-    if (!supabase) {
+    if (!captchaToken) {
       status = "error";
-      errorMsg = "El registro no está disponible en este momento.";
+      errorMsg = "Espera un segundo a que termine la verificación de seguridad y vuelve a intentar.";
       return;
     }
 
     status = "loading";
     errorMsg = "";
-    const { error } = await supabase.auth.signUp({
+    const result = await createSignupAccount({
       email: parsed.data.email,
       password: parsed.data.password,
-      options: { emailRedirectTo: signupRedirectUrl(), data: signupMetadata() },
+      captcha_token: captchaToken,
+      metadata: signupMetadata(),
     });
+    captcha?.reset();
 
-    if (error) {
+    if (!result.ok) {
       status = "error";
-      errorMsg = messageFor(error.code);
+      errorMsg = messageFor(result.code);
       return;
     }
 
-    // OK, o el correo ya existía (Supabase responde igual): mismo mensaje en los dos casos.
+    // OK, o el correo ya existía (el API responde igual): mismo mensaje en los dos casos.
     localStorage.setItem(THROTTLE_KEY, String(Date.now()));
     trackSignup("registro", newEventId());
     status = "sent";
     startCooldown();
   }
 
+  /** Mismo endpoint: si la cuenta sigue sin confirmar, el API manda un enlace nuevo. */
   async function resend() {
-    const supabase = getSupabase();
-    if (!supabase || resendIn > 0) return;
+    if (resendIn > 0) return;
+    if (!captchaToken) {
+      resendMsg = "Espera un segundo a que termine la verificación de seguridad.";
+      return;
+    }
     resendMsg = "";
-    const { error } = await supabase.auth.resend({
-      type: "signup",
-      email: email.trim(),
-      options: { emailRedirectTo: signupRedirectUrl() },
-    });
-    resendMsg = error ? messageFor(error.code) : "Te enviamos un nuevo enlace.";
+    const result = await createSignupAccount({ email: email.trim(), password, captcha_token: captchaToken, metadata: signupMetadata() });
+    captcha?.reset();
+    resendMsg = result.ok ? "Te enviamos un nuevo enlace." : messageFor(result.code);
     startCooldown();
   }
 
@@ -239,11 +245,12 @@
             Si <strong>{email.trim()}</strong> es válido, te enviamos un enlace para confirmar tu cuenta. Ábrelo desde este u otro dispositivo.
           </p>
           <p class="hint">¿No lo ves? Revisa <strong>Spam</strong> o <strong>Promociones</strong>. El enlace vence en 24 horas.</p>
-          <!-- Supabase no avisa si el correo ya tenía cuenta (no revela qué correos existen): se explica sin confirmarlo. -->
+          <!-- El API no avisa si el correo ya tenía cuenta (no revela qué correos existen): se explica sin confirmarlo. -->
           <p class="hint">
             ¿Ya tenías cuenta con este correo? No te llegará nada: <a href="https://app.flow-pass.com/login">ingresa aquí</a>.
             Si no recuerdas tu contraseña, ahí mismo puedes recuperarla.
           </p>
+          <Turnstile bind:this={captcha} bind:token={captchaToken} />
           <button type="button" class="btn-white" onclick={resend} disabled={resendIn > 0}>
             {resendIn > 0 ? `Reenviar correo (${resendIn} s)` : "Reenviar correo"}
           </button>
@@ -309,6 +316,7 @@
             </p>
           {/if}
 
+          <Turnstile bind:this={captcha} bind:token={captchaToken} />
           <button type="submit" class="btn-green" disabled={status === "loading"}>
             {status === "loading" ? "Creando tu cuenta…" : "Crear cuenta"}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
