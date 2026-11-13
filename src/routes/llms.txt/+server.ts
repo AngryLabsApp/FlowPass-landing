@@ -6,7 +6,7 @@ import type { RequestHandler } from "@sveltejs/kit";
 import { siteConfig } from "$lib/config/site";
 import { disciplinas } from "$lib/data/disciplinas";
 import { posts } from "$lib/blog";
-import { signupTrialDays } from "$lib/supabase";
+import { signupTrialDays } from "$lib/signup";
 
 // Prueba gratis y registro directo: salen de la misma config que la web (PUBLIC_SIGNUP).
 const trialDays = signupTrialDays();

@@ -7,7 +7,7 @@ import { siteConfig } from "$lib/config/site";
 import { faqMainEntity } from "$lib/seo/faqSchema";
 import { posts } from "$lib/blog";
 import { plans, whatsappPackages } from "$lib/data/pricingData.js";
-import { signupTrialDays } from "$lib/supabase";
+import { signupTrialDays } from "$lib/signup";
 
 // Prueba gratis y registro directo: salen de la misma config que la web (PUBLIC_SIGNUP).
 const trialDays = signupTrialDays();

@@ -5,7 +5,7 @@
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
   import { trackLogin, trackAgendaClick } from "$lib/tracking/track";
-  import { signupTrialDays, signupOpenFor } from "$lib/supabase";
+  import { signupTrialDays, signupOpenFor } from "$lib/signup";
   import { detectCountry } from "$lib/utils/country";
 
   // "Pruébalo gratis" solo en países con registro (PE, MX); el país se lee en el navegador.

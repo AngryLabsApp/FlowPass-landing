@@ -4,7 +4,7 @@
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
-  import { signupTierKey as tierKeyFor, signupTrialDays, signupOpenFor } from '$lib/supabase';
+  import { signupTierKey as tierKeyFor, signupTrialDays, signupOpenFor } from '$lib/signup';
 
   const trialDays = signupTrialDays();
   // Solo PE y MX crean su cuenta; otros países agendan una llamada.

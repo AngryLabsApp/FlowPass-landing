@@ -6,7 +6,7 @@
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
-  import { signupTierKey, signupOpenFor } from '$lib/supabase';
+  import { signupTierKey, signupOpenFor } from '$lib/signup';
   import { detectCountry } from '$lib/utils/country';
 
   // Para quien ya quiere elegir día y hora: calendario de Cal.com.
