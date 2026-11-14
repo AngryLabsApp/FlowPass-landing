@@ -6,18 +6,21 @@
   import { siteConfig } from '$lib/config/site';
   import { plans } from '$lib/data/pricingData.js';
   import { onMount } from 'svelte';
-  import { signupTierKey, signupOpenFor } from '$lib/signup';
-  import { detectCountry } from '$lib/utils/country';
+  import { signupTierKey, signupOpenFor, loadSignupCountries } from '$lib/signup';
+  import { detectCountryCode } from '$lib/utils/country';
 
   // Para quien ya quiere elegir día y hora: calendario de Cal.com.
   // Quien aún no está listo va a /te-llamamos y deja sus datos.
   let planName = $state<string | null>(null);
   // Camino inverso: quien llegó aquí desde un plan puede crear su cuenta sin esperar la llamada.
   let signupHref = $state<string | null>(null);
-  onMount(() => {
-    const id = new URLSearchParams(location.search).get('plan');
+  onMount(async () => {
+    const q = new URLSearchParams(location.search);
+    const id = q.get('plan');
     planName = plans.find((p) => p.id === id)?.name ?? null;
-    if (!signupOpenFor(detectCountry())) return; // otros países: solo la llamada
+    await loadSignupCountries();
+    const pais = (q.get('pais') ?? '').toUpperCase();
+    if (!signupOpenFor(/^[A-Z]{2}$/.test(pais) ? pais : detectCountryCode())) return; // otros países: solo la llamada
     const tierKey = id ? signupTierKey(id) : null;
     signupHref = tierKey ? `/registro?plan=${tierKey}` : '/registro';
   });

@@ -3,10 +3,10 @@
   import { page } from "$app/stores";
   import { z } from "zod";
   import { siteConfig } from "$lib/config/site";
-  import { createSignupAccount, signupLandingPlanId, signupOpenFor, signupTrialDays } from "$lib/signup";
+  import { createSignupAccount, loadSignupCountries, signupLandingPlanId, signupOpenFor, signupTrialDays } from "$lib/signup";
   import Turnstile from "$lib/components/Turnstile.svelte";
   import { plans } from "$lib/data/pricingData.js";
-  import { detectCountry } from "$lib/utils/country";
+  import { detectCountryCode } from "$lib/utils/country";
   import { trackSignup, trackFormStart } from "$lib/tracking/track";
   import { metaCookies, newEventId } from "$lib/tracking/meta";
   import heroPhoto from "$lib/assets/images/home/hero.webp";
@@ -52,13 +52,15 @@
   let formStarted = false;
   let timer: ReturnType<typeof setInterval> | undefined;
 
-  onMount(() => {
+  onMount(async () => {
     formLoadedAt = Date.now();
     const landingId = signupLandingPlanId($page.url.searchParams.get("plan") ?? "");
     chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
     inviteCode = inviteFromUrl($page.url.searchParams.get("invitacion"));
-    // Sin invitación, solo PE y MX crean su cuenta; otros países agendan (con invitación, el país ya lo puso FlowPass).
-    if (!inviteCode && !signupOpenFor(signupCountry($page.url.searchParams.get("pais")))) location.replace("/agenda");
+    // Sin invitación, solo crean su cuenta los países que habilita el API; otros agendan guardando su país (con invitación, el país ya lo puso FlowPass).
+    await loadSignupCountries();
+    const pais = signupCountry($page.url.searchParams.get("pais"));
+    if (!inviteCode && !signupOpenFor(pais)) location.replace(pais ? `/agenda?pais=${pais}` : "/agenda");
   });
   onDestroy(() => clearInterval(timer));
 
@@ -78,7 +80,7 @@
   }
 
   function signupCountry(pais: string | null): string {
-    const code = (pais || detectCountry()).toUpperCase();
+    const code = (pais || detectCountryCode()).toUpperCase();
     return /^[A-Z]{2}$/.test(code) && code !== "US" ? code : "";
   }
 

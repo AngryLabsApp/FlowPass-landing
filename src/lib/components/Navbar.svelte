@@ -5,12 +5,15 @@
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
   import { trackLogin, trackAgendaClick } from "$lib/tracking/track";
-  import { signupTrialDays, signupOpenFor } from "$lib/signup";
-  import { detectCountry } from "$lib/utils/country";
+  import { signupTrialDays, signupOpenFor, loadSignupCountries } from "$lib/signup";
+  import { detectCountryCode } from "$lib/utils/country";
 
-  // "Pruébalo gratis" solo en países con registro (PE, MX); el país se lee en el navegador.
+  // "Pruébalo gratis" solo en países con registro (los habilita el API); el país se lee en el navegador.
   let trialDays = $state<number | null>(null);
-  onMount(() => (trialDays = signupOpenFor(detectCountry()) ? signupTrialDays() : null));
+  onMount(async () => {
+    await loadSignupCountries();
+    trialDays = signupOpenFor(detectCountryCode()) ? signupTrialDays() : null;
+  });
 
   let isOpen = $state(false);
   let scrolled = $state(false);
