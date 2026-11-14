@@ -1,14 +1,12 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import { detectCountry, type Country } from '$lib/utils/country';
+  import { detectCountry, detectCountryCode, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
-  import { signupTierKey as tierKeyFor, signupTrialDays, signupOpenFor } from '$lib/signup';
+  import { signupTierKey as tierKeyFor, signupTrialDays, signupOpenFor, loadSignupCountries } from '$lib/signup';
 
   const trialDays = signupTrialDays();
-  // Solo PE y MX crean su cuenta; otros países agendan una llamada.
-  const signupTierKey = (id: string) => (signupOpenFor(country) ? tierKeyFor(id) : null);
   import {
     plans as allPlans,
     billingCycles,
@@ -23,11 +21,22 @@
   const minOf = (p: (typeof plans)[number], i: number) => (i === 0 ? 0 : plans[i - 1].maxActiveStudents ?? 0);
 
   let country = $state<Country>('PE');
+  // Solo los países que habilita el API crean su cuenta; el resto agenda una llamada. "Otros países" ('US') usa el país real del visitante.
+  let detectedCode = $state('');
+  let countriesReady = $state(false);
+  const signupCode = $derived(country === 'US' ? detectedCode : country);
+  const signupOpen = $derived(countriesReady && signupOpenFor(signupCode));
+  const signupTierKey = (id: string) => (signupOpen ? tierKeyFor(id) : null);
   let cycle = $state('mensual');
   let students = $state(45);
 
   // Moneda según el país del visitante (zona horaria). El visitante puede cambiarlo.
-  onMount(() => (country = detectCountry()));
+  onMount(async () => {
+    country = detectCountry();
+    detectedCode = detectCountryCode();
+    await loadSignupCountries();
+    countriesReady = true;
+  });
 
   // Vio los precios (remarketing): una vez, cuando la sección entra en pantalla
   let pricingEl: HTMLElement;
@@ -176,7 +185,7 @@
         <a
           class="btn plan-btn"
           class:mine={fit?.id === p.id}
-          href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${country}` : `/agenda?plan=${p.id}`}
+          href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${signupCode}` : `/agenda?plan=${p.id}${signupCode ? `&pais=${signupCode}` : ""}`}
           onclick={() => !signupTierKey(p.id) && trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a
@@ -190,10 +199,10 @@
     {/each}
   </div>
 
-  {#if trialDays && signupOpenFor(country)}
+  {#if trialDays && signupOpen}
     <div class="trial">
       <p><b>¿Aún no sabes qué plan elegir?</b> Pruébalo gratis {trialDays} días. Sin tarjeta.</p>
-      <a class="btn trial-btn" href={`/registro?pais=${country}`}>Empezar prueba gratis</a>
+      <a class="btn trial-btn" href={`/registro?pais=${signupCode}`}>Empezar prueba gratis</a>
     </div>
   {/if}
 
@@ -202,6 +211,9 @@
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="10" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
     <div>
       <p><b>Pagas con tarjeta de crédito o débito</b>, con cobro automático cada ciclo. El pago lo procesa <b>dLocal</b>, nuestra pasarela de pago certificada PCI DSS. <b>FlowPass no guarda datos de tu tarjeta ni ninguna información financiera.</b></p>
+      {#if country === 'US'}
+        <p class="pay-pe">Se cobra en USD; dLocal puede mostrarlo en tu moneda local al pagar.</p>
+      {/if}
       {#if country === 'PE'}
         <p class="pay-pe">En Perú también aceptamos Yape, Plin o transferencia, con un cargo adicional por gestión (desde +S/10 al mes, según tu plan). Con tarjeta te olvidas de pagar cada mes y no pagas nada extra.</p>
       {/if}

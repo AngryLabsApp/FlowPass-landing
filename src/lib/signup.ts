@@ -1,4 +1,3 @@
-import type { Country } from "$lib/utils/country";
 import { env } from "$env/dynamic/public";
 
 /**
@@ -58,11 +57,39 @@ export function signupTierKey(landingPlanId: string): string | null {
   return signupSelfService() ? signupConfig().plans?.[landingPlanId] || null : null;
 }
 
-/** Países donde FlowPass ya cobra y opera: el resto (Country 'US' = "Otro") va a /agenda en vez de crear su cuenta. */
-export const SIGNUP_COUNTRIES: readonly Country[] = ["PE", "MX"];
+/**
+ * Países donde se puede crear una cuenta: los decide el API (`GET /signup/countries`, variable SIGNUP.countries), no la
+ * landing. El resto va a /agenda guardando su país. Si el API falla o no responde, solo PE y MX (nunca se abre un país por
+ * un error de red). `signupOpenFor` es síncrono y usa lo ya cargado: llamar antes a `loadSignupCountries()` (onMount).
+ */
+const FALLBACK_COUNTRIES = ["PE", "MX"];
+const COUNTRIES_CACHE_KEY = "fp_signup_countries";
+let enabledCountries: string[] = FALLBACK_COUNTRIES;
+let countriesLoad: Promise<string[]> | null = null;
+
+export function loadSignupCountries(): Promise<string[]> {
+  countriesLoad ??= (async () => {
+    try {
+      const cached = sessionStorage.getItem(COUNTRIES_CACHE_KEY);
+      if (cached) return (enabledCountries = JSON.parse(cached) as string[]);
+      if (!env.PUBLIC_API_URL) return enabledCountries;
+      const res = await fetch(`${env.PUBLIC_API_URL.replace(/\/$/, "")}/signup/countries`);
+      if (!res.ok) return enabledCountries; // 404 (API anterior o registro apagado) u otro error: PE y MX
+      const list = ((await res.json()) as { data: { code: string }[] }).data.map((c) => c.code);
+      if (list.length) {
+        enabledCountries = list;
+        sessionStorage.setItem(COUNTRIES_CACHE_KEY, JSON.stringify(list));
+      }
+    } catch {
+      // sin red: se queda el fallback
+    }
+    return enabledCountries;
+  })();
+  return countriesLoad;
+}
 
 export function signupOpenFor(country: string | null | undefined): boolean {
-  return signupSelfService() && SIGNUP_COUNTRIES.includes((country ?? "").toUpperCase() as Country);
+  return signupSelfService() && enabledCountries.includes((country ?? "").toUpperCase());
 }
 
 /** Al revés que signupTierKey: `tier_key` del catálogo → plan de la landing (para mostrar su nombre). */

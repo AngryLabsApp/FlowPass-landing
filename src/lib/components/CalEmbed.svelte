@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { trackBooking } from '$lib/tracking/track';
-  import { detectCountry, CAL_COUNTRY_LABEL } from '$lib/utils/country';
+  import { detectCountryCode, CAL_COUNTRY_LABEL } from '$lib/utils/country';
   import { metaCookies } from '$lib/tracking/meta';
 
   /**
@@ -12,6 +12,8 @@
    * - La pregunta "País" (identificador `pais`) se marca según la zona horaria del visitante.
    * - Al confirmar la reserva se registra la conversión (Schedule en Meta) con el uid
    *   de la reserva como eventID.
+   * - `metadata[pais_iso]`: país real del interesado (código ISO, ej. CO) aunque Cal.com solo tenga Perú/México/Otro.
+   *   Viene de ?pais=XX (lo manda el registro/precios) o de su zona horaria.
    * - `metadata[ua|fbp|fbc]`: navegador y cookies de Meta viajan dentro de la reserva.
    *   n8n los usa para mandar el mismo Schedule por la API de conversiones (mismo uid →
    *   Meta no lo cuenta dos veces) y para que Meta reconozca mejor a la persona.
@@ -29,9 +31,15 @@
   type CalFn = any;
 
   // Datos para la API de conversiones de Meta (los lee n8n desde la reserva)
+  function paisIso(): string {
+    const q = (new URLSearchParams(location.search).get('pais') ?? '').toUpperCase();
+    return /^[A-Z]{2}$/.test(q) && q !== 'US' ? q : detectCountryCode();
+  }
+
   function metaMetadata(): Record<string, string> {
     const { fbp, fbc } = metaCookies();
     const m: Record<string, string> = { 'metadata[ua]': navigator.userAgent.slice(0, 450) };
+    if (paisIso()) m['metadata[pais_iso]'] = paisIso();
     if (fbp) m['metadata[fbp]'] = fbp;
     if (fbc) m['metadata[fbc]'] = fbc;
     return m;
@@ -63,7 +71,7 @@
         useSlotsViewOnSmallScreen: 'true',
         theme: dark ? 'dark' : 'light',
         ...metaMetadata(),
-        ...(new URLSearchParams(location.search).has('pais') ? {} : { pais: CAL_COUNTRY_LABEL[detectCountry()] })
+        pais: CAL_COUNTRY_LABEL[paisIso() === 'PE' ? 'PE' : paisIso() === 'MX' ? 'MX' : 'US']
       },
       calLink
     });
