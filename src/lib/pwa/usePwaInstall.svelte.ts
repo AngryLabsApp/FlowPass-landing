@@ -17,6 +17,11 @@ class PwaInstallState {
 
   private initialized = false;
 
+  /** Hay algo que ofrecer: app de Play Store (Android) o acceso directo (prompt del navegador / iOS). */
+  get canOffer() {
+    return this.isAndroid || (!this.isStandalone && (this.deferred !== null || this.isIOS));
+  }
+
   init() {
     if (typeof window === 'undefined') return;
     if (this.initialized) return;

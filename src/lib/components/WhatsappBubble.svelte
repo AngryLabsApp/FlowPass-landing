@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { siteConfig } from "$lib/config/site";
-  import { trackContact } from "$lib/tracking/track";
+  import { trackContact, trackAgendaClick } from "$lib/tracking/track";
   import { waCountry, type CountryCode } from "$lib/stores/waCountry.svelte";
 
   let {
@@ -19,6 +19,14 @@
   const countries = Object.values(siteConfig.phones);
 
   let open = $state(false);
+  // Tarjeta de agenda: completa arriba; al bajar queda solo el título; al final de la página se oculta
+  // (no tapa el pie, ahí ya está el contacto).
+  let compact = $state(false);
+  let atEnd = $state(false);
+  function onScroll() {
+    compact = window.scrollY > window.innerHeight * 0.5;
+    atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 320;
+  }
   let containerEl: HTMLDivElement | undefined;
 
   function toggle() {
@@ -43,11 +51,14 @@
     waCountry.init();
     document.addEventListener("click", onDocClick);
     document.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
   });
   onDestroy(() => {
     if (typeof document !== "undefined") {
       document.removeEventListener("click", onDocClick);
       document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onScroll);
     }
   });
 </script>
@@ -86,6 +97,24 @@
     </div>
   {/if}
 
+  <div class="wa-row">
+  <!-- Agenda siempre a la vista junto a WhatsApp (salió del header). -->
+  <a
+    href="/agenda"
+    class="wa-agenda"
+    class:wa-agenda--compact={compact}
+    class:wa-agenda--hidden={atEnd}
+    aria-hidden={atEnd}
+    tabindex={atEnd ? -1 : undefined}
+    onclick={() => trackAgendaClick("floating_bubble")}
+  >
+    <svg class="wa-agenda__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M16 3v4M8 3v4M3 10h18" /></svg>
+    <span class="wa-agenda__body">
+      <span class="wa-agenda__title">Agenda 15 min <span class="wa-agenda__arrow" aria-hidden="true">↗</span></span>
+      <span class="wa-agenda__text">Te mostramos cómo FlowPass ordena tu negocio, en vivo y sin compromiso</span>
+    </span>
+  </a>
+
   <button
     type="button"
     class="wa-bubble-btn"
@@ -105,6 +134,7 @@
     />
     <span class="sr-only">Escríbenos por WhatsApp para conocer más sobre FlowPass</span>
   </button>
+  </div>
 </div>
 
 <style>
@@ -121,6 +151,40 @@
   @media (min-width: 640px) {
     .wa-bubble-root { bottom: 1.5rem; right: 1.5rem; }
   }
+
+  .wa-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+  }
+
+  .wa-agenda {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 18px;
+    background: #0b0b12;
+    border: 1px solid rgba(110, 242, 165, 0.55);
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  }
+  .wa-agenda:hover { transform: translateY(-1px); border-color: #6ef2a5; }
+  .wa-agenda:focus-visible { outline: 2px solid #01f59e; outline-offset: 3px; }
+  .wa-agenda__icon { flex: none; color: #6ef2a5; }
+  .wa-agenda__body { display: flex; flex-direction: column; gap: 0.125rem; }
+  .wa-agenda__title { font-size: 0.8125rem; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+  .wa-agenda__arrow { color: #6ef2a5; }
+  /* ponytail: en celular solo el título, para no tapar el contenido. */
+  .wa-agenda__text { display: none; font-size: 0.78rem; line-height: 1.35; color: rgba(255, 255, 255, 0.7); }
+  @media (min-width: 640px) {
+    .wa-agenda { max-width: 19rem; padding: 0.625rem 1rem; }
+    .wa-agenda__title { font-size: 0.875rem; }
+    .wa-agenda:not(.wa-agenda--compact) .wa-agenda__text { display: inline; }
+  }
+  .wa-agenda--hidden { opacity: 0; pointer-events: none; transform: translateY(8px); }
 
   .wa-bubble-btn {
     width: 3.5rem;

@@ -4,7 +4,8 @@
   import logoIcon from "$lib/assets/icons/logo-icon.svg";
   import { ArrowRightOnRectangle } from "svelte-heros-v2";
   import InstallAppButton from "$lib/pwa/InstallAppButton.svelte";
-  import { trackLogin, trackAgendaClick } from "$lib/tracking/track";
+  import { pwaInstall } from "$lib/pwa/usePwaInstall.svelte";
+  import { trackLogin } from "$lib/tracking/track";
   import { signupTrialDays, signupOpenFor, loadSignupCountries } from "$lib/signup";
   import { detectCountryCode } from "$lib/utils/country";
 
@@ -14,6 +15,9 @@
     await loadSignupCountries();
     trialDays = signupOpenFor(detectCountryCode()) ? signupTrialDays() : null;
   });
+
+  // Franja "acceso directo" arriba del header (solo compu). No es fija: empuja la página 40px y se va al bajar.
+  let strip = $derived(pwaInstall.canOffer);
 
   let isOpen = $state(false);
   let scrolled = $state(false);
@@ -27,10 +31,14 @@
   });
 </script>
 
+<div class="hidden lg:block relative z-50">
+  <InstallAppButton variant="strip" />
+</div>
+
 <!-- FLOATING GLASS NAVBAR -->
 <nav
   aria-label="Menú principal de FlowPass"
-  class="fixed top-3 lg:top-4 inset-x-3 sm:inset-x-4 mx-auto z-50 max-w-[1280px] transition-[top] duration-500 ease-in-out"
+  class="fixed top-3 {strip && !scrolled ? 'lg:top-14' : 'lg:top-4'} inset-x-3 sm:inset-x-4 mx-auto z-50 max-w-[1280px] transition-[top] duration-500 ease-in-out"
 >
   <div
     class="glass-nav flex justify-between items-center gap-2 min-w-0 pl-4 pr-1.5 py-1.5 lg:pl-5 lg:pr-2 lg:py-2 rounded-full"
@@ -55,14 +63,6 @@
     <ul
       class="hidden lg:flex items-center gap-4 xl:gap-7 text-white/70 font-medium text-sm xl:text-[15px] list-none whitespace-nowrap"
     >
-      <li>
-        <a
-          href="/"
-          class="hover:text-white transition duration-200 ease-in-out"
-          >Inicio</a
-        >
-      </li>
-
       <li>
         <a
           href="/#features"
@@ -106,9 +106,6 @@
       <li class="flex items-center gap-2 xl:gap-3 ml-1 xl:ml-2">
         <span class="w-px h-5 bg-white/15" aria-hidden="true"></span>
 
-        <!-- Install PWA / app. Solo desde xl: en 1024 no entra junto al resto. -->
-        <span class="hidden xl:contents"><InstallAppButton variant="desktop" /></span>
-
         <ThemeToggle />
 
         <!-- Ingresar — secundario -->
@@ -124,26 +121,17 @@
           <ArrowRightOnRectangle class="w-4 h-4" />
         </a>
 
-        <!-- Prueba gratis — solo con el registro self-service configurado (PUBLIC_SIGNUP) -->
+        <!-- Prueba gratis — CTA principal, solo con el registro self-service configurado (PUBLIC_SIGNUP).
+             "Agenda 15 min" vive en la portada y en la burbuja de WhatsApp. -->
         {#if trialDays}
           <a
             href="/registro"
-            class="flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold text-white border border-brand/60 hover:border-brand transition-colors duration-200"
+            class="flex items-center gap-1.5 px-4 xl:px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
           >
             Pruébalo gratis
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
           </a>
         {/if}
-
-        <!-- Agenda — CTA principal, igual que en la portada -->
-        <a
-          href="/agenda"
-          aria-label="Agendar una llamada de 15 minutos con FlowPass"
-          onclick={() => trackAgendaClick('navbar_desktop')}
-          class="flex items-center gap-1.5 px-4 xl:px-5 py-2.5 rounded-full text-sm font-semibold bg-brand text-[#04150e] hover:-translate-y-px transition-transform duration-200"
-        >
-          Agenda 15 min
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
-        </a>
       </li>
     </ul>
 
@@ -204,11 +192,6 @@
       class="lg:hidden glass-nav mt-2 px-4 py-3 rounded-2xl animate-slideDown text-[15px]"
     >
       <a
-        href="/"
-        class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
-        onclick={() => (isOpen = false)}>Inicio</a
-      >
-      <a
         href="/#features"
         class="block py-2 text-neutral-300 hover:text-white transition-colors duration-200"
         onclick={() => (isOpen = false)}>Funciones</a
@@ -237,23 +220,11 @@
       <div class="mt-2 pt-3 border-t border-white/10 flex flex-col gap-2">
         <InstallAppButton variant="mobile" onInstall={() => (isOpen = false)} />
 
-        <a
-          href="/agenda"
-          aria-label="Agendar una asesoría gratuita con FlowPass"
-          onclick={() => {
-            trackAgendaClick('navbar_mobile');
-            isOpen = false;
-          }}
-          class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold bg-brand text-[#04150e]"
-        >
-          Agenda 15 minutos
-        </a>
-
         {#if trialDays}
           <a
             href="/registro"
             onclick={() => (isOpen = false)}
-            class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold text-white border border-brand/60"
+            class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-full text-[13px] font-semibold bg-brand text-[#04150e]"
           >
             Pruébalo gratis {trialDays} días
           </a>
