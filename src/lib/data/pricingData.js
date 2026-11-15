@@ -17,6 +17,8 @@
  * y cuenta el MRR en neto, no en el precio final.
  */
 
+import { livePricing } from "$lib/livePricing.svelte";
+
 /** @type {Array<{code: string, label: string, flag: string, currency: string, currencyCode: string}>} */
 export const countries = [
   {
@@ -392,7 +394,7 @@ export function getPlanPrice(plan, cycleId = "trimestral", country = "PE") {
     const promo = getPromoPrice(plan, country);
     if (promo !== null) return promo;
   }
-  return plan.prices?.[cycleId]?.[country] ?? null;
+  return getBasePlanPrice(plan, cycleId, country);
 }
 
 /**
@@ -404,7 +406,8 @@ export function getPlanPrice(plan, cycleId = "trimestral", country = "PE") {
  */
 export function getBasePlanPrice(plan, cycleId = "mensual", country = "PE") {
   if (plan.quoteBased) return null;
-  return plan.prices?.[cycleId]?.[country] ?? null;
+  // Precio vivo de Admin si la tarjeta (id del plan) tiene plan vinculado; si no, la grilla fija (respaldo por celda).
+  return livePricing.grid[plan.id]?.[cycleId]?.[country] ?? plan.prices?.[cycleId]?.[country] ?? null;
 }
 
 /**
@@ -432,9 +435,11 @@ export function formatPrice(amount, country = "PE") {
 export function formatPriceParts(amount, country = "PE") {
   const c = countries.find((x) => x.code === country) ?? countries[0];
   const useThousands = country === "MX" || country === "CO";
+  // Entero como siempre; un equivalente mensual vivo con centavos (ej. 11.67) se muestra con 2 decimales.
+  const whole = Number.isInteger(amount);
   const number = useThousands
-    ? Math.round(amount).toLocaleString("en-US")
-    : String(Math.round(amount));
+    ? (whole ? amount : Math.round(amount * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: whole ? 0 : 2 })
+    : whole ? String(amount) : amount.toFixed(2);
   /** @type {Record<string, string>} */
   const codeByCountry = { MX: "MXN", CO: "COP", US: "USD" };
   return { symbol: c.currency, number, code: codeByCountry[country] ?? "" };

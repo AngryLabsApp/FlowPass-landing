@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
+  import { loadLivePricing } from '$lib/livePricing.svelte';
   import { detectCountry, detectCountryCode, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
@@ -32,6 +33,7 @@
 
   // Moneda según el país del visitante (zona horaria). El visitante puede cambiarlo.
   onMount(async () => {
+    loadLivePricing();
     country = detectCountry();
     detectedCode = detectCountryCode();
     await loadSignupCountries();
