@@ -2,6 +2,9 @@
  * FlowPass — estructura de precios
  * 4 planes self-serve (Pocket / Lite / Full / Ultra) + Enterprise (bajo evaluación).
  *
+ * Precios: solo el respaldo en USD vive acá. Los de cada país (PE, MX...) vienen del API (GET /signup/pricing, por IP)
+ * y se leen de `livePricing.grid`. Packs de WhatsApp: solo USD; en países con precio propio se muestran sin monto.
+ *
  * Lógica de precios:
  *  - Cada plan tiene una única grilla `prices`. WhatsApp automático viene incluido
  *    siempre; el cliente decide si activarlo. No hay dos precios distintos.
@@ -86,24 +89,8 @@ export const PRICES_INCLUDE_TAX = true;
  */
 export const promoConfig = {
   active: true,
-  countries: {
-    PE: {
-      endsAt: "2026-08-31T23:59:59-05:00", // 31 agosto 2026, medianoche Lima
-      showCountdown: true,
-      label: "Oferta de lanzamiento",
-      headline: "Precio congelado por 1 año",
-      priceLockLabel: "Precio congelado por 1 año",
-      prices: { pocket: 100, lite: 200, full: 300, ultra: 400 },
-    },
-    MX: {
-      endsAt: "2026-08-31T23:59:59-06:00", // 31 agosto 2026, medianoche CDMX
-      showCountdown: true,
-      label: "Oferta de lanzamiento",
-      headline: "Precio congelado por 1 año",
-      priceLockLabel: "Precio congelado por 1 año",
-      prices: { pocket: 500, lite: 1000, full: 1500, ultra: 2000 },
-    },
-  },
+  // Vacío: la promo de lanzamiento (hasta 2026-08-31) venció. Un país nuevo = una entrada acá, con su precio.
+  countries: /** @type {Record<string, {endsAt: string|null, showCountdown: boolean, label: string, headline: string, priceLockLabel: string, prices: Record<string, number>}>} */ ({}),
 };
 
 /**
@@ -181,9 +168,9 @@ export const plans = [
     freeTrial: false,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 120, MX: 600, US: 40 },
-      trimestral: { PE: 110, MX: 550, US: 35 },
-      anual: { PE: 90, MX: 450, US: 30 },
+      mensual: { US: 40 },
+      trimestral: { US: 35 },
+      anual: { US: 30 },
     },
     teamSeats: 5, // null = ilimitados
     extraSiteFee: { PE: 30 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -200,7 +187,7 @@ export const plans = [
       },
       { label: "Soporte Esencial", included: true },
       { label: "Membresías simultáneas por alumno", included: false },
-      { label: "Sedes adicionales desde S/30 por sede", included: true },
+      { label: "Sedes adicionales (consulta el precio)", included: true },
     ],
   },
   {
@@ -214,9 +201,9 @@ export const plans = [
     freeTrial: false,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 240, MX: 1200, US: 70 },
-      trimestral: { PE: 215, MX: 1075, US: 65 },
-      anual: { PE: 180, MX: 900, US: 52 },
+      mensual: { US: 70 },
+      trimestral: { US: 65 },
+      anual: { US: 52 },
     },
     teamSeats: 10, // null = ilimitados
     extraSiteFee: { PE: 50 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -228,7 +215,7 @@ export const plans = [
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 10 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Sedes adicionales desde S/30 por sede", included: true },
+      { label: "Sedes adicionales (consulta el precio)", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte Plus", included: true },
     ],
@@ -244,9 +231,9 @@ export const plans = [
     freeTrial: false,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 350, MX: 1750, US: 110 },
-      trimestral: { PE: 315, MX: 1575, US: 100 },
-      anual: { PE: 260, MX: 1300, US: 82 },
+      mensual: { US: 110 },
+      trimestral: { US: 100 },
+      anual: { US: 82 },
     },
     teamSeats: 15, // null = ilimitados
     extraSiteFee: { PE: 100 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -258,7 +245,7 @@ export const plans = [
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 15 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Sedes adicionales desde S/30 por sede", included: true },
+      { label: "Sedes adicionales (consulta el precio)", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte Pro", included: true },
     ],
@@ -274,9 +261,9 @@ export const plans = [
     freeTrial: false,
     flowyBeta: true,
     prices: {
-      mensual: { PE: 500, MX: 2500, US: 150 },
-      trimestral: { PE: 450, MX: 2250, US: 135 },
-      anual: { PE: 375, MX: 1875, US: 112 },
+      mensual: { US: 150 },
+      trimestral: { US: 135 },
+      anual: { US: 112 },
     },
     teamSeats: 20, // null = ilimitados
     extraSiteFee: { PE: 200 }, // por sede adicional de ESTE tamaño; MX/US a consultar
@@ -288,7 +275,7 @@ export const plans = [
       { label: "Panel de estadísticas y reportes descargables", included: true },
       { label: "Hasta 20 accesos para tu equipo", included: true },
       { label: "Membresías simultáneas por alumno", included: true },
-      { label: "Sedes adicionales desde S/30 por sede", included: true },
+      { label: "Sedes adicionales (consulta el precio)", included: true },
       { label: "Flowy · asistente de IA que conoce tu negocio (beta)", included: true },
       { label: "Soporte VIP", included: true },
     ],
@@ -324,25 +311,25 @@ export const whatsappPackages = [
     name: "Básico",
     reminders: 100,
     highlight: false,
-    prices: { PE: 40, MX: 200, US: 10 },//Costo unitario: 0.4
+    prices: { US: 10 },//Costo unitario: 0.4
   },
   {
     name: "Medio",
     reminders: 200,
     highlight: false,
-    prices: { PE: 70, MX: 350, US: 18 },//Costo unitario: 0.35
+    prices: { US: 18 },//Costo unitario: 0.35
   },
   {
     name: "Pro",
     reminders: 300,
     highlight: true,
-    prices: { PE: 90, MX: 450, US: 25 },//Costo unitario: 0.30
+    prices: { US: 25 },//Costo unitario: 0.30
   },
   {
     name: "Avanzado",
     reminders: 400,
     highlight: false,
-    prices: { PE: 100, MX: 500, US: 30 },//Costo unitario: 0.25
+    prices: { US: 30 },//Costo unitario: 0.25
   },
 ];
 

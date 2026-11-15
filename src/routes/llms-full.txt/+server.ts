@@ -137,7 +137,7 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - Precios segmentados por número de alumnos activos.
 - Ciclos: mensual, trimestral (descuento) y anual (mayor descuento).
 - ${trialLine}
-- Disponible en Perú (PEN), México (MXN) y con precio USD para otros mercados.
+- Los precios de esta guía están en USD. El sitio muestra la moneda local (PEN en Perú, MXN en México) según el país del visitante; en otros países se cobra en USD.
 - ${payLine} Con tarjeta no hay cargos extra.
 
 ## Diferenciales frente a otras soluciones

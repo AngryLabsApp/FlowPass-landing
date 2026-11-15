@@ -97,7 +97,7 @@ function websiteSchema() {
   };
 }
 
-// ─── Offers a partir de los planes reales (moneda PEN, mercado base) ─
+// ─── Offers a partir de los planes reales (en USD; cada país ve su moneda local en el sitio) ─
 function offersFromPlans() {
   const priceableOffers = plans
     .filter((p: any) => !p.quoteBased && p.prices)
@@ -106,12 +106,12 @@ function offersFromPlans() {
       name: p.name,
       description: p.tagline,
       category: p.activeStudents,
-      price: String(p.prices.mensual.PE),
-      priceCurrency: "PEN",
+      price: String(p.prices.mensual.US),
+      priceCurrency: "USD",
       priceSpecification: {
         "@type": "UnitPriceSpecification",
-        price: String(p.prices.mensual.PE),
-        priceCurrency: "PEN",
+        price: String(p.prices.mensual.US),
+        priceCurrency: "USD",
         billingIncrement: 1,
         unitCode: "MON",
         referenceQuantity: {
@@ -132,7 +132,7 @@ function offersFromPlans() {
   return {
     aggregate: {
       "@type": "AggregateOffer",
-      priceCurrency: "PEN",
+      priceCurrency: "USD",
       lowPrice: String(Math.min(...numeric)),
       highPrice: String(Math.max(...numeric)),
       offerCount: String(priceableOffers.length),

@@ -7,6 +7,7 @@
   import Turnstile from "$lib/components/Turnstile.svelte";
   import { plans } from "$lib/data/pricingData.js";
   import { detectCountryCode } from "$lib/utils/country";
+  import { loadLivePricing, livePricing, LIVE_PRICING_STATUS } from "$lib/livePricing.svelte";
   import { trackSignup, trackFormStart } from "$lib/tracking/track";
   import { metaCookies, newEventId } from "$lib/tracking/meta";
   import heroPhoto from "$lib/assets/images/home/hero.webp";
@@ -58,7 +59,8 @@
     chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
     inviteCode = inviteFromUrl($page.url.searchParams.get("invitacion"));
     // Sin invitación, solo crean su cuenta los países que habilita el API; otros agendan guardando su país (con invitación, el país ya lo puso FlowPass).
-    await loadSignupCountries();
+    // El país que detectó el API por IP (el mismo de los precios que vio) es el país por defecto; si no hay, ?pais= y la zona horaria.
+    await Promise.all([loadSignupCountries(), loadLivePricing()]);
     const pais = signupCountry($page.url.searchParams.get("pais"));
     if (!inviteCode && !signupOpenFor(pais)) location.replace(pais ? `/agenda?pais=${pais}` : "/agenda");
   });
@@ -80,7 +82,8 @@
   }
 
   function signupCountry(pais: string | null): string {
-    const code = (pais || detectCountryCode()).toUpperCase();
+    const api = livePricing.status === LIVE_PRICING_STATUS.READY ? livePricing.country : "";
+    const code = (api && api !== "US" ? api : livePricing.detectedCountry || pais || detectCountryCode()).toUpperCase();
     return /^[A-Z]{2}$/.test(code) && code !== "US" ? code : "";
   }
 
