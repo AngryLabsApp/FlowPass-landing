@@ -20,6 +20,7 @@
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles, X, Snowflake } from "@lucide/svelte";
   import { onMount, onDestroy } from "svelte";
+  import { loadLivePricing } from "$lib/livePricing.svelte";
   import { browser } from "$app/environment";
   import PromoCountdown from "./PromoCountdown.svelte";
   import { waCountry } from "$lib/stores/waCountry.svelte";
@@ -76,6 +77,7 @@
   }
 
   onMount(() => {
+    loadLivePricing();
     const code = detectCountryCode();
     const match = countries.find((c) => c.code === code);
     if (match) selectedCountry = match;
