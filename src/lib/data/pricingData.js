@@ -436,9 +436,11 @@ export function formatPriceParts(amount, country = "PE") {
   const c = countries.find((x) => x.code === country) ?? countries[0];
   const useThousands = country === "MX" || country === "CO";
   // Entero como siempre; un equivalente mensual vivo con centavos (ej. 11.67) se muestra con 2 decimales.
+  // Redondeo a centavos ANTES de decidir si es entero: 1083.333… × 3 = 3250.0000000000005 se muestra 3,250.
+  amount = Math.round((amount + Number.EPSILON) * 100) / 100; // redondea (no trunca); EPSILON evita 1.005 → 1.00
   const whole = Number.isInteger(amount);
   const number = useThousands
-    ? (whole ? amount : Math.round(amount * 100) / 100).toLocaleString("en-US", { minimumFractionDigits: whole ? 0 : 2 })
+    ? amount.toLocaleString("en-US", { minimumFractionDigits: whole ? 0 : 2 })
     : whole ? String(amount) : amount.toFixed(2);
   /** @type {Record<string, string>} */
   const codeByCountry = { MX: "MXN", CO: "COP", US: "USD" };

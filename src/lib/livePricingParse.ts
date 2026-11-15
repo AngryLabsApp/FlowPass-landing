@@ -27,7 +27,7 @@ export function parseLivePricing(body: unknown): LiveGrid {
       const cell = CELL.find((c) => c.code === (p?.country_code ?? null));
       const price = typeof p?.price === "number" ? p.price : NaN;
       if (!months || !cell || p?.currency !== cell.currency || !Number.isFinite(price) || price <= 0) continue;
-      ((out[slot] ??= {})[p.billing_cycle] ??= {})[cell.landing] = Math.round((price / months) * 100) / 100;
+      ((out[slot] ??= {})[p.billing_cycle] ??= {})[cell.landing] = price / months; // sin redondear: mensual × meses vuelve al total exacto; se redondea solo al mostrar
     }
   }
   return out;
