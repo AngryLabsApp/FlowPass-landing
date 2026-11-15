@@ -20,8 +20,7 @@
   import whatsappIcon from "$lib/assets/icons/whatsapp-icon.svg";
   import { Sprout, Rocket, Trophy, Zap, Building2, Sparkles, X, Snowflake } from "@lucide/svelte";
   import { onMount, onDestroy } from "svelte";
-  import { loadLivePricing } from "$lib/livePricing.svelte";
-  import { browser } from "$app/environment";
+  import { loadLivePricing, livePricing } from "$lib/livePricing.svelte";
   import PromoCountdown from "./PromoCountdown.svelte";
   import { waCountry } from "$lib/stores/waCountry.svelte";
 
@@ -59,30 +58,19 @@
     if (typeof document !== 'undefined') document.body.style.overflow = '';
   });
 
-  /**
-   * Detect user country from browser timezone + locale.
-   * Returns "PE", "MX", or "US" (fallback).
-   */
-  function detectCountryCode() {
-    try {
-      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone ?? "";
-      if (tz.includes("Lima")) return "PE";
-      const mxZones = ["Mexico", "Cancun", "Monterrey", "Tijuana", "Merida", "Chihuahua", "Mazatlan", "Hermosillo", "Matamoros", "Ojinaga", "Bahia_Banderas"];
-      if (mxZones.some((z) => tz.includes(z))) return "MX";
-      const lang = (navigator.language || "").toLowerCase();
-      if (lang.endsWith("-pe")) return "PE";
-      if (lang.endsWith("-mx")) return "MX";
-    } catch (_) { /* ignore */ }
-    return "US";
-  }
-
-  onMount(() => {
-    loadLivePricing();
-    const code = detectCountryCode();
-    const match = countries.find((c) => c.code === code);
-    if (match) selectedCountry = match;
+  // Sin selector: el país lo detecta el API por IP (GET /signup/pricing). Mientras llega la respuesta, skeleton (nunca USD de paso).
+  let loading = true;
+  onMount(async () => {
+    await loadLivePricing();
+    selectedCountry = countries.find((c) => c.code === livePricing.country) ?? selectedCountry;
+    // Sincroniza el store global (PE/MX) para que los CTA de WhatsApp (ContactSection, /about, bubble) usen el país detectado.
+    if (selectedCountry.code === "PE" || selectedCountry.code === "MX") {
+      try {
+        if (waCountry.code !== selectedCountry.code) waCountry.set(selectedCountry.code);
+      } catch (_) { /* nunca bloquear los precios por esto */ }
+    }
+    loading = false;
   });
-
 
   /** @type {Record<string, string>} */
   const taxLabels = { PE: "IGV", MX: "IVA", US: "" };
@@ -101,25 +89,6 @@
   // termine la promo). Evita quedar en anual/trim al cambiar de país.
   $: if (countryHasPromo && selectedCycle.id !== "mensual") {
     selectedCycle = billingCycles[0];
-  }
-
-  /**
-   * @param {{ code: string; label: string; flag: string; currency: string; currencyCode: string; }} country
-   */
-  function selectCountry(country) {
-    selectedCountry = country;
-    // Sincroniza el store global (PE/MX) para que los CTA de WhatsApp
-    // en ContactSection, /about y el bubble flotante respeten la elección.
-    if (browser && (country.code === 'PE' || country.code === 'MX')) {
-      try {
-        if (waCountry.code !== country.code) waCountry.set(country.code);
-      } catch (_) { /* nunca bloquear el click por esto */ }
-    }
-    window.gtag?.('event', 'price_click', {
-      event_category: 'region',
-      event_label: 'country_selection',
-      value: 1
-    });
   }
 
   /**
@@ -183,30 +152,6 @@
 
     <!-- Controls: Country + Cycle + WhatsApp toggle -->
     <div class="controls-stack">
-      <div class="country-wrap">
-        <span class="country-wrap-label" id="country-group-label">Ver precios en</span>
-        <div
-          class="country-pills"
-          role="radiogroup"
-          aria-labelledby="country-group-label"
-        >
-          {#each countries as country}
-            <button
-              type="button"
-              class="country-pill"
-              class:active={selectedCountry.code === country.code}
-              role="radio"
-              aria-checked={selectedCountry.code === country.code}
-              tabindex={selectedCountry.code === country.code ? 0 : -1}
-              on:click={() => selectCountry(country)}
-            >
-              <span class="country-pill-flag" aria-hidden="true">{country.flag}</span>
-              <span class="country-pill-label">{country.label}</span>
-            </button>
-          {/each}
-        </div>
-      </div>
-
       {#if !countryHasPromo}
         <div class="cycle-wrap">
           <div class="cycle-selector" role="group" aria-label="Seleccionar ciclo de facturación">
@@ -302,13 +247,21 @@
                 </div>
               {/if}
               <div class="price-main-row">
-                <span class="price-amount">{parts.symbol}{parts.number}</span>
-                {#if parts.code}
-                  <span class="price-code">{parts.code}</span>
+                {#if loading}
+                  <span class="skel skel--amount" aria-hidden="true"></span>
+                  <span class="sr-only">Cargando precio</span>
+                {:else if price === null}
+                  <!-- Sin precio en la moneda del país (tarjeta sin plan vinculado o sin ese ciclo): nunca un monto 0. -->
+                  <span class="wa-price--ask">Consulta el precio</span>
+                {:else}
+                  <span class="price-amount">{parts.symbol}{parts.number}</span>
+                  {#if parts.code}
+                    <span class="price-code">{parts.code}</span>
+                  {/if}
                 {/if}
-                <span class="price-period">/mes</span>
+                {#if price !== null || loading}<span class="price-period">/mes</span>{/if}
               </div>
-              {#if taxInline}
+              {#if taxInline && !loading && price !== null}
                 <span class="price-tax">{taxInline}</span>
               {/if}
               {#if isPromo && promoCountryCfg}
@@ -388,8 +341,15 @@
               <strong>{pkg.reminders.toLocaleString("es")}</strong> recordatorios/mes
             </p>
             <p class="wa-price">
-              {formatPrice(pkg.prices[selectedCountry.code], selectedCountry.code)}
-              <span class="price-period">/mes</span>
+              {#if loading}
+                <span class="skel skel--pack" aria-hidden="true"></span>
+                <span class="sr-only">Cargando precio</span>
+              {:else if pkg.prices[selectedCountry.code] === undefined}
+                <span class="wa-price--ask">Consulta el precio</span>
+              {:else}
+                {formatPrice(pkg.prices[selectedCountry.code], selectedCountry.code)}
+                <span class="price-period">/mes</span>
+              {/if}
             </p>
           </article>
         {/each}
@@ -495,6 +455,14 @@
 {/if}
 
 <style>
+  /* Skeleton de montos: mismo alto de línea que el precio para no mover el layout. */
+  .skel { display: inline-block; border-radius: 8px; background: rgba(128, 128, 128, 0.25); animation: skel-pulse 1.2s ease-in-out infinite; }
+  .skel--amount { width: 5.5rem; height: 2.6rem; }
+  .skel--pack { width: 3.5rem; height: 1.2rem; vertical-align: middle; }
+  @keyframes skel-pulse { 50% { opacity: 0.45; } }
+  @media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .wa-price--ask { font-size: 0.9rem; opacity: 0.8; }
   /* ─── Layout ─────────────────────────────────────────────── */
   .pricing-section {
     padding: 2.25rem 1.25rem;
@@ -711,68 +679,6 @@
     gap: 0.45rem;
   }
   /* ─── Country pills ──────────────────────────────────────── */
-  .country-wrap {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    max-width: 100%;
-  }
-  .country-wrap-label {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 0.01em;
-  }
-  .country-pills {
-    display: inline-flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.3rem;
-    padding: 0.25rem;
-    background: rgba(255,255,255,0.04);
-    border: 0.5px solid rgba(255,255,255,0.08);
-    border-radius: 9999px;
-    backdrop-filter: blur(8px);
-    max-width: 100%;
-  }
-  .country-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.75rem;
-    min-height: 32px;
-    border-radius: 9999px;
-    border: none;
-    background: transparent;
-    font: inherit;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.6);
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    white-space: nowrap;
-  }
-  .country-pill:hover {
-    color: #fff;
-    background: rgba(255,255,255,0.05);
-  }
-  .country-pill:focus-visible {
-    outline: 2px solid rgba(255,255,255,0.7);
-    outline-offset: 2px;
-  }
-  .country-pill.active {
-    background: #fff;
-    color: #09090f;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-  }
-  .country-pill-flag {
-    font-size: 0.9rem;
-    line-height: 1;
-  }
-  .country-pill-label {
-    line-height: 1;
-  }
 
   /* ─── Perks bar ──────────────────────────────────────────── */
   .perks-bar {
@@ -1693,29 +1599,6 @@
     }
     .cycle-pill-label { font-size: 0.78rem; }
     .cycle-pill-tag { font-size: 0.58rem; letter-spacing: 0; }
-    .country-wrap { width: 100%; gap: 0.4rem; }
-    .country-wrap-label { font-size: 0.72rem; }
-    .country-pills {
-      display: flex;
-      width: 100%;
-      gap: 0.2rem;
-      padding: 0.25rem;
-      border-radius: 14px;
-    }
-    .country-pill {
-      flex: 1 1 0;
-      min-width: 0;
-      min-height: 40px;
-      justify-content: center;
-      padding: 0.4rem 0.4rem;
-      font-size: 0.7rem;
-      gap: 0.3rem;
-      white-space: normal;
-      text-align: center;
-      line-height: 1.15;
-    }
-    .country-pill.active { box-shadow: none; }
-    .country-pill-flag { font-size: 0.9rem; }
     .price-tax { font-size: 0.65rem; }
 
     /* ─── Mobile typography ─────────────────────────────────── */

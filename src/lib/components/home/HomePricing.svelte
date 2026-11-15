@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import { loadLivePricing } from '$lib/livePricing.svelte';
-  import { detectCountry, detectCountryCode, type Country } from '$lib/utils/country';
+  import { loadLivePricing, livePricing, LIVE_PRICING_STATUS } from '$lib/livePricing.svelte';
+  import { detectCountryCode, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
@@ -21,20 +21,21 @@
   const enterprise = allPlans.find((p) => p.quoteBased);
   const minOf = (p: (typeof plans)[number], i: number) => (i === 0 ? 0 : plans[i - 1].maxActiveStudents ?? 0);
 
-  let country = $state<Country>('PE');
+  // País que detectó el API por IP (con respaldo USD = 'US'). Ya no hay selector: no se puede elegir otro.
+  const country = $derived(livePricing.country as Country);
+  // Mientras llega la respuesta no se muestra ningún monto (skeleton), nunca USD de paso.
+  const loading = $derived(livePricing.status === LIVE_PRICING_STATUS.LOADING);
   // Solo los países que habilita el API crean su cuenta; el resto agenda una llamada. "Otros países" ('US') usa el país real del visitante.
   let detectedCode = $state('');
   let countriesReady = $state(false);
-  const signupCode = $derived(country === 'US' ? detectedCode : country);
+  const signupCode = $derived(country === 'US' ? livePricing.detectedCountry || detectedCode : country);
   const signupOpen = $derived(countriesReady && signupOpenFor(signupCode));
   const signupTierKey = (id: string) => (signupOpen ? tierKeyFor(id) : null);
   let cycle = $state('mensual');
   let students = $state(45);
 
-  // Moneda según el país del visitante (zona horaria). El visitante puede cambiarlo.
   onMount(async () => {
     loadLivePricing();
-    country = detectCountry();
     detectedCode = detectCountryCode();
     await loadSignupCountries();
     countriesReady = true;
@@ -85,21 +86,28 @@
     students = Math.round((min + max) / 2 / 5) * 5; // mitad del rango: Pocket 15, Lite 55, Full 140, Ultra 275
   }
   const qPlan = $derived(plans.find((p) => p.id === (quotePlan ?? fit?.id ?? 'ultra'))!);
-  const priceOf = (p: (typeof plans)[number]) => getPlanPrice(p, cycle, country) ?? 0;
+  // null = esa tarjeta no tiene precio en la moneda del país (sin plan vinculado o sin ese ciclo): se muestra "Consulta el precio", nunca un monto 0.
+  const priceOf = (p: (typeof plans)[number]) => getPlanPrice(p, cycle, country);
+  // Sin precio no hay registro directo: esa tarjeta va a la llamada.
+  const tierFor = (p: (typeof plans)[number]) => (priceOf(p) === null ? null : signupTierKey(p.id));
   const money = (v: number) => {
     const x = formatPriceParts(v, country);
     return `${x.symbol}${x.number}`;
   };
-  const code = $derived(formatPriceParts(0, country).code || 'PEN');
+  const code = $derived(formatPriceParts(0, country).code || (country === 'PE' ? 'PEN' : 'USD'));
+  // Pack de WhatsApp: solo hay precio en USD; en países con precio propio se consulta.
+  const packPrice = (w: (typeof whatsappPackages)[number]) => (w.prices as Record<string, number>)[country];
   const sizeLabel = (p: (typeof plans)[number], i: number) =>
     minOf(p, i) === 0 ? `Hasta ${p.maxActiveStudents}` : `${minOf(p, i)} – ${p.maxActiveStudents}`;
   const months = $derived(cycle === 'trimestral' ? 3 : cycle === 'anual' ? 12 : 1);
 
   const quote = $derived.by(() => {
     const lines: [string, string][] = [];
-    let total = priceOf(qPlan);
+    let total = priceOf(qPlan) ?? 0;
     let pending = false;
-    lines.push([`${qPlan.name}${cycle === 'mensual' ? '' : ` (${cycle})`}`, money(priceOf(qPlan))]);
+    const qp = priceOf(qPlan);
+    if (qp === null) pending = true;
+    lines.push([`${qPlan.name}${cycle === 'mensual' ? '' : ` (${cycle})`}`, qp === null ? 'A consultar' : money(qp)]);
     if (hasSites) {
       sites.forEach((id, i) => {
         const sp = plans.find((p) => p.id === id)!;
@@ -120,9 +128,10 @@
     }
     if (waPack) {
       const pk = whatsappPackages.find((w) => w.reminders === waPack)!;
-      const v = pk.prices[country as keyof typeof pk.prices];
-      total += v;
-      lines.push([`WhatsApp: +${waPack} mensajes`, money(v)]);
+      const v = packPrice(pk);
+      if (v === undefined) pending = true;
+      else total += v;
+      lines.push([`WhatsApp: +${waPack} mensajes`, v === undefined ? 'A consultar' : money(v)]);
     }
     return { lines, total, pending };
   });
@@ -130,10 +139,12 @@
   const waNumber = $derived(country === 'MX' ? siteConfig.phones.MX : siteConfig.phones.PE);
   const waLink = (text: string) => `${waNumber.whatsapp}?text=${encodeURIComponent(text)}`;
   const quoteText = $derived(
-    `¡Hola! Armé esta cotización en la web de FlowPass:\n${quote.lines.map(([a, b]) => `• ${a}: ${b}`).join('\n')}\nTotal al mes: ${money(quote.total)}${quote.pending ? ' + sedes' : ''}`
+    `¡Hola! Armé esta cotización en la web de FlowPass:\n${quote.lines.map(([a, b]) => `• ${a}: ${b}`).join('\n')}\nTotal al mes: ${money(quote.total)}${quote.pending ? ' + a consultar' : ''}`
   );
   const taxLine = $derived(country === 'PE' ? 'IGV incluido.' : country === 'MX' ? 'IVA incluido.' : 'Sin impuestos extra.');
 </script>
+
+{#snippet amount(v: number | null)}{#if loading}<span class="skel" aria-hidden="true"></span><span class="sr">Cargando precio</span>{:else if v === null}Consulta{:else}{money(v)}{/if}{/snippet}
 
 <section id="precios" class="wrap" aria-labelledby="pr-title" bind:this={pricingEl}>
   <div use:reveal>
@@ -147,7 +158,7 @@
       <input id="n-alumnos" type="range" min="1" max="400" bind:value={students} />
       <output for="n-alumnos">
         {#if fit}
-          Con <b>{students}</b> alumnos activos te corresponde <b>{fit.name}</b>: {money(priceOf(fit))} al mes.
+          Con <b>{students}</b> alumnos activos te corresponde <b>{fit.name}</b>: {#if priceOf(fit) === null && !loading}consulta el precio.{:else}{@render amount(priceOf(fit))} al mes.{/if}
         {:else}
           Con <b>{students}</b> alumnos activos te conviene <b>Flow Enterprise</b>, a medida.
         {/if}
@@ -156,11 +167,6 @@
   </div>
 
   <div class="controls">
-    <div class="seg" role="group" aria-label="País">
-      {#each [['PE', 'Perú'], ['MX', 'México'], ['US', 'Otros']] as [c, l] (c)}
-        <button type="button" aria-pressed={country === c} onclick={() => (country = c as Country)}>{l}</button>
-      {/each}
-    </div>
     <div class="seg" role="group" aria-label="Ciclo de pago">
       {#each billingCycles as b (b.id)}
         <button type="button" aria-pressed={cycle === b.id} onclick={() => (cycle = b.id)}>
@@ -179,21 +185,21 @@
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
-        <div class="amt">{money(priceOf(p))} <small>{code} / mes</small></div>
-        {#if cycle !== 'mensual'}
-          <p class="per">Se cobra {money(priceOf(p) * months)} {cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}</p>
+        <div class="amt">{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{/if}</div>
+        {#if cycle !== 'mensual' && priceOf(p) !== null}
+          <p class="per">Se cobra {@render amount((priceOf(p) ?? 0) * months)} {cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}</p>
         {/if}
         <p class="key">{p.whatsappIncluded?.total} mensajes de WhatsApp al mes</p>
         <a
           class="btn plan-btn"
           class:mine={fit?.id === p.id}
-          href={signupTierKey(p.id) ? `/registro?plan=${signupTierKey(p.id)}&ciclo=${cycle}&pais=${signupCode}` : `/agenda?plan=${p.id}${signupCode ? `&pais=${signupCode}` : ""}`}
-          onclick={() => !signupTierKey(p.id) && trackAgendaClick(`pricing_plan_${p.id}`)}
+          href={tierFor(p) ? `/registro?plan=${tierFor(p)}&ciclo=${cycle}&pais=${signupCode}` : `/agenda?plan=${p.id}${signupCode ? `&pais=${signupCode}` : ""}`}
+          onclick={() => !tierFor(p) && trackAgendaClick(`pricing_plan_${p.id}`)}
           >Elegir {p.name.replace('Flow ', '')}
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg></a
         >
         <!-- Con registro directo, quien prefiere hablar antes sigue teniendo la llamada. -->
-        {#if signupTierKey(p.id)}
+        {#if tierFor(p)}
           <a class="plan-alt" href={`/agenda?plan=${p.id}`} onclick={() => trackAgendaClick(`pricing_plan_${p.id}`)}>o agenda una llamada</a>
         {/if}
         <button type="button" class="plan-ben" onclick={() => verBeneficios(p.id)}>Ver beneficios ↓</button>
@@ -253,7 +259,7 @@
           <tr class="grp"><th scope="rowgroup" colspan="5">Soporte</th></tr>
           <tr><th scope="row">Nivel de soporte</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>{p.features.find((f) => f.label.startsWith('Soporte'))?.label.replace('Soporte ', '')}</td>{/each}</tr>
           <tr class="grp"><th scope="rowgroup" colspan="5">Precio</th></tr>
-          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{money(priceOf(p))}</b></td>{/each}</tr>
+          <tr><th scope="row">Al mes</th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}><b>{@render amount(priceOf(p))}</b></td>{/each}</tr>
           {#if country === 'PE'}
           <tr class="nocard"><th scope="row">Sin tarjeta<small>Yape, Plin o transferencia</small></th>{#each plans as p, i (p.id)}<td class={`c${i}`} class:hl={fit?.id === p.id}>+{money(p.nonCardFee?.PE ?? 0)} al mes</td>{/each}</tr>
           {/if}
@@ -281,7 +287,7 @@
         <h3>¿Te quedas corto de mensajes?</h3>
         <p>Suma un pack de recordatorios al mes, solo si lo necesitas:</p>
         <div class="packs">
-          {#each whatsappPackages as w (w.name)}<span><b>+{w.reminders}</b>{money(w.prices[country as keyof typeof w.prices])} / mes</span>{/each}
+          {#each whatsappPackages as w (w.name)}<span><b>+{w.reminders}</b>{#if packPrice(w) === undefined}consulta el precio{:else}{@render amount(packPrice(w))} / mes{/if}</span>{/each}
         </div>
       </div>
       {#if country === 'PE'}
@@ -375,7 +381,7 @@
         <ul>
           {#each quote.lines as [a, b] (a)}<li><span>{a}</span><b>{b}</b></li>{/each}
         </ul>
-        <div class="q-total"><span>Total al mes</span><b>{money(quote.total)}{quote.pending ? ' + sedes' : ''}</b></div>
+        <div class="q-total"><span>Total al mes</span><b>{@render amount(quote.total)}{quote.pending ? ' + a consultar' : ''}</b></div>
         <p class="q-foot">
           {taxLine}
           {cycle === 'mensual' ? 'Sin permanencia.' : `El plan se cobra ${cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}; los extras, mes a mes.`}
@@ -395,6 +401,11 @@
 </section>
 
 <style>
+  /* Skeleton de monto: mismo alto de línea que el precio para no mover el layout. */
+  .ask { font-size: 20px; font-family: var(--body); color: var(--fg-2); }
+  .skel { display: inline-block; width: 4.5ch; height: 0.85em; vertical-align: -0.05em; border-radius: 6px; background: var(--line); animation: skel-pulse 1.2s ease-in-out infinite; }
+  @keyframes skel-pulse { 50% { opacity: 0.45; } }
+  @media (prefers-reduced-motion: reduce) { .skel { animation: none; } }
   .finder { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); display: grid; gap: 12px; }
   .finder label { font-weight: 600; }
   .finder label .def { font-weight: 400; color: var(--fg-3); font-size: 0.9em; }
