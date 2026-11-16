@@ -14,6 +14,7 @@
     whatsappPackages,
     sunatPackages,
     getPlanPrice,
+    getBasePlanPrice,
     formatPriceParts
   } from '$lib/data/pricingData.js';
 
@@ -100,6 +101,17 @@
   const sizeLabel = (p: (typeof plans)[number], i: number) =>
     minOf(p, i) === 0 ? `Hasta ${p.maxActiveStudents}` : `${minOf(p, i)} – ${p.maxActiveStudents}`;
   const months = $derived(cycle === 'trimestral' ? 3 : cycle === 'anual' ? 12 : 1);
+  // Ahorro real de pagar el ciclo vs. mes a mes, calculado de los precios de cada plan (nunca un % fijo):
+  // (precio mensual de lista × meses) − lo que se cobra en el ciclo. 0 = ese plan no tiene descuento en ese ciclo.
+  const savingOf = (p: (typeof plans)[number]) => {
+    if (months === 1) return { amount: 0, pct: 0, monthly: 0 };
+    const monthly = getBasePlanPrice(p, 'mensual', country);
+    const perMonth = priceOf(p);
+    if (monthly === null || perMonth === null) return { amount: 0, pct: 0, monthly: 0 };
+    const amount = Math.round((monthly - perMonth) * months * 100) / 100;
+    return amount > 0 ? { amount, pct: Math.round((amount / (monthly * months)) * 100), monthly } : { amount: 0, pct: 0, monthly };
+  };
+  const maxSavingPct = $derived(Math.max(0, ...plans.map((p) => savingOf(p).pct)));
 
   const quote = $derived.by(() => {
     const lines: [string, string][] = [];
@@ -170,14 +182,18 @@
     <div class="seg" role="group" aria-label="Ciclo de pago">
       {#each billingCycles as b (b.id)}
         <button type="button" aria-pressed={cycle === b.id} onclick={() => (cycle = b.id)}>
-          {b.label}{b.discount ? ` −${Math.round(b.discount * 100)}%` : ''}
+          {b.label}
         </button>
       {/each}
     </div>
+    {#if !loading && maxSavingPct > 0}
+      <p class="upto">Pagando {cycle} ahorras hasta <b>{maxSavingPct}%</b>, según el plan.</p>
+    {/if}
   </div>
 
   <div class="plans">
     {#each plans as p, i (p.id)}
+      {@const saving = loading ? null : savingOf(p)}
       <!-- Tocar la tarjeta la resalta (también su columna en Comparar planes). Con teclado: "Ver beneficios". -->
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
       <article class="plan" class:match={fit?.id === p.id} aria-label={`Plan ${p.name}`} onclick={() => elegir(p.id)}>
@@ -185,7 +201,8 @@
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
-        <div class="amt">{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{/if}</div>
+        {#if saving && saving.amount > 0}<span class="save">Te ahorras {money(saving.amount)}</span>{/if}
+        <div class="amt">{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{#if saving && saving.amount > 0} <s class="was">{money(saving.monthly)}</s>{/if}{/if}</div>
         {#if cycle !== 'mensual' && priceOf(p) !== null}
           <p class="per">Se cobra {@render amount((priceOf(p) ?? 0) * months)} {cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}</p>
         {/if}
@@ -414,7 +431,9 @@
   .finder input { flex: 1 1 260px; min-width: 0; accent-color: var(--accent-text); }
   .finder output { font-size: 15px; color: var(--fg-2); }
   .finder output b { color: var(--fg); font-variant-numeric: tabular-nums; }
-  .controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 22px; }
+  .upto { font-size: 14px; color: var(--fg-2); }
+  .upto b { color: var(--accent-text); }
 
   .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
   .plan { position: relative; border: 1px solid var(--line); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 8px; background: var(--panel); }
@@ -427,6 +446,8 @@
   .amt { font-family: var(--display); font-size: 36px; letter-spacing: -0.02em; margin-top: 8px; font-variant-numeric: tabular-nums; }
   .amt small { font-family: var(--body); font-size: 14px; color: var(--fg-3); letter-spacing: 0; }
   .per { font-size: 12px; color: var(--fg-3); }
+  .save { align-self: flex-start; white-space: nowrap; margin-top: 8px; padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; background: color-mix(in srgb, #01f59e 18%, transparent); color: var(--accent-text); }
+  .was { margin-left: 6px; font-family: var(--body); font-size: 15px; color: var(--fg-3); letter-spacing: 0; }
   .key { font-size: 14px; color: var(--fg-2); padding-top: 12px; border-top: 1px solid var(--line); }
   .plan .btn { margin-top: auto; justify-content: center; }
   /* Todos los planes con botón sólido; el que le corresponde, en verde */
@@ -550,7 +571,7 @@
     .plan {
       display: grid;
       grid-template-columns: 1fr auto;
-      grid-template-areas: 'name amt' 'size size' 'per per' 'key key' 'btn btn' 'alt alt' 'ben ben';
+      grid-template-areas: 'name amt' 'size size' 'save save' 'per per' 'key key' 'btn btn' 'alt alt' 'ben ben';
       gap: 2px 12px;
       padding: 16px;
       border-radius: 14px;
@@ -562,6 +583,9 @@
     .amt { grid-area: amt; font-size: 24px; margin: 0; text-align: right; align-self: end; }
     .amt small { font-size: 11px; }
     .per { grid-area: per; font-size: 11.5px; }
+    .save { grid-area: save; justify-self: start; margin-top: 6px; font-size: 12px; }
+    .was { display: none; }
+    .upto { font-size: 12.5px; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }

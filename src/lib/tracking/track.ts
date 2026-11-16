@@ -252,3 +252,11 @@ export function trackFormStart(source: string) {
 export function trackViewPricing(source: string) {
   fire(null, 'ViewPricing', 'view_pricing', { source });
 }
+
+/**
+ * Los precios cayeron al respaldo USD (no llegaron los del país). Solo GA4 (`pricing_fallback`), para medir cuánto pasa.
+ * `reason`: timeout | network | http_<status> | parse | no_api_url.
+ */
+export function trackPricingFallback(reason: string) {
+  fire(null, null, 'pricing_fallback', { reason });
+}

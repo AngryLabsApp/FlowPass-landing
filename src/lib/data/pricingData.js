@@ -8,9 +8,9 @@
  * Lógica de precios:
  *  - Cada plan tiene una única grilla `prices`. WhatsApp automático viene incluido
  *    siempre; el cliente decide si activarlo. No hay dos precios distintos.
- *  - Los descuentos por ciclo (trimestral ~-10%, anual ~-25%) están FIJADOS A MANO
- *    en números redondos dentro de cada grilla — no se calculan, para no arrastrar
- *    decimales feos (180 * 0.9 = 162 se ve roto; por eso se fija 160).
+ *  - El precio de cada ciclo lo fija el Admin por plan (el respaldo USD, a mano en la grilla).
+ *    El descuento NO es fijo por ciclo: la landing calcula el ahorro de cada tarjeta
+ *    comparando con el precio mensual.
  *  - Cada plan trae un cupo mensual `whatsappIncluded.total` de mensajes WhatsApp
  *    (mezcla recordatorios automáticos + envíos 1-click). Si lo supera, suma un
  *    pack de `whatsappPackages`.
@@ -48,14 +48,14 @@ export const countries = [
 ];
 
 /**
- * Ciclos de facturación. El descuento es informativo (los precios ya vienen
- * precalculados por ciclo en cada plan); úsalo para el badge "Ahorra ~X%".
- * @type {Array<{id: string, label: string, discount: number, note: string}>}
+ * Ciclos de facturación. Sin descuento fijo: cada plan puede tener uno distinto por ciclo,
+ * así que el ahorro se calcula por tarjeta con sus precios (ver HomePricing: `savingOf`).
+ * @type {Array<{id: string, label: string}>}
  */
 export const billingCycles = [
-  { id: "mensual", label: "Mensual", discount: 0, note: "Pago mes a mes" },
-  { id: "trimestral", label: "Trimestral", discount: 0.1, note: "Ahorra ~10%" },
-  { id: "anual", label: "Anual", discount: 0.25, note: "Ahorra ~25%" },
+  { id: "mensual", label: "Mensual" },
+  { id: "trimestral", label: "Trimestral" },
+  { id: "anual", label: "Anual" },
 ];
 
 /**
