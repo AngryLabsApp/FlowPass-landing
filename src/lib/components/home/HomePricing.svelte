@@ -443,11 +443,11 @@
   .tag { font-size: 12px; color: var(--fg-3); }
   .plan h3 { font-size: 22px; }
   .size { font-family: var(--display); font-size: 20px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-  .amt { font-family: var(--display); font-size: 36px; letter-spacing: -0.02em; margin-top: 8px; font-variant-numeric: tabular-nums; }
-  .amt small { font-family: var(--body); font-size: 14px; color: var(--fg-3); letter-spacing: 0; }
+  .amt { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; font-family: var(--display); font-size: 36px; letter-spacing: -0.02em; margin-top: 8px; font-variant-numeric: tabular-nums; }
+  .amt small { font-family: var(--body); font-size: 14px; color: var(--fg-3); letter-spacing: 0; white-space: nowrap; }
   .per { font-size: 12px; color: var(--fg-3); }
   .save { align-self: flex-start; white-space: nowrap; margin-top: 8px; padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; background: color-mix(in srgb, #01f59e 18%, transparent); color: var(--accent-text); }
-  .was { margin-left: 6px; font-family: var(--body); font-size: 15px; color: var(--fg-3); letter-spacing: 0; }
+  .was { white-space: nowrap; font-family: var(--body); font-size: 15px; color: var(--fg-3); letter-spacing: 0; }
   .key { font-size: 14px; color: var(--fg-2); padding-top: 12px; border-top: 1px solid var(--line); }
   .plan .btn { margin-top: auto; justify-content: center; }
   /* Todos los planes con botón sólido; el que le corresponde, en verde */
@@ -580,7 +580,7 @@
     .plan h3 { grid-area: name; font-size: 18px; align-self: end; }
     .size { grid-area: size; font-size: 13.5px; font-family: var(--body); font-weight: 600; }
     .size { margin-top: 6px; }
-    .amt { grid-area: amt; font-size: 24px; margin: 0; text-align: right; align-self: end; }
+    .amt { grid-area: amt; font-size: 24px; margin: 0; text-align: right; justify-content: flex-end; align-self: end; }
     .amt small { font-size: 11px; }
     .per { grid-area: per; font-size: 11.5px; }
     .save { grid-area: save; justify-self: start; margin-top: 6px; font-size: 12px; }
