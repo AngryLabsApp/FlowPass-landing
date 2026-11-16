@@ -4,6 +4,7 @@
   import { siteConfig } from '$lib/config/site';
   import PlayIcon from '$lib/components/PlayIcon.svelte';
   import PlayBadge from '$lib/components/PlayBadge.svelte';
+  import MetaBadge from '$lib/components/MetaBadge.svelte';
 </script>
 
 <svelte:head>
@@ -15,6 +16,8 @@
 <header class="hero">
   <div class="hero-photo" style={`--photo:url(${heroPhoto})`}>
     <div class="media" role="img" aria-label="Dueña de un estudio de danza haciendo las cuentas del mes a mano, de noche, en su casa"></div>
+    <!-- Sello de Meta flotando sobre la foto: se ve sin competir con los botones. -->
+    <MetaBadge class="hero-meta" />
     <div class="copy">
       <p class="kicker">Academias, gimnasios y estudios · Perú y México</p>
       <h1>Tú enfócate en tu negocio. <span>Nosotros, en la operación.</span></h1>
@@ -59,6 +62,15 @@
     background: #09090f;
   }
   .play-cel { display: none; }
+  .hero-photo :global(.hero-meta) {
+    position: absolute;
+    top: clamp(16px, 2.5vw, 28px);
+    right: clamp(16px, 2.5vw, 28px);
+    color: #fff;
+    background: rgba(9, 9, 15, 0.55);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
   .media {
     position: absolute;
     inset: 0;
@@ -110,6 +122,10 @@
       mask-image: linear-gradient(#000 55%, transparent);
     }
     .hero-photo::after { display: none; }
+    .hero-photo :global(.hero-meta) { top: 12px; right: 12px; min-height: 0; padding: 0.3rem 0.7rem 0.3rem 0.55rem; gap: 0.45rem; }
+    .hero-photo :global(.hero-meta svg) { width: 20px; height: 20px; }
+    .hero-photo :global(.hero-meta .meta-small) { font-size: 0.5rem; }
+    .hero-photo :global(.hero-meta .meta-big) { font-size: 0.8rem; }
     .copy { padding: 0 22px 26px; margin-top: -36px; position: relative; }
     .kicker { font-size: 10.5px; letter-spacing: 0.1em; }
     h1 { font-size: clamp(28px, 8.4vw, 36px); margin-top: 10px; }
