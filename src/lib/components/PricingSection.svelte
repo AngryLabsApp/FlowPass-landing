@@ -92,7 +92,7 @@
   }
 
   /**
-   * @param {{ id: string; label: string; discount: number; note: string; }} cycle
+   * @param {{ id: string; label: string; }} cycle
    */
   function selectCycle(cycle) {
     selectedCycle = cycle;
@@ -163,9 +163,6 @@
                 on:click={() => selectCycle(cycle)}
               >
                 <span class="cycle-pill-label">{cycle.label}</span>
-                {#if cycle.discount > 0}
-                  <span class="cycle-pill-tag">paga {Math.round(cycle.discount * 100)}% menos</span>
-                {/if}
               </button>
             {/each}
           </div>
@@ -660,17 +657,6 @@
   .cycle-pill-label {
     font-size: 0.85rem;
     font-weight: 600;
-  }
-  .cycle-pill-tag {
-    font-size: 0.6rem;
-    font-weight: 800;
-    color: #01f59e;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    line-height: 1;
-  }
-  .cycle-pill.active .cycle-pill-tag {
-    color: #00a86b;
   }
   .cycle-wrap {
     display: inline-flex;
@@ -1598,7 +1584,6 @@
       gap: 0.2rem;
     }
     .cycle-pill-label { font-size: 0.78rem; }
-    .cycle-pill-tag { font-size: 0.58rem; letter-spacing: 0; }
     .price-tax { font-size: 0.65rem; }
 
     /* ─── Mobile typography ─────────────────────────────────── */
