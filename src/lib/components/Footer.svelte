@@ -4,6 +4,7 @@
   import instagramIcon from "$lib/assets/icons/instagram-icon.svg";
   import { siteConfig } from "$lib/config/site";
   import PlayBadge from "$lib/components/PlayBadge.svelte";
+  import MetaBadge from "$lib/components/MetaBadge.svelte";
   import { disciplinas } from "$lib/data/disciplinas";
 
   const year = new Date().getFullYear();
@@ -29,7 +30,10 @@
         <p class="footer-tagline font-oktah">
           Software de gestión para negocios que venden clases, planes o membresías.
         </p>
-        <PlayBadge source="footer" class="footer-play" />
+        <div class="footer-badges">
+          <PlayBadge source="footer" />
+          <MetaBadge class="footer-meta" />
+        </div>
       </div>
 
       <div class="footer-cols">
@@ -150,7 +154,8 @@
     margin: 0;
   }
 
-  .footer-brand :global(.footer-play) { margin-top: 1.25rem; }
+  .footer-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.25rem; }
+  .footer-brand :global(.footer-meta) { color: #fff; }
 
   .footer-cols { display: grid; grid-template-columns: repeat(4, auto); gap: 2rem 3rem; }
   .footer-cols nav,
