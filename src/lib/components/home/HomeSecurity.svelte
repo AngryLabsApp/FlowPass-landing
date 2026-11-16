@@ -1,5 +1,6 @@
 <script lang="ts">
   import { reveal } from '$lib/actions/reveal';
+  import MetaBadge from '$lib/components/MetaBadge.svelte';
 
   // Solo afirmaciones que ya son ciertas en la plataforma. No agregar respaldos,
   // certificaciones ni porcentajes sin confirmarlos con el equipo técnico.
@@ -27,6 +28,10 @@
       </li>
     {/each}
   </ul>
+  <div class="meta-row" use:reveal={90}>
+    <MetaBadge />
+    <p>Proveedor tecnológico oficial de Meta: conectamos WhatsApp a tu negocio con la API oficial.</p>
+  </div>
   <a class="more" href="/privacidad">Lee nuestra política de privacidad →</a>
 </section>
 
@@ -37,6 +42,8 @@
   .ic { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; color: #531dd8; background: color-mix(in srgb, #531dd8 12%, var(--panel)); margin-bottom: 6px; }
   b { font-size: 16px; }
   li p { color: var(--fg-2); font-size: 14px; }
+  .meta-row { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 16px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--panel); }
+  .meta-row p { margin: 0; color: var(--fg-2); font-size: 14px; }
   .more { display: inline-block; margin-top: 18px; font-size: 14.5px; font-weight: 600; color: var(--accent-text); text-decoration: none; }
   .more:hover { text-decoration: underline; }
   @media (max-width: 900px) {
@@ -48,5 +55,7 @@
     .ic { grid-row: span 2; margin: 0; }
     b { font-size: 15px; }
     li p { font-size: 13.5px; }
+    .meta-row { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px; }
+    .meta-row p { font-size: 13.5px; }
   }
 </style>

@@ -4,6 +4,7 @@
   import { siteConfig } from '$lib/config/site';
   import PlayIcon from '$lib/components/PlayIcon.svelte';
   import PlayBadge from '$lib/components/PlayBadge.svelte';
+  import MetaBadge from '$lib/components/MetaBadge.svelte';
 </script>
 
 <svelte:head>
@@ -27,6 +28,8 @@
         <a class="btn pill-white" href="#features">Ver la plataforma</a>
       </div>
       <p class="trust">Sin permanencia · Operativo 24/7 · Soporte 1 a 1</p>
+      <!-- Sello de Meta: sutil, como una línea más de confianza. -->
+      <MetaBadge inline class="hero-meta" />
       <!-- Las dos apps, chiquito: no compite con los botones. -->
       <p class="play">
         <PlayIcon size={12} />
@@ -59,6 +62,7 @@
     background: #09090f;
   }
   .play-cel { display: none; }
+  .copy :global(.hero-meta) { display: flex; width: fit-content; margin-top: 8px; font-size: 13px; color: rgba(255, 255, 255, 0.7); }
   .media {
     position: absolute;
     inset: 0;
@@ -110,6 +114,7 @@
       mask-image: linear-gradient(#000 55%, transparent);
     }
     .hero-photo::after { display: none; }
+    .copy :global(.hero-meta) { font-size: 10.5px; margin-top: 6px; }
     .copy { padding: 0 22px 26px; margin-top: -36px; position: relative; }
     .kicker { font-size: 10.5px; letter-spacing: 0.1em; }
     h1 { font-size: clamp(28px, 8.4vw, 36px); margin-top: 10px; }
