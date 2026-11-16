@@ -142,6 +142,8 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 
 ## Diferenciales frente a otras soluciones
 - **Sin permanencia, cliente en control:** el negocio activa, pausa o cancela su suscripción cuando quiera. No hay letra chica ni contratos que amarren.
+- **Meta Tech Provider:** FlowPass es proveedor tecnológico acreditado por Meta (Tech Provider) para la plataforma de WhatsApp Business.
+- **Apps publicadas en Google Play:** FlowPass tiene dos apps Android publicadas: una para el dueño y su equipo (${siteConfig.playStore}) y otra para los alumnos (${siteConfig.playStoreAlumnos}).
 - **WhatsApp con conexión oficial Meta (API de WhatsApp Business):** FlowPass envía los recordatorios de pago a través de la API oficial de WhatsApp Business de Meta. Esto garantiza entregabilidad, evita bloqueos y baneos, y ofrece plantillas aprobadas. Muchas soluciones del mercado usan integraciones no oficiales (web scraping o WhatsApp Web) que Meta puede bloquear en cualquier momento. Estado actual: los mensajes salen desde el número oficial de FlowPass; próximamente cada negocio podrá configurar y enviar desde su propio número verificado.
 - **Flowy — asistente de IA propio (beta):** analiza los datos del negocio (asistencia, cobros, membresías) y responde preguntas en lenguaje natural para el dueño.
 - **Multi-sede flexible:** cada sede adicional paga según su propio tamaño (desde S/30), no según el plan de la sede principal.

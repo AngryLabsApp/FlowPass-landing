@@ -37,6 +37,13 @@ function organizationSchema() {
       addressLocality: siteConfig.legal.district,
       addressRegion: "Lima"
     },
+    // Acreditación de Meta como proveedor tecnológico (WhatsApp Business Platform).
+    hasCredential: {
+      "@type": "EducationalOccupationalCredential",
+      name: "Meta Tech Provider",
+      credentialCategory: "Proveedor tecnológico de la plataforma WhatsApp Business",
+      recognizedBy: { "@type": "Organization", name: "Meta", url: "https://www.meta.com" }
+    },
     areaServed: [
       { "@type": "Country", name: "Perú" },
       { "@type": "Country", name: "México" },
@@ -153,7 +160,7 @@ function softwareApplicationSchema(currentDate: string) {
     name: siteConfig.name,
     applicationCategory: "BusinessApplication",
     applicationSubCategory: "MembershipManagementSoftware",
-    operatingSystem: "Web",
+    operatingSystem: "Web, Android",
     description: homeSEO.description,
     url: siteConfig.url,
     logo: `${siteConfig.url}/logo.png`,
@@ -161,7 +168,8 @@ function softwareApplicationSchema(currentDate: string) {
     screenshot: `${siteConfig.url}/screenshots/dashboard.jpg`,
     softwareVersion: "1.0",
     releaseNotes: `${siteConfig.url}/actualizaciones`,
-    downloadUrl: siteConfig.url,
+    // App Android publicada en Google Play (la web sigue sin requerir instalación).
+    downloadUrl: siteConfig.playStore,
     installUrl: siteConfig.url,
     featureList: [
       "Gestión de alumnos y clientes",
