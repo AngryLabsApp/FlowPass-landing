@@ -11,32 +11,41 @@ const CELL: { code: string | null; landing: string; currency: string }[] = [
 
 export interface LivePricingResult {
   grid: LiveGrid;
-  /** País de la respuesta en términos de la landing: "PE", "MX" o "US" (= otros países, USD). */
-  country: string;
+  /** Países de la landing con precio en TODAS las tarjetas ("PE", "MX", "US" = otros países), en ese orden. */
+  available: string[];
 }
 
 /**
- * Convierte la respuesta de GET /signup/pricing (`{ country, currency, data }`) en grilla por tarjeta.
- * Devuelve null (el llamador usa el respaldo USD) si la respuesta no sirve: país que la landing no conoce, moneda que no
- * es la del país, o alguna tarjeta sin celdas para ese país (nunca se mezclan monedas ni países).
- * Precio no numérico o <= 0, ciclo desconocido o moneda distinta descartan la celda. El `promo` del API se ignora.
- * El API manda el TOTAL del ciclo; la landing muestra el equivalente mensual (total / 1, 3 o 12).
+ * Convierte la respuesta de GET /signup/pricing (`{ data }`, todos los países) en grilla por tarjeta.
+ * Un país entra solo si TODAS las tarjetas tienen su precio mensual (nunca se mezclan monedas en la vista).
+ * Precio no numérico o <= 0, ciclo desconocido o moneda que no es la del país descartan la celda. El `promo` se ignora.
+ * El API manda el TOTAL del ciclo; la landing guarda el equivalente mensual (total / 1, 3 o 12).
+ * null = la respuesta no sirve para ningún país (el llamador usa el respaldo USD).
  */
 export function parseLivePricing(body: unknown): LivePricingResult | null {
-  const b = body as { country?: unknown; currency?: unknown; data?: unknown };
-  const target = CELL.find((c) => c.code === (b?.country ?? null));
-  if (!target || b?.currency !== target.currency || !Array.isArray(b.data) || b.data.length === 0) return null;
+  const raw = (body as { data?: unknown })?.data;
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const data: any[] = raw;
   const grid: LiveGrid = {};
-  for (const row of b.data) {
-    const slot = row?.slot;
-    if (typeof slot !== "string" || !slot || !Array.isArray(row?.prices)) return null;
-    for (const p of row.prices) {
-      const months = MONTHS[p?.billing_cycle];
-      const price = typeof p?.price === "number" ? p.price : NaN;
-      if (!months || (p?.country_code ?? null) !== target.code || p?.currency !== target.currency || !Number.isFinite(price) || price <= 0) continue;
-      ((grid[slot] ??= {})[p.billing_cycle] ??= {})[target.landing] = price / months; // sin redondear: mensual × meses vuelve al total exacto; se redondea solo al mostrar
+  const available: string[] = [];
+  for (const cell of CELL) {
+    const own: LiveGrid = {};
+    let complete = true;
+    for (const row of data) {
+      const slot = row?.slot;
+      if (typeof slot !== "string" || !slot || !Array.isArray(row?.prices)) return null;
+      for (const p of row.prices) {
+        const months = MONTHS[p?.billing_cycle];
+        const price = typeof p?.price === "number" ? p.price : NaN;
+        if (!months || (p?.country_code ?? null) !== cell.code || p?.currency !== cell.currency || !Number.isFinite(price) || price <= 0) continue;
+        ((own[slot] ??= {})[p.billing_cycle] ??= {})[cell.landing] = price / months; // sin redondear: se redondea solo al mostrar
+      }
+      if (!own[slot]?.mensual?.[cell.landing]) complete = false;
     }
-    if (!grid[slot]?.mensual?.[target.landing]) return null; // tarjeta sin celda para el país: se descarta todo
+    if (!complete) continue;
+    available.push(cell.landing);
+    for (const [slot, cycles] of Object.entries(own))
+      for (const [cycle, byCountry] of Object.entries(cycles)) Object.assign((grid[slot] ??= {})[cycle] ??= {}, byCountry);
   }
-  return { grid, country: target.landing };
+  return available.length ? { grid, available } : null;
 }

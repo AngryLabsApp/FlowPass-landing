@@ -2,7 +2,7 @@
  * FlowPass — estructura de precios
  * 4 planes self-serve (Pocket / Lite / Full / Ultra) + Enterprise (bajo evaluación).
  *
- * Precios: solo el respaldo en USD vive acá. Los de cada país (PE, MX...) vienen del API (GET /signup/pricing, por IP)
+ * Precios: solo el respaldo en USD vive acá. Los de cada país (PE, MX...) vienen del API (GET /signup/pricing, todos a la vez)
  * y se leen de `livePricing.grid`. Packs de WhatsApp: solo USD; en países con precio propio se muestran sin monto.
  *
  * Lógica de precios:

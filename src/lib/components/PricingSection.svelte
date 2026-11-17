@@ -58,7 +58,7 @@
     if (typeof document !== 'undefined') document.body.style.overflow = '';
   });
 
-  // Sin selector: el país lo detecta el API por IP (GET /signup/pricing). Mientras llega la respuesta, skeleton (nunca USD de paso).
+  // País inicial: el de los precios de la portada (selector o zona horaria del navegador). Mientras llegan los precios, skeleton (nunca USD de paso).
   let loading = true;
   onMount(async () => {
     await loadLivePricing();

@@ -96,8 +96,6 @@
 
     <div class="footer-bottom">
       <p>© {year} FlowPass · {siteConfig.legal.name} · RUC {siteConfig.legal.ruc}</p>
-      <!-- Atribución exigida por la licencia CC BY 4.0 de DB-IP (país del visitante por IP para los precios). -->
-      <p class="footer-credit"><a href="https://db-ip.com" target="_blank" rel="noopener noreferrer">IP Geolocation by DB-IP</a></p>
       <p class="footer-credit">Hecho por peruanos 🇵🇪 y mexicanos 🇲🇽, para Latinoamérica.</p>
     </div>
   </div>

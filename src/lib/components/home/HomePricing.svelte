@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
-  import { loadLivePricing, livePricing, LIVE_PRICING_STATUS } from '$lib/livePricing.svelte';
+  import { loadLivePricing, livePricing, LIVE_PRICING_STATUS, setPricingCountry } from '$lib/livePricing.svelte';
   import { detectCountryCode, type Country } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
@@ -10,6 +10,7 @@
   const trialDays = signupTrialDays();
   import {
     plans as allPlans,
+    countries,
     billingCycles,
     whatsappPackages,
     sunatPackages,
@@ -22,14 +23,18 @@
   const enterprise = allPlans.find((p) => p.quoteBased);
   const minOf = (p: (typeof plans)[number], i: number) => (i === 0 ? 0 : plans[i - 1].maxActiveStudents ?? 0);
 
-  // País que detectó el API por IP (con respaldo USD = 'US'). Ya no hay selector: no se puede elegir otro.
+  // País de los precios: el del selector "Precios para…", si no la zona horaria del navegador ('US' = otros países, USD).
   const country = $derived(livePricing.country as Country);
+  const countryLabel = (code: string) => {
+    const c = countries.find((x) => x.code === code);
+    return c ? `${c.label} (${c.currencyCode})` : code;
+  };
   // Mientras llega la respuesta no se muestra ningún monto (skeleton), nunca USD de paso.
   const loading = $derived(livePricing.status === LIVE_PRICING_STATUS.LOADING);
   // Solo los países que habilita el API crean su cuenta; el resto agenda una llamada. "Otros países" ('US') usa el país real del visitante.
   let detectedCode = $state('');
   let countriesReady = $state(false);
-  const signupCode = $derived(country === 'US' ? livePricing.detectedCountry || detectedCode : country);
+  const signupCode = $derived(country === 'US' ? detectedCode : country);
   const signupOpen = $derived(countriesReady && signupOpenFor(signupCode));
   const signupTierKey = (id: string) => (signupOpen ? tierKeyFor(id) : null);
   let cycle = $state('mensual');
@@ -188,6 +193,14 @@
     </div>
     {#if !loading && maxSavingPct > 0}
       <p class="upto">Pagando {cycle} ahorras hasta <b>{maxSavingPct}%</b>, según el plan.</p>
+    {/if}
+    {#if !loading && livePricing.available.length > 1}
+      <label class="ctry">
+        Precios para
+        <select value={country} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
+          {#each livePricing.available as code (code)}<option value={code}>{countryLabel(code)}</option>{/each}
+        </select>
+      </label>
     {/if}
   </div>
 
@@ -433,6 +446,11 @@
   .finder output b { color: var(--fg); font-variant-numeric: tabular-nums; }
   .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 22px; }
   .upto { font-size: 14px; color: var(--fg-2); }
+  .ctry { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--fg-2); }
+  .ctry select { appearance: none; field-sizing: content; min-height: 44px; padding: 0 22px 0 6px; border: 0; border-radius: 10px; font: inherit; font-weight: 700; color: var(--fg); cursor: pointer;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 4px center; }
+  .ctry select option { color: #111; }
+  .ctry select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .upto b { color: var(--accent-text); }
 
   .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
@@ -586,6 +604,7 @@
     .save { grid-area: save; justify-self: start; margin-top: 6px; font-size: 12px; }
     .was { display: none; }
     .upto { font-size: 12.5px; }
+    .ctry { margin-left: 0; font-size: 12.5px; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }

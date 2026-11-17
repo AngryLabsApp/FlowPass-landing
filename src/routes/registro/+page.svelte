@@ -59,7 +59,7 @@
     chosenPlanName = plans.find((p) => p.id === landingId)?.name ?? null;
     inviteCode = inviteFromUrl($page.url.searchParams.get("invitacion"));
     // Sin invitación, solo crean su cuenta los países que habilita el API; otros agendan guardando su país (con invitación, el país ya lo puso FlowPass).
-    // El país que detectó el API por IP (el mismo de los precios que vio) es el país por defecto; si no hay, ?pais= y la zona horaria.
+    // El país de los precios que vio (selector o zona horaria) es el país por defecto; si es "otros países", ?pais= y la zona horaria.
     await Promise.all([loadSignupCountries(), loadLivePricing()]);
     const pais = signupCountry($page.url.searchParams.get("pais"));
     if (!inviteCode && !signupOpenFor(pais)) location.replace(pais ? `/agenda?pais=${pais}` : "/agenda");
@@ -83,7 +83,7 @@
 
   function signupCountry(pais: string | null): string {
     const api = livePricing.status === LIVE_PRICING_STATUS.READY ? livePricing.country : "";
-    const code = (api && api !== "US" ? api : livePricing.detectedCountry || pais || detectCountryCode()).toUpperCase();
+    const code = (api && api !== "US" ? api : pais || detectCountryCode()).toUpperCase();
     return /^[A-Z]{2}$/.test(code) && code !== "US" ? code : "";
   }
 
