@@ -31,6 +31,6 @@ n8n-workflows/
 supabase/migrations/
 docs/META_PIXEL.md
 
-
-# Graphify — cache local, se regenera con `graphify update`
-graphify-out/cache/
+# Grafo del proyecto (graphify): se genera a demanda con `graphify update .`,
+# pesa megas y queda viejo en cuanto alguien toca el codigo. No se versiona.
+/graphify-out
