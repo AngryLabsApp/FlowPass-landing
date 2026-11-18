@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { loadLivePricing, livePricing, LIVE_PRICING_STATUS, setPricingCountry } from '$lib/livePricing.svelte';
-  import { detectCountryCode } from '$lib/utils/country';
+  import { detectCountryCode, countryFlagSrc } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
@@ -193,8 +193,13 @@
     {/if}
     {#if !loading && livePricing.options.length > 1}
       <label class="ctry">
-        Precios para
-        <select value={chosenCountry} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
+        <span class="ctry-txt">Precios para</span>
+        {#if countryFlagSrc(chosenCountry)}
+          <img class="flag" src={countryFlagSrc(chosenCountry)} alt="" width="20" height="15" />
+        {:else}
+          <svg class="flag globe" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" /></svg>
+        {/if}
+        <select  value={chosenCountry} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
           {#each livePricing.options as o (o.code)}<option value={o.code}>{o.label} ({o.currency})</option>{/each}
         </select>
       </label>
@@ -447,6 +452,8 @@
   .ctry select { appearance: none; field-sizing: content; min-height: 44px; padding: 0 22px 0 6px; border: 0; border-radius: 10px; font: inherit; font-weight: 700; color: var(--fg); cursor: pointer;
     background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 4px center; }
   .ctry select option { color: #111; }
+  .ctry .flag { flex: none; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); }
+  .ctry .globe { box-shadow: none; color: var(--fg-2); }
   .ctry select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .upto b { color: var(--accent-text); }
 
@@ -580,8 +587,11 @@
     .finder label { font-size: 14.5px; }
     .finder output { font-size: 13.5px; }
     .controls { margin-top: 14px; gap: 8px; }
-    .controls .seg { display: flex; width: 100%; flex-wrap: nowrap; }
-    .controls .seg button { flex: 1; padding: 8px 4px; font-size: 12px; white-space: nowrap; }
+    /* Ciclo de pago y país en una sola fila compacta */
+    .controls { justify-content: space-between; }
+    .controls .seg { display: flex; flex-wrap: nowrap; flex: none; }
+    .controls .seg button { padding: 8px 10px; font-size: 12px; white-space: nowrap; }
+    .controls .upto { order: 3; flex-basis: 100%; }
     .plans { grid-template-columns: 1fr; gap: 14px; margin-top: 20px; }
     .plan {
       display: grid;
@@ -601,7 +611,8 @@
     .save { grid-area: save; justify-self: start; margin-top: 6px; font-size: 12px; }
     .was { display: none; }
     .upto { font-size: 12.5px; }
-    .ctry { margin-left: 0; font-size: 12.5px; }
+    .ctry { margin-left: 0; font-size: 12.5px; min-width: 0; }
+    .ctry select { max-width: 100%; text-overflow: ellipsis; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }
