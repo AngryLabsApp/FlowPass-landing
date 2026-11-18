@@ -38,6 +38,21 @@
   } = $props();
 
   const url = $derived(`${siteConfig.url}${path}`);
+
+  /**
+   * En celular cada fila de un cuadro se muestra como tarjeta. Para que cada
+   * dato lleve su título, se copia el encabezado de su columna en data-label.
+   */
+  function labelTables(node: HTMLElement) {
+    for (const table of node.querySelectorAll("table.terms-table")) {
+      const heads = [...table.querySelectorAll("thead th")].map((th) => th.textContent?.trim() ?? "");
+      for (const row of table.querySelectorAll("tbody tr")) {
+        [...row.children].forEach((cell, i) => {
+          if (heads[i]) cell.setAttribute("data-label", heads[i]);
+        });
+      }
+    }
+  }
 </script>
 
 <svelte:head>
@@ -94,7 +109,7 @@
       </ol>
     </aside>
 
-    <article class="terms-content">
+    <article class="terms-content" use:labelTables>
       {@render children()}
 
       <p class="back-home">
@@ -125,7 +140,8 @@
   .terms-subtitle { color: var(--fg-2); font-size: 17px; margin-top: 16px !important; max-width: 52ch; }
   .terms-meta { color: var(--fg-3); font-size: 13px; margin-top: 8px !important; }
 
-  .terms-layout { max-width: 1100px; margin: 0 auto; display: grid; gap: 32px; }
+  /* minmax(0, 1fr): un cuadro ancho no debe ensanchar la página en celular */
+  .terms-layout { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; }
   @media (min-width: 1024px) {
     .terms-layout { grid-template-columns: 240px minmax(0, 1fr); gap: 48px; align-items: start; }
   }
@@ -158,7 +174,7 @@
   .toc-num { color: var(--fg-3); font-variant-numeric: tabular-nums; flex: none; min-width: 18px; }
 
   /* Contenido: el texto llega como snippet, por eso :global */
-  .terms-content { max-width: 720px; }
+  .terms-content { max-width: 720px; min-width: 0; }
   .terms-content :global(section) { padding: 28px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 96px; }
   .terms-content :global(section:first-child) { padding-top: 0; }
   .terms-content :global(section:last-of-type) { border-bottom: 0; }
@@ -197,6 +213,29 @@
   .terms-content :global(.terms-table tr:last-child td) { border-bottom: 0; }
   .terms-content :global(.terms-table td:first-child) { color: var(--fg); font-weight: 600; white-space: nowrap; }
   .terms-content :global(.terms-table .n) { font-variant-numeric: tabular-nums; }
+
+  /* Celular: cada fila del cuadro pasa a ser una tarjeta con "título: dato" */
+  @media (max-width: 640px) {
+    .terms-content :global(.table-wrap) { overflow: visible; border: 0; border-radius: 0; }
+    .terms-content :global(.terms-table),
+    .terms-content :global(.terms-table tbody),
+    .terms-content :global(.terms-table tr),
+    .terms-content :global(.terms-table td) { display: block; width: 100%; }
+    .terms-content :global(.terms-table thead) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .terms-content :global(.terms-table tr) { border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .terms-content :global(.terms-table td) { border-bottom: 1px solid var(--line); padding: 10px 14px; font-size: 14.5px; }
+    .terms-content :global(.terms-table td:first-child) { background: var(--bg-2); white-space: normal; }
+    .terms-content :global(.terms-table td:not(:first-child)[data-label]) { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+    .terms-content :global(.terms-table td:not(:first-child)[data-label]::before) {
+      content: attr(data-label);
+      flex: 0 0 45%;
+      color: var(--fg-3);
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: left;
+    }
+    .terms-content :global(.terms-table td.n) { text-align: right; }
+  }
   .terms-content :global(.contact-block) { display: grid; gap: 8px; margin-top: 14px; font-style: normal; }
   .terms-content :global(.contact-row) {
     display: flex;
