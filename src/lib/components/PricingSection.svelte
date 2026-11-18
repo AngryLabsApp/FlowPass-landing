@@ -62,7 +62,8 @@
   let loading = true;
   onMount(async () => {
     await loadLivePricing();
-    selectedCountry = countries.find((c) => c.code === livePricing.country) ?? selectedCountry;
+    // Esta sección solo sabe pintar PE, MX y USD: un país con precio propio fuera de esos (ej. COP) ve USD aquí.
+    selectedCountry = countries.find((c) => c.code === livePricing.priceKey) ?? countries.find((c) => c.code === "US") ?? selectedCountry;
     // Sincroniza el store global (PE/MX) para que los CTA de WhatsApp (ContactSection, /about, bubble) usen el país detectado.
     if (selectedCountry.code === "PE" || selectedCountry.code === "MX") {
       try {

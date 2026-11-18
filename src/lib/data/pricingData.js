@@ -412,16 +412,23 @@ export function formatPrice(amount, country = "PE") {
 }
 
 /**
+ * Símbolo por moneda. PEN usa "S/" sin sufijo; las demás llevan el código al lado (ej. "$1,500 COP").
+ * @type {Record<string, string>}
+ */
+const CURRENCY_SYMBOL = { PEN: "S/", GTQ: "Q", CRC: "₡", PYG: "₲", DOP: "RD$" };
+
+/**
  * Igual que `formatPrice` pero devuelve las partes por separado. Sirve para
  * renderizar el código de moneda más chico junto al monto grande (evita que
  * "$1,800 MXN" rompa en dos líneas dentro de un span gigante).
  * @param {number} amount
- * @param {string} [country]
+ * @param {string} [country] clave de precio: país con precio propio ("PE", "CO"…) o "US" (por defecto, USD)
  * @returns {{symbol: string, number: string, code: string}}
  */
 export function formatPriceParts(amount, country = "PE") {
-  const c = countries.find((x) => x.code === country) ?? countries[0];
-  const useThousands = country === "MX" || country === "CO";
+  // Moneda que mandó el API para esa clave; antes de cargar, la de la lista fija (PE, MX, US).
+  const currency = livePricing.currencies?.[country] ?? countries.find((x) => x.code === country)?.currencyCode ?? "USD";
+  const useThousands = currency !== "PEN";
   // Entero como siempre; un equivalente mensual vivo con centavos (ej. 11.67) se muestra con 2 decimales.
   // Redondeo a centavos ANTES de decidir si es entero: 1083.333… × 3 = 3250.0000000000005 se muestra 3,250.
   amount = Math.round((amount + Number.EPSILON) * 100) / 100; // redondea (no trunca); EPSILON evita 1.005 → 1.00
@@ -429,9 +436,7 @@ export function formatPriceParts(amount, country = "PE") {
   const number = useThousands
     ? amount.toLocaleString("en-US", { minimumFractionDigits: whole ? 0 : 2 })
     : whole ? String(amount) : amount.toFixed(2);
-  /** @type {Record<string, string>} */
-  const codeByCountry = { MX: "MXN", CO: "COP", US: "USD" };
-  return { symbol: c.currency, number, code: codeByCountry[country] ?? "" };
+  return { symbol: CURRENCY_SYMBOL[currency] ?? "$", number, code: currency === "PEN" ? "" : currency };
 }
 
 /**

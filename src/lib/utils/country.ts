@@ -39,3 +39,10 @@ export function detectCountryCode(): string {
 
 /** Texto de la opción en la pregunta "País" de Cal.com (debe coincidir exacto). */
 export const CAL_COUNTRY_LABEL: Record<Country, string> = { PE: 'Perú', MX: 'México', US: 'Otro' };
+
+/** Nombre de cada país para el selector de precios ("US" = otros países, precio por defecto en USD). */
+export const COUNTRY_NAMES: Record<string, string> = {
+  PE: 'Perú', MX: 'México', CO: 'Colombia', AR: 'Argentina', CL: 'Chile', UY: 'Uruguay', BO: 'Bolivia',
+  EC: 'Ecuador', PY: 'Paraguay', CR: 'Costa Rica', GT: 'Guatemala', PA: 'Panamá', DO: 'República Dominicana',
+  US: 'Otros países',
+};

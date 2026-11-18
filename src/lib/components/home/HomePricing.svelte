@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte';
   import { loadLivePricing, livePricing, LIVE_PRICING_STATUS, setPricingCountry } from '$lib/livePricing.svelte';
-  import { detectCountryCode, type Country } from '$lib/utils/country';
+  import { detectCountryCode } from '$lib/utils/country';
   import { reveal } from '$lib/actions/reveal';
   import { siteConfig } from '$lib/config/site';
   import { trackContact, trackAgendaClick, trackViewPricing } from '$lib/tracking/track';
@@ -10,7 +10,6 @@
   const trialDays = signupTrialDays();
   import {
     plans as allPlans,
-    countries,
     billingCycles,
     whatsappPackages,
     sunatPackages,
@@ -23,18 +22,16 @@
   const enterprise = allPlans.find((p) => p.quoteBased);
   const minOf = (p: (typeof plans)[number], i: number) => (i === 0 ? 0 : plans[i - 1].maxActiveStudents ?? 0);
 
-  // País de los precios: el del selector "Precios para…", si no la zona horaria del navegador ('US' = otros países, USD).
-  const country = $derived(livePricing.country as Country);
-  const countryLabel = (code: string) => {
-    const c = countries.find((x) => x.code === code);
-    return c ? `${c.label} (${c.currencyCode})` : code;
-  };
+  // País elegido (selector "Precios para…" o zona horaria; 'US' = otros países) y la clave de sus precios: su país si
+  // tiene precio propio en el Admin, si no 'US' (USD). Los montos usan `country`; el registro usa el país elegido.
+  const country = $derived(livePricing.priceKey);
+  const chosenCountry = $derived(livePricing.country);
   // Mientras llega la respuesta no se muestra ningún monto (skeleton), nunca USD de paso.
   const loading = $derived(livePricing.status === LIVE_PRICING_STATUS.LOADING);
   // Solo los países que habilita el API crean su cuenta; el resto agenda una llamada. "Otros países" ('US') usa el país real del visitante.
   let detectedCode = $state('');
   let countriesReady = $state(false);
-  const signupCode = $derived(country === 'US' ? detectedCode : country);
+  const signupCode = $derived(chosenCountry === 'US' ? detectedCode : chosenCountry);
   const signupOpen = $derived(countriesReady && signupOpenFor(signupCode));
   const signupTierKey = (id: string) => (signupOpen ? tierKeyFor(id) : null);
   let cycle = $state('mensual');
@@ -194,11 +191,11 @@
     {#if !loading && maxSavingPct > 0}
       <p class="upto">Pagando {cycle} ahorras hasta <b>{maxSavingPct}%</b>, según el plan.</p>
     {/if}
-    {#if !loading && livePricing.available.length > 1}
+    {#if !loading && livePricing.options.length > 1}
       <label class="ctry">
         Precios para
-        <select value={country} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
-          {#each livePricing.available as code (code)}<option value={code}>{countryLabel(code)}</option>{/each}
+        <select value={chosenCountry} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
+          {#each livePricing.options as o (o.code)}<option value={o.code}>{o.label} ({o.currency})</option>{/each}
         </select>
       </label>
     {/if}
