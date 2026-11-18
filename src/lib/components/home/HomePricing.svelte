@@ -220,7 +220,8 @@
         <span class="tag">{p.tagline}</span>
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
-        {#if saving && saving.amount > 0}<span class="save">Te ahorras {money(saving.amount)}</span>{/if}
+        {#if saving && saving.amount > 0}<span class="save">Te ahorras {money(saving.amount)}</span>
+        {:else if !loading && cycle !== 'mensual' && priceOf(p) !== null}<span class="save none">Sin descuento {cycle}</span>{/if}
         <!-- Al cambiar de país el monto se vuelve a dibujar con una entrada corta, escalonada por tarjeta. -->
         {#key country}
         <div class="amt price-in" style={`animation-delay: ${i * 50}ms`}>{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{#if saving && saving.amount > 0} <s class="was">{money(saving.monthly)}</s>{/if}{/if}</div>
@@ -486,6 +487,8 @@
   .amt small { font-family: var(--body); font-size: 14px; color: var(--fg-3); letter-spacing: 0; white-space: nowrap; }
   .per { font-size: 12px; color: var(--fg-3); }
   .save { align-self: flex-start; white-space: nowrap; margin-top: 8px; padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: 700; background: color-mix(in srgb, #01f59e 18%, transparent); color: var(--accent-text); }
+  /* Plan sin descuento en el ciclo elegido: mismo lugar que "Te ahorras", en gris */
+  .save.none { font-weight: 600; background: var(--bg-2); color: var(--fg-3); }
   .was { white-space: nowrap; font-family: var(--body); font-size: 15px; color: var(--fg-3); letter-spacing: 0; }
   .key { font-size: 14px; color: var(--fg-2); padding-top: 12px; border-top: 1px solid var(--line); }
   .plan .btn { margin-top: auto; justify-content: center; }
