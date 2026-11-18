@@ -233,6 +233,7 @@
           <ul>
             <li>Sin tarjeta ni compromiso</li>
             <li>Tu academia lista en 2 minutos</li>
+            <li>Funciones básicas: sin portal de alumnos, WhatsApp ni asistencia por geolocalización</li>
             <li>Al terminar, eliges el plan que te acomode</li>
           </ul>
         {/if}

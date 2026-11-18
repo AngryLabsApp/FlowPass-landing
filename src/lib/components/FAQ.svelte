@@ -30,7 +30,7 @@
     },
     {
       q: "¿Se compra o se paga mensual?",
-      a: `FlowPass funciona con <strong>suscripción mensual</strong>, igual que Netflix o Spotify. Pagas cada mes y obtienes acceso completo, soporte y todas las actualizaciones.<br><br>Puedes <strong>cancelar cuando quieras</strong>. Sin contratos, sin permanencia.`
+      a: `FlowPass funciona con <strong>suscripción</strong>, igual que Netflix o Spotify. Eliges pagar mensual, trimestral o anual, y obtienes acceso completo, soporte y todas las actualizaciones.<br><br>Puedes <strong>cancelar cuando quieras</strong> desde tu panel. Sin contratos, sin permanencia. Guardamos tus datos 6 meses por si decides volver.`
     },
     {
       q: "¿Cuánto cuesta?",

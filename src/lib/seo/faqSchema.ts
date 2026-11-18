@@ -52,7 +52,7 @@ export const faqMainEntity = [
     "name": "¿Cómo funciona el modelo de pago de FlowPass?",
     "acceptedAnswer": {
       "@type": "Answer",
-      "text": "FlowPass opera con suscripción mensual, sin contratos de permanencia. Pagas una cuota mensual basada en la cantidad de alumnos activos. Puedes cancelar o pausar cuando quieras, y retomar después sin problemas. Además, ofrecemos una asesoría gratuita 1:1 para que conozcas la plataforma antes de decidirte."
+      "text": "FlowPass opera con suscripción mensual, trimestral o anual, sin contratos de permanencia. El precio depende de la cantidad de alumnos activos. Puedes cancelar cuando quieras desde tu panel: guardamos tus datos 6 meses por si decides volver. Además, ofrecemos una asesoría gratuita 1:1 para que conozcas la plataforma antes de decidirte."
     }
   },
   {

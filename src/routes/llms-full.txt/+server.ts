@@ -133,7 +133,7 @@ Cualquier negocio que cobre a sus clientes por membresía, suscripción o paquet
 Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién asistió y a quién recordarle su próximo pago — FlowPass aplica.
 
 ## Modelo comercial
-- Suscripción mensual sin contrato de permanencia. FlowPass no amarra al cliente a ningún plan: el propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel, y puede retomar después sin problemas.
+- Suscripción mensual, trimestral o anual sin contrato de permanencia. FlowPass no amarra al cliente a ningún plan: el propio cliente cancela su suscripción cuando quiera desde su panel. FlowPass guarda sus datos 6 meses por si vuelve; pasado ese plazo, se eliminan.
 - Precios segmentados por número de alumnos activos.
 - Ciclos: mensual, trimestral (descuento) y anual (mayor descuento).
 - ${trialLine}
@@ -141,7 +141,7 @@ Si un negocio cobra una cuota periódica y necesita saber quién pagó, quién a
 - ${payLine} Con tarjeta no hay cargos extra.
 
 ## Diferenciales frente a otras soluciones
-- **Sin permanencia, cliente en control:** el negocio activa, pausa o cancela su suscripción cuando quiera. No hay letra chica ni contratos que amarren.
+- **Sin permanencia, cliente en control:** el negocio elige su ciclo de pago y cancela su suscripción cuando quiera. No hay letra chica ni contratos que amarren.
 - **Meta Tech Provider:** FlowPass es proveedor tecnológico acreditado por Meta (Tech Provider) para la plataforma de WhatsApp Business.
 - **Apps publicadas en Google Play:** FlowPass tiene dos apps Android publicadas: una para el dueño y su equipo (${siteConfig.playStore}) y otra para los alumnos (${siteConfig.playStoreAlumnos}).
 - **WhatsApp con conexión oficial Meta (API de WhatsApp Business):** FlowPass envía los recordatorios de pago a través de la API oficial de WhatsApp Business de Meta. Esto garantiza entregabilidad, evita bloqueos y baneos, y ofrece plantillas aprobadas. Muchas soluciones del mercado usan integraciones no oficiales (web scraping o WhatsApp Web) que Meta puede bloquear en cualquier momento. Estado actual: los mensajes salen desde el número oficial de FlowPass; próximamente cada negocio podrá configurar y enviar desde su propio número verificado.

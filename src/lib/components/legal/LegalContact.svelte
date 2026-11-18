@@ -1,5 +1,8 @@
 <script lang="ts">
   import { siteConfig } from "$lib/config/site";
+
+  // En /terminos se muestra también el representante legal.
+  let { showRepresentative = false }: { showRepresentative?: boolean } = $props();
 </script>
 
 <address class="contact-block">
@@ -23,4 +26,14 @@
     <span class="contact-label">Domicilio fiscal</span>
     <span class="contact-value">{siteConfig.legal.address}</span>
   </div>
+  {#if showRepresentative}
+    <div class="contact-row static">
+      <span class="contact-label">Representante legal</span>
+      <span class="contact-value">{siteConfig.legal.representative}</span>
+    </div>
+    <a href={`mailto:${siteConfig.legal.representativeEmail}`} class="contact-row">
+      <span class="contact-label">Correo del representante</span>
+      <span class="contact-value">{siteConfig.legal.representativeEmail}</span>
+    </a>
+  {/if}
 </address>
