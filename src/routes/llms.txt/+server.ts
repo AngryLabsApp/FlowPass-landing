@@ -29,7 +29,7 @@ FlowPass es una plataforma web (no requiere instalación) diseñada para cualqui
 ${payLine}
 
 Diferenciales clave:
-- Sin contrato de permanencia: no amarramos al cliente a ningún plan. El propio cliente activa, pausa o cancela su suscripción cuando quiera desde su panel.
+- Sin contrato de permanencia: no amarramos al cliente a ningún plan. El propio cliente elige su ciclo (mensual, trimestral o anual) y cancela su suscripción cuando quiera desde su panel; FlowPass guarda sus datos 6 meses por si vuelve.
 - FlowPass es Meta Tech Provider: proveedor tecnológico acreditado por Meta para la plataforma de WhatsApp Business.
 - Apps publicadas en Google Play (Android): una para el negocio (${siteConfig.playStore}) y otra para sus alumnos (${siteConfig.playStoreAlumnos}).
 - Recordatorios automáticos de pago vía WhatsApp con conexión oficial a la API de WhatsApp Business (Meta), lo que asegura la entrega y evita bloqueos que sí ocurren con soluciones no oficiales. Hoy los mensajes salen desde el número oficial de FlowPass; próximamente cada cliente podrá enviarlos desde su propio número verificado.

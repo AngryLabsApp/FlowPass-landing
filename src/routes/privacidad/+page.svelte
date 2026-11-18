@@ -27,8 +27,8 @@
   title="Política de"
   titleGrad="privacidad"
   subtitle="Para academias que usan FlowPass y para sus alumnos."
-  lastUpdate="28 de septiembre de 2026"
-  lastUpdateISO="2026-09-28"
+  lastUpdate="17 de noviembre de 2026"
+  lastUpdateISO="2026-11-17"
   {sections}
 >
   <section id="alcance">
@@ -159,8 +159,9 @@
       <li><strong>Autoridades</strong>, cuando la ley lo exija.</li>
     </ul>
     <p>
-      Algunos de estos proveedores pueden almacenar datos fuera del Perú. En esos casos exigimos
-      niveles de protección adecuados, conforme a la normativa aplicable.
+      Algunos de estos proveedores pueden almacenar o procesar datos fuera del Perú (transferencia
+      internacional). En esos casos exigimos niveles de protección adecuados, conforme a la Ley N.º 29733
+      y su Reglamento.
     </p>
   </section>
 
@@ -183,8 +184,13 @@
     <p>
       Guardamos los datos mientras la academia mantenga su cuenta en FlowPass y los necesite para su
       relación contigo. Si pides que se eliminen tus datos, la academia puede solicitarlo o podemos
-      ayudarla a hacerlo. Cuando una academia deja FlowPass, sus datos se eliminan o anonimizan en un
-      plazo razonable, salvo que la ley exija conservarlos por más tiempo.
+      ayudarla a hacerlo.
+    </p>
+    <p>
+      Cuando una academia deja FlowPass, guardamos sus datos por <strong>6 meses</strong>, por si decide
+      regresar. Pasado ese plazo, los eliminamos de forma definitiva, salvo que la ley exija conservarlos
+      por más tiempo. La academia puede pedir antes una copia de sus datos (la entregamos en Excel dentro
+      de los 15 días hábiles) o su eliminación inmediata.
     </p>
   </section>
 

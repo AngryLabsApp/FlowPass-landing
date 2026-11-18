@@ -32,8 +32,10 @@ export const siteConfig = {
     address: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno, Ate, Lima, Perú',
     streetAddress: 'Av. Terpsícore 142, Urb. Olimpo Et. Uno',
     district: 'Ate',
+    representative: 'Grecia Delgado Muñoz',
+    representativeEmail: 'grecia.delgado@flow-pass.com',
     // Fecha de la última versión de /terminos. Se guarda en la cuenta al registrarse: al cambiar los términos, cambiarla.
-    termsVersion: '2026-10-12'
+    termsVersion: '2026-11-17'
   },
   phone: PHONES.PE.raw, // Código de país sin + (PE — default histórico)
   phoneFormatted: PHONES.PE.formatted,

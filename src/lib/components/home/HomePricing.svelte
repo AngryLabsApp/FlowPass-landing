@@ -346,7 +346,7 @@
             {/each}
           </div>
           <p class="hint">
-            Hasta {qPlan.maxActiveStudents} alumnos activos · {qPlan.whatsappIncluded?.total} mensajes de WhatsApp · {qPlan.teamSeats ? `hasta ${qPlan.teamSeats} accesos` : 'accesos ilimitados'}
+            Hasta {qPlan.maxActiveStudents} alumnos activos · {qPlan.whatsappIncluded?.total} mensajes de WhatsApp · {qPlan.teamSeats ? `hasta ${qPlan.teamSeats} accesos` : 'accesos a medida'}
           </p>
         </fieldset>
 

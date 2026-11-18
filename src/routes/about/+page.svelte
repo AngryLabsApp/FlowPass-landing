@@ -170,7 +170,7 @@
         integraciones improvisadas con WhatsApp. Todo lo contrario:
       </p>
       <ul class="check-list">
-        <li>Suscripción mensual sin permanencia — el cliente activa, pausa o cancela cuando quiera.</li>
+        <li>Suscripción mensual, trimestral o anual sin permanencia — el cliente cancela cuando quiera y guardamos sus datos 6 meses por si vuelve.</li>
         <li>Recordatorios por WhatsApp con conexión oficial a la API de Meta.</li>
         <li>Multi-sede flexible: cada sede adicional paga según su tamaño, desde S/30.</li>
         <li>Portal del alumno con la marca de tu negocio.</li>

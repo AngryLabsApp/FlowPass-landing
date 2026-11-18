@@ -188,6 +188,15 @@
     font-size: 15px;
     line-height: 1.6;
   }
+  /* Tablas: se desplazan en horizontal dentro de su caja en móvil */
+  .terms-content :global(.table-wrap) { overflow-x: auto; margin: 8px 0 16px; border: 1px solid var(--line); border-radius: 12px; }
+  .terms-content :global(.terms-table) { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.5; }
+  .terms-content :global(.terms-table th),
+  .terms-content :global(.terms-table td) { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); color: var(--fg-2); }
+  .terms-content :global(.terms-table th) { background: var(--bg-2); color: var(--fg); font-weight: 600; font-size: 13px; }
+  .terms-content :global(.terms-table tr:last-child td) { border-bottom: 0; }
+  .terms-content :global(.terms-table td:first-child) { color: var(--fg); font-weight: 600; white-space: nowrap; }
+  .terms-content :global(.terms-table .n) { font-variant-numeric: tabular-nums; }
   .terms-content :global(.contact-block) { display: grid; gap: 8px; margin-top: 14px; font-style: normal; }
   .terms-content :global(.contact-row) {
     display: flex;
