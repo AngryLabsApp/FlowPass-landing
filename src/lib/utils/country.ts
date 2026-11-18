@@ -46,3 +46,11 @@ export const COUNTRY_NAMES: Record<string, string> = {
   EC: 'Ecuador', PY: 'Paraguay', CR: 'Costa Rica', GT: 'Guatemala', PA: 'Panamá', DO: 'República Dominicana',
   US: 'Otros países',
 };
+
+/** Países con bandera en /static/flags (PNG de flag-icons, MIT). */
+const FLAGS = new Set(['PE', 'MX', 'CO', 'AR', 'BO', 'PY', 'EC', 'CL', 'UY', 'DO', 'PA', 'GT', 'CR']);
+
+/** Ruta de la bandera del país, o null si no hay (ej. "Otros países"). Imagen y no emoji: Windows no dibuja banderas emoji. */
+export function countryFlagSrc(code: string): string | null {
+  return FLAGS.has(code) ? `/flags/${code.toLowerCase()}.png` : null;
+}
