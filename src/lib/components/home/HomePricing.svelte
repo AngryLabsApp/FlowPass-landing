@@ -194,11 +194,13 @@
     {#if !loading && livePricing.options.length > 1}
       <label class="ctry">
         <span class="ctry-txt">Precios para</span>
+        {#key chosenCountry}
         {#if countryFlagSrc(chosenCountry)}
-          <img class="flag" src={countryFlagSrc(chosenCountry)} alt="" width="20" height="15" />
+          <img class="ctry-flag flag-in" src={countryFlagSrc(chosenCountry)} alt="" width="20" height="15" />
         {:else}
-          <svg class="flag globe" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" /></svg>
+          <svg class="ctry-flag globe flag-in" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" /></svg>
         {/if}
+        {/key}
         <select  value={chosenCountry} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
           {#each livePricing.options as o (o.code)}<option value={o.code}>{o.label} ({o.currency})</option>{/each}
         </select>
@@ -217,7 +219,10 @@
         <h3>{p.name}</h3>
         <div class="size">{sizeLabel(p, i)} alumnos activos</div>
         {#if saving && saving.amount > 0}<span class="save">Te ahorras {money(saving.amount)}</span>{/if}
-        <div class="amt">{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{#if saving && saving.amount > 0} <s class="was">{money(saving.monthly)}</s>{/if}{/if}</div>
+        <!-- Al cambiar de país el monto se vuelve a dibujar con una entrada corta, escalonada por tarjeta. -->
+        {#key country}
+        <div class="amt price-in" style={`animation-delay: ${i * 50}ms`}>{#if priceOf(p) === null && !loading}<span class="ask">Consulta el precio</span>{:else}{@render amount(priceOf(p))} <small>{#if !loading}{code} {/if}/ mes</small>{#if saving && saving.amount > 0} <s class="was">{money(saving.monthly)}</s>{/if}{/if}</div>
+        {/key}
         {#if cycle !== 'mensual' && priceOf(p) !== null}
           <p class="per">Se cobra {@render amount((priceOf(p) ?? 0) * months)} {cycle === 'trimestral' ? 'cada 3 meses' : 'una vez al año'}</p>
         {/if}
@@ -452,8 +457,15 @@
   .ctry select { appearance: none; field-sizing: content; min-height: 44px; padding: 0 22px 0 6px; border: 0; border-radius: 10px; font: inherit; font-weight: 700; color: var(--fg); cursor: pointer;
     background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 4px center; }
   .ctry select option { color: #111; }
-  .ctry .flag { flex: none; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); }
+  .ctry .ctry-flag { flex: none; display: block; width: 20px; height: 15px; min-height: 15px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); }
+  .ctry .globe { width: 18px; height: 18px; min-height: 18px; }
   .ctry .globe { box-shadow: none; color: var(--fg-2); }
+  /* Cambio de país: la bandera hace un pequeño rebote y los montos entran desde abajo */
+  .flag-in { animation: flag-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .price-in { animation: price-in 280ms ease-out both; }
+  @keyframes flag-pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  @keyframes price-in { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .flag-in, .price-in { animation: none; } }
   .ctry select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .upto b { color: var(--accent-text); }
 
