@@ -194,6 +194,7 @@
     {#if !loading && livePricing.options.length > 1}
       <label class="ctry">
         <span class="ctry-txt">Precios para</span>
+        <span class="ctry-box">
         {#key chosenCountry}
         {#if countryFlagSrc(chosenCountry)}
           <img class="ctry-flag flag-in" src={countryFlagSrc(chosenCountry)} alt="" width="20" height="15" />
@@ -204,6 +205,7 @@
         <select  value={chosenCountry} onchange={(e) => setPricingCountry(e.currentTarget.value)}>
           {#each livePricing.options as o (o.code)}<option value={o.code}>{o.label} ({o.currency})</option>{/each}
         </select>
+        </span>
       </label>
     {/if}
   </div>
@@ -454,8 +456,12 @@
   .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 22px; }
   .upto { font-size: 14px; color: var(--fg-2); }
   .ctry { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--fg-2); }
-  .ctry select { appearance: none; field-sizing: content; min-height: 44px; padding: 0 22px 0 6px; border: 0; border-radius: 10px; font: inherit; font-weight: 700; color: var(--fg); cursor: pointer;
-    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 4px center; }
+  /* Bandera y país dentro de una misma caja, con el mismo borde que el selector de ciclo */
+  .ctry-box { display: inline-flex; align-items: center; gap: 8px; min-width: 0; padding-left: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); transition: border-color 0.15s; }
+  .ctry-box:hover { border-color: var(--fg-3); }
+  .ctry-box:has(select:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .ctry select { appearance: none; field-sizing: content; min-width: 0; min-height: 42px; padding: 0 30px 0 0; border: 0; border-radius: 10px; outline: none; font: inherit; font-weight: 700; color: var(--fg); cursor: pointer;
+    background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center; }
   .ctry select option { color: #111; }
   .ctry .ctry-flag { flex: none; display: block; width: 20px; height: 15px; min-height: 15px; object-fit: cover; border-radius: 3px; box-shadow: 0 0 0 1px var(--line); }
   .ctry .globe { width: 18px; height: 18px; min-height: 18px; }
@@ -466,7 +472,6 @@
   @keyframes flag-pop { from { transform: scale(0.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   @keyframes price-in { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .flag-in, .price-in { animation: none; } }
-  .ctry select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .upto b { color: var(--accent-text); }
 
   .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
@@ -595,9 +600,10 @@
   }
   /* Celular: una tarjeta por fila, compacta (nombre y precio arriba, botón abajo) */
   @media (max-width: 560px) {
-    .finder { margin-top: 22px; padding: 16px; gap: 10px; border-radius: 14px; }
-    .finder label { font-size: 14.5px; }
-    .finder output { font-size: 13.5px; }
+    .finder { margin-top: 18px; padding: 12px 14px; gap: 6px; border-radius: 12px; }
+    .finder label { font-size: 13px; line-height: 1.4; }
+    .finder-row { gap: 6px; }
+    .finder output { font-size: 12.5px; line-height: 1.45; }
     .controls { margin-top: 14px; gap: 8px; }
     /* Ciclo de pago y país en una sola fila compacta */
     .controls { justify-content: space-between; }
@@ -624,7 +630,8 @@
     .was { display: none; }
     .upto { font-size: 12.5px; }
     .ctry { margin-left: 0; font-size: 12.5px; min-width: 0; }
-    .ctry select { max-width: 100%; text-overflow: ellipsis; }
+    .ctry select { max-width: 100%; min-height: 38px; text-overflow: ellipsis; }
+    .ctry-box { padding-left: 10px; gap: 6px; }
     .key { grid-area: key; font-size: 13px; margin-top: 8px; padding-top: 10px; }
     .plan .btn { grid-area: btn; margin-top: 10px; padding: 10px 14px; font-size: 13.5px; }
     .plan-alt { grid-area: alt; margin-top: 8px; font-size: 12.5px; }
