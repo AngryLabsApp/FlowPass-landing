@@ -239,7 +239,7 @@
 
   {#if trialDays && signupOpen}
     <div class="trial">
-      <p><b>¿Aún no sabes qué plan elegir?</b> Pruébalo gratis {trialDays} días. Sin tarjeta.</p>
+      <p><b>¿Aún no sabes qué plan elegir?</b> Pruébalo gratis {trialDays} días, sin tarjeta. La prueba no incluye portal de alumnos, WhatsApp ni asistencia por geolocalización.</p>
       <a class="btn trial-btn" href={`/registro?pais=${signupCode}`}>Empezar prueba gratis</a>
     </div>
   {/if}
